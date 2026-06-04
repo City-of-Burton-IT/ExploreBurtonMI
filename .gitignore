@@ -1,0 +1,44 @@
+# Burton IT required entries (see ~/.claude/rules/git.md)
+settings.local.json
+*.out.txt
+logs/
+
+# Logs
+logs
+*.log
+npm-debug.log*
+yarn-debug.log*
+yarn-error.log*
+pnpm-debug.log*
+lerna-debug.log*
+
+node_modules
+dist
+dist-ssr
+*.local
+
+# Track 2 Python pipeline
+pipeline/.venv/
+pipeline/data/cache/
+__pycache__/
+.pytest_cache/
+
+# Editor directories and files
+.vscode/*
+!.vscode/extensions.json
+.idea
+.DS_Store
+*.suo
+*.ntvs*
+*.njsproj
+*.sln
+*.sw?
+
+# Root-level vendor/source working data (any licensed or non-redistributable
+# input). Anchored to the repo root so it does NOT ignore pipeline/data/ (committed
+# inputs like facilities.geojson and the redistributable overture_places.geojson snapshot).
+/data/
+
+# Internal working docs (kept local; not published to this public repo)
+planning/
+docs/

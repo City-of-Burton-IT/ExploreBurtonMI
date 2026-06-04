@@ -1,0 +1,64 @@
+{
+  "project": {
+    "name": "Explore Burton",
+    "tagline": "Find businesses, government facilities, and services in the City of Burton."
+  },
+  "data": {
+    "source": "data.geojson"
+  },
+  "map": {
+    "center": [43.002, -83.632],
+    "zoom": 12,
+    "maxZoom": 18,
+    "minZoom": 10,
+    "maxBounds": [
+      [42.85, -83.85],
+      [43.15, -83.40]
+    ],
+    "previewAttribute": "name"
+  },
+  "tiles": {
+    "url": "https://imagery.michigan.gov/server/rest/services/Michigan_imagery_public/MapServer/tile/{z}/{y}/{x}",
+    "attribution": "Imagery &copy; <a href=\"https://www.michigan.gov\">State of Michigan</a>; reference &copy; <a href=\"https://www.esri.com\">Esri</a>; place data &copy; <a href=\"https://www.openstreetmap.org/copyright\">OpenStreetMap</a> contributors &amp; <a href=\"https://overturemaps.org\">Overture Maps Foundation</a>",
+    "overlays": [
+      { "url": "https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Transportation/MapServer/tile/{z}/{y}/{x}" },
+      { "url": "https://services.arcgisonline.com/ArcGIS/rest/services/Reference/World_Boundaries_and_Places/MapServer/tile/{z}/{y}/{x}" }
+    ]
+  },
+  "boundary": { "source": "boundary.geojson", "color": "#ffd400", "weight": 3, "lockView": true, "dimOutside": true, "dimColor": "#0b1f2e", "dimOpacity": 0.55 },
+  "categoryField": "category",
+  "categories": {
+    "Government": { "color": "#1f3a5f" },
+    "Public Safety": { "color": "#b3261e" },
+    "Parks & Recreation": { "color": "#2e7d32" },
+    "Public Works": { "color": "#e08a00" },
+    "Community Services": { "color": "#6a1b9a" },
+    "Dining": { "color": "#e65100" },
+    "Retail & Shopping": { "color": "#00838f" },
+    "Grocery & Food": { "color": "#9e9d24" },
+    "Health & Medical": { "color": "#c2185b" },
+    "Professional & Personal Services": { "color": "#546e7a" },
+    "Automotive": { "color": "#4e342e" },
+    "Financial": { "color": "#00897b" },
+    "Lodging": { "color": "#ad1457" },
+    "Education": { "color": "#1565c0" },
+    "Arts & Entertainment": { "color": "#8e24aa" },
+    "Faith": { "color": "#6d4c41" }
+  },
+  "properties": [
+    { "field": "category", "label": "Category" },
+    { "field": "address", "label": "Address" },
+    { "field": "address", "label": "Directions", "format": "directions" },
+    { "field": "phone", "label": "Phone", "format": "phone" },
+    { "field": "website", "label": "Website", "format": "url" },
+    { "field": "hours", "label": "Hours" },
+    { "field": "description", "label": "About" }
+  ],
+  "facets": {
+    "category": { "title": "Category", "type": "single" }
+  },
+  "list": ["name", "address"],
+  "search": {
+    "keys": ["name", "category", "address", "description"]
+  }
+}

@@ -1,0 +1,4 @@
+# Dependencies for the out-of-band Overture extractor (tools/extract_overture.py)
+# ONLY. These carry the heavy binary readers and are deliberately kept OUT of
+# pipeline/requirements.txt so the pipeline stays pure-Python (Python 3.14 safe).
+overturemaps

@@ -1,0 +1,33 @@
+{
+  "_comment": "Per-record manual corrections, keyed by feature ID (e.g. 'osm:node/123' or 'burton:city-hall'). Applied AFTER the merge, so they survive every OSM re-fetch. Each entry may override any property, set 'coordinates': [lng, lat], or set 'hidden': true to drop a record. Curated facility coordinates/addresses now live directly in facilities.geojson; this file is reserved for hiding OSM duplicates.",
+  "osm:way/310316478": {
+    "hidden": true,
+    "_why": "Duplicate of curated burton:for-mar (For-Mar Nature Preserve); curated entry has richer info."
+  },
+  "osm:way/585470683": {
+    "hidden": true,
+    "_why": "Duplicate of curated burton:for-mar (For-Mar Nature Preserve)."
+  },
+  "osm:way/755222712": {
+    "hidden": true,
+    "_why": "Duplicate of curated burton:gdl-burton (Burton Memorial Library); curated coord verified to match this OSM POI (~35 m)."
+  },
+  "osm:way/632403027": {
+    "hidden": true,
+    "_why": "Duplicate of curated burton:kelly-lake-park (Kelley/Kelly Lake Park); this OSM coord was adopted for the curated entry, then hidden."
+  },
+  "osm:node/8163092357": {
+    "hidden": true,
+    "_why": "Duplicate of curated burton:fire-station-2 (Fire HQ, 1320 S Belsay Rd); ~90 m from the verified station coord."
+  },
+  "osm:way/911687430": {
+    "hidden": true,
+    "_why": "Duplicate of curated burton:fire-station-2 (Fire HQ, 1320 S Belsay Rd); ~90 m from the verified station coord."
+  },
+  "osm:node/12078958475": {
+    "name": "U.S. Post Office",
+    "address": "4065 Manor Dr, Burton, MI 48519",
+    "website": "https://tools.usps.com/find-location.htm",
+    "_why": "Burton's Manor Dr post office (south campus); OSM had no address. Address taken from the co-located Overture record (4065 Manor Dr); verify on the ground. Distinct from the Davison Rd post office (burton:post-office-davison), ~7.5 km north."
+  }
+}

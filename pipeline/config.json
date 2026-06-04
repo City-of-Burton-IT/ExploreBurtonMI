@@ -1,0 +1,37 @@
+{
+  "city_name": "Burton",
+  "overpass": {
+    "endpoint": "https://overpass-api.de/api/interpreter",
+    "user_agent": "ExploreBurtonMI-pipeline/1.0 (City of Burton IT)",
+    "bbox": [42.95, -83.70, 43.04, -83.55],
+    "tag_keys": ["amenity", "shop", "office", "tourism", "leisure"]
+  },
+  "boundary": {
+    "arcgis_url": "",
+    "cache": "data/cache/boundary.geojson"
+  },
+  "census_geocoder": {
+    "endpoint": "https://geocoding.geo.census.gov/geocoder/locations/onelineaddress",
+    "benchmark": "Public_AR_Current"
+  },
+  "overture": {
+    "_comment": "Open-licensed POI layer (CDLA-Permissive). The snapshot is produced out-of-band by tools/extract_overture.py and committed; the pipeline only reads it. bbox is [min_lat, min_lng, max_lat, max_lng] (same as overpass.bbox). exclude_categories drops home-prone trades (Overture has no home flag -- blunt proxy; set [] to disable).",
+    "bbox": [42.95, -83.70, 43.04, -83.55],
+    "min_confidence": 0.5,
+    "exclude_categories": [],
+    "skip_burton_categories": ["Government", "Public Safety", "Public Works"]
+  },
+  "dedupe": {
+    "_comment": "Proximity dedup threshold (metres): same normalized name within this distance collapses to one marker. 120 m collapses cross-source OSM/Overture double-pins while keeping genuinely distinct same-name locations (which are >120 m apart).",
+    "threshold_m": 120
+  },
+  "paths": {
+    "facilities": "data/facilities.geojson",
+    "overrides": "data/overrides.json",
+    "category_map": "category_map.json",
+    "overture": "data/overture_places.geojson",
+    "overture_category_map": "overture_category_map.json",
+    "osm_cache": "data/cache/osm.json",
+    "output": "../public/data.geojson"
+  }
+}

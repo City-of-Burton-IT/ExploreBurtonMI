@@ -1,0 +1,293 @@
+/* ============================================================
+   Explore Burton — City of Burton public brand (2026 / "T40")
+   Civic blue + green spine, Inter body / Poppins headings,
+   12px rounding, dashed-divider motif. See the burton-design
+   skill (public_site) for the source system.
+   ============================================================ */
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-variable.woff2') format('woff2');
+  font-weight: 100 900; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Inter';
+  src: url('/fonts/inter-italic-variable.woff2') format('woff2');
+  font-weight: 100 900; font-style: italic; font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins-400.woff2') format('woff2');
+  font-weight: 400; font-style: normal; font-display: swap;
+}
+@font-face {
+  font-family: 'Poppins';
+  src: url('/fonts/poppins-700.woff2') format('woff2');
+  font-weight: 700; font-style: normal; font-display: swap;
+}
+
+:root {
+  /* civic spine */
+  --civic-blue: #2c57a0;
+  --civic-blue-link: #386fc5;
+  --civic-blue-deep: #1e437e;
+  --civic-blue-soft: #d7e1f3;
+  --civic-green: #4ea735;
+  --civic-green-deep: #1d7f2b;
+  --civic-green-soft: #d9f1dd;
+  --pub-ink: #2c2c2c;
+  --pub-border: #e3e3e3;
+  --pub-radius: 12px;
+  --pub-radius-sm: 8px;
+  --pub-focus-ring: 0 0 0 0.2rem rgba(44, 87, 160, 0.25);
+
+  --font-head: 'Poppins', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+  --font-body: 'Inter', -apple-system, BlinkMacSystemFont, 'Segoe UI', Helvetica, Arial, sans-serif;
+
+  font-family: var(--font-body);
+  color: var(--pub-ink);
+  -webkit-font-smoothing: antialiased;
+}
+
+* {
+  box-sizing: border-box;
+}
+
+html,
+body,
+#app {
+  margin: 0;
+  height: 100%;
+}
+
+.app {
+  display: flex;
+  flex-direction: column;
+  height: 100vh;
+}
+
+/* ---------- Header: white, seal, blue wordmark, dashed-green motif ---------- */
+.topbar {
+  flex: 0 0 auto;
+  background: #fff;
+  color: var(--pub-ink);
+  padding: 0.5rem 1rem;
+  display: flex;
+  align-items: center;
+  gap: 0.85rem;
+  flex-wrap: wrap;
+  border-bottom: 2px dashed var(--civic-green);
+}
+
+.topbar .seal {
+  width: 44px;
+  height: 44px;
+  flex-shrink: 0;
+}
+
+.topbar .brand {
+  display: flex;
+  flex-direction: column;
+  line-height: 1.15;
+}
+
+.topbar h1 {
+  margin: 0;
+  font-family: var(--font-head);
+  font-size: 1.4rem;
+  font-weight: 700;
+  letter-spacing: -0.5px;
+  color: var(--civic-blue);
+}
+
+.topbar .tagline {
+  margin: 0;
+  font-size: 0.85rem;
+  color: #5c5c5c;
+}
+
+.topbar .spacer {
+  flex: 1 1 auto;
+}
+
+.home-btn {
+  border: 1px solid var(--civic-blue);
+  background: #fff;
+  color: var(--civic-blue);
+  border-radius: var(--pub-radius);
+  padding: 0.4rem 0.95rem;
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.9rem;
+  text-decoration: none;
+  white-space: nowrap;
+  transition: background 0.15s, color 0.15s;
+}
+.home-btn:hover {
+  background: var(--civic-blue);
+  color: #fff;
+}
+.home-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--pub-focus-ring);
+}
+
+.workspace {
+  flex: 1 1 auto;
+  display: flex;
+  min-height: 0;
+}
+
+.sidebar {
+  flex: 0 0 300px;
+  display: flex;
+  flex-direction: column;
+  min-height: 0;
+  border-right: 1px solid var(--pub-border);
+  background: #fff;
+  overflow: hidden;
+}
+
+/* Keep the results list visible: search pinned, the category filter capped +
+   scrollable, the place list flexes to fill the rest (so filtering by category
+   always shows results without the filters pushing the list off-screen). */
+.sidebar .search {
+  flex: 0 0 auto;
+}
+.sidebar .facets {
+  /* don't shrink: keep the category list at its (capped) height even when the
+     results list below holds hundreds of items */
+  flex: 0 0 auto;
+  min-height: 0;
+  max-height: 50%;
+  overflow-y: auto;
+}
+.sidebar .list {
+  /* basis 0 so the list takes the remaining space regardless of how many items
+     it holds (a content-based basis was crushing the category pane to ~30px) */
+  flex: 1 1 0;
+  min-height: 0;
+}
+
+.content {
+  flex: 1 1 auto;
+  position: relative;
+  min-height: 0;
+}
+
+/* Small © credit in the map corner — opens the About dialog (full attribution). */
+.map-credit {
+  position: absolute;
+  right: 8px;
+  bottom: 8px;
+  z-index: 1000;
+  width: 26px;
+  height: 26px;
+  border-radius: 50%;
+  border: 1px solid var(--pub-border);
+  background: rgba(255, 255, 255, 0.9);
+  color: var(--civic-blue);
+  font-size: 0.95rem;
+  font-weight: 700;
+  line-height: 1;
+  cursor: pointer;
+  display: grid;
+  place-items: center;
+}
+.map-credit:hover {
+  background: #fff;
+}
+.map-credit:focus-visible {
+  outline: none;
+  box-shadow: var(--pub-focus-ring);
+}
+
+/* Map/List toggle — hidden on desktop, a segmented pill on phones/tablets */
+.view-toggle {
+  display: none;
+}
+
+@media (max-width: 860px) {
+  /* Header: drop the long tagline, tighten spacing, show the toggle */
+  .topbar {
+    gap: 0.55rem;
+  }
+  .topbar .tagline {
+    display: none;
+  }
+  .view-toggle {
+    display: inline-flex;
+    border: 1px solid var(--civic-blue);
+    border-radius: 999px;
+    overflow: hidden;
+    flex-shrink: 0;
+  }
+  .view-toggle button {
+    border: none;
+    background: #fff;
+    color: var(--civic-blue);
+    font-family: var(--font-body);
+    font-weight: 700;
+    font-size: 0.85rem;
+    padding: 0.4rem 0.9rem;
+    min-height: 36px;
+    cursor: pointer;
+  }
+  .view-toggle button.active {
+    background: var(--civic-blue);
+    color: #fff;
+  }
+
+  /* The map stays mounted full-screen (avoids Leaflet resize glitches); the
+     sidebar slides in over it as a drawer when "List" is active. */
+  .workspace {
+    position: relative;
+  }
+  .content {
+    position: absolute;
+    inset: 0;
+  }
+  .sidebar {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    flex: none;
+    z-index: 1100; /* above Leaflet's controls (z 1000) so the drawer fully covers the map */
+    border-right: none;
+    transform: translateX(-100%);
+    transition: transform 0.22s ease;
+  }
+  .workspace[data-view='list'] .sidebar {
+    transform: translateX(0);
+  }
+}
+
+/* Phones: drop the wordmark text (the seal keeps brand identity) so the seal +
+   Map/List toggle + Home + About stay on one row. Tablets keep the wordmark. */
+@media (max-width: 520px) {
+  .topbar h1 {
+    display: none;
+  }
+  .topbar {
+    gap: 0.4rem;
+  }
+}
+
+.status {
+  display: grid;
+  place-items: center;
+  height: 100%;
+  padding: 2rem;
+  text-align: center;
+  color: #555;
+}
+
+.status.error {
+  color: #ab2f26;
+}
+
+.status pre {
+  white-space: pre-wrap;
+  text-align: left;
+  font-size: 0.85rem;
+}

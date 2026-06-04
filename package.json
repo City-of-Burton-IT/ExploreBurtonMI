@@ -1,0 +1,32 @@
+{
+  "name": "exploreburtonmi",
+  "private": true,
+  "version": "0.1.0",
+  "description": "Explore Burton - public map of City of Burton businesses, government facilities, and services",
+  "type": "module",
+  "scripts": {
+    "dev": "vite",
+    "build": "vite build",
+    "preview": "vite preview",
+    "check": "svelte-check --tsconfig ./tsconfig.app.json && tsc -p tsconfig.node.json",
+    "test": "vitest run",
+    "test:watch": "vitest"
+  },
+  "dependencies": {
+    "leaflet": "^1.9.4",
+    "leaflet.markercluster": "^1.5.3",
+    "minisearch": "^7.2.0"
+  },
+  "devDependencies": {
+    "@sveltejs/vite-plugin-svelte": "^7.1.2",
+    "@tsconfig/svelte": "^5.0.8",
+    "@types/leaflet": "^1.9.12",
+    "@types/leaflet.markercluster": "^1.5.4",
+    "@types/node": "^24.12.3",
+    "svelte": "^5.55.5",
+    "svelte-check": "^4.4.8",
+    "typescript": "~6.0.2",
+    "vite": "^8.0.12",
+    "vitest": "^4.1.8"
+  }
+}

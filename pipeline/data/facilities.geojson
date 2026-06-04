@@ -1,0 +1,227 @@
+{
+  "type": "FeatureCollection",
+  "_note": "Hand-curated, authoritative City of Burton government facilities & services. Coordinates verified 2026-06-04 against burtonmi.gov + Nominatim (building-level) + OSM POIs; most now carry explicit Point geometry so output does not depend on geocoder availability. A null geometry means the address is geocoded by the pipeline (US Census).",
+  "features": [
+    {
+      "type": "Feature",
+      "id": "burton:city-hall",
+      "geometry": null,
+      "properties": {
+        "name": "Burton City Hall",
+        "category": "Government",
+        "address": "4303 S Center Rd, Burton, MI 48519",
+        "phone": "(810) 743-1500",
+        "website": "https://www.burtonmi.gov",
+        "hours": "Mon-Fri 8:00 AM - 5:00 PM",
+        "description": "City administrative offices, clerk, treasurer, and assessing."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:police-dept",
+      "geometry": { "type": "Point", "coordinates": [-83.63181, 42.965477] },
+      "properties": {
+        "name": "Burton Police Department",
+        "category": "Public Safety",
+        "address": "4090 Manor Dr, Burton, MI 48519",
+        "phone": "(810) 742-2542",
+        "hours": "24 hours",
+        "description": "Police headquarters and records. Call 911 for emergencies."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:fire-station-1",
+      "geometry": { "type": "Point", "coordinates": [-83.6715315, 42.9745299] },
+      "properties": {
+        "name": "Burton Fire Station 1",
+        "category": "Public Safety",
+        "address": "2031 E Bristol Rd, Burton, MI 48519",
+        "phone": "(810) 743-1550",
+        "hours": "24 hours"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:fire-station-2",
+      "geometry": { "type": "Point", "coordinates": [-83.595211, 43.009546] },
+      "properties": {
+        "name": "Burton Fire Station 2 (Headquarters)",
+        "category": "Public Safety",
+        "address": "1320 S Belsay Rd, Burton, MI 48519",
+        "hours": "24 hours"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:fire-station-3",
+      "geometry": { "type": "Point", "coordinates": [-83.6199389, 43.0331509] },
+      "properties": {
+        "name": "Burton Fire Station 3",
+        "category": "Public Safety",
+        "address": "4515 Davison Rd, Burton, MI 48509",
+        "hours": "24 hours"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:dpw",
+      "geometry": { "type": "Point", "coordinates": [-83.6322, 42.9659] },
+      "properties": {
+        "name": "Department of Public Works",
+        "category": "Public Works",
+        "address": "4093 Manor Dr, Burton, MI 48519",
+        "phone": "(810) 742-9230",
+        "hours": "Mon-Fri 8:00 AM - 4:00 PM",
+        "description": "Roads, water and sewer maintenance, and public infrastructure."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:water-sewer",
+      "geometry": null,
+      "properties": {
+        "name": "Water & Sewer Billing",
+        "category": "Government",
+        "address": "4303 S Center Rd, Burton, MI 48519",
+        "phone": "(810) 743-1500",
+        "hours": "Mon-Fri 8:00 AM - 5:00 PM",
+        "description": "Utility billing and payments at City Hall."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:67th-district-court",
+      "geometry": { "type": "Point", "coordinates": [-83.630042, 42.96554] },
+      "properties": {
+        "name": "67th District Court - Burton Division",
+        "category": "Government",
+        "address": "4081 Manor Dr, Burton, MI 48519",
+        "phone": "(810) 742-1530",
+        "hours": "Mon-Fri 8:00 AM - 4:30 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:kelly-lake-park",
+      "geometry": { "type": "Point", "coordinates": [-83.6199568, 43.0143183] },
+      "properties": {
+        "name": "Kelly Lake Park",
+        "category": "Parks & Recreation",
+        "address": "Kelly Lake Rd, Burton, MI 48509",
+        "hours": "Dawn to dusk",
+        "description": "40-acre park off Lapeer Rd with lake access, nature trails, picnic pavilion, and a bike path."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:settlement-park",
+      "geometry": { "type": "Point", "coordinates": [-83.6373579, 42.9869558] },
+      "properties": {
+        "name": "Settlement Park",
+        "category": "Parks & Recreation",
+        "address": "Thread Creek Blvd, Burton, MI 48519",
+        "hours": "Dawn to dusk",
+        "description": "Passive linear park along Thread Creek with fishing and picnic areas."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:for-mar",
+      "geometry": null,
+      "properties": {
+        "name": "For-Mar Nature Preserve & Arboretum",
+        "category": "Parks & Recreation",
+        "address": "2142 N Genesee Rd, Burton, MI 48509",
+        "phone": "(810) 789-8567",
+        "hours": "Tue-Sat 8:00 AM - sunset",
+        "website": "https://www.geneseecountyparks.org",
+        "description": "380-acre nature preserve with trails and an arboretum."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:senior-center",
+      "geometry": { "type": "Point", "coordinates": [-83.6833, 42.9775] },
+      "properties": {
+        "name": "Burton Senior Center",
+        "category": "Community Services",
+        "address": "3410 S Grand Traverse St, Burton, MI 48529",
+        "phone": "(810) 744-0960",
+        "hours": "Mon-Fri 9:00 AM - 3:00 PM",
+        "description": "Senior programs, meals, and activities."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:gdl-burton",
+      "geometry": { "type": "Point", "coordinates": [-83.6333106, 42.9891741] },
+      "properties": {
+        "name": "Burton Memorial Library",
+        "category": "Community Services",
+        "address": "4012 E Atherton Rd, Burton, MI 48519",
+        "phone": "(810) 742-0674",
+        "hours": "Mon 9:00 AM - 9:00 PM, Tue/Thu 10:00 AM - 6:00 PM, Wed 12:00 PM - 8:00 PM, Sat 9:00 AM - 5:00 PM, closed Fri & Sun",
+        "website": "https://www.thegdl.org"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:parks-rec-office",
+      "geometry": null,
+      "properties": {
+        "name": "Parks & Recreation Office",
+        "category": "Parks & Recreation",
+        "address": "4303 S Center Rd, Burton, MI 48519",
+        "phone": "(810) 743-1500",
+        "hours": "Mon-Fri 8:00 AM - 5:00 PM"
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:compost-site",
+      "geometry": { "type": "Point", "coordinates": [-83.5825, 43.0025] },
+      "properties": {
+        "name": "Yard Waste & Compost Drop-off",
+        "category": "Public Works",
+        "address": "Belsay Rd, Burton, MI 48509",
+        "hours": "Seasonal: Sat 8:00 AM - 4:00 PM",
+        "description": "Resident yard-waste and compost drop-off site."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:post-office-davison",
+      "geometry": { "type": "Point", "coordinates": [-83.61826, 43.033556] },
+      "properties": {
+        "name": "U.S. Post Office",
+        "category": "Government",
+        "address": "4465 Davison Rd, Burton, MI 48509",
+        "website": "https://tools.usps.com/find-location.htm",
+        "description": "USPS retail post office (coordinates from Overture Maps; spot-check on next facility verification)."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:county-health",
+      "geometry": { "type": "Point", "coordinates": [-83.673206, 42.979637] },
+      "properties": {
+        "name": "Genesee County Health Department (Burton)",
+        "category": "Health & Medical",
+        "address": "3373 S Saginaw St, Burton, MI 48529",
+        "description": "Genesee County public-health office serving Burton (coordinates from Overture Maps; spot-check on next facility verification)."
+      }
+    },
+    {
+      "type": "Feature",
+      "id": "burton:lovedale-cemetery",
+      "geometry": { "type": "Point", "coordinates": [-83.60619393, 42.97673553] },
+      "properties": {
+        "name": "Lovedale Memorial Cemetery",
+        "category": "Community Services",
+        "address": "5175 E Bristol Rd, Burton, MI 48519",
+        "description": "Cemetery (coordinates from Overture Maps; spot-check on next facility verification)."
+      }
+    }
+  ]
+}
