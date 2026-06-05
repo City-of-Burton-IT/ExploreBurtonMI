@@ -124,6 +124,9 @@
 
     cluster = L.markerClusterGroup({ showCoverageOnHover: false });
     for (const feature of data.features) {
+      // Off-map entries (real location outside the city) are listed but never
+      // plotted on the locked city map.
+      if (feature.offMap) continue;
       const [lng, lat] = feature.geometry.coordinates;
       const label = String(feature.properties[previewAttribute] ?? feature.properties.name);
       const marker = L.circleMarker([lat, lng], baseStyle(feature));

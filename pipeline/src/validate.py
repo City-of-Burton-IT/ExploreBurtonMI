@@ -29,6 +29,15 @@ def validate(features: list, bbox: list) -> list:
 
     for f in features:
         fid = f.get("id", "<no id>")
+        # offMap: a hand-curated facility whose real location is outside the city
+        # (e.g. a permit-issued service at an out-of-town facility). It is listed
+        # and searchable but not plotted on the locked city map, so it alone is
+        # exempt from the in-bounds check. Every other gate still applies.
+        # The flag is honored ONLY on curated ('burton:') ids. The OSM/Overture
+        # normalizers build features from explicit keys (no top-level spread), so
+        # they cannot carry an offMap field; this id guard ENFORCES that - an
+        # auto-sourced record can never use the flag to escape the bounds check.
+        off_map = bool(f.get("offMap")) and str(f.get("id", "")).startswith("burton:")
         geom = f.get("geometry")
         if not geom or geom.get("type") != "Point":
             errors.append(f"{fid}: missing or non-Point geometry")
@@ -38,7 +47,7 @@ def validate(features: list, bbox: list) -> list:
             errors.append(f"{fid}: invalid coordinates {coords!r}")
             continue
         lng, lat = coords[0], coords[1]
-        if not (min_lng <= lng <= max_lng and min_lat <= lat <= max_lat):
+        if not off_map and not (min_lng <= lng <= max_lng and min_lat <= lat <= max_lat):
             errors.append(f"{fid}: coordinates out of bounds ({lat}, {lng})")
             continue
 
@@ -48,14 +57,15 @@ def validate(features: list, bbox: list) -> list:
             continue
 
         safe_props = {k: v for k, v in props.items() if k in ALLOWED_PROPERTIES}
-        cleaned.append(
-            {
-                "type": "Feature",
-                "id": fid,
-                "geometry": {"type": "Point", "coordinates": [lng, lat]},
-                "properties": safe_props,
-            }
-        )
+        feature = {
+            "type": "Feature",
+            "id": fid,
+            "geometry": {"type": "Point", "coordinates": [lng, lat]},
+            "properties": safe_props,
+        }
+        if off_map:
+            feature["offMap"] = True
+        cleaned.append(feature)
 
     if errors:
         raise ValidationError(

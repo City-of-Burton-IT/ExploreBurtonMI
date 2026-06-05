@@ -13,7 +13,7 @@
         "phone": "(810) 743-1500",
         "website": "https://www.burtonmi.gov",
         "hours": "Mon-Fri 8:00 AM - 5:00 PM",
-        "description": "City administrative offices, clerk, treasurer, and assessing."
+        "description": "City administrative offices, clerk, treasurer, and assessing. Resident dump permits are also issued here (for use at Brent Run Landfill)."
       }
     },
     {
@@ -179,26 +179,28 @@
     },
     {
       "type": "Feature",
-      "id": "burton:compost-site",
-      "geometry": { "type": "Point", "coordinates": [-83.5825, 43.0025] },
+      "id": "burton:dump-permit",
+      "offMap": true,
+      "geometry": { "type": "Point", "coordinates": [-83.842093, 43.176879] },
       "properties": {
-        "name": "Yard Waste & Compost Drop-off",
-        "category": "Public Works",
-        "address": "Belsay Rd, Burton, MI 48509",
-        "hours": "Seasonal: Sat 8:00 AM - 4:00 PM",
-        "description": "Resident yard-waste and compost drop-off site."
+        "name": "Dump Permits (Brent Run Landfill)",
+        "category": "Government",
+        "address": "8335 Vienna Rd, Montrose, MI 48457",
+        "phone": "(810) 639-3077",
+        "hours": "Brent Run Landfill: Mon-Fri 7:00 AM - 3:00 PM",
+        "description": "Resident dump permits are obtained free at Burton City Hall - one per household per month, with proof of residency (valid ID or water bill). A permit covers one standard pickup-truck load (under 1,000 lbs) of household materials and is used at Brent Run Landfill in Montrose, which is outside the city limits and so is not pinned on the map. Use Get Directions for the landfill location; the phone number is the landfill's questions line."
       }
     },
     {
       "type": "Feature",
       "id": "burton:post-office-davison",
-      "geometry": { "type": "Point", "coordinates": [-83.61826, 43.033556] },
+      "geometry": { "type": "Point", "coordinates": [-83.620453, 43.03313] },
       "properties": {
         "name": "U.S. Post Office",
         "category": "Government",
         "address": "4465 Davison Rd, Burton, MI 48509",
         "website": "https://tools.usps.com/find-location.htm",
-        "description": "USPS retail post office (coordinates from Overture Maps; spot-check on next facility verification)."
+        "description": "USPS retail post office. Coordinates verified 2026-06-05 (US Census + Nominatim agree within ~5 m; consistent with neighboring Fire Station 3 at 4515 Davison Rd)."
       }
     },
     {
@@ -209,7 +211,7 @@
         "name": "Genesee County Health Department (Burton)",
         "category": "Health & Medical",
         "address": "3373 S Saginaw St, Burton, MI 48529",
-        "description": "Genesee County public-health office serving Burton (coordinates from Overture Maps; spot-check on next facility verification)."
+        "description": "Genesee County public-health office serving Burton. Coordinates verified 2026-06-05 (within ~13 m of the Google Maps place point)."
       }
     },
     {
@@ -220,7 +222,7 @@
         "name": "Lovedale Memorial Cemetery",
         "category": "Community Services",
         "address": "5175 E Bristol Rd, Burton, MI 48519",
-        "description": "Cemetery (coordinates from Overture Maps; spot-check on next facility verification)."
+        "description": "Cemetery (also known as Peace Memory Gardens). Coordinates verified 2026-06-05 (within ~22 m of the OSM cemetery polygon centroid)."
       }
     }
   ]

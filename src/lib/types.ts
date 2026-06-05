@@ -109,6 +109,13 @@ export interface PlaceFeature {
     coordinates: [number, number];
   };
   properties: FeatureProperties;
+  /**
+   * Curated facility whose real location is outside the city limits (e.g. a
+   * permit-issued service at an out-of-town site). Listed and searchable, but
+   * not plotted on the locked city map. Carries valid coordinates so the detail
+   * panel's "Get directions" link still resolves.
+   */
+  offMap?: boolean;
 }
 
 export interface PlaceCollection {
