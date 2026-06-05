@@ -22,6 +22,7 @@
   // Info panels load independently of the map and never block or break it.
   let finances = $state<InfoPanel | null>(null);
   let demographics = $state<InfoPanel | null>(null);
+  let schools = $state<InfoPanel | null>(null);
   let infoLoading = $state(true);
 
   async function start() {
@@ -35,9 +36,10 @@
       fetch(url)
         .then((r) => (r.ok ? (r.json() as Promise<InfoPanel>) : null))
         .catch(() => null);
-    [finances, demographics] = await Promise.all([
+    [finances, demographics, schools] = await Promise.all([
       safe('info-finances.json'),
       safe('info-demographics.json'),
+      safe('info-schools.json'),
     ]);
     infoLoading = false;
   }
@@ -68,7 +70,13 @@
   );
 
   const activePanel = $derived(
-    ui.view === 'finances' ? finances : ui.view === 'demographics' ? demographics : null,
+    ui.view === 'finances'
+      ? finances
+      : ui.view === 'demographics'
+        ? demographics
+        : ui.view === 'schools'
+          ? schools
+          : null,
   );
 </script>
 
@@ -87,6 +95,7 @@
         <button class:active={ui.view === 'map'} onclick={() => setView('map')}>Map</button>
         <button class:active={ui.view === 'finances'} onclick={() => setView('finances')}>Finances</button>
         <button class:active={ui.view === 'demographics'} onclick={() => setView('demographics')}>Demographics</button>
+        <button class:active={ui.view === 'schools'} onclick={() => setView('schools')}>Schools</button>
         <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}>Guide</button>
       </nav>
       {#if data && result && ui.view === 'map'}
@@ -123,7 +132,7 @@
         >&copy;</button>
       </main>
     </div>
-    {#if ui.view === 'finances' || ui.view === 'demographics'}
+    {#if ui.view === 'finances' || ui.view === 'demographics' || ui.view === 'schools'}
       <div class="infowrap">
         <InfoView panel={activePanel} loading={infoLoading} />
       </div>

@@ -8,7 +8,9 @@ import type { Selections } from './filter';
 /** Map a URL hash (#finances, #guide, #guide/trash) to a top-level view. */
 export function viewFromHash(hash: string): AppView {
   const key = hash.replace(/^#/, '').split('/')[0];
-  return key === 'finances' || key === 'demographics' || key === 'guide' ? key : 'map';
+  return key === 'finances' || key === 'demographics' || key === 'schools' || key === 'guide'
+    ? key
+    : 'map';
 }
 
 /** The guide section id from a `#guide/<id>` hash, or null. */

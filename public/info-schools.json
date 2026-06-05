@@ -1,0 +1,82 @@
+{
+  "title": "Burton Schools",
+  "subtitle": "Public school districts serving the City of Burton (2023)",
+  "stats": [
+    {
+      "label": "Districts serving Burton",
+      "value": "7",
+      "hint": "public school districts"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "Enrollment by district (2023)",
+      "series": [
+        {
+          "label": "Grand Blanc",
+          "value": 7571
+        },
+        {
+          "label": "Davison",
+          "value": 5470
+        },
+        {
+          "label": "Carman-Ainsworth",
+          "value": 3722
+        },
+        {
+          "label": "Kearsley",
+          "value": 2863
+        },
+        {
+          "label": "Bendle",
+          "value": 1032
+        },
+        {
+          "label": "Bentley",
+          "value": 718
+        },
+        {
+          "label": "Atherton",
+          "value": 692
+        }
+      ]
+    }
+  ],
+  "source": "NCES Common Core of Data 2023, via the Urban Institute Education Data API",
+  "links": [
+    {
+      "text": "Atherton",
+      "href": "https://www.athertonschools.org/"
+    },
+    {
+      "text": "Bendle",
+      "href": "https://bendleschools.org/"
+    },
+    {
+      "text": "Bentley",
+      "href": "https://www.bentleyschools.org/"
+    },
+    {
+      "text": "Carman-Ainsworth",
+      "href": "https://www.carman.k12.mi.us/"
+    },
+    {
+      "text": "Davison",
+      "href": "https://www.davisonschools.org/"
+    },
+    {
+      "text": "Grand Blanc",
+      "href": "https://www.gbcs.org/"
+    },
+    {
+      "text": "Kearsley",
+      "href": "https://www.kearsleyschools.org/"
+    }
+  ],
+  "notes": [
+    "Several of these districts extend well beyond Burton's city limits -- enrollment shown is each district's total, not the number of Burton residents it serves. Use the Map's \"School districts\" layer to see which district covers an address.",
+    "Source: Urban Institute Education Data API, which republishes the U.S. Department of Education's National Center for Education Statistics (NCES) Common Core of Data."
+  ]
+}
