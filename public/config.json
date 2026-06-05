@@ -27,7 +27,8 @@
   },
   "boundary": { "source": "boundary.geojson", "color": "#ffd400", "weight": 3, "lockView": true, "dimOutside": true, "dimColor": "#0b1f2e", "dimOpacity": 0.55 },
   "dataLayers": [
-    { "source": "school-districts.geojson", "label": "School districts", "nameField": "name" }
+    { "source": "school-districts.geojson", "label": "School districts", "nameField": "name" },
+    { "source": "transit-routes.geojson", "label": "Bus routes", "nameField": "name" }
   ],
   "categoryField": "category",
   "categories": {

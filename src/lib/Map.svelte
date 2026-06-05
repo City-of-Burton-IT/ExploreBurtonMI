@@ -140,16 +140,18 @@
           .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${layer.source} HTTP ${r.status}`))))
           .then((geojson) => {
             if (!map) return;
+            // Use a feature's own color (e.g. GTFS route colors) when present;
+            // otherwise assign distinct palette colors by index (e.g. districts).
             (geojson.features ?? []).forEach(
               (f: { properties: Record<string, unknown> }, i: number) => {
-                f.properties._color = palette[i % palette.length];
+                f.properties._color = f.properties._color ?? palette[i % palette.length];
               },
             );
             const gj = L.geoJSON(geojson, {
               pane: 'dataLayers',
               style: (f) => {
                 const color = (f?.properties?._color as string) ?? palette[0];
-                return { color, weight: 2, opacity: 0.9, fillColor: color, fillOpacity: 0.12 };
+                return { color, weight: 3, opacity: 0.9, fillColor: color, fillOpacity: 0.12 };
               },
               onEachFeature: (feature, lyr) => {
                 const label = feature.properties?.[nameField];

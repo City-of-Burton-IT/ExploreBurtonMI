@@ -11,7 +11,8 @@ communities, and connect to the Flint transit center for transfers across the co
 - **[Route 11 — Fenton Road](https://www.mtaflint.org/primary-routes/primary-route-11-fenton-road/)**
 
 Each route page has the current schedule and stops. Routes and times can change, so check the
-official MTA page before you travel.
+official MTA page before you travel. You can also see every MTA route that runs through Burton on
+the **Map** — open the layer control (top-right) and turn on **Bus routes**.
 
 ### Plan a trip & fares
 
