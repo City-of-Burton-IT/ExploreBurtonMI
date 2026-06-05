@@ -149,11 +149,23 @@
     cluster.addLayers(toAdd);
   });
 
-  // When returning from an info view, the map container was display:none, so
-  // Leaflet has a stale size. Re-measure once it's visible again.
+  // The map sits in a display:none workspace while an info view is shown, so its
+  // container is 0x0 and Leaflet would otherwise reset the view on return. Capture
+  // the live center/zoom BEFORE the DOM hides it ($effect.pre runs pre-DOM-update),
+  // then re-measure and restore it when we come back to the map.
+  let savedView: { center: L.LatLng; zoom: number } | undefined;
+  $effect.pre(() => {
+    if (map && ui.view !== 'map') {
+      savedView = { center: map.getCenter(), zoom: map.getZoom() };
+    }
+  });
   $effect(() => {
     if (ui.view === 'map' && map) {
-      requestAnimationFrame(() => map?.invalidateSize());
+      requestAnimationFrame(() => {
+        if (!map) return;
+        map.invalidateSize();
+        if (savedView) map.setView(savedView.center, savedView.zoom, { animate: false });
+      });
     }
   });
 
