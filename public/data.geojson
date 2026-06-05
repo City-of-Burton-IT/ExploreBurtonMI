@@ -14,9 +14,11 @@
       "properties": {
         "name": "67th District Court - Burton Division",
         "category": "Government",
-        "address": "4081 Manor Dr, Burton, MI 48519",
-        "phone": "(810) 742-1530",
-        "hours": "Mon-Fri 8:00 AM - 4:30 PM"
+        "address": "4094 Manor Dr, Burton, MI 48519",
+        "phone": "(810) 743-5600",
+        "website": "https://www.67thdc.com/index.php",
+        "hours": "Mon-Fri 8:00 AM - 4:00 PM",
+        "description": "67th District Court, Division 2-B, serving the City of Burton."
       }
     },
     {
@@ -110,6 +112,7 @@
         "category": "Public Safety",
         "address": "2031 E Bristol Rd, Burton, MI 48519",
         "phone": "(810) 743-1550",
+        "website": "https://burtonmi.gov/government/fire_department/station_1.php",
         "hours": "24 hours"
       }
     },
@@ -127,6 +130,7 @@
         "name": "Burton Fire Station 2 (Headquarters)",
         "category": "Public Safety",
         "address": "1320 S Belsay Rd, Burton, MI 48519",
+        "website": "https://burtonmi.gov/government/fire_department/station_2.php",
         "hours": "24 hours"
       }
     },
@@ -144,6 +148,7 @@
         "name": "Burton Fire Station 3",
         "category": "Public Safety",
         "address": "4515 Davison Rd, Burton, MI 48509",
+        "website": "https://burtonmi.gov/government/fire_department/station_3.php",
         "hours": "24 hours"
       }
     },
@@ -254,6 +259,7 @@
         "category": "Public Safety",
         "address": "4090 Manor Dr, Burton, MI 48519",
         "phone": "(810) 742-2542",
+        "website": "https://burtonmi.gov/government/police_department/index.php",
         "hours": "24 hours",
         "description": "Police headquarters and records. Call 911 for emergencies."
       }
