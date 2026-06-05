@@ -25,6 +25,25 @@
     {
       "label": "Owner-occupied homes",
       "value": "76%"
+    },
+    {
+      "label": "Bachelor's degree or higher",
+      "value": "16%",
+      "hint": "age 25+"
+    },
+    {
+      "label": "Unemployment rate",
+      "value": "8%",
+      "hint": "civilian labor force"
+    },
+    {
+      "label": "Below poverty line",
+      "value": "17%"
+    },
+    {
+      "label": "Veterans",
+      "value": "7%",
+      "hint": "of adults 18+"
     }
   ],
   "charts": [
@@ -39,6 +58,32 @@
         {
           "label": "Renter-occupied",
           "value": 3027
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Age distribution",
+      "series": [
+        {
+          "label": "Under 18",
+          "value": 6260
+        },
+        {
+          "label": "18-34",
+          "value": 6261
+        },
+        {
+          "label": "35-54",
+          "value": 7275
+        },
+        {
+          "label": "55-64",
+          "value": 4177
+        },
+        {
+          "label": "65+",
+          "value": 5556
         }
       ]
     },
@@ -67,13 +112,91 @@
           "value": 2863
         }
       ]
+    },
+    {
+      "type": "bars",
+      "title": "Educational attainment (age 25+)",
+      "series": [
+        {
+          "label": "No diploma",
+          "value": 2190
+        },
+        {
+          "label": "High school / GED",
+          "value": 7562
+        },
+        {
+          "label": "Some college / associate",
+          "value": 7718
+        },
+        {
+          "label": "Bachelor's degree",
+          "value": 2383
+        },
+        {
+          "label": "Graduate / professional",
+          "value": 1036
+        }
+      ]
+    },
+    {
+      "type": "donut",
+      "title": "How residents get to work",
+      "series": [
+        {
+          "label": "Drove alone",
+          "value": 10122
+        },
+        {
+          "label": "Carpooled",
+          "value": 1604
+        },
+        {
+          "label": "Public transit",
+          "value": 48
+        },
+        {
+          "label": "Walked / bicycled",
+          "value": 100
+        },
+        {
+          "label": "Worked from home",
+          "value": 842
+        },
+        {
+          "label": "Other",
+          "value": 141
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Population",
+      "points": [
+        {
+          "x": "2010",
+          "y": 29999
+        },
+        {
+          "x": "2020",
+          "y": 29715
+        },
+        {
+          "x": "2023 (est.)",
+          "y": 29529
+        }
+      ]
     }
   ],
-  "source": "U.S. Census Bureau, American Community Survey 2023 5-year estimates",
+  "source": "U.S. Census Bureau, American Community Survey 2023 5-year estimates; Decennial Census (2010, 2020) for the population trend",
   "links": [
     {
       "text": "Census QuickFacts: Burton city, MI",
       "href": "https://www.census.gov/quickfacts/burtoncitymichigan"
     }
+  ],
+  "notes": [
+    "Population trend: 2010 and 2020 are decennial census counts; the most recent figure is an ACS 5-year estimate, so the three points are not directly comparable.",
+    "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
   ]
 }

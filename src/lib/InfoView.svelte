@@ -54,7 +54,7 @@
       </div>
     {/if}
 
-    {#if panel.source || panel.links?.length}
+    {#if panel.source || panel.links?.length || panel.notes?.length}
       <hr />
       <footer>
         {#if panel.source}<p class="source">Source: {panel.source}</p>{/if}
@@ -64,6 +64,11 @@
               <li><a href={link.href} target="_blank" rel="noopener noreferrer">{link.text}</a></li>
             {/each}
           </ul>
+        {/if}
+        {#if panel.notes?.length}
+          {#each panel.notes as note}
+            <p class="note">{note}</p>
+          {/each}
         {/if}
       </footer>
     {/if}
@@ -139,6 +144,12 @@
     margin: 0;
     font-size: 0.8rem;
     color: #777;
+  }
+  .note {
+    margin: 0.4rem 0 0;
+    font-size: 0.72rem;
+    line-height: 1.35;
+    color: #999;
   }
   .links {
     list-style: none;

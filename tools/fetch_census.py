@@ -1,5 +1,6 @@
 """Fetch a demographics snapshot for the City of Burton from the US Census ACS
-5-year API and write public/info-demographics.json in the InfoPanel schema.
+5-year API (plus decennial counts for the population trend) and write
+public/info-demographics.json in the InfoPanel schema.
 
 Re-runnable annually:
     set CENSUS_API_KEY=...        (or pass --key)
@@ -7,6 +8,11 @@ Re-runnable annually:
 
 A free Census API key is required (the API now rejects keyless requests):
     https://api.census.gov/data/key_signup.html
+
+Census API Terms of Service require the notice "This product uses the Census
+Bureau Data API but is not endorsed or certified by the Census Bureau" be
+displayed prominently; it is emitted into the panel's `notes` and rendered in the
+app footer.
 
 Stdlib only (urllib) -- no dependencies, matching the other tools/ scripts. The
 output is committed; the public site reads the JSON, never the Census API.
@@ -23,6 +29,9 @@ STATE_FIPS = "26"        # Michigan
 PLACE_FIPS = "12060"     # Burton city (GEOID 2612060; verified via data.census.gov)
 EXPECTED_NAME_PREFIX = "Burton city"
 
+# --- ACS table variable groupings -----------------------------------------
+# Variable codes verified against https://api.census.gov/data/<year>/acs/acs5/groups/<TABLE>.json
+
 # Income brackets (B19001) grouped into 5 readable buckets.
 INCOME_GROUPS = [
     ("< $25k", ["002", "003", "004", "005"]),
@@ -32,36 +41,120 @@ INCOME_GROUPS = [
     ("$100k+", ["014", "015", "016", "017"]),
 ]
 
+# Educational attainment (B15003, population 25+) collapsed to 5 levels.
+EDU_GROUPS = [
+    ("No diploma", [f"{n:03d}" for n in range(2, 17)]),   # 002-016: none .. 12th no diploma
+    ("High school / GED", ["017", "018"]),
+    ("Some college / associate", ["019", "020", "021"]),
+    ("Bachelor's degree", ["022"]),
+    ("Graduate / professional", ["023", "024", "025"]),
+]
+
+# Means of transportation to work (B08301). Partition sums to the table total (001).
+COMMUTE_GROUPS = [
+    ("Drove alone", ["003"]),
+    ("Carpooled", ["004"]),
+    ("Public transit", ["010"]),
+    ("Walked / bicycled", ["018", "019"]),
+    ("Worked from home", ["021"]),
+    ("Other", ["016", "017", "020"]),   # taxicab, motorcycle, other means
+]
+
+# Sex by age (B01001) collapsed to 5 bands (male + female codes summed per band).
+AGE_BANDS = [
+    ("Under 18", ["003", "004", "005", "006", "027", "028", "029", "030"]),
+    ("18-34", ["007", "008", "009", "010", "011", "012",
+               "031", "032", "033", "034", "035", "036"]),
+    ("35-54", ["013", "014", "015", "016", "037", "038", "039", "040"]),
+    ("55-64", ["017", "018", "019", "041", "042", "043"]),
+    ("65+", ["020", "021", "022", "023", "024", "025",
+             "044", "045", "046", "047", "048", "049"]),
+]
+
+# Single-value ACS variables.
 CORE_VARS = {
     "population": "B01003_001E",
     "median_age": "B01002_001E",
     "households": "B11001_001E",
     "median_income": "B19013_001E",
     "median_home_value": "B25077_001E",
-    "tenure_total": "B25003_001E",
     "owner": "B25003_002E",
     "renter": "B25003_003E",
+    # Educational attainment denominator (pop 25+)
+    "edu_total": "B15003_001E",
+    # Employment status (B23025)
+    "pop_16plus": "B23025_001E",
+    "in_labor_force": "B23025_002E",
+    "civilian_labor_force": "B23025_003E",
+    "employed": "B23025_004E",
+    "unemployed": "B23025_005E",
+    # Poverty status (B17001)
+    "poverty_total": "B17001_001E",
+    "poverty_below": "B17001_002E",
+    # Veteran status (B21001, civilian pop 18+)
+    "vet_total": "B21001_001E",
+    "veterans": "B21001_002E",
 }
 
+# Decennial population counts for the trend (place 12060, state 26).
+# ACS 5-year vintages overlap and MUST NOT be charted year-over-year; decennial
+# counts are non-overlapping actual counts, the Census-recommended comparison.
+DECENNIAL = [
+    ("2010", "2010/dec/sf1", "P001001"),
+    ("2020", "2020/dec/pl", "P1_001N"),
+]
 
-def _income_vars() -> list[str]:
-    return [f"B19001_{n}E" for _, codes in INCOME_GROUPS for n in codes]
+
+def _grouped_vars(table: str, groups: list) -> list[str]:
+    """Full E-suffixed variable names for every code referenced by `groups`."""
+    codes = {c for _, members in groups for c in members}
+    return [f"{table}_{c}E" for c in sorted(codes)]
 
 
 def fetch(year: int, key: str) -> dict:
-    get_vars = ["NAME", *CORE_VARS.values(), *_income_vars()]
-    url = (
-        f"https://api.census.gov/data/{year}/acs/acs5"
-        f"?get={','.join(get_vars)}&for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}&key={key}"
-    )
-    with urllib.request.urlopen(url, timeout=30) as resp:
-        rows = json.load(resp)
-    header, values = rows[0], rows[1]
-    record = dict(zip(header, values))
+    """Fetch the ACS 5-year record for Burton city as a {variable: value} dict."""
+    get_vars = [
+        "NAME",
+        *CORE_VARS.values(),
+        *(f"B19001_{n}E" for _, codes in INCOME_GROUPS for n in codes),
+        *_grouped_vars("B15003", EDU_GROUPS),
+        *_grouped_vars("B08301", COMMUTE_GROUPS),
+        *_grouped_vars("B01001", AGE_BANDS),
+    ]
+    # The API caps a single get= at 50 variables; request in chunks and merge.
+    record: dict = {}
+    for chunk in _chunks(get_vars, 48):
+        url = (
+            f"https://api.census.gov/data/{year}/acs/acs5"
+            f"?get={','.join(chunk)}&for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}&key={key}"
+        )
+        with urllib.request.urlopen(url, timeout=30) as resp:
+            rows = json.load(resp)
+        record.update(dict(zip(rows[0], rows[1])))
     name = record.get("NAME", "")
     if not name.startswith(EXPECTED_NAME_PREFIX):
         raise SystemExit(f"Unexpected place NAME from Census: {name!r} (check FIPS codes)")
     return record
+
+
+def fetch_population(dataset: str, var: str, key: str) -> int | None:
+    """Fetch a single population count from a decennial dataset; None on failure."""
+    url = (
+        f"https://api.census.gov/data/{dataset}"
+        f"?get={var}&for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}&key={key}"
+    )
+    try:
+        with urllib.request.urlopen(url, timeout=30) as resp:
+            rows = json.load(resp)
+        return int(rows[1][0])
+    except Exception as exc:  # noqa: BLE001 - trend is optional; never fail the refresh
+        print(f"  decennial fetch failed for {dataset} ({exc}); omitting that trend point")
+        return None
+
+
+def _chunks(seq: list, n: int):
+    for i in range(0, len(seq), n):
+        yield seq[i:i + n]
 
 
 def _int(record: dict, key: str) -> int:
@@ -70,7 +163,19 @@ def _int(record: dict, key: str) -> int:
     return val if val >= 0 else 0  # Census uses large negatives for null
 
 
-def build_panel(record: dict, year: int) -> dict:
+def _sum(record: dict, table: str, codes: list[str]) -> int:
+    return sum(_int(record, f"{table}_{c}E") for c in codes)
+
+
+def _pct(part: int, whole: int) -> int:
+    return round(part / whole * 100) if whole else 0
+
+
+def _series(record: dict, table: str, groups: list) -> list[dict]:
+    return [{"label": label, "value": _sum(record, table, codes)} for label, codes in groups]
+
+
+def build_panel(record: dict, year: int, trend_points: list[dict]) -> dict:
     population = _int(record, CORE_VARS["population"])
     median_age = float(record[CORE_VARS["median_age"]])
     households = _int(record, CORE_VARS["households"])
@@ -78,12 +183,52 @@ def build_panel(record: dict, year: int) -> dict:
     median_home_value = _int(record, CORE_VARS["median_home_value"])
     owner = _int(record, CORE_VARS["owner"])
     renter = _int(record, CORE_VARS["renter"])
-    owner_pct = round(owner / (owner + renter) * 100) if (owner + renter) else 0
+    owner_pct = _pct(owner, owner + renter)
 
-    income_series = []
-    for label, codes in INCOME_GROUPS:
-        total = sum(_int(record, f"B19001_{n}E") for n in codes)
-        income_series.append({"label": label, "value": total})
+    # Derived rates.
+    edu_total = _int(record, CORE_VARS["edu_total"])
+    bachelors_plus = _sum(record, "B15003", ["022", "023", "024", "025"])
+    bachelors_pct = _pct(bachelors_plus, edu_total)
+    unemployment_pct = _pct(_int(record, CORE_VARS["unemployed"]),
+                            _int(record, CORE_VARS["civilian_labor_force"]))
+    poverty_pct = _pct(_int(record, CORE_VARS["poverty_below"]),
+                       _int(record, CORE_VARS["poverty_total"]))
+    veterans = _int(record, CORE_VARS["veterans"])
+    veterans_pct = _pct(veterans, _int(record, CORE_VARS["vet_total"]))
+
+    income_series = [
+        {"label": label, "value": _sum(record, "B19001", codes)}
+        for label, codes in INCOME_GROUPS
+    ]
+
+    charts = [
+        {
+            "type": "donut",
+            "title": "Housing tenure",
+            "series": [
+                {"label": "Owner-occupied", "value": owner},
+                {"label": "Renter-occupied", "value": renter},
+            ],
+        },
+        {"type": "bars", "title": "Age distribution", "series": _series(record, "B01001", AGE_BANDS)},
+        {"type": "bars", "title": "Households by income", "series": income_series},
+        {
+            "type": "bars",
+            "title": "Educational attainment (age 25+)",
+            "series": _series(record, "B15003", EDU_GROUPS),
+        },
+        {
+            "type": "donut",
+            "title": "How residents get to work",
+            "series": _series(record, "B08301", COMMUTE_GROUPS),
+        },
+    ]
+    if len(trend_points) >= 2:
+        charts.append({
+            "type": "trend",
+            "title": "Population",
+            "points": trend_points,
+        })
 
     return {
         "title": "Burton Demographics",
@@ -95,30 +240,41 @@ def build_panel(record: dict, year: int) -> dict:
             {"label": "Median household income", "value": f"${median_income:,}"},
             {"label": "Median home value", "value": f"${median_home_value:,}"},
             {"label": "Owner-occupied homes", "value": f"{owner_pct}%"},
+            {"label": "Bachelor's degree or higher", "value": f"{bachelors_pct}%", "hint": "age 25+"},
+            {"label": "Unemployment rate", "value": f"{unemployment_pct}%", "hint": "civilian labor force"},
+            {"label": "Below poverty line", "value": f"{poverty_pct}%"},
+            {"label": "Veterans", "value": f"{veterans_pct}%", "hint": "of adults 18+"},
         ],
-        "charts": [
-            {
-                "type": "donut",
-                "title": "Housing tenure",
-                "series": [
-                    {"label": "Owner-occupied", "value": owner},
-                    {"label": "Renter-occupied", "value": renter},
-                ],
-            },
-            {
-                "type": "bars",
-                "title": "Households by income",
-                "series": income_series,
-            },
-        ],
-        "source": f"U.S. Census Bureau, American Community Survey {year} 5-year estimates",
+        "charts": charts,
+        "source": f"U.S. Census Bureau, American Community Survey {year} 5-year estimates"
+                  + ("; Decennial Census (2010, 2020) for the population trend" if len(trend_points) >= 2 else ""),
         "links": [
             {
                 "text": "Census QuickFacts: Burton city, MI",
                 "href": "https://www.census.gov/quickfacts/burtoncitymichigan",
             }
         ],
+        "notes": [
+            "Population trend: 2010 and 2020 are decennial census counts; the most recent "
+            "figure is an ACS 5-year estimate, so the three points are not directly comparable.",
+            "This product uses the Census Bureau Data API but is not endorsed or certified "
+            "by the Census Bureau.",
+        ],
     }
+
+
+def build_trend(record: dict, year: int, key: str) -> list[dict]:
+    """Population trend from decennial counts (non-overlapping) + the ACS estimate."""
+    points = []
+    for label, dataset, var in DECENNIAL:
+        pop = fetch_population(dataset, var, key)
+        if pop is not None:
+            points.append({"x": label, "y": pop})
+    acs_pop = _int(record, CORE_VARS["population"])
+    if acs_pop:
+        points.append({"x": f"{year} (est.)", "y": acs_pop})
+    # Need at least two points for a meaningful trend.
+    return points if len(points) >= 2 else []
 
 
 def main() -> int:
@@ -136,12 +292,15 @@ def main() -> int:
 
     try:
         record = fetch(args.year, args.key)
+    except SystemExit:
+        raise
     except Exception as exc:  # noqa: BLE001 - report and try a fallback year
         print(f"  {args.year} ACS5 fetch failed ({exc}); retrying {args.year - 1} ...")
         record = fetch(args.year - 1, args.key)
         args.year -= 1
 
-    panel = build_panel(record, args.year)
+    trend = build_trend(record, args.year, args.key)
+    panel = build_panel(record, args.year, trend)
     out = os.path.join(os.path.dirname(__file__), "..", "public", "info-demographics.json")
     out = os.path.abspath(out)
     with open(out, "w", encoding="utf-8", newline="\n") as fh:
@@ -149,6 +308,7 @@ def main() -> int:
         fh.write("\n")
     print(f"Wrote {out}")
     print(f"  population={panel['stats'][0]['value']}  median income={panel['stats'][3]['value']}")
+    print(f"  charts={len(panel['charts'])}  trend points={len(trend)}")
     return 0
 
 

@@ -169,6 +169,8 @@ export interface InfoPanel {
   charts: InfoChart[];
   source?: string;
   links?: InfoLink[];
+  /** small footnotes under the source line (data caveats, required attributions) */
+  notes?: string[];
 }
 
 // --- Resident Guide -------------------------------------------------------
