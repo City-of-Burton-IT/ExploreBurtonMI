@@ -74,9 +74,7 @@
   .info {
     height: 100%;
     overflow-y: auto;
-    padding: 1.4rem 1.6rem 2.4rem;
-    max-width: 1000px;
-    margin: 0 auto;
+    padding: 1.4rem 1.8rem 2.4rem;
     width: 100%;
     box-sizing: border-box;
   }

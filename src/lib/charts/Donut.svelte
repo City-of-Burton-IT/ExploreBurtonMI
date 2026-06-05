@@ -29,7 +29,7 @@
             stroke-dasharray="{seg.dash} {seg.gap}"
             stroke-dashoffset={-seg.offset}
           >
-            <title>{seg.label}: {formatValue(seg.value, unit)} ({Math.round(seg.pct)}%)</title>
+            <title>{seg.label}: {formatValue(seg.value, unit)}{#if unit !== '%'} ({Math.round(seg.pct)}%){/if}</title>
           </circle>
         {/each}
       </g>
@@ -39,7 +39,7 @@
         <li>
           <span class="swatch" style:background={seg.color}></span>
           <span class="lbl">{seg.label}</span>
-          <span class="val">{formatValue(seg.value, unit)} · {Math.round(seg.pct)}%</span>
+          <span class="val">{formatValue(seg.value, unit)}{#if unit !== '%'} · {Math.round(seg.pct)}%{/if}</span>
         </li>
       {/each}
     </ul>
