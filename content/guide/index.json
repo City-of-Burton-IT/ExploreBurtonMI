@@ -12,6 +12,7 @@
     { "id": "property-taxes", "title": "Property Taxes", "type": "markdown", "file": "property-taxes.md" },
     { "id": "elections", "title": "Elections", "type": "markdown", "file": "elections.md" },
     { "id": "transit", "title": "Public Transit", "type": "markdown", "file": "transit.md" },
-    { "id": "roads", "title": "Roads & Construction", "type": "markdown", "file": "roads.md" }
+    { "id": "roads", "title": "Roads & Construction", "type": "markdown", "file": "roads.md" },
+    { "id": "ordinances", "title": "City Ordinances", "type": "markdown", "file": "ordinances.md" }
   ]
 }
