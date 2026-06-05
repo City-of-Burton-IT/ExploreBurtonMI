@@ -29,5 +29,525 @@
     "address": "4065 Manor Dr, Burton, MI 48519",
     "website": "https://tools.usps.com/find-location.htm",
     "_why": "Burton's Manor Dr post office (south campus); OSM had no address. Address taken from the co-located Overture record (4065 Manor Dr); verify on the ground. Distinct from the Davison Rd post office (burton:post-office-davison), ~7.5 km north."
+  },
+  "osm:node/11165162561": {
+    "phone": "(810) 715-2600",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 14m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/12078925407": {
+    "address": "3498 E Bristol Rd, Burton, MI 48529-1408",
+    "phone": "(810) 744-9999",
+    "website": "http://www.puzzlerspubmi.com",
+    "_why": "Auto-enrichment from Overture match (score 0.96, 32m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/12078925449": {
+    "address": "4050 S Center Rd, Burton, MI 48519-1454",
+    "phone": "(810) 742-6185",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 56m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/12138646603": {
+    "address": "4555 Saginaw Rd, Burton, MI 48529",
+    "phone": "(810) 715-0236",
+    "website": "http://libertymissionarybaptistchurch.weebly.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 12m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/12138646643": {
+    "address": "4428 Columbine Ave, Burton, MI 48529-2160",
+    "phone": "(810) 743-1770",
+    "website": "http://www.umc.org/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 8m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/12138646776": {
+    "address": "1467 E Maple Ave, Burton, MI 48529-2059",
+    "phone": "(810) 743-9340",
+    "website": "http://www.adventist.org/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 37m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/353915434": {
+    "address": "6080 Roberta St, Burton, MI 48509-2223",
+    "phone": "(810) 591-9661",
+    "website": "http://www.bentleyschools.org/cms/One.aspx",
+    "_why": "Auto-enrichment from Overture match (score 0.73, 73m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/353926892": {
+    "address": "1197 E Schumacher St, Burton, MI 48529-1558",
+    "phone": "(810) 591-3590",
+    "website": "http://www.carman.k12.mi.us/site/default.aspx",
+    "_why": "Auto-enrichment from Overture match (score 0.70, 56m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/353932853": {
+    "address": "4469 Greenly St, Burton, MI 48529-2058",
+    "phone": "(810) 591-8655",
+    "_why": "Auto-enrichment from Overture match (score 0.78, 12m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7054777245": {
+    "address": "1166 N Belsay Rd, Burton, MI 48509-1659",
+    "phone": "(810) 875-9600",
+    "website": "http://www.haloburger.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 7m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7054836046": {
+    "address": "2458 S Center Rd, Burton, MI 48519",
+    "phone": "(810) 407-6410",
+    "website": "http://biggby.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 2m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7054836048": {
+    "address": "2466 S Center Rd, Burton, MI 48519-1152",
+    "phone": "(810) 742-1122",
+    "website": "https://www.hungryhowies.com/stores/mi/burton/2466-south-center",
+    "_why": "Auto-enrichment from Overture match (score 0.82, 14m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055460435": {
+    "address": "4190 E Court St, Burton, MI 48509-1732",
+    "phone": "(810) 742-7100",
+    "website": "https://www.dunhamssports.com/store-details",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 48m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055460436": {
+    "address": "4190 E Court St, Burton, MI 48509-1732",
+    "phone": "(810) 275-9178",
+    "website": "https://stores.jcpenney.com/mi/burton/clothing-stores-burton-mi-2992.html",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 14m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055460450": {
+    "address": "4190 E Court St, Site 221, Burton, MI 48509",
+    "phone": "(810) 744-0332",
+    "website": "https://www.gnc.com/store-details",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 4m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055460453": {
+    "address": "4190 E Court St Unit 737, Burton, MI 48509",
+    "phone": "(810) 744-2250",
+    "website": "http://www.kay.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 69m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055460454": {
+    "address": "4190 E Court St, Burton, MI 48509-1732",
+    "phone": "(810) 715-1950",
+    "website": "https://www.planetfitness.com/gyms/burton-mi",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 24m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055480267": {
+    "address": "4211 East Ct St, Burton, MI 48509",
+    "phone": "(810) 715-8888",
+    "website": "https://empirewokmi.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 13m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055480268": {
+    "address": "4195 E Court St, Burton, MI 48509-1717",
+    "phone": "(810) 743-1849",
+    "website": "http://stores.sallybeauty.com/mi/burton/beauty-supply-burton-mi-693.html",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 22m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055480269": {
+    "address": "4163 E Ct, Burton, MI 48509",
+    "phone": "(810) 743-6479",
+    "_why": "Auto-enrichment from Overture match (score 0.67, 27m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055480270": {
+    "address": "4161 E Court St, Burton, MI 48509-1717",
+    "phone": "(810) 744-1560",
+    "website": "https://salons.greatclips.com/us/mi/burton/4161-e-court-st",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 14m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055480271": {
+    "address": "4159 E Court St, Burton, MI 48509-1717",
+    "phone": "(810) 715-0601",
+    "website": "https://www.hrblock.com/tax-office-near-me/michigan/burton/21391",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 10m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055502481": {
+    "address": "G-3017 S Dort Highway, Burton, MI 48529",
+    "phone": "(810) 715-5555",
+    "website": "https://locations.checkngo.com/mi/burton/burton-mi-loans-5925.html",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 43m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7055653134": {
+    "phone": "(810) 422-9818",
+    "website": "http://www.marathon.com",
+    "_why": "Auto-enrichment from Overture match (score 0.80, 8m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7178265742": {
+    "phone": "(810) 234-6863",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 86m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7178265743": {
+    "phone": "(810) 233-3753",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 18m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/7178265757": {
+    "address": "1384 E Bristol Rd, Burton, MI 48529-2212",
+    "phone": "(810) 744-0499",
+    "website": "https://www.boostmobile.com/locations/bd/boost-mobile-mi-burton-1384-e-bristol-rd-48529",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 15m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132983979": {
+    "phone": "(810) 715-1767",
+    "website": "https://mybpstation.com",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 0m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132983980": {
+    "phone": "(810) 715-1767",
+    "website": "https://map.bp.com/en-US/US/gas-station/burton/bp/96569576765094852900100000000000",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 19m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132983990": {
+    "phone": "(810) 742-7470",
+    "website": "http://www.my1stopcard.com",
+    "_why": "Auto-enrichment from Overture match (score 0.89, 14m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132983991": {
+    "phone": "(810) 742-7470",
+    "website": "https://www.exxon.com/en/find-station/200320379",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 8m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132983992": {
+    "phone": "(810) 743-0580",
+    "website": "http://www.marathon.com",
+    "_why": "Auto-enrichment from Overture match (score 0.80, 31m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132984008": {
+    "phone": "(810) 484-2127",
+    "website": "https://www.exxon.com/en/find-station/mobil-burton-mi-maplepointgasinc-200322737",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 4m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132984009": {
+    "website": "https://www.exxon.com/en/find-station/mobil-burton-mi-maplepointgasinc-200322737",
+    "_why": "Auto-enrichment from Overture match (score 0.97, 21m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132984923": {
+    "phone": "(810) 743-0070",
+    "website": "https://map.bp.com/en-US/US/gas-station/burton/bp/98924114925144851900100000000000",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 10m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132984954": {
+    "phone": "(810) 715-1439",
+    "website": "http://www.marathonpetroleum.com/",
+    "_why": "Auto-enrichment from Overture match (score 0.80, 32m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132984957": {
+    "phone": "(810) 743-6570",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 14m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132984975": {
+    "phone": "(810) 744-3890",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 29m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8132985002": {
+    "phone": "(810) 742-6031",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 7m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8163100170": {
+    "phone": "(810) 742-6898",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 17m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:node/8163114525": {
+    "phone": "(810) 743-5500",
+    "_why": "Auto-enrichment from Overture match (score 0.82, 12m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/1208118668": {
+    "phone": "(810) 591-0850",
+    "website": "https://www.athertonschools.org/District/1154-Contacts.html",
+    "_why": "Auto-enrichment from Overture match (score 0.83, 86m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/1408925605": {
+    "address": "4020 Cerdan Dr, Burton, MI 48529-1608",
+    "phone": "(810) 591-0880",
+    "website": "http://www.bendleschools.org",
+    "_why": "Auto-enrichment from Overture match (score 0.68, 67m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/1409214328": {
+    "address": "2173 S Center Rd, Burton, MI 48519",
+    "phone": "(810) 744-9400",
+    "website": "http://www.lockwoodofburton.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 10m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/1489550231": {
+    "phone": "(810) 744-4400",
+    "website": "http://www.parksidedental.net/",
+    "_why": "Auto-enrichment from Overture match (score 0.93, 18m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/603537833": {
+    "phone": "(810) 736-7100",
+    "website": "http://www.michigan.org/property/davison-roadside-county-park",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 55m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/626779213": {
+    "phone": "(810) 744-4960",
+    "_why": "Auto-enrichment from Overture match (score 0.82, 4m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/636390334": {
+    "address": "6340 Roberta St, Burton, MI 48509-2438",
+    "phone": "(810) 742-3151",
+    "_why": "Auto-enrichment from Overture match (score 0.68, 31m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/675099708": {
+    "address": "2029 E Bristol Rd, Burton, MI 48529-1318",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 23m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/678519309": {
+    "address": "5399 E Court St N, Burton, MI 48509-1539",
+    "phone": "(810) 720-8300",
+    "website": "http://www.sovitacu.org",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 13m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/678727236": {
+    "address": "4135 E. Court Street, Burton, MI 48509",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 10m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/678727244": {
+    "website": "https://locations.timhortons.com/mi/burton/4025-e-court-st",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 3m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/678727245": {
+    "address": "4035 E Court St, Burton, MI 48509-1781",
+    "phone": "(810) 743-0570",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 16m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/683978470": {
+    "website": "https://www.meijer.com/shopping/store-locator/29.html",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 40m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/713392288": {
+    "address": "4226 E Atherton Rd, Burton, MI 48519-1438",
+    "phone": "(810) 742-5600",
+    "website": "http://eastgatebaptist.org/",
+    "_why": "Auto-enrichment from Overture match (score 0.79, 23m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/713671445": {
+    "website": "http://www.athertonschools.org",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 36m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/738031533": {
+    "address": "4190 E Court St Ste 200, Burton, MI 48509",
+    "phone": "(810) 744-0742",
+    "website": "https://ncgmovies.com",
+    "_why": "Auto-enrichment from Overture match (score 0.82, 35m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/750487578": {
+    "phone": "(810) 820-2943",
+    "website": "https://www.starlite2.com/",
+    "_why": "Auto-enrichment from Overture match (score 0.84, 11m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755222688": {
+    "address": "2170 S Center Rd, Burton, MI 48519-1151",
+    "phone": "(810) 715-1837",
+    "website": "https://gfsstore.com/",
+    "_why": "Auto-enrichment from Overture match (score 0.86, 22m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755222692": {
+    "address": "2230 S Center Rd, Burton, MI 48519-1150",
+    "phone": "(810) 235-2322",
+    "website": "https://www.securitycu.org",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 13m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755222694": {
+    "address": "2280 S Center Rd, Burton, MI 48519",
+    "phone": "(810) 742-8695",
+    "website": "http://www.paulsconeyisland.com",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 3m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755222696": {
+    "address": "2305 S Center Rd, BURTON, MI 48519",
+    "phone": "(810) 715-3542",
+    "website": "http://www.elgacu.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 46m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755222698": {
+    "address": "2315 S Center Rd, Burton, MI 48519-1147",
+    "phone": "(810) 744-3222",
+    "website": "http://www.53.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 30m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755222699": {
+    "address": "2350 S Center Rd, Burton, MI 48519-1165",
+    "phone": "(810) 743-3151",
+    "website": "https://www.att.com",
+    "_why": "Auto-enrichment from Overture match (score 0.67, 1m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755222707": {
+    "address": "2469 S Center Rd, Burton, MI 48519-1145",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 21m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755222709": {
+    "address": "4021 E Atherton Rd, Burton, MI 48519",
+    "phone": "(810) 766-9415",
+    "website": "http://www.pocolocotaco.com",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 8m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755302818": {
+    "address": "4280 E Court St, Burton, MI 48509-1816",
+    "phone": "(810) 715-1868",
+    "website": "https://www.huntington.com/Community/branch-info",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 14m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755302819": {
+    "address": "4210 E Court St, Burton, MI 48509-1720",
+    "phone": "(810) 743-0200",
+    "website": "https://www.discounttire.com/store/mi/burton/s/1139",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 9m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755310650": {
+    "address": "3064 E Atherton Rd, Burton, MI 48529-1039",
+    "phone": "(810) 743-2124",
+    "_why": "Auto-enrichment from Overture match (score 0.82, 29m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755329778": {
+    "address": "1500 N Center Rd, Burton, MI 48509-1430",
+    "phone": "(810) 742-4955",
+    "website": "http://www.starlite1966.com/",
+    "_why": "Auto-enrichment from Overture match (score 0.81, 7m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755329779": {
+    "address": "1474 N Center Rd, Burton, MI 48509-1429",
+    "phone": "(810) 715-4456",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 25m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755329800": {
+    "address": "4154 Davison Rd, Burton, MI 48509",
+    "phone": "(810) 742-4005",
+    "website": "https://locator.chase.com/mi/burton/4154-davison-rd",
+    "_why": "Auto-enrichment from Overture match (score 0.67, 6m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755329802": {
+    "address": "4204 Davison Rd, Burton, MI 48509-1463",
+    "phone": "(810) 744-2166",
+    "website": "https://trishamatson1979.wixsite.com/peopl",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 12m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542456": {
+    "address": "3485 Fenton Rd, Burton, MI 48529",
+    "phone": "(810) 235-5031",
+    "website": "https://bigjohnsteakandonion.net/location",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 17m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542458": {
+    "address": "3525 Fenton Rd, Burton, MI 48529",
+    "phone": "(810) 768-9999",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 18m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542465": {
+    "address": "1149 E Bristol Rd, Burton, MI 48529",
+    "phone": "(800) 968-8628",
+    "website": "http://www.umcu.org/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 3m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542466": {
+    "address": "1181 E Bristol Rd, Burton, MI 48529-1128",
+    "phone": "(810) 309-9555",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 16m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542469": {
+    "website": "https://locations.timhortons.com/mi/burton/1230-e-bristol-rd",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 15m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542472": {
+    "address": "1227 E Bristol Rd, Burton, MI 48529-1128",
+    "phone": "(810) 743-3050",
+    "website": "http://holyredeemerburton.org/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 19m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542479": {
+    "address": "G3410 S Grand Traverse St, Burton, MI 48529-1150",
+    "phone": "(810) 742-7860",
+    "website": "http://www.thegdl.org/branches/bp",
+    "_why": "Auto-enrichment from Overture match (score 0.97, 16m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542482": {
+    "address": "1318 E Bristol Rd, Burton, MI 48529-2212",
+    "phone": "(800) 480-2265",
+    "website": "https://www.huntington.com/Community/branch-info",
+    "_why": "Auto-enrichment from Overture match (score 0.88, 16m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542702": {
+    "address": "G4014 S Saginaw St, Burton, MI 48529-1618",
+    "phone": "(810) 742-5420",
+    "website": "https://rockysoutdoors.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 35m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/755542710": {
+    "address": "G4070 S Saginaw St, Burton, MI 48529",
+    "phone": "(810) 742-5525",
+    "website": "http://tiahelitas.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 30m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/768968560": {
+    "address": "3493 Fenton Rd, Burton, MI 48529",
+    "phone": "(810) 471-3064",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 22m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/768969583": {
+    "address": "1063 E Bristol Rd, Burton, MI 48529-1126",
+    "phone": "(810) 232-6121",
+    "_why": "Auto-enrichment from Overture match (score 0.82, 18m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/768970378": {
+    "address": "3473 Fenton Rd, Burton, MI 48529",
+    "phone": "(810) 232-8811",
+    "website": "http://www.yellowpages.com/burton-mi/mip/autumn-lounge-10303803",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 13m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/768972650": {
+    "address": "4495 Fenton Rd, Burton, MI 48507",
+    "phone": "(810) 767-8300",
+    "website": "https://www.hungryhowies.com/stores/mi/burton/g4495-fenton-road",
+    "_why": "Auto-enrichment from Overture match (score 0.82, 24m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/911687414": {
+    "address": "1270 S Belsay Rd, Burton, MI 48509-1918",
+    "phone": "(810) 742-3174",
+    "website": "http://bovanfloralgroup.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 3m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/911687415": {
+    "address": "1256 S Belsay Rd, Burton, MI 48509-1918",
+    "phone": "(810) 742-7005",
+    "website": "http://finishlineautotire.com/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 26m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/911687422": {
+    "address": "1232 S Belsay Rd, Burton, MI 48509-1918",
+    "_why": "Auto-enrichment from Overture match (score 0.67, 14m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/911687427": {
+    "address": "5507 Lapeer Rd, Burton, MI 48509-2237",
+    "phone": "(810) 742-2720",
+    "_why": "Auto-enrichment from Overture match (score 0.61, 18m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/911687431": {
+    "address": "5522 Lapeer Rd, Burton, MI 48509",
+    "phone": "(810) 743-1212",
+    "website": "http://scottis-coney-island.poi.place",
+    "_why": "Auto-enrichment from Overture match (score 0.88, 9m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/911687436": {
+    "address": "6000 Lapeer Rd, Burton, MI 48509-2215",
+    "phone": "(810) 243-5122",
+    "website": "https://locations.familydollar.com/mi/burton/6000-lapeer-rd",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 28m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/911687438": {
+    "address": "6029 Lapeer Rd, Burton, MI 48509-2214",
+    "phone": "(810) 742-5274",
+    "website": "http://www.bethelfamily.live/",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 24m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/914277550": {
+    "address": "6150 Lapeer Rd, Burton, MI 48509",
+    "phone": "(810) 743-0552",
+    "website": "http://www.encounterchurchmi.com",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 15m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/914277552": {
+    "address": "1350 S Packard Ave, Burton, MI 48509-2410",
+    "phone": "(810) 743-5370",
+    "_why": "Auto-enrichment from Overture match (score 1.00, 32m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "osm:way/914280555": {
+    "address": "6044 Lapeer Rd, Burton, MI 48509-2215",
+    "phone": "(810) 744-0474",
+    "website": "http://flintsailandpowersquadron.com/",
+    "_why": "Auto-enrichment from Overture match (score 0.80, 16m); sanitized + captured 2026-06-05. Verify if questioned."
   }
 }
