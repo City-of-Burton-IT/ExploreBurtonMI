@@ -26,6 +26,9 @@
     ]
   },
   "boundary": { "source": "boundary.geojson", "color": "#ffd400", "weight": 3, "lockView": true, "dimOutside": true, "dimColor": "#0b1f2e", "dimOpacity": 0.55 },
+  "dataLayers": [
+    { "source": "school-districts.geojson", "label": "School districts", "nameField": "name" }
+  ],
   "categoryField": "category",
   "categories": {
     "Government": { "color": "#1f3a5f" },

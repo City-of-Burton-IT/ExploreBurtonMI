@@ -60,11 +60,23 @@ export interface BoundaryConfig {
   dimOpacity?: number;
 }
 
+/** A toggleable GeoJSON overlay (e.g. school districts) shown via the map's layer control. */
+export interface DataLayerConfig {
+  /** path (relative to the site root) to a GeoJSON FeatureCollection of polygons */
+  source: string;
+  /** label shown in the layer-toggle control */
+  label: string;
+  /** feature property used as the hover label (default "name") */
+  nameField?: string;
+}
+
 export interface AppConfig {
   project: ProjectConfig;
   data: DataConfig;
   map: MapConfig;
   tiles: TilesConfig;
+  /** toggleable GeoJSON overlays (off by default; user enables via a layer control) */
+  dataLayers?: DataLayerConfig[];
   /** property each feature is grouped/colored by */
   categoryField: string;
   /** known category values -> style; used for marker color and (later) facets */

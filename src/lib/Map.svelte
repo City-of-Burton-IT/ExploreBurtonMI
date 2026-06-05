@@ -122,6 +122,46 @@
         .catch((err) => console.warn('Boundary outline not loaded:', err));
     }
 
+    // Toggleable GeoJSON overlays (e.g. school districts) exposed via a layer
+    // control, OFF by default. Drawn in a dedicated pane below the markers (so they
+    // never block a marker click) and below the dim mask (so out-of-city portions
+    // read as dimmed like everything else).
+    if (config.dataLayers?.length) {
+      map.createPane('dataLayers');
+      const pane = map.getPane('dataLayers');
+      if (pane) pane.style.zIndex = '350';
+      const palette = ['#1565c0', '#2e7d32', '#e65100', '#6a1b9a', '#00838f', '#b3261e', '#9e9d24'];
+      const layerControl = L.control
+        .layers(undefined, undefined, { collapsed: true, position: 'topright' })
+        .addTo(map);
+      for (const layer of config.dataLayers) {
+        const nameField = layer.nameField ?? 'name';
+        fetch(layer.source)
+          .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${layer.source} HTTP ${r.status}`))))
+          .then((geojson) => {
+            if (!map) return;
+            (geojson.features ?? []).forEach(
+              (f: { properties: Record<string, unknown> }, i: number) => {
+                f.properties._color = palette[i % palette.length];
+              },
+            );
+            const gj = L.geoJSON(geojson, {
+              pane: 'dataLayers',
+              style: (f) => {
+                const color = (f?.properties?._color as string) ?? palette[0];
+                return { color, weight: 2, opacity: 0.9, fillColor: color, fillOpacity: 0.12 };
+              },
+              onEachFeature: (feature, lyr) => {
+                const label = feature.properties?.[nameField];
+                if (label) lyr.bindTooltip(String(label), { sticky: true });
+              },
+            });
+            layerControl.addOverlay(gj, layer.label);
+          })
+          .catch((err) => console.warn(`Data layer ${layer.source} not loaded:`, err));
+      }
+    }
+
     cluster = L.markerClusterGroup({ showCoverageOnHover: false });
     for (const feature of data.features) {
       // Off-map entries (real location outside the city) are listed but never
