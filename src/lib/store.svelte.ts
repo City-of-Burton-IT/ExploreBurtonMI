@@ -5,14 +5,24 @@
 import type { PlaceFeature, AppView } from './types';
 import type { Selections } from './filter';
 
-/** Map a URL hash (#finances) to a top-level view; anything else is the map. */
+/** Map a URL hash (#finances, #guide, #guide/trash) to a top-level view. */
 export function viewFromHash(hash: string): AppView {
-  const key = hash.replace(/^#/, '');
-  return key === 'finances' || key === 'demographics' ? key : 'map';
+  const key = hash.replace(/^#/, '').split('/')[0];
+  return key === 'finances' || key === 'demographics' || key === 'guide' ? key : 'map';
+}
+
+/** The guide section id from a `#guide/<id>` hash, or null. */
+export function guideSectionFromHash(hash: string): string | null {
+  const parts = hash.replace(/^#/, '').split('/');
+  return parts[0] === 'guide' && parts[1] ? parts[1] : null;
 }
 
 function initialView(): AppView {
   return typeof window === 'undefined' ? 'map' : viewFromHash(window.location.hash);
+}
+
+function initialGuideSection(): string | null {
+  return typeof window === 'undefined' ? null : guideSectionFromHash(window.location.hash);
 }
 
 export const ui = $state<{
@@ -23,8 +33,10 @@ export const ui = $state<{
   mobileView: 'map' | 'list';
   /** whether the About dialog is open */
   aboutOpen: boolean;
-  /** top-level section: the map, or an info panel */
+  /** top-level section: the map, an info panel, or the guide */
   view: AppView;
+  /** active Resident Guide section id (null = the guide's first section) */
+  guideSection: string | null;
 }>({
   selected: null,
   selections: {},
@@ -32,6 +44,7 @@ export const ui = $state<{
   mobileView: 'map',
   aboutOpen: false,
   view: initialView(),
+  guideSection: initialGuideSection(),
 });
 
 /** Switch the top-level view and reflect it in the URL hash (shareable + Back). */
@@ -47,9 +60,18 @@ export function setView(view: AppView): void {
   }
 }
 
-/** Sync the view from the current hash (Back/Forward + deep links). */
+/** Select a Resident Guide section and reflect it in the hash (#guide/<id>). */
+export function setGuideSection(id: string): void {
+  ui.view = 'guide';
+  ui.guideSection = id;
+  if (typeof window !== 'undefined') window.location.hash = `guide/${id}`;
+}
+
+/** Sync the view (+ guide section) from the current hash (Back/Forward + deep links). */
 export function syncViewFromHash(): void {
-  ui.view = typeof window === 'undefined' ? 'map' : viewFromHash(window.location.hash);
+  const hash = typeof window === 'undefined' ? '' : window.location.hash;
+  ui.view = viewFromHash(hash);
+  ui.guideSection = guideSectionFromHash(hash);
 }
 
 export function setMobileView(view: 'map' | 'list'): void {

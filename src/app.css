@@ -166,6 +166,16 @@ body,
   box-shadow: var(--pub-focus-ring);
   position: relative;
 }
+/* Narrow screens: let the section pill scroll horizontally instead of overflowing. */
+@media (max-width: 860px) {
+  .viewnav {
+    overflow-x: auto;
+    max-width: 100%;
+  }
+  .viewnav button {
+    flex: 0 0 auto;
+  }
+}
 
 .workspace {
   flex: 1 1 auto;

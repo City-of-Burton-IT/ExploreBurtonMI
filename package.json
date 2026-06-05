@@ -5,6 +5,9 @@
   "description": "Explore Burton - public map of City of Burton businesses, government facilities, and services",
   "type": "module",
   "scripts": {
+    "guide": "node tools/build_guide.mjs",
+    "predev": "node tools/build_guide.mjs",
+    "prebuild": "node tools/build_guide.mjs",
     "dev": "vite",
     "build": "vite build",
     "preview": "vite preview",
@@ -23,6 +26,7 @@
     "@types/leaflet": "^1.9.12",
     "@types/leaflet.markercluster": "^1.5.4",
     "@types/node": "^24.12.3",
+    "marked": "^18.0.5",
     "svelte": "^5.55.5",
     "svelte-check": "^4.4.8",
     "typescript": "~6.0.2",

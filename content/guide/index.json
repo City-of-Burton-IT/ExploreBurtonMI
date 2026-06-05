@@ -1,0 +1,13 @@
+{
+  "_note": "Authoring index for the Resident Guide. tools/build_guide.mjs renders the markdown files and emits public/guide.json (sections + rendered HTML + contacts + meetings) for the app.",
+  "pdf": "resident-guide.pdf",
+  "sections": [
+    { "id": "welcome", "title": "Welcome", "type": "markdown", "file": "welcome.md" },
+    { "id": "contacts", "title": "Staff & Council", "type": "contacts", "file": "contacts.json" },
+    { "id": "meetings", "title": "Meetings", "type": "meetings", "file": "meetings.json" },
+    { "id": "trash-recycling", "title": "Trash & Recycling", "type": "markdown", "file": "trash-recycling.md" },
+    { "id": "permits", "title": "Permits", "type": "markdown", "file": "permits.md" },
+    { "id": "events", "title": "Events & Parks", "type": "markdown", "file": "events.md" },
+    { "id": "utilities", "title": "Utility Billing", "type": "markdown", "file": "utilities.md" }
+  ]
+}

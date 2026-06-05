@@ -1,0 +1,33 @@
+{
+  "_note": "Staff + council directory for the Resident Guide. Source: City of Burton 2026 Resident Information Packet (publicly published). Council phone/email are as published in that packet.",
+  "groups": [
+    {
+      "name": "City Staff",
+      "people": [
+        { "title": "Mayor", "name": "Duane Haskins", "phone": "(810) 743-1500" },
+        { "title": "Clerk", "name": "Racheal Boggs", "phone": "(810) 743-1500" },
+        { "title": "Benefits", "name": "Katie Malin", "phone": "(810) 743-1500" },
+        { "title": "Treasurer", "name": "Alice Bryce", "phone": "(810) 743-1500" },
+        { "title": "Assessor", "name": "Ann Abbey", "phone": "(810) 743-1500" },
+        { "title": "Human Resources", "name": "Theodore Valley", "phone": "(810) 743-1500" },
+        { "title": "DPW Director", "name": "Charles Abbey", "phone": "(810) 743-1500" },
+        { "title": "Senior Citizens' Director", "name": "Jean Johnson", "phone": "(810) 744-0960" },
+        { "title": "Police Chief", "name": "Brian Ross", "phone": "(810) 742-2542" },
+        { "title": "Fire Chief", "name": "Kirk Wilkinson", "phone": "(810) 742-2158" },
+        { "title": "City Attorney", "name": "Amanda Odette", "phone": "(810) 767-6860" }
+      ]
+    },
+    {
+      "name": "City Council",
+      "people": [
+        { "title": "Council President", "name": "Greg Fenner", "phone": "(810) 922-5915", "email": "g.fenner@burtonmi.gov", "committees": ["Legislative Committee"] },
+        { "title": "Council Vice President", "name": "Gary Wines", "phone": "(810) 919-2109", "email": "g.wines@burtonmi.gov", "committees": ["Finance Committee - Chair", "Zoning Board of Appeals - Council Representative"] },
+        { "title": "Council", "name": "Steve Heffner", "phone": "(810) 743-4615", "email": "s.heffner@burtonmi.gov", "committees": ["LED Committee", "Planning Commission - Council Representative", "Solid Waste & Recycling Committee"] },
+        { "title": "Council", "name": "Candice Miller", "phone": "(810) 542-4555", "email": "c.miller@burtonmi.gov", "committees": ["Burton Library Committee", "LED Committee", "Legislative Committee"] },
+        { "title": "Council", "name": "Ellen Ellenburg", "phone": "(810) 516-9941", "email": "e.ellenburg@burtonmi.gov", "committees": ["Central Communication 911 Consortium", "Legislative Committee - Chair", "Metropolitan Alliance Committee"] },
+        { "title": "Council", "name": "Tina Conley", "phone": "(810) 569-4028", "email": "t.conley@burtonmi.gov", "committees": ["Finance Committee", "LED Committee - Chair"] },
+        { "title": "Council", "name": "Kris Johns", "phone": "(810) 348-4437", "email": "k.johns@burtonmi.gov", "committees": ["Finance Committee", "Parks and Recreation Commission - Council Representative"] }
+      ]
+    }
+  ]
+}

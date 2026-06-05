@@ -13,6 +13,7 @@
   import Search from './lib/Search.svelte';
   import About from './lib/About.svelte';
   import InfoView from './lib/InfoView.svelte';
+  import Guide from './lib/Guide.svelte';
 
   let config = $state<AppConfig | null>(null);
   let data = $state<PlaceCollection | null>(null);
@@ -86,6 +87,7 @@
         <button class:active={ui.view === 'map'} onclick={() => setView('map')}>Map</button>
         <button class:active={ui.view === 'finances'} onclick={() => setView('finances')}>Finances</button>
         <button class:active={ui.view === 'demographics'} onclick={() => setView('demographics')}>Demographics</button>
+        <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}>Guide</button>
       </nav>
       {#if data && result && ui.view === 'map'}
         <div class="view-toggle" role="group" aria-label="Switch between map and list">
@@ -121,9 +123,13 @@
         >&copy;</button>
       </main>
     </div>
-    {#if ui.view !== 'map'}
+    {#if ui.view === 'finances' || ui.view === 'demographics'}
       <div class="infowrap">
         <InfoView panel={activePanel} loading={infoLoading} />
+      </div>
+    {:else if ui.view === 'guide'}
+      <div class="infowrap">
+        <Guide />
       </div>
     {/if}
   {:else}

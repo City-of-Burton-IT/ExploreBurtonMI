@@ -128,7 +128,7 @@ export interface PlaceCollection {
 // display-only public data, so they live outside the map's public-safe gate.
 
 export type InfoView = 'finances' | 'demographics';
-export type AppView = 'map' | InfoView;
+export type AppView = 'map' | InfoView | 'guide';
 
 export interface InfoStat {
   label: string;
@@ -169,4 +169,49 @@ export interface InfoPanel {
   charts: InfoChart[];
   source?: string;
   links?: InfoLink[];
+}
+
+// --- Resident Guide -------------------------------------------------------
+// Built from content/guide/* by tools/build_guide.mjs into public/guide.json.
+// Display-only public data (city-published); no resident PII.
+
+export interface GuideSectionMeta {
+  id: string;
+  title: string;
+  type: 'markdown' | 'contacts' | 'meetings';
+}
+
+export interface GuidePerson {
+  title: string;
+  name: string;
+  phone?: string;
+  email?: string;
+  committees?: string[];
+}
+
+export interface GuideContacts {
+  groups: { name: string; people: GuidePerson[] }[];
+}
+
+export interface GuideMeeting {
+  /** ISO YYYY-MM-DD */
+  date: string;
+  time: string;
+  /** moved for a holiday/election */
+  alt?: boolean;
+}
+
+export interface GuideMeetings {
+  intro?: string;
+  council: GuideMeeting[];
+  boards: { name: string; schedule: string }[];
+}
+
+export interface GuideBundle {
+  sections: GuideSectionMeta[];
+  pdf?: string;
+  /** rendered HTML for markdown sections, keyed by section id */
+  content: Record<string, string>;
+  contacts?: GuideContacts;
+  meetings?: GuideMeetings;
 }

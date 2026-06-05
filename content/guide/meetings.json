@@ -1,0 +1,36 @@
+{
+  "_note": "Source: City of Burton 2026 Resident Information Packet.",
+  "intro": "City Council meets on the 1st & 3rd Monday of each month at 7:00 PM unless otherwise noted. Dates marked with an asterisk (*) were moved for a holiday or election.",
+  "council": [
+    { "date": "2026-01-08", "time": "7:00 PM", "alt": true },
+    { "date": "2026-01-22", "time": "7:00 PM", "alt": true },
+    { "date": "2026-02-02", "time": "7:00 PM" },
+    { "date": "2026-02-19", "time": "7:00 PM", "alt": true },
+    { "date": "2026-03-02", "time": "7:00 PM" },
+    { "date": "2026-03-16", "time": "7:00 PM" },
+    { "date": "2026-04-06", "time": "7:00 PM" },
+    { "date": "2026-04-20", "time": "7:00 PM" },
+    { "date": "2026-05-04", "time": "7:00 PM" },
+    { "date": "2026-05-18", "time": "7:00 PM" },
+    { "date": "2026-06-01", "time": "7:00 PM" },
+    { "date": "2026-06-15", "time": "7:00 PM" },
+    { "date": "2026-07-06", "time": "7:00 PM" },
+    { "date": "2026-07-20", "time": "7:00 PM" },
+    { "date": "2026-08-06", "time": "7:00 PM", "alt": true },
+    { "date": "2026-08-17", "time": "7:00 PM" },
+    { "date": "2026-09-10", "time": "7:00 PM", "alt": true },
+    { "date": "2026-09-21", "time": "7:00 PM" },
+    { "date": "2026-10-05", "time": "7:00 PM" },
+    { "date": "2026-10-19", "time": "7:00 PM" },
+    { "date": "2026-11-05", "time": "7:00 PM", "alt": true },
+    { "date": "2026-11-16", "time": "7:00 PM" },
+    { "date": "2026-12-07", "time": "7:00 PM" },
+    { "date": "2026-12-21", "time": "7:00 PM" }
+  ],
+  "boards": [
+    { "name": "Planning Commission", "schedule": "2nd Tuesday, 5:00 PM" },
+    { "name": "Parks & Recreation", "schedule": "2nd Wednesday, 5:30 PM" },
+    { "name": "Downtown Development Authority (DDA)", "schedule": "3rd Monday, 8:30 AM" },
+    { "name": "Zoning Board of Appeals", "schedule": "3rd Thursday, 5:00 PM" }
+  ]
+}
