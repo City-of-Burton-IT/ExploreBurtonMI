@@ -155,7 +155,12 @@
               },
               onEachFeature: (feature, lyr) => {
                 const label = feature.properties?.[nameField];
-                if (label) lyr.bindTooltip(String(label), { sticky: true });
+                if (!label) return;
+                // Show the area name in a click/tap popup at the tap point. A popup
+                // behaves identically on mouse and touch; the previous sticky
+                // tooltip was positioned via mousemove, which touch devices never
+                // fire, so on phones the label was unreliable/misplaced.
+                lyr.bindPopup(String(label));
               },
             });
             layerControl.addOverlay(gj, layer.label);

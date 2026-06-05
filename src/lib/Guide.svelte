@@ -44,7 +44,7 @@
       {/if}
     </nav>
 
-    <div class="content">
+    <div class="guide-body">
       {#if activeSection}
         <h2>{activeSection.title}</h2>
         <GuideSection section={activeSection} {bundle} />
@@ -105,13 +105,13 @@
     color: var(--civic-blue-link, #386fc5);
     padding: 0.5rem 0.7rem;
   }
-  .content {
+  .guide-body {
     flex: 1 1 auto;
     overflow-y: auto;
     padding: 1.4rem 1.8rem 2.4rem;
     min-width: 0;
   }
-  .content h2 {
+  .guide-body h2 {
     margin: 0 0 0.8rem;
     font-family: var(--font-head, sans-serif);
     font-weight: 700;

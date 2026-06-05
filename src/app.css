@@ -166,14 +166,26 @@ body,
   box-shadow: var(--pub-focus-ring);
   position: relative;
 }
-/* Narrow screens: let the section pill scroll horizontally instead of overflowing. */
+/* Narrow screens: wrap the section tabs onto multiple rows so every section stays
+   visible (a horizontal scroller hid the last tab with no scroll affordance). The
+   single-pill frame is dropped in favour of individually rounded pills. */
 @media (max-width: 860px) {
   .viewnav {
-    overflow-x: auto;
+    flex-wrap: wrap;
+    overflow: visible;
     max-width: 100%;
+    border: none;
+    border-radius: 0;
+    gap: 0.3rem;
+    justify-content: center;
   }
   .viewnav button {
     flex: 0 0 auto;
+    border: 1px solid var(--civic-blue);
+    border-radius: 999px;
+  }
+  .viewnav button + button {
+    border-left: 1px solid var(--civic-blue);
   }
 }
 
