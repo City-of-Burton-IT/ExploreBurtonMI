@@ -131,10 +131,58 @@ body,
   box-shadow: var(--pub-focus-ring);
 }
 
+/* Primary section nav: Map / Finances / Demographics (segmented pill) */
+.viewnav {
+  display: inline-flex;
+  border: 1px solid var(--civic-blue);
+  border-radius: 999px;
+  overflow: hidden;
+  flex-shrink: 0;
+}
+.viewnav button {
+  border: none;
+  background: #fff;
+  color: var(--civic-blue);
+  font-family: var(--font-body);
+  font-weight: 700;
+  font-size: 0.85rem;
+  padding: 0.4rem 0.9rem;
+  white-space: nowrap;
+  cursor: pointer;
+  transition: background 0.15s, color 0.15s;
+}
+.viewnav button + button {
+  border-left: 1px solid var(--civic-blue-soft);
+}
+.viewnav button:hover {
+  background: var(--civic-blue-soft);
+}
+.viewnav button.active {
+  background: var(--civic-blue);
+  color: #fff;
+}
+.viewnav button:focus-visible {
+  outline: none;
+  box-shadow: var(--pub-focus-ring);
+  position: relative;
+}
+
 .workspace {
   flex: 1 1 auto;
   display: flex;
   min-height: 0;
+}
+/* Hidden (but kept mounted) while an info view is shown, so the map preserves
+   its zoom/pan/selection; Map.svelte calls invalidateSize on return. */
+.workspace.hidden {
+  display: none;
+}
+
+/* Info views (Finances / Demographics) fill the body below the header. */
+.infowrap {
+  flex: 1 1 auto;
+  min-height: 0;
+  background: #fff;
 }
 
 .sidebar {

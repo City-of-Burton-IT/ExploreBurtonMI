@@ -122,3 +122,51 @@ export interface PlaceCollection {
   type: 'FeatureCollection';
   features: PlaceFeature[];
 }
+
+// --- Info panels (Finances / Demographics) --------------------------------
+// Resident-facing snapshot views, each driven by a committed JSON file. No PII;
+// display-only public data, so they live outside the map's public-safe gate.
+
+export type InfoView = 'finances' | 'demographics';
+export type AppView = 'map' | InfoView;
+
+export interface InfoStat {
+  label: string;
+  value: string;
+  /** optional small note under the value (e.g. a year or qualifier) */
+  hint?: string;
+}
+
+export interface InfoSeriesItem {
+  label: string;
+  value: number;
+  /** optional brand-palette override; falls back to the chart's default cycle */
+  color?: string;
+}
+
+export interface InfoChart {
+  type: 'donut' | 'bars' | 'trend';
+  title: string;
+  /** unit suffix for rendered values, e.g. "$M" or "%" */
+  unit?: string;
+  /** donut + bars */
+  series?: InfoSeriesItem[];
+  /** trend line */
+  points?: { x: string; y: number }[];
+}
+
+export interface InfoLink {
+  text: string;
+  href: string;
+}
+
+export interface InfoPanel {
+  title: string;
+  subtitle?: string;
+  /** when true, render a "not yet official" banner (finances until real figures land) */
+  draft?: boolean;
+  stats: InfoStat[];
+  charts: InfoChart[];
+  source?: string;
+  links?: InfoLink[];
+}

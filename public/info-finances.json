@@ -1,0 +1,64 @@
+{
+  "title": "Burton City Finances",
+  "subtitle": "Fiscal Year 2026-2027 Approved Budget",
+  "stats": [
+    { "label": "Total budget", "value": "$67.7M", "hint": "all funds" },
+    { "label": "Taxable value", "value": "$895.5M", "hint": "2026, +4.22%" },
+    { "label": "City operating millage", "value": "4.000", "hint": "of 4.6872 max" },
+    { "label": "Pension funded", "value": "68%" },
+    { "label": "OPEB funded", "value": "77.48%" },
+    { "label": "Full-time staff", "value": "102" }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "How your tax dollar is budgeted (all funds)",
+      "unit": "%",
+      "series": [
+        { "label": "Major Streets", "value": 21 },
+        { "label": "Police Fund", "value": 17 },
+        { "label": "Watermain", "value": 13 },
+        { "label": "Sanitary Sewer", "value": 13 },
+        { "label": "General Fund", "value": 13 },
+        { "label": "Local Streets", "value": 6 },
+        { "label": "Fire Fund", "value": 4 },
+        { "label": "Self Insurance", "value": 4 },
+        { "label": "Motor Pool", "value": 3 },
+        { "label": "Rubbish Collection", "value": 3 },
+        { "label": "Senior Citizens", "value": 1 },
+        { "label": "Building", "value": 1 },
+        { "label": "Information Technology", "value": 1 }
+      ]
+    },
+    {
+      "type": "donut",
+      "title": "General Fund spending",
+      "unit": "%",
+      "series": [
+        { "label": "Legacy cost payment", "value": 29 },
+        { "label": "Seniors & Library", "value": 19 },
+        { "label": "Fire transfer", "value": 18 },
+        { "label": "Street lighting", "value": 16 },
+        { "label": "Parks & Recreation", "value": 11 },
+        { "label": "Police transfer", "value": 7 }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Taxable value, 6-year",
+      "unit": "$M",
+      "points": [
+        { "x": "2021", "y": 650 },
+        { "x": "2022", "y": 684 },
+        { "x": "2023", "y": 732 },
+        { "x": "2024", "y": 793 },
+        { "x": "2025", "y": 858 },
+        { "x": "2026", "y": 896 }
+      ]
+    }
+  ],
+  "source": "City of Burton FY 2026-2027 Approved Budget (Controller's Office)",
+  "links": [
+    { "text": "City of Burton", "href": "https://www.burtonmi.gov" }
+  ]
+}

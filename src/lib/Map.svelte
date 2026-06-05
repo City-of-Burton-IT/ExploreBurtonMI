@@ -149,6 +149,14 @@
     cluster.addLayers(toAdd);
   });
 
+  // When returning from an info view, the map container was display:none, so
+  // Leaflet has a stale size. Re-measure once it's visible again.
+  $effect(() => {
+    if (ui.view === 'map' && map) {
+      requestAnimationFrame(() => map?.invalidateSize());
+    }
+  });
+
   // Highlight the selected marker; reset the rest.
   $effect(() => {
     const selectedId = ui.selected?.id;

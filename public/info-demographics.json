@@ -1,0 +1,79 @@
+{
+  "title": "Burton Demographics",
+  "subtitle": "U.S. Census ACS 2023 5-year estimates",
+  "stats": [
+    {
+      "label": "Population",
+      "value": "29,529"
+    },
+    {
+      "label": "Median age",
+      "value": "42.5"
+    },
+    {
+      "label": "Households",
+      "value": "12,505"
+    },
+    {
+      "label": "Median household income",
+      "value": "$57,767"
+    },
+    {
+      "label": "Median home value",
+      "value": "$131,200"
+    },
+    {
+      "label": "Owner-occupied homes",
+      "value": "76%"
+    }
+  ],
+  "charts": [
+    {
+      "type": "donut",
+      "title": "Housing tenure",
+      "series": [
+        {
+          "label": "Owner-occupied",
+          "value": 9478
+        },
+        {
+          "label": "Renter-occupied",
+          "value": 3027
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Households by income",
+      "series": [
+        {
+          "label": "< $25k",
+          "value": 2508
+        },
+        {
+          "label": "$25-50k",
+          "value": 3051
+        },
+        {
+          "label": "$50-75k",
+          "value": 2397
+        },
+        {
+          "label": "$75-100k",
+          "value": 1686
+        },
+        {
+          "label": "$100k+",
+          "value": 2863
+        }
+      ]
+    }
+  ],
+  "source": "U.S. Census Bureau, American Community Survey 2023 5-year estimates",
+  "links": [
+    {
+      "text": "Census QuickFacts: Burton city, MI",
+      "href": "https://www.census.gov/quickfacts/burtoncitymichigan"
+    }
+  ]
+}
