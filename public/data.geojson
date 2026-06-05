@@ -55,6 +55,8 @@
         "name": "Genesee County Health Department (Burton)",
         "category": "Health & Medical",
         "address": "3373 S Saginaw St, Burton, MI 48529",
+        "phone": "(810) 742-2255",
+        "website": "https://www.gchd.us",
         "description": "Genesee County public-health office serving Burton. Coordinates verified 2026-06-05 (within ~13 m of the Google Maps place point)."
       }
     },
@@ -73,6 +75,7 @@
         "category": "Public Works",
         "address": "4093 Manor Dr, Burton, MI 48519",
         "phone": "(810) 742-9230",
+        "website": "https://burtonmi.gov/departments/department_of_public_works/index.php",
         "hours": "Mon-Fri 8:00 AM - 4:00 PM",
         "description": "Roads, water and sewer maintenance, and public infrastructure."
       }
@@ -205,6 +208,8 @@
         "name": "Kelly Lake Park",
         "category": "Parks & Recreation",
         "address": "Kelly Lake Rd, Burton, MI 48509",
+        "phone": "(810) 743-1500",
+        "website": "https://burtonmi.gov/departments/parks_and_recreation/index.php",
         "hours": "Dawn to dusk",
         "description": "40-acre park off Lapeer Rd with lake access, nature trails, picnic pavilion, and a bike path."
       }
@@ -241,6 +246,7 @@
         "category": "Parks & Recreation",
         "address": "4303 S Center Rd, Burton, MI 48519",
         "phone": "(810) 743-1500",
+        "website": "https://burtonmi.gov/departments/parks_and_recreation/index.php",
         "hours": "Mon-Fri 8:00 AM - 5:00 PM"
       }
     },
@@ -278,6 +284,7 @@
         "name": "U.S. Post Office",
         "category": "Government",
         "address": "4465 Davison Rd, Burton, MI 48509",
+        "phone": "(800) 275-8777",
         "website": "https://tools.usps.com/find-location.htm",
         "description": "USPS retail post office. Coordinates verified 2026-06-05 (US Census + Nominatim agree within ~5 m; consistent with neighboring Fire Station 3 at 4515 Davison Rd)."
       }
@@ -297,6 +304,7 @@
         "category": "Community Services",
         "address": "3410 S Grand Traverse St, Burton, MI 48529",
         "phone": "(810) 744-0960",
+        "website": "https://burtonmi.gov/departments/senior_activity_center/index.php",
         "hours": "Mon-Fri 9:00 AM - 3:00 PM",
         "description": "Senior programs, meals, and activities."
       }
@@ -315,6 +323,7 @@
         "name": "Settlement Park",
         "category": "Parks & Recreation",
         "address": "Thread Creek Blvd, Burton, MI 48519",
+        "website": "https://burtonmi.gov/departments/parks_and_recreation/index.php",
         "hours": "Dawn to dusk",
         "description": "Passive linear park along Thread Creek with fishing and picnic areas."
       }
@@ -334,6 +343,7 @@
         "category": "Government",
         "address": "4303 S Center Rd, Burton, MI 48519",
         "phone": "(810) 743-1500",
+        "website": "https://burtonmi.gov/how_do_i_%28faq%29/pay/my_water_sewer_bill/index.php",
         "hours": "Mon-Fri 8:00 AM - 5:00 PM",
         "description": "Utility billing and payments at City Hall."
       }
