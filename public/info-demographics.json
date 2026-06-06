@@ -62,6 +62,138 @@
       ]
     },
     {
+      "type": "compare",
+      "title": "How Burton compares (2023)",
+      "rows": [
+        {
+          "label": "Median household income",
+          "unit": "$",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 57767
+            },
+            {
+              "name": "Genesee County",
+              "value": 60673
+            },
+            {
+              "name": "Michigan",
+              "value": 71149
+            }
+          ]
+        },
+        {
+          "label": "Median home value",
+          "unit": "$",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 131200
+            },
+            {
+              "name": "Genesee County",
+              "value": 172900
+            },
+            {
+              "name": "Michigan",
+              "value": 217600
+            }
+          ]
+        },
+        {
+          "label": "Owner-occupied homes",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 76
+            },
+            {
+              "name": "Genesee County",
+              "value": 71
+            },
+            {
+              "name": "Michigan",
+              "value": 73
+            }
+          ]
+        },
+        {
+          "label": "Bachelor's degree or higher",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 16
+            },
+            {
+              "name": "Genesee County",
+              "value": 23
+            },
+            {
+              "name": "Michigan",
+              "value": 32
+            }
+          ]
+        },
+        {
+          "label": "Below poverty line",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 17
+            },
+            {
+              "name": "Genesee County",
+              "value": 16
+            },
+            {
+              "name": "Michigan",
+              "value": 13
+            }
+          ]
+        },
+        {
+          "label": "Unemployment rate",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 8
+            },
+            {
+              "name": "Genesee County",
+              "value": 8
+            },
+            {
+              "name": "Michigan",
+              "value": 6
+            }
+          ]
+        },
+        {
+          "label": "Median age",
+          "unit": "",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 42.5
+            },
+            {
+              "name": "Genesee County",
+              "value": 40.6
+            },
+            {
+              "name": "Michigan",
+              "value": 40.1
+            }
+          ]
+        }
+      ]
+    },
+    {
       "type": "bars",
       "title": "Age distribution",
       "series": [

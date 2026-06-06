@@ -19,10 +19,12 @@ function colorAt(item: InfoSeriesItem, i: number, palette: string[]): string {
   return item.color ?? palette[i % palette.length];
 }
 
-/** Render a numeric value with a unit. A unit beginning with "$" is a currency
- *  prefix (unit "$M" + 12.3 -> "$12.3M"); otherwise it is a suffix ("%" -> "12.3%"). */
+/** Render a numeric value with a unit and thousands separators. A unit beginning
+ *  with "$" is a currency prefix (unit "$M" + 12.3 -> "$12.3M"); otherwise it is a
+ *  suffix ("%" -> "12.3%"). */
 export function formatValue(value: number, unit = ''): string {
-  return unit.startsWith('$') ? `$${value}${unit.slice(1)}` : `${value}${unit}`;
+  const n = value.toLocaleString('en-US', { maximumFractionDigits: 1 });
+  return unit.startsWith('$') ? `$${n}${unit.slice(1)}` : `${n}${unit}`;
 }
 
 const nonNeg = (n: number): number => (n > 0 ? n : 0);

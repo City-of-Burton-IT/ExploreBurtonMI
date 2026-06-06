@@ -27,7 +27,23 @@ import urllib.request
 
 STATE_FIPS = "26"        # Michigan
 PLACE_FIPS = "12060"     # Burton city (GEOID 2612060; verified via data.census.gov)
+COUNTY_FIPS = "049"      # Genesee County (Burton's county)
 EXPECTED_NAME_PREFIX = "Burton city"
+
+# Bachelor's-or-higher components of B15003 (for the benchmark comparison).
+BACHELOR_CODES = ["022", "023", "024", "025"]
+
+# Metrics shown in the "How Burton compares" panel (Burton vs County vs State).
+# (label, unit, metric key from _metrics()).
+COMPARE_SPECS = [
+    ("Median household income", "$", "median_income"),
+    ("Median home value", "$", "median_home_value"),
+    ("Owner-occupied homes", "%", "owner_pct"),
+    ("Bachelor's degree or higher", "%", "bachelors_pct"),
+    ("Below poverty line", "%", "poverty_pct"),
+    ("Unemployment rate", "%", "unemployment_pct"),
+    ("Median age", "", "median_age"),
+]
 
 # --- ACS table variable groupings -----------------------------------------
 # Variable codes verified against https://api.census.gov/data/<year>/acs/acs5/groups/<TABLE>.json
@@ -111,6 +127,24 @@ def _grouped_vars(table: str, groups: list) -> list[str]:
     return [f"{table}_{c}E" for c in sorted(codes)]
 
 
+def _fetch_vars(year: int, key: str, get_vars: list[str], geo: str) -> dict:
+    """Fetch ACS 5-year variables for one geography ({variable: value} dict).
+
+    `geo` is the trailing geography clause, e.g. "for=place:12060&in=state:26".
+    The API caps a single get= at 50 variables; request in chunks and merge.
+    """
+    record: dict = {}
+    for chunk in _chunks(get_vars, 48):
+        url = (
+            f"https://api.census.gov/data/{year}/acs/acs5"
+            f"?get={','.join(chunk)}&{geo}&key={key}"
+        )
+        with urllib.request.urlopen(url, timeout=30) as resp:
+            rows = json.load(resp)
+        record.update(dict(zip(rows[0], rows[1])))
+    return record
+
+
 def fetch(year: int, key: str) -> dict:
     """Fetch the ACS 5-year record for Burton city as a {variable: value} dict."""
     get_vars = [
@@ -121,20 +155,55 @@ def fetch(year: int, key: str) -> dict:
         *_grouped_vars("B08301", COMMUTE_GROUPS),
         *_grouped_vars("B01001", AGE_BANDS),
     ]
-    # The API caps a single get= at 50 variables; request in chunks and merge.
-    record: dict = {}
-    for chunk in _chunks(get_vars, 48):
-        url = (
-            f"https://api.census.gov/data/{year}/acs/acs5"
-            f"?get={','.join(chunk)}&for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}&key={key}"
-        )
-        with urllib.request.urlopen(url, timeout=30) as resp:
-            rows = json.load(resp)
-        record.update(dict(zip(rows[0], rows[1])))
+    record = _fetch_vars(year, key, get_vars, f"for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}")
     name = record.get("NAME", "")
     if not name.startswith(EXPECTED_NAME_PREFIX):
         raise SystemExit(f"Unexpected place NAME from Census: {name!r} (check FIPS codes)")
     return record
+
+
+def _metrics(rec: dict) -> dict:
+    """Derive the comparable headline metrics from one ACS record."""
+    edu_total = _int(rec, CORE_VARS["edu_total"])
+    bach = _sum(rec, "B15003", BACHELOR_CODES)
+    owner = _int(rec, CORE_VARS["owner"])
+    renter = _int(rec, CORE_VARS["renter"])
+    age_raw = rec.get(CORE_VARS["median_age"])
+    return {
+        "median_income": _int(rec, CORE_VARS["median_income"]),
+        "median_home_value": _int(rec, CORE_VARS["median_home_value"]),
+        "owner_pct": _pct(owner, owner + renter),
+        "bachelors_pct": _pct(bach, edu_total),
+        "poverty_pct": _pct(_int(rec, CORE_VARS["poverty_below"]), _int(rec, CORE_VARS["poverty_total"])),
+        "unemployment_pct": _pct(_int(rec, CORE_VARS["unemployed"]), _int(rec, CORE_VARS["civilian_labor_force"])),
+        "median_age": round(float(age_raw), 1) if age_raw not in (None, "") else 0,
+    }
+
+
+def build_compare(burton: dict, year: int, key: str) -> dict | None:
+    """Build the "How Burton compares" chart (Burton vs Genesee County vs Michigan).
+
+    Returns None on any benchmark-fetch failure so the refresh still succeeds.
+    """
+    bench_vars = ["NAME", *CORE_VARS.values(), *(f"B15003_{c}E" for c in BACHELOR_CODES)]
+    try:
+        county = _fetch_vars(year, key, bench_vars, f"for=county:{COUNTY_FIPS}&in=state:{STATE_FIPS}")
+        state = _fetch_vars(year, key, bench_vars, f"for=state:{STATE_FIPS}")
+    except Exception as exc:  # noqa: BLE001 - benchmarks are optional
+        print(f"  benchmark fetch failed ({exc}); omitting the comparison chart")
+        return None
+
+    places = [("Burton", burton), ("Genesee County", county), ("Michigan", state)]
+    metrics = {name: _metrics(rec) for name, rec in places}
+    rows = [
+        {
+            "label": label,
+            "unit": unit,
+            "values": [{"name": name, "value": metrics[name][mkey]} for name, _ in places],
+        }
+        for label, unit, mkey in COMPARE_SPECS
+    ]
+    return {"type": "compare", "title": f"How Burton compares ({year})", "rows": rows}
 
 
 def fetch_population(dataset: str, var: str, key: str) -> int | None:
@@ -301,6 +370,10 @@ def main() -> int:
 
     trend = build_trend(record, args.year, args.key)
     panel = build_panel(record, args.year, trend)
+    compare = build_compare(record, args.year, args.key)
+    if compare:
+        # Place the benchmark comparison high in the panel (after housing tenure).
+        panel["charts"].insert(1, compare)
     out = os.path.join(os.path.dirname(__file__), "..", "public", "info-demographics.json")
     out = os.path.abspath(out)
     with open(out, "w", encoding="utf-8", newline="\n") as fh:

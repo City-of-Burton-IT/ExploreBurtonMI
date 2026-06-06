@@ -4,6 +4,7 @@
   import Donut from './charts/Donut.svelte';
   import Bars from './charts/Bars.svelte';
   import TrendLine from './charts/TrendLine.svelte';
+  import CompareBars from './charts/CompareBars.svelte';
 
   let {
     panel,
@@ -48,6 +49,8 @@
               <Bars series={chart.series ?? []} unit={chart.unit} />
             {:else if chart.type === 'trend'}
               <TrendLine points={chart.points ?? []} unit={chart.unit} />
+            {:else if chart.type === 'compare'}
+              <CompareBars rows={chart.rows ?? []} />
             {/if}
           </figure>
         {/each}

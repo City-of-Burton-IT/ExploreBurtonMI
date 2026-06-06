@@ -156,8 +156,20 @@ export interface InfoSeriesItem {
   color?: string;
 }
 
+/** One metric compared across places (Burton vs County vs State). */
+export interface CompareValue {
+  name: string;
+  value: number;
+}
+export interface CompareRow {
+  label: string;
+  /** unit for this metric's values ("%", "$", "" for plain) */
+  unit?: string;
+  values: CompareValue[];
+}
+
 export interface InfoChart {
-  type: 'donut' | 'bars' | 'trend';
+  type: 'donut' | 'bars' | 'trend' | 'compare';
   title: string;
   /** unit suffix for rendered values, e.g. "$M" or "%" */
   unit?: string;
@@ -165,6 +177,8 @@ export interface InfoChart {
   series?: InfoSeriesItem[];
   /** trend line */
   points?: { x: string; y: number }[];
+  /** compare: one entry per metric, each holding the per-place values */
+  rows?: CompareRow[];
 }
 
 export interface InfoLink {
