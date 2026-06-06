@@ -18,6 +18,7 @@
   let map: L.Map | undefined;
   let cluster: L.MarkerClusterGroup | undefined;
   const markers = new Map<string, L.CircleMarker>();
+  const featureById = new Map<string, PlaceFeature>();
 
   const DEFAULT_COLOR = '#555555';
 
@@ -279,6 +280,7 @@
       marker.bindTooltip(escapeHtml(label));
       marker.on('click', () => select(feature));
       markers.set(feature.id, marker);
+      featureById.set(feature.id, feature);
     }
     map.addLayer(cluster);
   });
@@ -315,18 +317,27 @@
     }
   });
 
-  // Highlight the selected marker; reset the rest.
+  // Highlight the selected marker. Only restyle the two markers that change
+  // (the previously- and newly-selected), not all ~1,146 every time -- the old
+  // version looped every marker and did an O(n) features.find() inside, i.e. O(n^2)
+  // per click.
+  let prevSelectedId: string | undefined;
   $effect(() => {
     const selectedId = ui.selected?.id;
-    for (const [id, marker] of markers) {
-      const feature = data.features.find((f) => f.id === id)!;
-      if (id === selectedId) {
-        marker.setStyle({ radius: 11, weight: 3, color: '#111111' });
-        marker.bringToFront();
-      } else {
-        marker.setStyle(baseStyle(feature));
+    if (selectedId === prevSelectedId) return;
+    if (prevSelectedId) {
+      const m = markers.get(prevSelectedId);
+      const f = featureById.get(prevSelectedId);
+      if (m && f) m.setStyle(baseStyle(f));
+    }
+    if (selectedId) {
+      const m = markers.get(selectedId);
+      if (m) {
+        m.setStyle({ radius: 11, weight: 3, color: '#111111' });
+        m.bringToFront();
       }
     }
+    prevSelectedId = selectedId;
   });
 
   // Selecting a place (from the list or a marker) zooms in to reveal it -- using

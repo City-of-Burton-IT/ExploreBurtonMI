@@ -1,56 +1,101 @@
 <script lang="ts">
+  import { tick } from 'svelte';
   import { ui, setView, DASHBOARDS } from './store.svelte';
   import type { InfoView } from './types';
 
   let open = $state(false);
   let root = $state<HTMLDivElement>();
+  let trigger = $state<HTMLButtonElement>();
 
   const active = $derived(DASHBOARDS.find((d) => d.id === ui.view) ?? null);
 
-  function choose(id: InfoView) {
-    setView(id);
-    open = false;
+  // A disclosure (not a role=menu): the items are ordinary buttons, so Tab works
+  // natively; arrow keys + Home/End are an enhancement, and focus moves into the
+  // list on open and returns to the trigger on close/Escape.
+  function items(): HTMLButtonElement[] {
+    return root ? Array.from(root.querySelectorAll<HTMLButtonElement>('.menu button')) : [];
   }
 
-  // Close on outside-click or Escape while the menu is open. The listeners are
-  // added in an effect (after the opening click has finished), so they never
-  // catch the click that opened the menu.
+  async function openMenu() {
+    open = true;
+    await tick();
+    const its = items();
+    (its.find((b) => b.dataset.id === ui.view) ?? its[0])?.focus();
+  }
+
+  function closeMenu(returnFocus = true) {
+    open = false;
+    if (returnFocus) trigger?.focus();
+  }
+
+  function choose(id: InfoView) {
+    setView(id);
+    closeMenu();
+  }
+
+  function onTriggerKey(e: KeyboardEvent) {
+    if (e.key === 'ArrowDown' || e.key === 'Enter' || e.key === ' ') {
+      e.preventDefault();
+      openMenu();
+    }
+  }
+
+  function onMenuKey(e: KeyboardEvent) {
+    const its = items();
+    const i = its.indexOf(document.activeElement as HTMLButtonElement);
+    if (e.key === 'Escape') {
+      e.preventDefault();
+      closeMenu();
+    } else if (e.key === 'ArrowDown') {
+      e.preventDefault();
+      its[(i + 1) % its.length]?.focus();
+    } else if (e.key === 'ArrowUp') {
+      e.preventDefault();
+      its[(i - 1 + its.length) % its.length]?.focus();
+    } else if (e.key === 'Home') {
+      e.preventDefault();
+      its[0]?.focus();
+    } else if (e.key === 'End') {
+      e.preventDefault();
+      its[its.length - 1]?.focus();
+    }
+  }
+
+  // Close on outside pointer-down (keyboard close is handled in onMenuKey). Added
+  // in an effect after the opening interaction, so it never catches that click.
   $effect(() => {
     if (!open) return;
     const onPointer = (e: MouseEvent) => {
       if (root && !root.contains(e.target as Node)) open = false;
     };
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === 'Escape') open = false;
-    };
     window.addEventListener('pointerdown', onPointer);
-    window.addEventListener('keydown', onKey);
-    return () => {
-      window.removeEventListener('pointerdown', onPointer);
-      window.removeEventListener('keydown', onKey);
-    };
+    return () => window.removeEventListener('pointerdown', onPointer);
   });
 </script>
 
 <div class="dash" bind:this={root}>
   <button
+    bind:this={trigger}
     class="trigger"
     class:active={!!active}
-    aria-haspopup="menu"
+    aria-haspopup="true"
     aria-expanded={open}
-    onclick={() => (open = !open)}
+    onclick={() => (open ? closeMenu(false) : openMenu())}
+    onkeydown={onTriggerKey}
   >
     {active ? active.label : 'Dashboards'}
     <span class="caret" class:up={open} aria-hidden="true">▾</span>
   </button>
 
   {#if open}
-    <div class="menu" role="menu" aria-label="Dashboards">
+    <div class="menu" role="group" aria-label="Dashboards">
       {#each DASHBOARDS as d (d.id)}
         <button
-          role="menuitem"
+          data-id={d.id}
           class:current={d.id === ui.view}
+          aria-current={d.id === ui.view ? 'true' : undefined}
           onclick={() => choose(d.id)}
+          onkeydown={onMenuKey}
         >
           {d.label}
           {#if d.id === ui.view}<span class="check" aria-hidden="true">✓</span>{/if}
@@ -106,7 +151,7 @@
     transform: translateX(-50%);
     min-width: 200px;
     background: #fff;
-    border: 1px solid var(--pub-border, #d8dde4);
+    border: 1px solid var(--pub-border, #e3e3e3);
     border-radius: var(--pub-radius, 12px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
     padding: 0.35rem;

@@ -1,12 +1,26 @@
 <script lang="ts">
+  import { onDestroy } from 'svelte';
   import { ui } from './store.svelte';
+
+  // Keep the input itself instant, but debounce the committed query: each
+  // keystroke otherwise re-filters + re-clusters all ~1,146 markers, which janks
+  // on mobile. 220 ms settles a pause without feeling laggy.
+  let value = $state(ui.query);
+  let timer: ReturnType<typeof setTimeout> | undefined;
+
+  function onInput() {
+    clearTimeout(timer);
+    timer = setTimeout(() => (ui.query = value), 220);
+  }
+  onDestroy(() => clearTimeout(timer));
 </script>
 
 <div class="search">
   <input
     type="search"
     placeholder="Search by name, category, address&hellip;"
-    bind:value={ui.query}
+    bind:value
+    oninput={onInput}
     aria-label="Search places"
   />
 </div>

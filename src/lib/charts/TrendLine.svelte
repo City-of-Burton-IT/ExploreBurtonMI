@@ -45,6 +45,15 @@
     tip = { x: e.clientX - r.left, y: e.clientY - r.top };
     active = i;
   }
+  // Keyboard focus: a sighted keyboard user (no hover) can otherwise only read the
+  // first/last point values; focusing a point shows its tooltip at the dot.
+  function atFocus(e: FocusEvent, i: number) {
+    if (!host) return;
+    const r = (e.currentTarget as SVGCircleElement).getBoundingClientRect();
+    const hr = host.getBoundingClientRect();
+    tip = { x: r.left - hr.left + r.width / 2, y: r.top - hr.top + r.height / 2 };
+    active = i;
+  }
   const dot = $derived(active >= 0 ? layout.dots[active] : null);
 </script>
 
@@ -71,6 +80,9 @@
           <text x={d.x} y={d.y - 8} class="vlabel" class:hide={active === i}>{formatValue(d.value, unit)}</text>
         {/if}
         <!-- transparent wide hit target for easy hover/tap/focus -->
+        <!-- svelte-ignore a11y_no_noninteractive_tabindex -->
+        <!-- Intentionally focusable: lets keyboard users reveal each point's value
+             (otherwise only shown on hover); aria-label gives the accessible name. -->
         <circle
           cx={d.x}
           cy={d.y}
@@ -78,11 +90,14 @@
           fill="transparent"
           class="hit"
           role="img"
+          tabindex="0"
           aria-label="{d.label}: {formatValue(d.value, unit)}"
           onpointerenter={(e) => atPointer(e, i)}
           onpointermove={(e) => atPointer(e, i)}
           onpointerleave={() => (active = -1)}
           onpointerdown={(e) => atPointer(e, i)}
+          onfocus={(e) => atFocus(e, i)}
+          onblur={() => (active = -1)}
         />
       {/each}
     </svg>
@@ -120,6 +135,11 @@
   }
   .hit {
     cursor: pointer;
+  }
+  .hit:focus-visible {
+    outline: none;
+    stroke: var(--civic-blue, #2c57a0);
+    stroke-width: 2;
   }
   .hit:focus-visible {
     outline: none;
