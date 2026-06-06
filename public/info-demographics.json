@@ -306,6 +306,10 @@
       "title": "Population",
       "points": [
         {
+          "x": "2000",
+          "y": 30308
+        },
+        {
           "x": "2010",
           "y": 29999
         },
@@ -318,6 +322,25 @@
           "y": 29529
         }
       ]
+    },
+    {
+      "type": "trend",
+      "title": "Homeownership rate",
+      "unit": "%",
+      "points": [
+        {
+          "x": "2000",
+          "y": 80.8
+        },
+        {
+          "x": "2010",
+          "y": 74.7
+        },
+        {
+          "x": "2020",
+          "y": 71.7
+        }
+      ]
     }
   ],
   "source": "U.S. Census Bureau, American Community Survey 2023 5-year estimates; Decennial Census (2010, 2020) for the population trend",
@@ -328,7 +351,8 @@
     }
   ],
   "notes": [
-    "Population trend: 2010 and 2020 are decennial census counts; the most recent figure is an ACS 5-year estimate, so the three points are not directly comparable.",
+    "Population trend: the 2000-2020 points are decennial census counts; the most recent figure is an ACS 5-year estimate, so it is not directly comparable to them.",
+    "Homeownership rate is the owner-occupied share of occupied homes from the 2000, 2010, and 2020 decennial censuses (directly comparable counts).",
     "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
   ]
 }

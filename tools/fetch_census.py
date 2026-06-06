@@ -116,8 +116,21 @@ CORE_VARS = {
 # ACS 5-year vintages overlap and MUST NOT be charted year-over-year; decennial
 # counts are non-overlapping actual counts, the Census-recommended comparison.
 DECENNIAL = [
+    ("2000", "2000/dec/sf1", "P001001"),
     ("2010", "2010/dec/sf1", "P001001"),
     ("2020", "2020/dec/pl", "P1_001N"),
+]
+
+# Homeownership-rate trend from the decennial tenure tables. Variable names verified
+# against each dataset's group JSON (they differ by vintage):
+#   2000 sf1 H4:  H004001 total occupied, H004002 owner occupied
+#   2010 sf1 H4:  H004001 total, owner = H004002 (w/ mortgage) + H004003 (free & clear)
+#   2020 dhc H10: H10_001N total, H10_002N owner occupied
+# (dataset, total_var, [owner_vars]) -- owner counts are summed.
+TENURE_SOURCES = [
+    ("2000", "2000/dec/sf1", "H004001", ["H004002"]),
+    ("2010", "2010/dec/sf1", "H004001", ["H004002", "H004003"]),
+    ("2020", "2020/dec/dhc", "H10_001N", ["H10_002N"]),
 ]
 
 
@@ -219,6 +232,36 @@ def fetch_population(dataset: str, var: str, key: str) -> int | None:
     except Exception as exc:  # noqa: BLE001 - trend is optional; never fail the refresh
         print(f"  decennial fetch failed for {dataset} ({exc}); omitting that trend point")
         return None
+
+
+def _fetch_decennial(dataset: str, get_vars: list[str], key: str) -> dict:
+    """Fetch decennial variables for Burton city as a {variable: value} dict."""
+    url = (
+        f"https://api.census.gov/data/{dataset}"
+        f"?get={','.join(get_vars)}&for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}&key={key}"
+    )
+    with urllib.request.urlopen(url, timeout=30) as resp:
+        rows = json.load(resp)
+    return dict(zip(rows[0], rows[1]))
+
+
+def build_homeownership_trend(key: str) -> list[dict]:
+    """Owner-occupied share of occupied homes across the 2000/2010/2020 censuses.
+
+    Decennial counts only (definitions are stable across these vintages), so the
+    points are directly comparable. Returns [] if fewer than two years resolve.
+    """
+    points = []
+    for label, dataset, total_var, owner_vars in TENURE_SOURCES:
+        try:
+            rec = _fetch_decennial(dataset, [total_var, *owner_vars], key)
+            total = int(rec[total_var])
+            owner = sum(int(rec[v]) for v in owner_vars)
+            if total > 0:
+                points.append({"x": label, "y": round(owner / total * 100, 1)})
+        except Exception as exc:  # noqa: BLE001 - one missing year shouldn't fail the refresh
+            print(f"  tenure fetch failed for {label} ({exc}); omitting that point")
+    return points if len(points) >= 2 else []
 
 
 def _chunks(seq: list, n: int):
@@ -324,8 +367,8 @@ def build_panel(record: dict, year: int, trend_points: list[dict]) -> dict:
             }
         ],
         "notes": [
-            "Population trend: 2010 and 2020 are decennial census counts; the most recent "
-            "figure is an ACS 5-year estimate, so the three points are not directly comparable.",
+            "Population trend: the 2000-2020 points are decennial census counts; the most "
+            "recent figure is an ACS 5-year estimate, so it is not directly comparable to them.",
             "This product uses the Census Bureau Data API but is not endorsed or certified "
             "by the Census Bureau.",
         ],
@@ -374,6 +417,19 @@ def main() -> int:
     if compare:
         # Place the benchmark comparison high in the panel (after housing tenure).
         panel["charts"].insert(1, compare)
+    homeownership = build_homeownership_trend(args.key)
+    if homeownership:
+        panel["charts"].append({
+            "type": "trend",
+            "title": "Homeownership rate",
+            "unit": "%",
+            "points": homeownership,
+        })
+        panel["notes"].insert(
+            len(panel["notes"]) - 1,
+            "Homeownership rate is the owner-occupied share of occupied homes from the "
+            "2000, 2010, and 2020 decennial censuses (directly comparable counts).",
+        )
     out = os.path.join(os.path.dirname(__file__), "..", "public", "info-demographics.json")
     out = os.path.abspath(out)
     with open(out, "w", encoding="utf-8", newline="\n") as fh:
