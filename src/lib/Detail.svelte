@@ -73,7 +73,7 @@
     font-size: 0.72rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: #888;
+    color: var(--pub-muted, #5c5c5c);
     margin-top: 0.6rem;
   }
   dd {

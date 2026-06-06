@@ -43,7 +43,7 @@
     margin: 0;
     padding: 0.5rem 0.9rem;
     font-size: 0.8rem;
-    color: #888;
+    color: var(--pub-muted, #5c5c5c);
     border-top: 1px solid #e5e5e5;
   }
   ul {

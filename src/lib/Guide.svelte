@@ -63,7 +63,7 @@
   }
   .state {
     padding: 2rem;
-    color: #777;
+    color: var(--pub-muted, #5c5c5c);
   }
   .sectionnav {
     flex: 0 0 240px;

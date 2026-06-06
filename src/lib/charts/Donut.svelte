@@ -121,7 +121,7 @@
   .c-cap {
     text-anchor: middle;
     font-size: 10px;
-    fill: #777;
+    fill: var(--pub-muted, #5c5c5c);
     text-transform: uppercase;
     letter-spacing: 0.04em;
   }
@@ -166,7 +166,7 @@
     white-space: nowrap;
   }
   .nodata {
-    color: #888;
+    color: var(--pub-muted, #5c5c5c);
     font-size: 0.9rem;
     font-style: italic;
   }

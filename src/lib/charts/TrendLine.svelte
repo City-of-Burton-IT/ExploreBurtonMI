@@ -20,8 +20,19 @@
   // the endpoints -- the hover/tap tooltip covers every point in between.
   const dense = $derived(layout.dots.length > 8);
   const lastIdx = $derived(layout.dots.length - 1);
-  const xStep = $derived(dense ? Math.ceil(layout.dots.length / 6) : 1);
-  const showXLabel = (i: number) => !dense || i % xStep === 0 || i === lastIdx;
+  // Evenly-spaced x labels including BOTH endpoints, with a guaranteed >=2-point
+  // gap so the last two never collide (a fixed stride left e.g. a 10-point series
+  // showing 2024 and 2025 on top of each other). count = min(6, floor((n-1)/2)+1)
+  // keeps spacing >= 2.
+  const xLabelIdx = $derived.by(() => {
+    const n = layout.dots.length;
+    if (!dense) return null; // short series: show every label
+    const count = Math.min(6, Math.floor((n - 1) / 2) + 1);
+    const set = new Set<number>();
+    for (let k = 0; k < count; k++) set.add(Math.round((k * (n - 1)) / (count - 1)));
+    return set;
+  });
+  const showXLabel = (i: number) => !dense || (xLabelIdx?.has(i) ?? true);
   const showVLabel = (i: number) => !dense || i === 0 || i === lastIdx;
 
   let host: HTMLDivElement | undefined = $state();
@@ -133,7 +144,7 @@
     opacity: 0;
   }
   .nodata {
-    color: #888;
+    color: var(--pub-muted, #5c5c5c);
     font-size: 0.9rem;
     font-style: italic;
   }

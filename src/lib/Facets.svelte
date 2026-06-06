@@ -93,7 +93,7 @@
     flex: 1 1 auto;
   }
   .count {
-    color: #888;
+    color: var(--pub-muted, #5c5c5c);
     font-variant-numeric: tabular-nums;
   }
 

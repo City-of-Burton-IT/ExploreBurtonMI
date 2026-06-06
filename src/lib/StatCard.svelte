@@ -30,10 +30,10 @@
     font-size: 0.74rem;
     text-transform: uppercase;
     letter-spacing: 0.04em;
-    color: #777;
+    color: var(--pub-muted, #5c5c5c);
   }
   .hint {
     font-size: 0.76rem;
-    color: #999;
+    color: var(--pub-muted, #5c5c5c);
   }
 </style>

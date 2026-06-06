@@ -35,6 +35,7 @@
   --civic-green-deep: #1d7f2b;
   --civic-green-soft: #d9f1dd;
   --pub-ink: #2c2c2c;
+  --pub-muted: #5c5c5c; /* muted/caption text -- 6.4:1 on white (WCAG AA); replaces #777/#888/#999 */
   --pub-border: #e3e3e3;
   --pub-radius: 12px;
   --pub-radius-sm: 8px;

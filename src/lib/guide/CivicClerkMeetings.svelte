@@ -135,7 +135,7 @@
     margin: 1.3rem 0 0.4rem;
   }
   .state {
-    color: #777;
+    color: var(--pub-muted, #5c5c5c);
     padding: 0.6rem 0;
   }
   .events {
@@ -167,7 +167,7 @@
     display: inline-block;
     margin-left: 0.5rem;
     font-size: 0.72rem;
-    color: #777;
+    color: var(--pub-muted, #5c5c5c);
   }
   .tags {
     display: inline-flex;
@@ -190,7 +190,7 @@
   .note {
     margin: 1.2rem 0 0;
     font-size: 0.78rem;
-    color: #999;
+    color: var(--pub-muted, #5c5c5c);
     line-height: 1.4;
   }
   @media (max-width: 560px) {

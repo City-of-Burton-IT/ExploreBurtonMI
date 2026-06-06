@@ -69,7 +69,7 @@
     font-size: 0.78rem;
     text-transform: uppercase;
     letter-spacing: 0.03em;
-    color: #777;
+    color: var(--pub-muted, #5c5c5c);
   }
   .contact {
     display: flex;

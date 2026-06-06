@@ -21,6 +21,15 @@
 
   const DEFAULT_COLOR = '#555555';
 
+  // Leaflet bindTooltip/bindPopup render string content as HTML. Feature names come
+  // from OpenStreetMap/Overture (community-editable), so escape them to prevent a
+  // crafted name (e.g. "<img onerror=...>") from executing as DOM XSS.
+  function escapeHtml(s: string): string {
+    return s.replace(/[&<>"']/g, (c) =>
+      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string,
+    );
+  }
+
   function colorFor(feature: PlaceFeature): string {
     // A record may carry several categories (a collapsed big-box store); the first
     // is its primary, which drives the marker color.
@@ -250,7 +259,7 @@
                 // behaves identically on mouse and touch; the previous sticky
                 // tooltip was positioned via mousemove, which touch devices never
                 // fire, so on phones the label was unreliable/misplaced.
-                lyr.bindPopup(String(label));
+                lyr.bindPopup(escapeHtml(String(label)));
               },
             });
             layerControl.addOverlay(gj, layer.label);
@@ -267,7 +276,7 @@
       const [lng, lat] = feature.geometry.coordinates;
       const label = String(feature.properties[previewAttribute] ?? feature.properties.name);
       const marker = L.circleMarker([lat, lng], baseStyle(feature));
-      marker.bindTooltip(label);
+      marker.bindTooltip(escapeHtml(label));
       marker.on('click', () => select(feature));
       markers.set(feature.id, marker);
     }

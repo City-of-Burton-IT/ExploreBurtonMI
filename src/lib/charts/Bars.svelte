@@ -117,7 +117,7 @@
     filter: brightness(1.08) saturate(1.1);
   }
   .nodata {
-    color: #888;
+    color: var(--pub-muted, #5c5c5c);
     font-size: 0.9rem;
     font-style: italic;
   }

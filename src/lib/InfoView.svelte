@@ -87,7 +87,7 @@
     box-sizing: border-box;
   }
   .state {
-    color: #777;
+    color: var(--pub-muted, #5c5c5c);
     font-size: 1rem;
     padding: 2rem 0;
   }
@@ -146,13 +146,13 @@
   .source {
     margin: 0;
     font-size: 0.8rem;
-    color: #777;
+    color: var(--pub-muted, #5c5c5c);
   }
   .note {
     margin: 0.4rem 0 0;
     font-size: 0.72rem;
     line-height: 1.35;
-    color: #999;
+    color: var(--pub-muted, #5c5c5c);
   }
   .links {
     list-style: none;

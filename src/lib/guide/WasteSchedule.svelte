@@ -111,7 +111,7 @@
   }
   .state,
   .hint {
-    color: #777;
+    color: var(--pub-muted, #5c5c5c);
     font-size: 0.9rem;
     margin: 0.8rem 0;
   }
@@ -163,7 +163,7 @@
   .note {
     margin: 1.2rem 0 0;
     font-size: 0.78rem;
-    color: #999;
+    color: var(--pub-muted, #5c5c5c);
     line-height: 1.4;
   }
   .sr-only {
