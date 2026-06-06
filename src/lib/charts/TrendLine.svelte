@@ -14,6 +14,16 @@
   const layout = $derived(trendLayout(points, W, H, PAD));
   const color = '#2c57a0'; // civic blue
 
+  // Long series (e.g. the 16-year audited finance trends) overcrowd a narrow
+  // mobile chart: every year label and every point's value label collide. When
+  // dense, thin the x-axis to ~6 evenly-spaced years and keep value labels only at
+  // the endpoints -- the hover/tap tooltip covers every point in between.
+  const dense = $derived(layout.dots.length > 8);
+  const lastIdx = $derived(layout.dots.length - 1);
+  const xStep = $derived(dense ? Math.ceil(layout.dots.length / 6) : 1);
+  const showXLabel = (i: number) => !dense || i % xStep === 0 || i === lastIdx;
+  const showVLabel = (i: number) => !dense || i === 0 || i === lastIdx;
+
   let host: HTMLDivElement | undefined = $state();
   let active = $state(-1);
   let tip = $state({ x: 0, y: 0 });
@@ -43,8 +53,12 @@
       {/if}
       {#each layout.dots as d, i (d.label)}
         <circle cx={d.x} cy={d.y} r={active === i ? 5.5 : 3.5} fill={color} class="dot" />
-        <text x={d.x} y={H - PAD + 16} class="xlabel">{d.label}</text>
-        <text x={d.x} y={d.y - 8} class="vlabel" class:hide={active === i}>{formatValue(d.value, unit)}</text>
+        {#if showXLabel(i)}
+          <text x={d.x} y={H - PAD + 16} class="xlabel">{d.label}</text>
+        {/if}
+        {#if showVLabel(i)}
+          <text x={d.x} y={d.y - 8} class="vlabel" class:hide={active === i}>{formatValue(d.value, unit)}</text>
+        {/if}
         <!-- transparent wide hit target for easy hover/tap/focus -->
         <circle
           cx={d.x}
