@@ -170,8 +170,21 @@
     "_why": "Auto-enrichment from Overture match (score 0.80, 8m); sanitized + captured 2026-06-05. Verify if questioned."
   },
   "osm:node/7178265742": {
+    "name": "Kroger",
+    "category": [
+      "Grocery & Food",
+      "Health & Medical"
+    ],
+    "address": "1200 E Bristol Rd, Burton, MI 48529",
     "phone": "(810) 234-6863",
-    "_why": "Auto-enrichment from Overture match (score 1.00, 86m); sanitized + captured 2026-06-05. Verify if questioned."
+    "website": "https://www.kroger.com/stores/grocery/mi/burton/burton/018/00406",
+    "hours": "Mon-Sun 6 AM - 10 PM",
+    "services": [
+      "Pharmacy",
+      "Fuel Center",
+      "Western Union"
+    ],
+    "_why": "Re-categorized from Automotive to the full-service grocery store (this OSM node carries the official Kroger grocery URL + store phone); enriched with hours + in-store services. Folds in the WU-desk + ATM duplicate pins."
   },
   "osm:node/7178265743": {
     "phone": "(810) 233-3753",
@@ -965,5 +978,9 @@
   "osm:node/8132984977": {
     "hidden": true,
     "_why": "Duplicate of osm:way/683978470 (Meijer) at 2333 South Center Road, Burton, MI 48519."
+  },
+  "overture:b4782880-2b1a-42e7-bb84-828df9908b1d": {
+    "hidden": true,
+    "_why": "Western Union desk inside Kroger #406; folded into the Kroger grocery pin (osm:node/7178265742)."
   }
 }

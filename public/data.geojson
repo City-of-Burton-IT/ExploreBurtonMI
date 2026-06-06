@@ -1081,10 +1081,19 @@
       },
       "properties": {
         "name": "Kroger",
-        "category": "Automotive",
-        "address": "1204 East Bristol Road, Burton, MI 48529",
+        "category": [
+          "Grocery & Food",
+          "Health & Medical"
+        ],
+        "address": "1200 E Bristol Rd, Burton, MI 48529",
         "website": "https://www.kroger.com/stores/grocery/mi/burton/burton/018/00406",
-        "phone": "(810) 234-6863"
+        "phone": "(810) 234-6863",
+        "hours": "Mon-Sun 6 AM - 10 PM",
+        "services": [
+          "Pharmacy",
+          "Fuel Center",
+          "Western Union"
+        ]
       }
     },
     {
@@ -15498,23 +15507,6 @@
         "address": "1399 Center Rd, Burton, MI 48509",
         "phone": "8107430790",
         "website": "http://www.lifestyleshottubs.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:b4782880-2b1a-42e7-bb84-828df9908b1d",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.686,
-          42.973305
-        ]
-      },
-      "properties": {
-        "name": "KROGER #406",
-        "category": "Financial",
-        "address": "1200 E Bristol Rd, Burton, MI 48529-2522",
-        "website": "https://location.westernunion.com/us/mi/burton/0d188681bf1dec7ca056bd2ce0d23b80"
       }
     },
     {
