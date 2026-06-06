@@ -1,76 +1,515 @@
 {
   "title": "Burton City Finances",
-  "subtitle": "Fiscal Year 2026-2027 Approved Budget",
+  "subtitle": "FY 2026-2027 adopted budget + audited financial history",
   "stats": [
-    { "label": "Total budget", "value": "$67.7M", "hint": "all funds" },
-    { "label": "Taxable value", "value": "$895.5M", "hint": "2026, +4.22%" },
-    { "label": "City operating millage", "value": "4.000", "hint": "of 4.6872 max" },
-    { "label": "Pension funded", "value": "68%" },
-    { "label": "OPEB funded", "value": "77.48%" },
-    { "label": "Full-time staff", "value": "102" }
+    {
+      "label": "Total budget",
+      "value": "$67.7M",
+      "hint": "all funds, FY2026-27 adopted"
+    },
+    {
+      "label": "City operating millage",
+      "value": "4.000",
+      "hint": "of 4.6872 max"
+    },
+    {
+      "label": "Taxable value",
+      "value": "$895.5M",
+      "hint": "2026, city assessor"
+    },
+    {
+      "label": "Pension funded",
+      "value": "68%",
+      "hint": "FY2026-27"
+    },
+    {
+      "label": "OPEB funded",
+      "value": "77.48%",
+      "hint": "FY2026-27"
+    },
+    {
+      "label": "Full-time staff",
+      "value": "102",
+      "hint": "FY2026-27"
+    },
+    {
+      "label": "General Fund revenues",
+      "value": "$8.9M",
+      "hint": "audited FY2025"
+    },
+    {
+      "label": "General Fund expenditures",
+      "value": "$8.7M",
+      "hint": "audited FY2025"
+    },
+    {
+      "label": "Long-term debt",
+      "value": "$29.3M",
+      "hint": "audited FY2025"
+    },
+    {
+      "label": "General Fund reserve",
+      "value": "53%",
+      "hint": "reserves vs. revenues; ranks 125 of 261 MI cities (higher is better)"
+    }
   ],
   "charts": [
     {
       "type": "bars",
-      "title": "How your tax dollar is budgeted (all funds)",
+      "title": "FY2026-27 adopted budget by fund (all funds)",
       "unit": "%",
       "series": [
-        { "label": "Major Streets", "value": 21 },
-        { "label": "Police Fund", "value": 17 },
-        { "label": "Watermain", "value": 13 },
-        { "label": "Sanitary Sewer", "value": 13 },
-        { "label": "General Fund", "value": 13 },
-        { "label": "Local Streets", "value": 6 },
-        { "label": "Fire Fund", "value": 4 },
-        { "label": "Self Insurance", "value": 4 },
-        { "label": "Motor Pool", "value": 3 },
-        { "label": "Rubbish Collection", "value": 3 },
-        { "label": "Senior Citizens", "value": 1 },
-        { "label": "Building", "value": 1 },
-        { "label": "Information Technology", "value": 1 }
+        {
+          "label": "Major Streets",
+          "value": 21
+        },
+        {
+          "label": "Police Fund",
+          "value": 17
+        },
+        {
+          "label": "Watermain",
+          "value": 13
+        },
+        {
+          "label": "Sanitary Sewer",
+          "value": 13
+        },
+        {
+          "label": "General Fund",
+          "value": 13
+        },
+        {
+          "label": "Local Streets",
+          "value": 6
+        },
+        {
+          "label": "Fire Fund",
+          "value": 4
+        },
+        {
+          "label": "Self Insurance",
+          "value": 4
+        },
+        {
+          "label": "Motor Pool",
+          "value": 3
+        },
+        {
+          "label": "Rubbish Collection",
+          "value": 3
+        },
+        {
+          "label": "Senior Citizens",
+          "value": 1
+        },
+        {
+          "label": "Building",
+          "value": 1
+        },
+        {
+          "label": "Information Technology",
+          "value": 1
+        }
       ]
     },
     {
       "type": "donut",
-      "title": "General Fund spending",
+      "title": "General Fund spending mix, FY2026-27 (plan)",
       "unit": "%",
       "series": [
-        { "label": "Legacy cost payment", "value": 29 },
-        { "label": "Seniors & Library", "value": 19 },
-        { "label": "Fire transfer", "value": 18 },
-        { "label": "Street lighting", "value": 16 },
-        { "label": "Parks & Recreation", "value": 11 },
-        { "label": "Police transfer", "value": 7 }
+        {
+          "label": "Legacy cost payment",
+          "value": 29
+        },
+        {
+          "label": "Seniors & Library",
+          "value": 19
+        },
+        {
+          "label": "Fire transfer",
+          "value": 18
+        },
+        {
+          "label": "Street lighting",
+          "value": 16
+        },
+        {
+          "label": "Parks & Recreation",
+          "value": 11
+        },
+        {
+          "label": "Police transfer",
+          "value": 7
+        }
       ]
     },
     {
       "type": "trend",
-      "title": "Taxable value, 6-year",
+      "title": "Total taxable value (audited, $M)",
       "unit": "$M",
       "points": [
-        { "x": "2021", "y": 650 },
-        { "x": "2022", "y": 684 },
-        { "x": "2023", "y": 732 },
-        { "x": "2024", "y": 793 },
-        { "x": "2025", "y": 858 },
-        { "x": "2026", "y": 896 }
+        {
+          "x": "2010",
+          "y": 670.0
+        },
+        {
+          "x": "2011",
+          "y": 620.8
+        },
+        {
+          "x": "2012",
+          "y": 557.3
+        },
+        {
+          "x": "2013",
+          "y": 543.3
+        },
+        {
+          "x": "2014",
+          "y": 533.9
+        },
+        {
+          "x": "2015",
+          "y": 537.4
+        },
+        {
+          "x": "2016",
+          "y": 540.1
+        },
+        {
+          "x": "2017",
+          "y": 550.0
+        },
+        {
+          "x": "2018",
+          "y": 573.5
+        },
+        {
+          "x": "2019",
+          "y": 597.8
+        },
+        {
+          "x": "2020",
+          "y": 622.9
+        },
+        {
+          "x": "2021",
+          "y": 650.0
+        },
+        {
+          "x": "2022",
+          "y": 681.1
+        },
+        {
+          "x": "2023",
+          "y": 732.2
+        },
+        {
+          "x": "2024",
+          "y": 793.3
+        },
+        {
+          "x": "2025",
+          "y": 836.9
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "General Fund revenues (audited, $M)",
+      "unit": "$M",
+      "points": [
+        {
+          "x": "2010",
+          "y": 6.7
+        },
+        {
+          "x": "2011",
+          "y": 6.2
+        },
+        {
+          "x": "2012",
+          "y": 5.6
+        },
+        {
+          "x": "2013",
+          "y": 5.7
+        },
+        {
+          "x": "2014",
+          "y": 6.4
+        },
+        {
+          "x": "2015",
+          "y": 6.4
+        },
+        {
+          "x": "2016",
+          "y": 6.4
+        },
+        {
+          "x": "2017",
+          "y": 5.7
+        },
+        {
+          "x": "2018",
+          "y": 6.0
+        },
+        {
+          "x": "2019",
+          "y": 6.3
+        },
+        {
+          "x": "2020",
+          "y": 6.6
+        },
+        {
+          "x": "2021",
+          "y": 7.3
+        },
+        {
+          "x": "2022",
+          "y": 10.2
+        },
+        {
+          "x": "2023",
+          "y": 7.9
+        },
+        {
+          "x": "2024",
+          "y": 9.2
+        },
+        {
+          "x": "2025",
+          "y": 8.9
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "General Fund expenditures (audited, $M)",
+      "unit": "$M",
+      "points": [
+        {
+          "x": "2010",
+          "y": 6.7
+        },
+        {
+          "x": "2011",
+          "y": 5.7
+        },
+        {
+          "x": "2012",
+          "y": 5.6
+        },
+        {
+          "x": "2013",
+          "y": 6.1
+        },
+        {
+          "x": "2014",
+          "y": 6.5
+        },
+        {
+          "x": "2015",
+          "y": 5.1
+        },
+        {
+          "x": "2016",
+          "y": 8.1
+        },
+        {
+          "x": "2017",
+          "y": 6.3
+        },
+        {
+          "x": "2018",
+          "y": 5.4
+        },
+        {
+          "x": "2019",
+          "y": 5.7
+        },
+        {
+          "x": "2020",
+          "y": 5.9
+        },
+        {
+          "x": "2021",
+          "y": 5.4
+        },
+        {
+          "x": "2022",
+          "y": 8.2
+        },
+        {
+          "x": "2023",
+          "y": 10.3
+        },
+        {
+          "x": "2024",
+          "y": 8.4
+        },
+        {
+          "x": "2025",
+          "y": 8.7
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Long-term debt (audited, $M)",
+      "unit": "$M",
+      "points": [
+        {
+          "x": "2010",
+          "y": 9.6
+        },
+        {
+          "x": "2011",
+          "y": 12.6
+        },
+        {
+          "x": "2012",
+          "y": 12.1
+        },
+        {
+          "x": "2013",
+          "y": 10.6
+        },
+        {
+          "x": "2014",
+          "y": 9.3
+        },
+        {
+          "x": "2015",
+          "y": 12.9
+        },
+        {
+          "x": "2016",
+          "y": 23.0
+        },
+        {
+          "x": "2017",
+          "y": 30.2
+        },
+        {
+          "x": "2018",
+          "y": 31.4
+        },
+        {
+          "x": "2019",
+          "y": 32.4
+        },
+        {
+          "x": "2020",
+          "y": 28.8
+        },
+        {
+          "x": "2021",
+          "y": 27.4
+        },
+        {
+          "x": "2022",
+          "y": 27.2
+        },
+        {
+          "x": "2023",
+          "y": 28.6
+        },
+        {
+          "x": "2024",
+          "y": 29.0
+        },
+        {
+          "x": "2025",
+          "y": 29.3
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Unfunded pension liability (audited, $M)",
+      "unit": "$M",
+      "points": [
+        {
+          "x": "2011",
+          "y": 22.8
+        },
+        {
+          "x": "2012",
+          "y": 25.1
+        },
+        {
+          "x": "2013",
+          "y": 27.1
+        },
+        {
+          "x": "2014",
+          "y": 28.3
+        },
+        {
+          "x": "2015",
+          "y": 28.6
+        },
+        {
+          "x": "2016",
+          "y": 31.0
+        },
+        {
+          "x": "2017",
+          "y": 30.9
+        },
+        {
+          "x": "2018",
+          "y": 26.6
+        },
+        {
+          "x": "2019",
+          "y": 28.2
+        },
+        {
+          "x": "2020",
+          "y": 28.1
+        },
+        {
+          "x": "2021",
+          "y": 27.3
+        },
+        {
+          "x": "2022",
+          "y": 26.4
+        },
+        {
+          "x": "2023",
+          "y": 31.8
+        },
+        {
+          "x": "2024",
+          "y": 24.0
+        },
+        {
+          "x": "2025",
+          "y": 21.5
+        }
       ]
     }
   ],
-  "source": "City of Burton FY 2026-2027 Approved Budget (Controller's Office)",
+  "source": "City of Burton FY 2026-2027 Approved Budget (Controller's Office) for the adopted-budget figures; State of Michigan Community Financials (audited F-65 actuals) for the historical trends.",
   "links": [
-    { "text": "Michigan Community Financials dashboard", "href": "https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/2612060" },
-    { "text": "City of Burton", "href": "https://www.burtonmi.gov" },
-    { "text": "2024-25 Budget (PDF)", "href": "budgets/budget-2024-25.pdf" },
-    { "text": "2023-24 Budget (PDF)", "href": "budgets/budget-2023-24.pdf" },
-    { "text": "2022-23 Budget (PDF)", "href": "budgets/budget-2022-23.pdf" },
-    { "text": "2021-22 Budget (PDF)", "href": "budgets/budget-2021-22.pdf" },
-    { "text": "2020-21 Budget (PDF)", "href": "budgets/budget-2020-21.pdf" },
-    { "text": "2019-20 Budget (PDF)", "href": "budgets/budget-2019-20.pdf" },
-    { "text": "2018-19 Budget (PDF)", "href": "budgets/budget-2018-19.pdf" }
+    {
+      "text": "Michigan Community Financials dashboard",
+      "href": "https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/2612060"
+    },
+    {
+      "text": "City of Burton",
+      "href": "https://www.burtonmi.gov"
+    }
   ],
   "notes": [
-    "For an interactive view of Burton's revenues, expenditures, debt, and multi-year trends, see the State of Michigan's official financial-transparency dashboard (Michigan Community Financials link above).",
-    "The budget PDFs are the City's official adopted budgets for each fiscal year."
+    "Two views: the FY2026-27 figures and fund/spending charts are the city's ADOPTED BUDGET (a plan, all funds unless noted General Fund). The dollar trends are AUDITED ACTUALS reported to the State of Michigan, which run about a year behind the adopted budget -- the two are not the same measure.",
+    "General Fund figures cover only the General Fund, not the city's total all-funds budget.",
+    "Audited trends and fiscal-health figures come from the State of Michigan Community Financials program (audited F-65 annual financial reports)."
   ]
 }
