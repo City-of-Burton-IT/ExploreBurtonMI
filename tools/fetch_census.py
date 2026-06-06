@@ -413,10 +413,6 @@ def main() -> int:
 
     trend = build_trend(record, args.year, args.key)
     panel = build_panel(record, args.year, trend)
-    compare = build_compare(record, args.year, args.key)
-    if compare:
-        # Place the benchmark comparison high in the panel (after housing tenure).
-        panel["charts"].insert(1, compare)
     homeownership = build_homeownership_trend(args.key)
     if homeownership:
         panel["charts"].append({
@@ -430,6 +426,11 @@ def main() -> int:
             "Homeownership rate is the owner-occupied share of occupied homes from the "
             "2000, 2010, and 2020 decennial censuses (directly comparable counts).",
         )
+    # The wide benchmark comparison reads better at the end of the panel than in the
+    # middle of the single-topic charts, so append it last.
+    compare = build_compare(record, args.year, args.key)
+    if compare:
+        panel["charts"].append(compare)
     out = os.path.join(os.path.dirname(__file__), "..", "public", "info-demographics.json")
     out = os.path.abspath(out)
     with open(out, "w", encoding="utf-8", newline="\n") as fh:
