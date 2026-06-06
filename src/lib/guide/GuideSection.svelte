@@ -50,4 +50,13 @@
   .md :global(strong) {
     color: var(--pub-ink, #2c2c2c);
   }
+  /* Images in guide markdown (![alt](/photo.jpg)) -- keep them responsive so a
+     large photo never overflows the content column. */
+  .md :global(img) {
+    display: block;
+    max-width: 100%;
+    height: auto;
+    margin: 0.8rem 0;
+    border-radius: var(--pub-radius-sm, 8px);
+  }
 </style>
