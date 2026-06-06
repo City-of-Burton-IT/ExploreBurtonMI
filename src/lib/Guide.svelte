@@ -1,7 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import type { GuideBundle } from './types';
-  import { ui, setGuideSection } from './store.svelte';
+  import { ui, setGuideSection, openAbout } from './store.svelte';
   import GuideSection from './guide/GuideSection.svelte';
 
   let bundle = $state<GuideBundle | null>(null);
@@ -42,6 +42,7 @@
           Download the official packet (PDF)
         </a>
       {/if}
+      <button class="about" onclick={openAbout}>About this site &amp; credits</button>
     </nav>
 
     <div class="guide-body">
@@ -105,6 +106,30 @@
     color: var(--civic-blue-link, #386fc5);
     padding: 0.5rem 0.7rem;
   }
+  /* "About" sits with the PDF link as the guide's footer actions. When there is
+     no PDF, push it to the bottom of the nav column itself. */
+  .pdf + .about {
+    margin-top: 0;
+  }
+  .about {
+    margin-top: auto;
+    border: none;
+    background: none;
+    text-align: left;
+    padding: 0.5rem 0.7rem;
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.85rem;
+    color: var(--civic-blue-link, #386fc5);
+    cursor: pointer;
+  }
+  .about:hover {
+    text-decoration: underline;
+  }
+  .about:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+    border-radius: var(--pub-radius-sm, 8px);
+  }
   .guide-body {
     flex: 1 1 auto;
     overflow-y: auto;
@@ -148,6 +173,10 @@
       box-shadow: none;
     }
     .pdf {
+      margin-top: 0;
+      white-space: nowrap;
+    }
+    .about {
       margin-top: 0;
       white-space: nowrap;
     }

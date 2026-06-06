@@ -78,6 +78,16 @@ body,
   border-bottom: 2px dashed var(--civic-green);
 }
 
+.topbar .seal-link {
+  display: inline-flex;
+  flex-shrink: 0;
+  line-height: 0;
+  border-radius: 50%;
+}
+.topbar .seal-link:focus-visible {
+  outline: none;
+  box-shadow: var(--pub-focus-ring);
+}
 .topbar .seal {
   width: 44px;
   height: 44px;

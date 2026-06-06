@@ -2,7 +2,9 @@
   import type { AppConfig } from './types';
   import { ui, openAbout, closeAbout } from './store.svelte';
 
-  let { config }: { config: AppConfig } = $props();
+  // `showButton` renders the inline "About" trigger. When false, only the dialog
+  // is mounted (opened from elsewhere, e.g. the map © button or the Guide).
+  let { config, showButton = true }: { config: AppConfig; showButton?: boolean } = $props();
 
   function onKeydown(e: KeyboardEvent) {
     if (e.key === 'Escape') closeAbout();
@@ -11,7 +13,9 @@
 
 <svelte:window onkeydown={onKeydown} />
 
-<button class="about-btn" onclick={openAbout}>About</button>
+{#if showButton}
+  <button class="about-btn" onclick={openAbout}>About</button>
+{/if}
 
 {#if ui.aboutOpen}
   <div

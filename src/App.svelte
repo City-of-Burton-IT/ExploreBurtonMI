@@ -82,7 +82,9 @@
 
 <div class="app">
   <header class="topbar">
-    <img class="seal" src="/burton-seal.png" alt="City of Burton seal" width="44" height="44" />
+    <a class="seal-link" href="https://www.burtonmi.gov" aria-label="City of Burton home page">
+      <img class="seal" src="/burton-seal.png" alt="City of Burton seal" width="44" height="44" />
+    </a>
     <div class="brand">
       <h1>{config?.project.name ?? 'Explore Burton'}</h1>
       {#if config?.project.tagline}
@@ -105,7 +107,9 @@
         </div>
       {/if}
       <a class="home-btn" href="https://www.burtonmi.gov">Home</a>
-      <About {config} />
+      <!-- Trigger lives at the end of the Guide; this keeps the dialog mounted so
+           the map © button (and the Guide's About button) can open it. -->
+      <About {config} showButton={false} />
     {/if}
   </header>
 
