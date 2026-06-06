@@ -59,6 +59,18 @@
   ],
   "source": "City of Burton FY 2026-2027 Approved Budget (Controller's Office)",
   "links": [
-    { "text": "City of Burton", "href": "https://www.burtonmi.gov" }
+    { "text": "Michigan Community Financials dashboard", "href": "https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/2612060" },
+    { "text": "City of Burton", "href": "https://www.burtonmi.gov" },
+    { "text": "2024-25 Budget (PDF)", "href": "budgets/budget-2024-25.pdf" },
+    { "text": "2023-24 Budget (PDF)", "href": "budgets/budget-2023-24.pdf" },
+    { "text": "2022-23 Budget (PDF)", "href": "budgets/budget-2022-23.pdf" },
+    { "text": "2021-22 Budget (PDF)", "href": "budgets/budget-2021-22.pdf" },
+    { "text": "2020-21 Budget (PDF)", "href": "budgets/budget-2020-21.pdf" },
+    { "text": "2019-20 Budget (PDF)", "href": "budgets/budget-2019-20.pdf" },
+    { "text": "2018-19 Budget (PDF)", "href": "budgets/budget-2018-19.pdf" }
+  ],
+  "notes": [
+    "For an interactive view of Burton's revenues, expenditures, debt, and multi-year trends, see the State of Michigan's official financial-transparency dashboard (Michigan Community Financials link above).",
+    "The budget PDFs are the City's official adopted budgets for each fiscal year."
   ]
 }
