@@ -70,6 +70,18 @@ export interface DataLayerConfig {
   nameField?: string;
 }
 
+/** A toggleable georeferenced image overlay (e.g. the zoning map) shown via the layer control. */
+export interface ImageOverlayConfig {
+  /** path (relative to the site root) to the image */
+  source: string;
+  /** label shown in the layer-toggle control */
+  label: string;
+  /** [[southLat, westLng], [northLat, eastLng]] geographic bounds the image is stretched to */
+  bounds: [[number, number], [number, number]];
+  /** image opacity 0-1 (default 0.6 so the basemap shows through) */
+  opacity?: number;
+}
+
 export interface AppConfig {
   project: ProjectConfig;
   data: DataConfig;
@@ -77,6 +89,8 @@ export interface AppConfig {
   tiles: TilesConfig;
   /** toggleable GeoJSON overlays (off by default; user enables via a layer control) */
   dataLayers?: DataLayerConfig[];
+  /** toggleable georeferenced image overlays (off by default) */
+  imageOverlays?: ImageOverlayConfig[];
   /** property each feature is grouped/colored by */
   categoryField: string;
   /** known category values -> style; used for marker color and (later) facets */

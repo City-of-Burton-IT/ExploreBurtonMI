@@ -32,6 +32,9 @@
     { "source": "precincts.geojson", "label": "Voting precincts", "nameField": "name" },
     { "source": "flood-zones.geojson", "label": "Flood zones (FEMA)", "nameField": "name" }
   ],
+  "imageOverlays": [
+    { "source": "zoning-map.jpg", "label": "Zoning map (approx.)", "bounds": [[42.9596, -83.6928], [43.0482, -83.5738]], "opacity": 0.6 }
+  ],
   "categoryField": "category",
   "categories": {
     "Government": { "color": "#1f3a5f" },

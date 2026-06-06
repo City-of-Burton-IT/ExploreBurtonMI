@@ -126,7 +126,7 @@
     // control, OFF by default. Drawn in a dedicated pane below the markers (so they
     // never block a marker click) and below the dim mask (so out-of-city portions
     // read as dimmed like everything else).
-    if (config.dataLayers?.length) {
+    if (config.dataLayers?.length || config.imageOverlays?.length) {
       map.createPane('dataLayers');
       const pane = map.getPane('dataLayers');
       if (pane) pane.style.zIndex = '350';
@@ -134,7 +134,19 @@
       const layerControl = L.control
         .layers(undefined, undefined, { collapsed: true, position: 'topright' })
         .addTo(map);
-      for (const layer of config.dataLayers) {
+
+      // Georeferenced image overlays (e.g. the zoning map) -- stretched to their
+      // geographic bounds, semi-transparent so the basemap shows through.
+      for (const ov of config.imageOverlays ?? []) {
+        const img = L.imageOverlay(ov.source, ov.bounds, {
+          pane: 'dataLayers',
+          opacity: ov.opacity ?? 0.6,
+          interactive: false,
+        });
+        layerControl.addOverlay(img, ov.label);
+      }
+
+      for (const layer of config.dataLayers ?? []) {
         const nameField = layer.nameField ?? 'name';
         fetch(layer.source)
           .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${layer.source} HTTP ${r.status}`))))
@@ -151,7 +163,11 @@
               pane: 'dataLayers',
               style: (f) => {
                 const color = (f?.properties?._color as string) ?? palette[0];
-                return { color, weight: 3, opacity: 0.9, fillColor: color, fillOpacity: 0.12 };
+                // Per-feature style overrides (e.g. flood zones use a heavier fill so
+                // the areas read as filled, not just outlined).
+                const weight = (f?.properties?._weight as number) ?? 3;
+                const fillOpacity = (f?.properties?._fillOpacity as number) ?? 0.12;
+                return { color, weight, opacity: 0.9, fillColor: color, fillOpacity };
               },
               onEachFeature: (feature, lyr) => {
                 const label = feature.properties?.[nameField];

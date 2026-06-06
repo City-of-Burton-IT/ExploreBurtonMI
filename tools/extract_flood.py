@@ -107,6 +107,8 @@ def main() -> int:
                 "name": f"FEMA Flood Zone {zone} - high risk (1% annual chance)",
                 "zone": zone,
                 "_color": FLOOD_BLUE,
+                "_fillOpacity": 0.35,  # filled, not just outlined
+                "_weight": 1,
             },
             "geometry": {"type": geom["type"], "coordinates": _round(geom["coordinates"])},
         })
