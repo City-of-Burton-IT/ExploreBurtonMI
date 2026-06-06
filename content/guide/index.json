@@ -13,6 +13,9 @@
     { "id": "elections", "title": "Elections", "type": "markdown", "file": "elections.md" },
     { "id": "transit", "title": "Public Transit", "type": "markdown", "file": "transit.md" },
     { "id": "roads", "title": "Roads & Construction", "type": "markdown", "file": "roads.md" },
+    { "id": "help", "title": "Help & Support", "type": "markdown", "file": "help.md" },
+    { "id": "get-involved", "title": "Get Involved", "type": "markdown", "file": "get-involved.md" },
+    { "id": "worship", "title": "Places of Worship", "type": "markdown", "file": "worship.md" },
     { "id": "ordinances", "title": "City Ordinances", "type": "markdown", "file": "ordinances.md" }
   ]
 }
