@@ -2,6 +2,8 @@ Curbside service is provided by **EMTERRA** — 1606 E. Webster Rd., Flint, MI 4
 (810) 667-4885. Garbage, recycling, and yard waste are all collected on the **same day**,
 and everything must be at the edge of the road (outside the ditch line) by **6:00 a.m.**
 
+Not sure which day is yours? See the **Pickup Schedule** section to look up your street.
+
 ## Garbage
 
 - Unlimited bags within reason, **35 gallons or less**, properly contained and tied.
@@ -26,6 +28,8 @@ rocks, tires, nails or screws, and demolition lumber. Bundle material no larger 
 their contractor.
 
 ## Recycling
+
+![Emterra single-stream recycling: acceptable and unacceptable items](/emterra-recycling.png)
 
 Picked up the **same day** as trash, out by **6:00 a.m.** The City sells recycling
 containers for **$7.00** each, and offers **free stickers** to use your own lidded/handled

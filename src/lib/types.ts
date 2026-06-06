@@ -220,7 +220,7 @@ export interface InfoPanel {
 export interface GuideSectionMeta {
   id: string;
   title: string;
-  type: 'markdown' | 'contacts' | 'meetings';
+  type: 'markdown' | 'contacts' | 'meetings' | 'waste';
 }
 
 export interface GuidePerson {

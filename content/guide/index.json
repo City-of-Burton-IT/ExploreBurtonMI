@@ -6,6 +6,7 @@
     { "id": "contacts", "title": "Staff & Council", "type": "contacts", "file": "contacts.json" },
     { "id": "meetings", "title": "Meetings", "type": "meetings", "file": "meetings.json" },
     { "id": "trash-recycling", "title": "Trash & Recycling", "type": "markdown", "file": "trash-recycling.md" },
+    { "id": "pickup-schedule", "title": "Pickup Schedule", "type": "waste" },
     { "id": "permits", "title": "Permits", "type": "markdown", "file": "permits.md" },
     { "id": "events", "title": "Events & Parks", "type": "markdown", "file": "events.md" },
     { "id": "utilities", "title": "Utility Billing", "type": "markdown", "file": "utilities.md" },

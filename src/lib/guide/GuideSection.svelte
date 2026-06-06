@@ -2,6 +2,7 @@
   import type { GuideBundle, GuideSectionMeta } from '../types';
   import ContactsList from './ContactsList.svelte';
   import MeetingsList from './MeetingsList.svelte';
+  import WasteSchedule from './WasteSchedule.svelte';
 
   let { section, bundle }: { section: GuideSectionMeta; bundle: GuideBundle } = $props();
 </script>
@@ -13,6 +14,8 @@
   <ContactsList contacts={bundle.contacts} />
 {:else if section.type === 'meetings' && bundle.meetings}
   <MeetingsList meetings={bundle.meetings} />
+{:else if section.type === 'waste'}
+  <WasteSchedule />
 {/if}
 
 <style>

@@ -29,13 +29,16 @@ const out = { sections: [], pdf: index.pdf, content: {} };
 
 for (const s of index.sections) {
   out.sections.push({ id: s.id, title: s.title, type: s.type });
-  const file = join(SRC, s.file);
+  const file = s.file ? join(SRC, s.file) : null;
   if (s.type === 'markdown') {
     out.content[s.id] = sanitize(marked.parse(readFileSync(file, 'utf8')));
   } else if (s.type === 'contacts') {
     out.contacts = JSON.parse(readFileSync(file, 'utf8'));
   } else if (s.type === 'meetings') {
     out.meetings = JSON.parse(readFileSync(file, 'utf8'));
+  } else if (s.type === 'waste') {
+    // Rendered by a component that fetches public/waste-schedule.json at runtime;
+    // only the section meta needs to ship in the bundle.
   } else {
     throw new Error(`Unknown section type '${s.type}' for '${s.id}'`);
   }
