@@ -3,9 +3,13 @@
 
 import type { InfoSeriesItem } from '../types';
 
+/** The civic-blue brand color, shared by every chart. Keep in sync with the
+ *  `--civic-blue` CSS token in app.css (SVG fills can't read a CSS var directly). */
+export const CIVIC_BLUE = '#2c57a0';
+
 /** Brand-aligned categorical palette (civic spine first, then map category hues). */
 export const DEFAULT_PALETTE: string[] = [
-  '#2c57a0', // civic blue
+  CIVIC_BLUE, // civic blue
   '#4ea735', // civic green
   '#e08a00', // orange
   '#6a1b9a', // purple

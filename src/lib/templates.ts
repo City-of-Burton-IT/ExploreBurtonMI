@@ -33,6 +33,19 @@ export function safeExternalUrl(raw: string): string | null {
   return u.protocol === 'http:' || u.protocol === 'https:' ? u.href : null;
 }
 
+/**
+ * Defense-in-depth href guard for links from data-driven (but trusted) sources
+ * like info-*.json and guide.json: permits relative paths and #anchors and the
+ * http(s)/mailto/tel schemes, neutralizing any other scheme (javascript:, data:,
+ * vbscript:) to "#". Unlike safeExternalUrl this keeps relative/anchor links intact.
+ */
+export function safeHref(raw: string): string {
+  const s = (raw ?? '').trim();
+  const scheme = s.match(/^([a-z][a-z0-9+.-]*):/i);
+  if (!scheme) return s || '#'; // relative path or #anchor -- safe
+  return /^(https?|mailto|tel)$/i.test(scheme[1]) ? s : '#';
+}
+
 /** Return a `mailto:` href or null. */
 export function safeMailto(raw: string): string | null {
   const s = raw.trim();

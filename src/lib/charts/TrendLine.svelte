@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { trendLayout, formatValue } from './scale';
+  import { trendLayout, formatValue, CIVIC_BLUE } from './scale';
   import ChartTip from './ChartTip.svelte';
 
   let {
@@ -12,7 +12,7 @@
   const PAD = 28;
 
   const layout = $derived(trendLayout(points, W, H, PAD));
-  const color = '#2c57a0'; // civic blue
+  const color = CIVIC_BLUE;
 
   // Long series (e.g. the 16-year audited finance trends) overcrowd a narrow
   // mobile chart: every year label and every point's value label collide. When

@@ -77,6 +77,11 @@
   onMount(() => {
     const { center, zoom, maxZoom, minZoom, maxBounds, previewAttribute } = config.map;
 
+    // Honor prefers-reduced-motion: turn off Leaflet's animated pan/zoom/fade.
+    const reduceMotion =
+      typeof window !== 'undefined' &&
+      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
+
     map = L.map(mapEl, {
       center,
       zoom,
@@ -86,6 +91,9 @@
       maxBoundsViscosity: 0.8,
       // Credits live in the About dialog instead of an on-map overlay.
       attributionControl: false,
+      zoomAnimation: !reduceMotion,
+      fadeAnimation: !reduceMotion,
+      markerZoomAnimation: !reduceMotion,
     });
 
     L.tileLayer(config.tiles.url, {

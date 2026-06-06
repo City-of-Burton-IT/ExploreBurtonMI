@@ -53,6 +53,19 @@
   box-sizing: border-box;
 }
 
+/* Respect users who ask for less motion: near-instant transitions/animations and
+   no smooth scroll. Leaflet's own pan/zoom animations are disabled in Map.svelte. */
+@media (prefers-reduced-motion: reduce) {
+  *,
+  *::before,
+  *::after {
+    transition-duration: 0.01ms !important;
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    scroll-behavior: auto !important;
+  }
+}
+
 html,
 body,
 #app {

@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import type { GuideBundle } from './types';
   import { ui, setGuideSection, openAbout } from './store.svelte';
+  import { safeHref } from './templates';
   import GuideSection from './guide/GuideSection.svelte';
 
   let bundle = $state<GuideBundle | null>(null);
@@ -39,7 +40,7 @@
       </ul>
       <button class="about" onclick={openAbout}>About this site &amp; credits</button>
       {#if bundle.pdf}
-        <a class="pdf" href={bundle.pdf} target="_blank" rel="noopener noreferrer">
+        <a class="pdf" href={safeHref(bundle.pdf)} target="_blank" rel="noopener noreferrer">
           Download the official packet (PDF)
         </a>
       {/if}

@@ -1,12 +1,12 @@
 <script lang="ts">
   import type { CompareRow } from '../types';
-  import { formatValue } from './scale';
+  import { formatValue, CIVIC_BLUE } from './scale';
 
   let { rows }: { rows: CompareRow[] } = $props();
 
   // The first place (Burton) is the subject and is emphasised; the rest are
   // muted reference bars (county, state).
-  const SUBJECT = '#2c57a0'; // civic blue
+  const SUBJECT = CIVIC_BLUE;
   const REF = ['#9bb4cf', '#c5d2dd']; // muted blues for county / state
 
   function colorFor(i: number): string {

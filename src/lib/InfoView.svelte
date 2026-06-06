@@ -1,5 +1,6 @@
 <script lang="ts">
   import type { InfoPanel } from './types';
+  import { safeHref } from './templates';
   import StatCard from './StatCard.svelte';
   import Donut from './charts/Donut.svelte';
   import Bars from './charts/Bars.svelte';
@@ -64,7 +65,7 @@
         {#if panel.links?.length}
           <ul class="links">
             {#each panel.links as link (link.href)}
-              <li><a href={link.href} target="_blank" rel="noopener noreferrer">{link.text}</a></li>
+              <li><a href={safeHref(link.href)} target="_blank" rel="noopener noreferrer">{link.text}</a></li>
             {/each}
           </ul>
         {/if}
