@@ -80,6 +80,10 @@ export interface ImageOverlayConfig {
   bounds: [[number, number], [number, number]];
   /** image opacity 0-1 (default 0.6 so the basemap shows through) */
   opacity?: number;
+  /** clip the image to the city boundary polygon (strips the out-of-city parts) */
+  clipToBoundary?: boolean;
+  /** path to a legend image shown in a side panel while this overlay is on */
+  legend?: string;
 }
 
 export interface AppConfig {

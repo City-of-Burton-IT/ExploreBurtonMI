@@ -33,7 +33,7 @@
     { "source": "flood-zones.geojson", "label": "Flood zones (FEMA)", "nameField": "name" }
   ],
   "imageOverlays": [
-    { "source": "zoning-map.jpg", "label": "Zoning map (approx.)", "bounds": [[42.9596, -83.6928], [43.0482, -83.5738]], "opacity": 0.6 }
+    { "source": "zoning-map.jpg", "label": "Zoning map (approx.)", "bounds": [[42.9596, -83.6928], [43.0482, -83.5738]], "opacity": 0.6, "clipToBoundary": true, "legend": "zoning-legend.png" }
   ],
   "categoryField": "category",
   "categories": {

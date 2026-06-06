@@ -26,6 +26,31 @@
     return (cat && config.categories[cat]?.color) || DEFAULT_COLOR;
   }
 
+  /** Build a CSS clip-path polygon (in element-relative %) from a boundary GeoJSON
+   *  so an image overlay can be clipped to the city shape. Percentages scale with
+   *  the element, so the clip tracks Leaflet's zoom/pan automatically. */
+  function boundaryClipPath(
+    geojson: { type: string; geometry?: { type: string; coordinates: number[][][] }; coordinates?: number[][][] },
+    bounds: [[number, number], [number, number]],
+  ): string {
+    // eslint-disable-next-line @typescript-eslint/no-explicit-any
+    const geom: any = (geojson as any).type === 'Feature' ? (geojson as any).geometry : geojson;
+    const ring: number[][] | null =
+      geom?.type === 'Polygon'
+        ? geom.coordinates[0]
+        : geom?.type === 'MultiPolygon'
+          ? geom.coordinates[0][0]
+          : null;
+    if (!ring) return '';
+    const [[south, west], [north, east]] = bounds;
+    const pts = ring.map(([lng, lat]: number[]) => {
+      const x = ((lng - west) / (east - west)) * 100;
+      const y = ((north - lat) / (north - south)) * 100;
+      return `${x.toFixed(2)}% ${y.toFixed(2)}%`;
+    });
+    return `polygon(${pts.join(', ')})`;
+  }
+
   function baseStyle(feature: PlaceFeature): L.CircleMarkerOptions {
     return {
       radius: 8,
@@ -143,6 +168,50 @@
           opacity: ov.opacity ?? 0.6,
           interactive: false,
         });
+
+        // Clip the image to the city boundary (removes the out-of-city parts,
+        // including the map sheet's baked-in legend over neighbouring areas).
+        if (ov.clipToBoundary && config.boundary) {
+          let clip = '';
+          const applyClip = () => {
+            const el = img.getElement() as HTMLElement | null;
+            if (el && clip) el.style.clipPath = clip;
+          };
+          fetch(config.boundary.source)
+            .then((r) => (r.ok ? r.json() : Promise.reject(new Error('boundary'))))
+            .then((gj) => {
+              clip = boundaryClipPath(gj, ov.bounds);
+              applyClip();
+            })
+            .catch((err) => console.warn('Zoning clip not applied:', err));
+          img.on('add', applyClip);
+        }
+
+        // Legend image shown in a side panel while this overlay is enabled.
+        if (ov.legend) {
+          const panel = L.DomUtil.create('div', 'zoning-legend-panel');
+          panel.style.display = 'none';
+          const close = L.DomUtil.create('button', 'zlp-close', panel);
+          close.type = 'button';
+          close.setAttribute('aria-label', 'Hide legend');
+          close.textContent = '×';
+          const legendImg = L.DomUtil.create('img', '', panel) as HTMLImageElement;
+          legendImg.src = ov.legend;
+          legendImg.alt = 'Zoning districts color key';
+          mapEl.appendChild(panel);
+          L.DomEvent.disableClickPropagation(panel);
+          L.DomEvent.disableScrollPropagation(panel);
+          close.addEventListener('click', () => {
+            panel.style.display = 'none';
+          });
+          img.on('add', () => {
+            panel.style.display = 'block';
+          });
+          img.on('remove', () => {
+            panel.style.display = 'none';
+          });
+        }
+
         layerControl.addOverlay(img, ov.label);
       }
 
