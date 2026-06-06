@@ -732,22 +732,6 @@
     },
     {
       "type": "Feature",
-      "id": "osm:node/7054835941",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6333455,
-          42.9923175
-        ]
-      },
-      "properties": {
-        "name": "Meijer",
-        "category": "Automotive",
-        "address": "2333 South Center Road, Burton, MI 48519"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "osm:node/7054836045",
       "geometry": {
         "type": "Point",
@@ -996,23 +980,6 @@
         "address": "4195 E Court St, Burton, MI 48509-1717",
         "phone": "(810) 743-1849",
         "website": "http://stores.sallybeauty.com/mi/burton/beauty-supply-burton-mi-693.html"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "osm:node/7055480269",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6281532,
-          43.0208988
-        ]
-      },
-      "properties": {
-        "name": "Sprint",
-        "category": "Retail & Shopping",
-        "address": "4163 E Ct, Burton, MI 48509",
-        "phone": "(810) 743-6479"
       }
     },
     {
@@ -1356,22 +1323,6 @@
     },
     {
       "type": "Feature",
-      "id": "osm:node/8132984922",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.5952108,
-          42.990665
-        ]
-      },
-      "properties": {
-        "name": "BP Shop",
-        "category": "Grocery & Food",
-        "address": "2514 South Belsay Road, Burton, MI 48519"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "osm:node/8132984923",
       "geometry": {
         "type": "Point",
@@ -1603,24 +1554,6 @@
     },
     {
       "type": "Feature",
-      "id": "osm:way/1454279070",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6333087,
-          43.0002447
-        ]
-      },
-      "properties": {
-        "name": "Saint Nicholas Orthodox Church",
-        "category": "Faith",
-        "address": "2143 South Center Road, Burton, MI 48519",
-        "phone": "+1-810-744-0070",
-        "website": "https://www.saintnicholasburton.org/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "osm:way/1489550231",
       "geometry": {
         "type": "Point",
@@ -1703,28 +1636,25 @@
       },
       "properties": {
         "name": "Walmart Supercenter",
-        "category": "Grocery & Food",
+        "category": [
+          "Grocery & Food",
+          "Health & Medical",
+          "Automotive",
+          "Retail & Shopping"
+        ],
         "address": "5323 East Court Street North, Burton, MI 48509",
         "phone": "+1 810-744-9690",
         "website": "https://www.walmart.com/store/2273-burton-mi",
-        "hours": "24/7"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "osm:way/636390334",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.5826987,
-          43.0083353
+        "hours": "24/7",
+        "services": [
+          "Pharmacy",
+          "Auto Center",
+          "Tire & Lube Express",
+          "Bakery",
+          "Photo Center",
+          "Wireless Services",
+          "Grocery Pickup & Delivery"
         ]
-      },
-      "properties": {
-        "name": "Blessed Sacrament",
-        "category": "Faith",
-        "address": "6340 Roberta St, Burton, MI 48509-2438",
-        "phone": "(810) 742-3151"
       }
     },
     {
@@ -1837,11 +1767,18 @@
       },
       "properties": {
         "name": "The Home Depot",
-        "category": "Retail & Shopping",
+        "category": [
+          "Retail & Shopping",
+          "Automotive"
+        ],
         "address": "4245 East Court Street, Burton, MI 48509",
         "phone": "+1 810-715-1700",
         "website": "https://www.homedepot.com/l/burton/mi/burton/48509/2717",
-        "hours": "Mo-Sa 06:00-22:00; Su 08:00-20:00"
+        "hours": "Mo-Sa 06:00-22:00; Su 08:00-20:00",
+        "services": [
+          "Tool & Truck Rental",
+          "Home Services"
+        ]
       }
     },
     {
@@ -2039,41 +1976,6 @@
         "address": "3444 South Genesee Road, Burton, MI 48519",
         "phone": "+1 810 591 0604",
         "website": "http://www.athertonschools.org"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "osm:way/713671446",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6163719,
-          42.9792403
-        ]
-      },
-      "properties": {
-        "name": "Atherton Junior / Senior High School",
-        "category": "Education",
-        "address": "3354 South Genesee Road, Burton, MI 48519",
-        "phone": "+1 810 591 9184"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "osm:way/713671447",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6164266,
-          42.9832979
-        ]
-      },
-      "properties": {
-        "name": "Madison Academy - High School",
-        "category": "Education",
-        "address": "3266 South Genesee Road, Burton, MI 48519",
-        "phone": "+1 810 875 9050",
-        "website": "https://highschool.madison-academy.org/"
       }
     },
     {
@@ -2675,24 +2577,6 @@
     },
     {
       "type": "Feature",
-      "id": "osm:way/755542479",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.683277,
-          42.9775225
-        ]
-      },
-      "properties": {
-        "name": "Barker Park Library",
-        "category": "Community Services",
-        "address": "G3410 S Grand Traverse St, Burton, MI 48529-1150",
-        "phone": "(810) 742-7860",
-        "website": "http://www.thegdl.org/branches/bp"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "osm:way/755542482",
       "geometry": {
         "type": "Point",
@@ -2915,24 +2799,6 @@
         "address": "1270 S Belsay Rd, Burton, MI 48509-1918",
         "phone": "(810) 742-3174",
         "website": "http://bovanfloralgroup.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "osm:way/911687415",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.5958025,
-          43.011925
-        ]
-      },
-      "properties": {
-        "name": "Finish Line Auto and Tire Service",
-        "category": "Automotive",
-        "address": "1256 S Belsay Rd, Burton, MI 48509-1918",
-        "phone": "(810) 742-7005",
-        "website": "http://finishlineautotire.com/"
       }
     },
     {
@@ -3254,23 +3120,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:01a940a8-aac9-4f08-bd2d-7490f590fda3",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6313766,
-          43.0187137
-        ]
-      },
-      "properties": {
-        "name": "Art Van Furniture",
-        "category": "Retail & Shopping",
-        "address": "4095 E Court St, Burton, MI 48509",
-        "phone": "8107429120"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:01be762b-6307-4e2d-8e96-64c33d1b1848",
       "geometry": {
         "type": "Point",
@@ -3410,24 +3259,6 @@
         "address": "1138 N Belsay Rd, Burton, MI 48509-1600",
         "phone": "+18107151439",
         "website": "http://www.marathonpetroleum.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:040ad1d7-73c1-4f7e-801b-e3b86a46d396",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.615855,
-          43.033408
-        ]
-      },
-      "properties": {
-        "name": "Burton Fire Department Station 3",
-        "category": "Professional & Personal Services",
-        "address": "4515 Davison Rd, Burton, MI 48509-1411",
-        "phone": "+18107449052",
-        "website": "http://www.homefacts.com/.../Burton/Tanks-Fire-Station-3-Mi00014866.html"
       }
     },
     {
@@ -3945,23 +3776,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:0f329da0-d579-4c84-879f-a99b944e9027",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.653001,
-          42.988387
-        ]
-      },
-      "properties": {
-        "name": "H&R Block Tax Preparation Office",
-        "category": "Financial",
-        "address": "G3021 S Dort Hwy, Burton, MI 48529",
-        "website": "https://www.hrblock.com/tax-office-near-me/michigan/burton/20982/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:0f9ed449-a204-48a3-b26c-0c03d10a66bc",
       "geometry": {
         "type": "Point",
@@ -3994,24 +3808,6 @@
         "address": "2468 S Center Rd, Burton, MI 48519-1152",
         "phone": "+18108207286",
         "website": "http://www.ladsdrugtesting.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:0fb4c38f-484b-4706-aaef-e9762fa82482",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63498386,
-          43.03254997
-        ]
-      },
-      "properties": {
-        "name": "Starlite Diner & Coney Island",
-        "category": "Dining",
-        "address": "1500 N Center Rd, Burton, MI 48509-1430",
-        "phone": "+18107424955",
-        "website": "http://www.starlite1966.com/"
       }
     },
     {
@@ -4083,24 +3879,6 @@
         "address": "4499 S Center Rd, Burton, MI 48519-1417",
         "phone": "+18107438033",
         "website": "http://www.chirouk.com"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:11c55467-23d4-4b5b-8f5f-5d3ea25bac6e",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6326337,
-          42.97261875
-        ]
-      },
-      "properties": {
-        "name": "Law Office of Patrick L. Chatterton",
-        "category": "Professional & Personal Services",
-        "address": "4085 S Center Rd, Burton, MI 48519-1957",
-        "phone": "+18107670407",
-        "website": "https://www.chattertonlaw.com/"
       }
     },
     {
@@ -4873,24 +4651,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:1d15a5c2-f3e3-4a86-ab65-d7ed0fd36142",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63439160098544,
-          42.99423093614544
-        ]
-      },
-      "properties": {
-        "name": "AT&T Authorized Retailer Burton - Center Rd.",
-        "category": "Retail & Shopping",
-        "address": "2350 S Center Rd, Burton, MI 48519-1165",
-        "phone": "+18107433151",
-        "website": "https://www.att.com/stores/michigan/burton/103247"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:1d26f376-519c-4868-a484-90ab2d6cedee",
       "geometry": {
         "type": "Point",
@@ -5015,24 +4775,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:1fb05a49-be71-47d4-9fc1-efc26c4f36fa",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.59548400027832,
-          43.0106932523944
-        ]
-      },
-      "properties": {
-        "name": "J&S Scotti’s Coney Island",
-        "category": "Dining",
-        "address": "5522 Lapeer Rd, Burton, MI 48509",
-        "phone": "(810) 743-1212",
-        "website": "http://scottis-coney-island.poi.place"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:1fbc4cda-d15a-41a0-ad43-008edbd19384",
       "geometry": {
         "type": "Point",
@@ -5096,11 +4838,14 @@
         ]
       },
       "properties": {
-        "name": "Jcpenney",
+        "name": "JCPenney",
         "category": "Retail & Shopping",
         "address": "4190 E Court St  Ste 500, Burton, MI 48509-1761",
         "phone": "18102759178",
-        "website": "https://www.jcpenney.com"
+        "website": "https://www.jcpenney.com",
+        "services": [
+          "Sephora"
+        ]
       }
     },
     {
@@ -5229,24 +4974,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:244c0d13-33da-444b-8c28-b9e08ffb86bb",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.5993409321251,
-          43.0204526966524
-        ]
-      },
-      "properties": {
-        "name": "Walmart Pharmacy",
-        "category": "Health & Medical",
-        "address": "5323 E Court St N, Burton, MI 48509",
-        "phone": "(810) 744-2984",
-        "website": "https://www.walmart.com/store/2273-burton-mi"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:247fcabc-0d53-44be-a136-fa993c320d00",
       "geometry": {
         "type": "Point",
@@ -5278,24 +5005,6 @@
         "category": "Education",
         "address": "4087 S Center Rd, Burton, MI 48519-1466",
         "phone": "+18108207723"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:24d35a49-ab64-4452-b805-4ef5508da3b6",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.60021741,
-          43.03223115
-        ]
-      },
-      "properties": {
-        "name": "Burton Assisted Living and Memory Care",
-        "category": "Health & Medical",
-        "address": "5340 Davison Rd, Burton, MI 48509-1519",
-        "phone": "+18102283520",
-        "website": "https://www.pslgroupllc.com/the-pines-of-burton/"
       }
     },
     {
@@ -5631,24 +5340,6 @@
         "address": "2065 S Center Rd, Burton, MI 48519-1101",
         "phone": "+18103379594",
         "website": "http://holistichealthmi.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:2894c683-5af4-4e76-a400-45a0f0c4f547",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.60115175,
-          43.02267556
-        ]
-      },
-      "properties": {
-        "name": "Walmart",
-        "category": "Professional & Personal Services",
-        "address": "5323 E Court St N, Burton, MI 48509-1539",
-        "phone": "+18107449690",
-        "website": "https://www.walmart.com/store/2273"
       }
     },
     {
@@ -6082,24 +5773,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:2ea1ad5e-ac9a-43db-bb8a-8febe6e2f0e0",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.62953018535958,
-          43.03239846663682
-        ]
-      },
-      "properties": {
-        "name": "Chase Bank",
-        "category": "Financial",
-        "address": "4154 Davison Rd, Burton, MI 48509",
-        "phone": "(810) 742-4005",
-        "website": "https://locator.chase.com/mi/burton/4154-davison-rd?jp_cmp=rb/LocalListings/aff/branch/na"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:2ea4ad96-4b4d-4b3b-9fec-e4f1d19d3de7",
       "geometry": {
         "type": "Point",
@@ -6344,24 +6017,6 @@
         "address": "4205 East Ct St, Burton, MI 48509",
         "phone": "8107437926",
         "website": "https://www.facebook.com/GREATERFLINTSCOUTSHOP/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:32be73fb-d193-44a9-b281-121220edb7f2",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.59223702,
-          43.00747879
-        ]
-      },
-      "properties": {
-        "name": "Barhitte Elementary School",
-        "category": "Education",
-        "address": "6080 Roberta St, Burton, MI 48509-2223",
-        "phone": "+18105919661",
-        "website": "http://www.bentleyschools.org/cms/One.aspx?portalId=5347859&pageId=5556296"
       }
     },
     {
@@ -6701,22 +6356,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:361b6c7f-cc6a-44c3-81fe-8316469bcde7",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63941,
-          42.98917
-        ]
-      },
-      "properties": {
-        "name": "Two Guys and a Grow Shop  Burton Location",
-        "category": "Automotive",
-        "address": "3374 E Atherton Rd, Burton, MI 48529-1008"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:36ba3b90-7858-4c84-9df0-a65bfca03fee",
       "geometry": {
         "type": "Point",
@@ -7037,23 +6676,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:3ac2417c-0be1-4b9c-97be-d367f71e9394",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6314134,
-          43.0178027
-        ]
-      },
-      "properties": {
-        "name": "Sephora Inside JCPenney",
-        "category": "Professional & Personal Services",
-        "address": "4190 E Court St Ste 500, Burton, MI 48509",
-        "phone": "8102759178"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:3b3328d9-f214-4f45-b352-842b2bc0e25a",
       "geometry": {
         "type": "Point",
@@ -7299,24 +6921,6 @@
         "address": "1079 E Bristol Rd, Burton, MI 48529-1126",
         "phone": "+18107442555",
         "website": "https://www.hair101lenisha.com"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:3ea850c6-cc25-42b0-bea0-0200fe24cebc",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6313766,
-          43.0187137
-        ]
-      },
-      "properties": {
-        "name": "PureSleep Burton Inside Art Van",
-        "category": "Retail & Shopping",
-        "address": "4095 E Court St, Burton, MI 48509",
-        "phone": "8107423699",
-        "website": "https://www.artvan.com/pure-sleep/?cid=BING_PLACES&utm_source=BING_PLACES&utm_medium=PureSleep_Inside-AVF"
       }
     },
     {
@@ -7672,24 +7276,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:44764b12-1db0-4031-a694-d9eb0e95de54",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.61495602,
-          42.97994553
-        ]
-      },
-      "properties": {
-        "name": "Atherton High School",
-        "category": "Education",
-        "address": "3354 S Genesee Rd, Burton, MI 48519-1426",
-        "phone": "+18105919184",
-        "website": "http://www.athertonschools.org/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:447b332f-c6c3-4f45-a175-b1739e7ea062",
       "geometry": {
         "type": "Point",
@@ -7794,24 +7380,6 @@
         "address": "1091 Creekwood Trl, Burton, MI 48509-1500",
         "phone": "+18107427462",
         "website": "http://www.mcmichigan.org"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:45bdf8e9-2ab6-4df5-a2a5-dd9a24cc05d3",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6335611521,
-          43.0170750384
-        ]
-      },
-      "properties": {
-        "name": "Sephora inside jcpenney",
-        "category": "Professional & Personal Services",
-        "address": "4190 E Court St Ste 500, Burton, MI 48509",
-        "phone": "8102759178",
-        "website": "http://www.sephora.com/stores/burton-jcpenney-at-courtland-center"
       }
     },
     {
@@ -7976,24 +7544,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:4769c54d-3b47-466f-b010-bb1d81325307",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6728646,
-          42.9752258
-        ]
-      },
-      "properties": {
-        "name": "Oak Street Health Burton Primary Care Clinic",
-        "category": "Health & Medical",
-        "address": "G3525 S Saginaw St, Burton, MI 48529",
-        "phone": "8102150261",
-        "website": "https://www.oakstreethealth.com/locations/burton-mi/burton-doctors-office?utm_source=listings&utm_vpf=yext"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:47767d18-39df-4c53-8c53-9cb7783d30f7",
       "geometry": {
         "type": "Point",
@@ -8115,24 +7665,6 @@
         "address": "5046 Davison Rd, Burton, MI 48509",
         "phone": "8102304997",
         "website": "http://talloaksrealty.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:492f9c0e-aeda-4f77-a219-c7a4289336f1",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63372,
-          42.98893
-        ]
-      },
-      "properties": {
-        "name": "ELGA Credit Union Administration Bldg",
-        "category": "Financial",
-        "address": "2305 S Center Rd, Burton, MI 48519",
-        "phone": "8107153542",
-        "website": "http://www.elgacu.com/"
       }
     },
     {
@@ -8668,24 +8200,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:523e43e8-7019-4bb0-9a71-467909708657",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.62673203229211,
-          43.00510309955201
-        ]
-      },
-      "properties": {
-        "name": "Valley Church of Christ",
-        "category": "Faith",
-        "address": "4201 Lippincott Blvd, Burton, MI 48519",
-        "phone": "(810) 742-2522",
-        "website": "http://www.valleycoc.org"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:524b0408-893f-44f7-89ae-2e74d9197dea",
       "geometry": {
         "type": "Point",
@@ -8860,24 +8374,6 @@
         "address": "2424 S Center Rd Ste B, Burton, MI 48519",
         "phone": "8107150097",
         "website": "https://www.cashstore.com/local/cash-advance-burton?utm_source=bing&utm_medium=organic&utm_campaign=listings&utm_content=903"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:54adfc99-011d-4811-bbc6-13ef9d21c452",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.628229,
-          43.020364
-        ]
-      },
-      "properties": {
-        "name": "Big Lots",
-        "category": "Retail & Shopping",
-        "address": "4157 E Court St, Burton, MI 48509",
-        "phone": "8107428037",
-        "website": "https://local.biglots.com/mi/burton/5229?utm_source=bing&utm_medium=distrib&utm_campaign=bing-distrib"
       }
     },
     {
@@ -9130,24 +8626,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:5930c75e-9bc8-43e5-a6f7-9ad40459517a",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.60536999,
-          42.99046831
-        ]
-      },
-      "properties": {
-        "name": "Walker Farms And Greenhouses",
-        "category": "Retail & Shopping",
-        "address": "5253 E Atherton Rd, Burton, MI 48519-1529",
-        "phone": "+18107430260",
-        "website": "http://www.walkersfarm.com/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:5976c3ef-f2f9-4ae9-8c54-3ed6870de6f1",
       "geometry": {
         "type": "Point",
@@ -9291,24 +8769,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:5b6cdda4-c800-4381-b768-b2dac76e3c50",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.59606955,
-          43.01303978
-        ]
-      },
-      "properties": {
-        "name": "Chase Bank",
-        "category": "Financial",
-        "address": "1232 S Belsay Rd, Burton, MI 48509-1918",
-        "phone": "+18107424290",
-        "website": "http://www.chase.com"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:5c6f0f07-2706-4709-b2eb-b882379bfc24",
       "geometry": {
         "type": "Point",
@@ -9379,24 +8839,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:5d177efb-58e1-4790-9f24-7f10b760b895",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.60353,
-          43.00885378218498
-        ]
-      },
-      "properties": {
-        "name": "Michigan Sewer & Drain Cleaning",
-        "category": "Professional & Personal Services",
-        "address": "1363 Audrey St, Burton, MI 48509",
-        "phone": "8105192005",
-        "website": "http://www.misewer.com/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:5d62cad3-de1c-42fe-8b7a-4ce8b0168146",
       "geometry": {
         "type": "Point",
@@ -9411,42 +8853,6 @@
         "address": "G3425 S Saginaw St, Burton, MI 48529",
         "phone": "8102096526",
         "website": "https://www.publicstorage.com/self-storage-mi-burton/5638.html?pspid=pslocalsearch&utm_source=bing&utm_medium=local_maps"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:5d69132e-8298-43ba-ad4f-68e89fa951f4",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.5993409321251,
-          43.0204526966524
-        ]
-      },
-      "properties": {
-        "name": "Walmart Grocery Pickup & Delivery",
-        "category": "Grocery & Food",
-        "address": "5323 E Court St N, Burton, MI 48509",
-        "phone": "(810) 869-0312",
-        "website": "https://grocery.walmart.com/locations/pickup/Walmart-Burton-MI-Supercenter-2273"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:5d8156de-a400-4367-9db0-147a6bd86e4f",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.61368219,
-          43.03259034
-        ]
-      },
-      "properties": {
-        "name": "Hannah Willmore - Tall Oaks Realty",
-        "category": "Professional & Personal Services",
-        "address": "5046 Davison Rd, Burton, MI 48509-1514",
-        "phone": "+18109866125",
-        "website": "https://www.HannahWillmore.com/"
       }
     },
     {
@@ -9519,24 +8925,6 @@
         "address": "1067 E Bristol Rd, Burton, MI 48529",
         "phone": "8102333010",
         "website": "http://approvedcashadvance.com/locations/flint"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:5df36f90-8066-4bed-b900-18bb12981cf8",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.59493996,
-          43.0334915
-        ]
-      },
-      "properties": {
-        "name": "Gotta Have It Consignments",
-        "category": "Retail & Shopping",
-        "address": "6020 Davison Rd, Burton, MI 48509-1607",
-        "phone": "+18108759096",
-        "website": "http://www.gotconsignments.com/"
       }
     },
     {
@@ -10199,24 +9587,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:660a0105-e010-4f89-aad5-739f3b739dce",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6708944,
-          42.96418
-        ]
-      },
-      "properties": {
-        "name": "Family Dollar",
-        "category": "Retail & Shopping",
-        "address": "G4386 S Saginaw St, Burton, MI 48529",
-        "phone": "8104102951",
-        "website": "http://www.familydollar.com/locations/mi/burton/22446/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:664820f2-391d-45df-a676-5b7ebacbe906",
       "geometry": {
         "type": "Point",
@@ -10676,24 +10046,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:6c0b5f5e-c2e4-40ab-bf42-8d3c86831ba6",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6014906387826,
-          43.02263864903395
-        ]
-      },
-      "properties": {
-        "name": "Burton Walmart Auto Center",
-        "category": "Automotive",
-        "address": "5323 E Court St N, Burton, MI 48509-1539",
-        "phone": "+18107449430",
-        "website": "http://www.walmart.com/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:6c0e5fc9-2715-4b58-91c3-016ce1622141",
       "geometry": {
         "type": "Point",
@@ -11116,24 +10468,6 @@
         "category": "Professional & Personal Services",
         "address": "2489 Cheryl Ann Dr, Burton, MI 48519-1329",
         "phone": "+18106918909"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:70dbc9b1-959a-4745-a671-1ab7405ca07c",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6347853,
-          43.0331998
-        ]
-      },
-      "properties": {
-        "name": "DaVita Dialysis Center",
-        "category": "Health & Medical",
-        "address": "4015 Davison Rd, Burton, MI 48509",
-        "phone": "(810) 715-1312",
-        "website": "http://www.davita.com"
       }
     },
     {
@@ -12014,23 +11348,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:7e03a9ac-561c-4670-a49b-92539c84c4bf",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.677799,
-          42.96151001
-        ]
-      },
-      "properties": {
-        "name": "Friel Street Elementary School",
-        "category": "Education",
-        "address": "4469 Greenly St, Burton, MI 48529-2058",
-        "phone": "+18105918655"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:7e151c84-6d51-4960-a0b9-cc17d6f7315e",
       "geometry": {
         "type": "Point",
@@ -12634,24 +11951,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:84add775-4060-4af6-b1e1-f21205cdf7b0",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.67263877,
-          42.97245125
-        ]
-      },
-      "properties": {
-        "name": "Tia Helita's Mexican Cuisine",
-        "category": "Dining",
-        "address": "G4070 S Saginaw St, Burton, MI 48529-1653",
-        "phone": "+18107425525",
-        "website": "https://tiahelitas.com/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:84d34561-b4b2-4c84-b16e-bab4a020d0b8",
       "geometry": {
         "type": "Point",
@@ -12701,23 +12000,6 @@
         "category": "Community Services",
         "address": "3317 E Bristol Rd, Burton, MI 48529-1451",
         "phone": "+18107421020"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:85682d20-2574-45d5-9068-883496dcca33",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.626625,
-          43.018621
-        ]
-      },
-      "properties": {
-        "name": "Discount Tire Store (MIF 04)",
-        "category": "Automotive",
-        "address": "4210 E COURT ST, BURTON, MI 48509-1720",
-        "website": "https://www.discounttire.com/store/mi/burton/s/1139"
       }
     },
     {
@@ -13268,24 +12550,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:8de032f7-02e3-49e4-bc21-f42021cddaee",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.60086,
-          43.021861
-        ]
-      },
-      "properties": {
-        "name": "Walmart Photo Center",
-        "category": "Retail & Shopping",
-        "address": "5323 E Court St N, Burton, MI 48509-1539",
-        "phone": "18107449573",
-        "website": "https://www.walmart.com"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:8deb637c-2f69-462d-be47-99ad18d2b7bb",
       "geometry": {
         "type": "Point",
@@ -13732,24 +12996,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:91f45c7e-c75e-4c0e-a3ba-f5c4be2988a1",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63030701,
-          43.0181072
-        ]
-      },
-      "properties": {
-        "name": "Bath & Body Works",
-        "category": "Professional & Personal Services",
-        "address": "4190 E Court St, Burton, MI 48509-1732",
-        "phone": "+18107441302",
-        "website": "https://www.bathandbodyworks.com/?cm_mmc=local_BBW01773"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:9218824c-cbc2-4553-a849-cc18b9960792",
       "geometry": {
         "type": "Point",
@@ -13817,24 +13063,6 @@
         "address": "1234 N Center Rd, Burton, MI 48509",
         "phone": "8102434243",
         "website": "https://shop.gagecannabis.com/gageburton?utm_source=bing&utm_medium=pfb&utm_content=burton"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:9301014f-86f9-488b-90bc-3b9ae2149457",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.67818832,
-          42.9728445
-        ]
-      },
-      "properties": {
-        "name": "West Bendle Elementary School",
-        "category": "Education",
-        "address": "4020 Cerdan Dr, Burton, MI 48529-1608",
-        "phone": "+18105910880",
-        "website": "http://www.bendleschools.org"
       }
     },
     {
@@ -14090,22 +13318,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:97151039-c9b3-4b8e-a3f0-1232110e0545",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.68583679199219,
-          42.97315979003906
-        ]
-      },
-      "properties": {
-        "name": "ATM Kroger",
-        "category": "Financial",
-        "address": "1200 E Bristol Rd, Burton, MI 48529"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:972d4a71-fe10-448c-9420-c56360b5ed6a",
       "geometry": {
         "type": "Point",
@@ -14262,41 +13474,6 @@
         "address": "G4312 S Dort Hwy, Burton, MI 48529",
         "phone": "(810) 410-4146",
         "website": "https://www.southmoorgolfbargrill.com/mini-golf.html"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:980fbd58-6d6b-4ea2-8c02-7b5176d85d34",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.60086,
-          43.021861
-        ]
-      },
-      "properties": {
-        "name": "Walmart Wireless Services",
-        "category": "Retail & Shopping",
-        "address": "5323 E Court St N, Burton, MI 48509-1539",
-        "phone": "18107423159",
-        "website": "https://www.walmart.com"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:981816d9-82c5-4cac-a6e7-0899ef83a90a",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6717017,
-          42.9741008
-        ]
-      },
-      "properties": {
-        "name": "Dollar Tree",
-        "category": "Retail & Shopping",
-        "address": "G4007 South Saginaw St, Burton, MI 48529-1617",
-        "website": "https://locations.dollartree.com/mi/burton/g4007-south-saginaw-st"
       }
     },
     {
@@ -14458,24 +13635,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:9a2a9c4c-85bd-4a04-a02b-914211749827",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.626255,
-          43.019254
-        ]
-      },
-      "properties": {
-        "name": "Home Services at The Home Depot",
-        "category": "Retail & Shopping",
-        "address": "4245 E Court St, Burton, MI 48509",
-        "phone": "8444762140",
-        "website": "https://www.homedepot.com/l/Burton/MI/Burton/48509/2717/services?emt=HSGMBGoogleMaps"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:9b15f143-3101-4dfd-bef3-430e640506f5",
       "geometry": {
         "type": "Point",
@@ -14547,24 +13706,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:9ba6bc98-603e-405a-830a-a58e052a418f",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6340116227285,
-          43.007381725992424
-        ]
-      },
-      "properties": {
-        "name": "greater flint imaging center",
-        "category": "Health & Medical",
-        "address": "4001 Walli Strasse Dr, Burton, MI 48509",
-        "phone": "(810) 742-4022",
-        "website": "http://greaterflintimaging.com"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:9bacfa31-5365-4441-a374-260acbef11b1",
       "geometry": {
         "type": "Point",
@@ -14578,41 +13719,6 @@
         "category": "Faith",
         "address": "1225 S Center Rd, Burton, MI 48509-1723",
         "website": "http://www.aglow.org/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:9c0621e5-163f-4cc8-9025-4cea9eb9d427",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.634396,
-          42.994229
-        ]
-      },
-      "properties": {
-        "name": "At&t Store",
-        "category": "Retail & Shopping",
-        "address": "2350 S Center Rd, Burton, MI 48519-1165",
-        "phone": "18107433151",
-        "website": "https://www.att.com"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:9c10a413-674e-4de6-8ee1-2d3137220d04",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.628315,
-          43.0206843
-        ]
-      },
-      "properties": {
-        "name": "Sprint Store",
-        "category": "Retail & Shopping",
-        "address": "4163 E Ct, Burton, MI 48509",
-        "phone": "8107436479"
       }
     },
     {
@@ -14649,23 +13755,6 @@
         "address": "2475 E Judd Rd, Burton, MI 48529",
         "phone": "8106583472",
         "website": "http://mersino.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:9ca05b5e-3a14-48fc-b981-cf069ee4b90b",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.672235,
-          42.970601
-        ]
-      },
-      "properties": {
-        "name": "Bitcoin Depot",
-        "category": "Financial",
-        "address": "G4330 Saginaw St, Burton, MI 48529",
-        "website": "https://branches.bitcoindepot.com/mi/burton/bitcoin-atm/9000754823"
       }
     },
     {
@@ -14956,24 +14045,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:a018686c-4200-42cb-a320-be192c38064d",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.627012,
-          43.01869555
-        ]
-      },
-      "properties": {
-        "name": "Viking Sewing Gallery Burton MI",
-        "category": "Retail & Shopping",
-        "address": "G-4220 E Court St Unit 101, Burton, MI 48509",
-        "phone": "8107437232",
-        "website": "http://www.vikingsewinggallery.com/?locations=643"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:a0938676-c379-4bfa-a8d5-878ee662c57f",
       "geometry": {
         "type": "Point",
@@ -15188,24 +14259,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:a36e2c19-1d0d-4255-8c98-569fb62435f0",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.60897,
-          43.01993
-        ]
-      },
-      "properties": {
-        "name": "Sovita Credit Union",
-        "category": "Financial",
-        "address": "5399 E Court St N, Burton, MI 48509",
-        "phone": "8107208300",
-        "website": "http://www.sovitacu.org/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:a388c76a-68f5-4cc6-9f32-89531e2a40d9",
       "geometry": {
         "type": "Point",
@@ -15290,24 +14343,6 @@
         "category": "Dining",
         "address": "6011 E Atherton Rd, Burton, MI 48519-1601",
         "phone": "+18107438450"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:a45c353b-9209-4c79-8215-063191ca36cb",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6275,
-          43.01871
-        ]
-      },
-      "properties": {
-        "name": "Burlington",
-        "category": "Retail & Shopping",
-        "address": "4153 E Ct St, Burton, MI 48509",
-        "phone": "8108808265",
-        "website": "https://stores.burlington.com/mi/burton/1708/"
       }
     },
     {
@@ -15487,23 +14522,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:a617bfbf-df7d-444f-87c2-3a38f027db2e",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6758,
-          42.9742
-        ]
-      },
-      "properties": {
-        "name": "7-ELEVEN/SPEEDWAY #44483",
-        "category": "Financial",
-        "address": "1466 East Bristol Road, Burton, MI 48529",
-        "website": "https://location.westernunion.com/us/mi/burton/4ca95c6a249eed5d079535c33c174077"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:a6b62caa-d825-4a10-8409-88baa00eb8bc",
       "geometry": {
         "type": "Point",
@@ -15646,24 +14664,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:aa465cc4-953e-4eaf-88b9-565d4dc81c10",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6362526,
-          42.99296497
-        ]
-      },
-      "properties": {
-        "name": "Vern Van Y. School",
-        "category": "Education",
-        "address": "2400 Clarice Ave, Burton, MI 48519-1011",
-        "phone": "+18105910850",
-        "website": "https://www.athertonschools.org/District/1154-Contacts.html"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:aa6d1cbb-e87c-4817-9f11-baef3db81902",
       "geometry": {
         "type": "Point",
@@ -15802,24 +14802,6 @@
         "category": "Professional & Personal Services",
         "address": "5115 Davison Rd, Burton, MI 48509-15ND",
         "phone": "+18107449224"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:ab8c07b7-59d1-440f-81ed-5bbff94ccb37",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.634606,
-          43.031161
-        ]
-      },
-      "properties": {
-        "name": "Henry Ford Family Health Center - Burton",
-        "category": "Professional & Personal Services",
-        "address": "1460 N Center Rd, Burton, MI 48509",
-        "phone": "8107154300",
-        "website": "https://www.henryford.com/locations/family-health-center-burton?utm_campaign=website-link&utm_medium=organic&utm_source=local-listing"
       }
     },
     {
@@ -15998,24 +14980,6 @@
         "address": "G-1145 N Belsay Rd, Burton, MI 48509",
         "phone": "8107444800",
         "website": "http://www.sears.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:ad6f37ab-8ccb-4d1f-a4d9-7f0bee19ef91",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6527464,
-          42.96056876
-        ]
-      },
-      "properties": {
-        "name": "Denam Auto Brokers & Trailer Sales Inc.",
-        "category": "Parks & Recreation",
-        "address": "G4510 S Dort Hwy, Burton, MI 48529-1806",
-        "phone": "+18102446100",
-        "website": "http://www.denamauto.com/"
       }
     },
     {
@@ -16211,24 +15175,6 @@
         "address": "G3211 S Dort Hwy, Burton, MI 48529-1013",
         "phone": "+18107443433",
         "website": "http://www.continentalautosale.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:b0216747-8021-45f4-8707-1aec65b103c1",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6327386,
-          43.01758722
-        ]
-      },
-      "properties": {
-        "name": "Magoo's Pet Outlet",
-        "category": "Retail & Shopping",
-        "address": "4190 E Court St, Burton, MI 48509-1732",
-        "phone": "+18107428760",
-        "website": "http://www.magoospet.com/"
       }
     },
     {
@@ -16608,24 +15554,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:b552e707-bda4-4756-8e12-66f25f00e6ef",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.65257126370817,
-          42.97974305218618
-        ]
-      },
-      "properties": {
-        "name": "Maaco Collision Repair & Auto Painting",
-        "category": "Automotive",
-        "address": "G3345 S Dort Hwy, Burton, MI 48529",
-        "phone": "(810) 553-6289",
-        "website": "https://www.maaco.com/locations/mi/burton-12167/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:b5844c65-7f8c-4bad-bd5a-a77c1978fbf1",
       "geometry": {
         "type": "Point",
@@ -16640,24 +15568,6 @@
         "address": "1307 E Maple Ave, Burton, MI 48529-2059",
         "phone": "+18107431710",
         "website": "http://southflint.org"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:b5c1d144-8f05-4012-881c-6d5ecd05107f",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.60086,
-          43.021861
-        ]
-      },
-      "properties": {
-        "name": "Walmart Bakery",
-        "category": "Grocery & Food",
-        "address": "5323 E Court St N, Burton, MI 48509-1539",
-        "phone": "18107442819",
-        "website": "https://www.walmart.com"
       }
     },
     {
@@ -16752,24 +15662,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:b6cf39bf-6296-47ae-9675-705101f2e27d",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.686032,
-          42.96896672
-        ]
-      },
-      "properties": {
-        "name": "Dillon Elementary School",
-        "category": "Education",
-        "address": "1197 E Schumacher St, Burton, MI 48529-1558",
-        "phone": "+18105913590",
-        "website": "http://www.carman.k12.mi.us/site/default.aspx?pageid=1"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:b76228da-808f-4856-97e9-5203489d6323",
       "geometry": {
         "type": "Point",
@@ -16857,24 +15749,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:b943c541-6141-4730-af28-50dc3859a3fb",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63479294,
-          42.99923907
-        ]
-      },
-      "properties": {
-        "name": "Gordon Food Service Store",
-        "category": "Grocery & Food",
-        "address": "2170 S Center Rd, Burton, MI 48519-1151",
-        "phone": "+18107151837",
-        "website": "https://gfsstore.com/?utm_source=utm_source%3Dfacebook&utm_medium=utm_medium%3Dsocial&utm_campaign=utm_campaign%3Dsocials_to_store"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:b945ee76-d69f-4a1d-92e4-dad605008764",
       "geometry": {
         "type": "Point",
@@ -16889,24 +15763,6 @@
         "address": "2065 S Center Rd, Burton, MI 48519-1101",
         "phone": "+18102352004",
         "website": "http://www.mihealths.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:b96c3286-35ba-4120-a5f1-ffb79631ef66",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6322697,
-          42.9786508
-        ]
-      },
-      "properties": {
-        "name": "Regional Medical Imaging Burton",
-        "category": "Professional & Personal Services",
-        "address": "G2065 S Center Rd, Burton, MI 48519",
-        "phone": "8107321919",
-        "website": "https://www.rmipc.net/"
       }
     },
     {
@@ -17195,24 +16051,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:bcc5b36a-db60-4868-87cb-2c786044a4d6",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.594909,
-          42.976845
-        ]
-      },
-      "properties": {
-        "name": "New Testament General Baptist Church",
-        "category": "Faith",
-        "address": "3484 S Belsay Rd, Burton, MI 48519-1625",
-        "phone": "+18107429420",
-        "website": "http://www.ntcchurch.com"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:bd15dc52-9033-4286-8b53-f6a11ad5895e",
       "geometry": {
         "type": "Point",
@@ -17244,24 +16082,6 @@
         "address": "5520 E Atherton Rd, Burton, MI 48519-1560",
         "phone": "+18102048469",
         "website": "https://tinytotsclothingswap.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:bd95ae3a-fb8e-4d34-9c0e-fe338778260e",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.59475292,
-          43.01376016
-        ]
-      },
-      "properties": {
-        "name": "Little Caesars Pizza",
-        "category": "Dining",
-        "address": "1193 S Belsay Rd, Burton, MI 48509-1915",
-        "phone": "+18107435500",
-        "website": "https://littlecaesars.com/en-us/store/1248"
       }
     },
     {
@@ -17315,42 +16135,6 @@
         "category": "Professional & Personal Services",
         "address": "1315 S Genesee Rd, Burton, MI 48509-1829",
         "phone": "+18106182517"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:be56edef-1aa9-4f22-8032-34f126229f60",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.67565,
-          42.9721
-        ]
-      },
-      "properties": {
-        "name": "All-Weather Seal Co., Inc.",
-        "category": "Professional & Personal Services",
-        "address": "G-4258 S Saginaw St, Burton, MI 48529",
-        "phone": "8107430300",
-        "website": "http://allweatherseal.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:be7d22bf-2d24-4706-b05d-bd403c5c306a",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6786213,
-          42.974304
-        ]
-      },
-      "properties": {
-        "name": "Dotty's Feed and Pet",
-        "category": "Retail & Shopping",
-        "address": "1375 E Bristol Rd, Burton, MI 48529",
-        "phone": "8107422443",
-        "website": "https://www.dottysfeedandpet.com/"
       }
     },
     {
@@ -17551,23 +16335,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:c1c120d0-57fd-44a4-adda-62aa18c00256",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.64199941,
-          42.97230224
-        ]
-      },
-      "properties": {
-        "name": "PM Truck and Trailer Service",
-        "category": "Automotive",
-        "address": "4101 Flint Asphalt Dr, Burton, MI 48529-1824",
-        "phone": "+18107442852"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:c226cc03-ba27-4fd4-b719-3a3561ac937d",
       "geometry": {
         "type": "Point",
@@ -17656,24 +16423,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:c2e740e9-f384-417c-b2e0-6ee13273645a",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.629055,
-          42.9925494
-        ]
-      },
-      "properties": {
-        "name": "Champions at Burton Glen Charter Academy",
-        "category": "Professional & Personal Services",
-        "address": "4171 E Atherton Rd, Burton, MI 48519",
-        "phone": "8109083531",
-        "website": "https://www.discoverchampions.com/our-locations/burton/mi/003147?utm_campaign=cp-lg&utm_source=yext&utm_medium=pro&utm_keyword=&utm_platform=&utm_matchtype=&utm_adgroupid=&utm_content=003147&y_source=1_MjAwNzk0NzU4Mi00ODMtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:c30e3eba-55a8-46c5-9515-4e956ccab4e0",
       "geometry": {
         "type": "Point",
@@ -17742,23 +16491,6 @@
         "address": "5340 Davison Rd, Burton, MI 48509",
         "phone": "(810) 228-3520",
         "website": "http://pinesoflakefenton.com"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:c3961734-87ad-47b5-8bcf-6a370b4fb49a",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.600861,
-          43.022948
-        ]
-      },
-      "properties": {
-        "name": "WALMART #002273",
-        "category": "Financial",
-        "address": "5323 E Court St N, Burton, MI 48509",
-        "website": "https://location.westernunion.com/us/mi/burton/c353f71e1a80163377a2d764898ff14a"
       }
     },
     {
@@ -17883,24 +16615,6 @@
         "address": "2350 Hemphill Rd, Burton, MI 48529",
         "phone": "+12483280490",
         "website": "http://www.theriverchurch.cc/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:c58eb82f-7f0b-4c75-9169-65d56e4c18b0",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63003922432684,
-          43.0165766288339
-        ]
-      },
-      "properties": {
-        "name": "NCG Courtland Cinemas",
-        "category": "Arts & Entertainment",
-        "address": "4190 E Court St Ste 200, Burton, MI 48509",
-        "phone": "(810) 744-0742",
-        "website": "https://ncgmovies.com"
       }
     },
     {
@@ -18046,41 +16760,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:c7df8c5e-910a-47ac-b9f2-24dfc6e5c00b",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6728521,
-          42.9752234
-        ]
-      },
-      "properties": {
-        "name": "Forever Bella Boutique",
-        "category": "Retail & Shopping",
-        "address": "G3314 S Saginaw St, Burton, MI 48529",
-        "phone": "8103945243"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:c7f473de-0710-4d5a-b953-30bee24b039c",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.69227205,
-          42.96039132
-        ]
-      },
-      "properties": {
-        "name": "Hungry Howie's Pizza",
-        "category": "Dining",
-        "address": "4495 Fenton Rd, Burton, MI 48507",
-        "phone": "+18107678300",
-        "website": "https://www.hungryhowies.com/stores/mi/burton/g4495-fenton-road?utm_source=google&utm_medium=organic&utm_campaign=googlebusinessprofile"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:c85c4b75-fc98-4d5d-97fa-ff694b107ab7",
       "geometry": {
         "type": "Point",
@@ -18203,24 +16882,6 @@
         "address": "4093 Barnes Ave, Burton, MI 48529-1781",
         "phone": "+18105919011",
         "website": "http://bendleschools.org"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:ca011d05-12f7-40b2-b3f5-ed411b3a0f77",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.65148669,
-          42.98904787
-        ]
-      },
-      "properties": {
-        "name": "Little Caesars Pizza",
-        "category": "Dining",
-        "address": "3064 E Atherton Rd, Burton, MI 48529-1039",
-        "phone": "+18107432124",
-        "website": "https://littlecaesars.com/en-us/store/1240"
       }
     },
     {
@@ -18457,24 +17118,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:cf9e6d3b-dde6-4d48-9c3a-d9d32add7e66",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.626199,
-          43.01913
-        ]
-      },
-      "properties": {
-        "name": "Tool & Truck Rental at The Home Depot",
-        "category": "Automotive",
-        "address": "4245 E Court St, Burton, MI 48509",
-        "phone": "8107152400",
-        "website": "https://www.homedepot.com/l/Burton/MI/Burton/48509/2717/rentals?emt=TRCLLBing"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:cfbf0909-702a-43b5-be92-9b30743af96c",
       "geometry": {
         "type": "Point",
@@ -18634,24 +17277,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:d1a1102e-ebd1-443e-89ab-b68348c7b5b1",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.632281,
-          43.019411
-        ]
-      },
-      "properties": {
-        "name": "H&R Block",
-        "category": "Financial",
-        "address": "4159 E Court St, Burton, MI 48509",
-        "phone": "8107150601",
-        "website": "https://www.hrblock.com/tax-office-near-me/michigan/burton/21391/?otppartnerid=9308&campaignid=pw_mcm_9308_9765"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:d2406538-0e23-4dcb-a752-829466263296",
       "geometry": {
         "type": "Point",
@@ -18666,24 +17291,6 @@
         "address": "5006 Lapeer Rd, Burton, MI 48509-2018",
         "phone": "+18107431348",
         "website": "https://www.bytefederal.com/bitcoin-atm-near-me/michigan/burton/3031?src=map&y_source=1_MTA4ODE2NTg1Mi00ODMtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:d30b590a-613d-4794-aa92-052cdee3d88f",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.68058491,
-          42.97410747
-        ]
-      },
-      "properties": {
-        "name": "Huntington Bank ATM",
-        "category": "Financial",
-        "address": "1318 E Bristol Rd, Burton, MI 48529-2212",
-        "phone": "+18004802265",
-        "website": "https://www.huntington.com/Community/branch-info?locationId=20830&cmpid=seo%3Alocal_listings%3Abranch_info%3Ana"
       }
     },
     {
@@ -19464,24 +18071,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:de0c4429-2924-4964-bfc9-6d6688de9d48",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63118351110026,
-          42.99339037019529
-        ]
-      },
-      "properties": {
-        "name": "H&R Block",
-        "category": "Professional & Personal Services",
-        "address": "G3021 S Dort Hwy, Burton, MI 48529",
-        "phone": "(810) 744-0370",
-        "website": "https://www.hrblock.com"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:df0fcbff-13c0-42b5-ac0b-54d73d598c64",
       "geometry": {
         "type": "Point",
@@ -19765,24 +18354,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:e2a22c2f-0351-45d8-9053-99d494aa000e",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6252262,
-          42.98935621
-        ]
-      },
-      "properties": {
-        "name": "Eastgate Baptist Church",
-        "category": "Faith",
-        "address": "4226 E Atherton Rd, Burton, MI 48519-1438",
-        "phone": "+18107425600",
-        "website": "http://eastgatebaptist.org/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:e2bb853f-ada6-40d5-a2dc-47e765a7b292",
       "geometry": {
         "type": "Point",
@@ -19797,24 +18368,6 @@
         "address": "G3375 S Saginaw St, Burton, MI 48529-1277",
         "phone": "+18104064246",
         "website": "http://www.hamiltonchn.org/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:e2e62181-6a14-4ca2-95a0-bc0c99ff0659",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.64203,
-          42.9861
-        ]
-      },
-      "properties": {
-        "name": "Check 'n Go",
-        "category": "Financial",
-        "address": "G-3017 South Dort Hwy, Burton, MI 48529",
-        "phone": "+18107155555",
-        "website": "https://locations.checkngo.com/mi/burton/burton-mi-loans-5925.html"
       }
     },
     {
@@ -20330,24 +18883,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:e9f3e5bb-ae34-4faa-990a-2d67574c6697",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.631548,
-          43.017828
-        ]
-      },
-      "properties": {
-        "name": "UPS Alliance Shipping Partner",
-        "category": "Professional & Personal Services",
-        "address": "4190 E Court St, Burton, MI 48509",
-        "phone": "8107438251",
-        "website": "https://locations.ups.com/us/en/mi/burton/alliance-shipping-partner-007160.html"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:ea501edf-f273-4d18-94fe-1758b7a46fb0",
       "geometry": {
         "type": "Point",
@@ -20598,24 +19133,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:ef3cab81-61bf-4ad2-ab51-3ba7b966831b",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.62974511,
-          43.01908918
-        ]
-      },
-      "properties": {
-        "name": "Starlite Burger and Coney Shop",
-        "category": "Dining",
-        "address": "4125 E Court St, Burton, MI 48509-1717",
-        "phone": "+18108202943",
-        "website": "https://www.starlite2.com/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:ef407ee6-0501-411c-a2e3-a12b41f868f4",
       "geometry": {
         "type": "Point",
@@ -20663,24 +19180,6 @@
         "name": "ATM ELGA Credit Union",
         "category": "Financial",
         "address": "2303 S. Center Rd., Burton, MI 48519"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:ef65c62d-c090-49c8-a96a-ea253ddd81f9",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.59983122,
-          43.02272693
-        ]
-      },
-      "properties": {
-        "name": "Walmart Tire Lube Express",
-        "category": "Automotive",
-        "address": "5323 E Court St N, Burton, MI 48509-1539",
-        "phone": "+18107449430",
-        "website": "https://www.walmart.com/store/2273"
       }
     },
     {
@@ -20806,23 +19305,6 @@
         "category": "Health & Medical",
         "address": "G1170 E Hemphill Rd, Burton, MI 48529",
         "phone": "8107437070"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:f0cc9543-163f-4b4d-a419-de42c953ac06",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.59598737,
-          43.01109902
-        ]
-      },
-      "properties": {
-        "name": "Johnny's Hardware and Well Pump Service",
-        "category": "Retail & Shopping",
-        "address": "5507 Lapeer Rd, Burton, MI 48509-2237",
-        "phone": "+18107422720"
       }
     },
     {
@@ -21074,24 +19556,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:f4fed651-64d5-4c89-a0af-275b00389a04",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.634806,
-          43.021861
-        ]
-      },
-      "properties": {
-        "name": "US Speedo Inc",
-        "category": "Automotive",
-        "address": "1096 N Center Rd, Burton, MI 48509",
-        "phone": "8102218562",
-        "website": "http://www.usspeedo.com/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:f56cf95e-3b18-45e7-aade-91d0d627a425",
       "geometry": {
         "type": "Point",
@@ -21162,24 +19626,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:f616cb02-e68c-4213-b77e-82e212b7db8b",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.66222008,
-          42.9738309
-        ]
-      },
-      "properties": {
-        "name": "Bendle Middle School",
-        "category": "Education",
-        "address": "2294 E Bristol Rd, Burton, MI 48529-1371",
-        "phone": "+18105913385",
-        "website": "http://bendleschools.org"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:f619b869-3d9f-48bf-8259-2eebeb66fd43",
       "geometry": {
         "type": "Point",
@@ -21198,23 +19644,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:f62d7d84-baf9-4cf0-be9d-52e7bd0436e2",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6834,
-          42.974
-        ]
-      },
-      "properties": {
-        "name": "7-ELEVEN/SPEEDWAY #44371",
-        "category": "Financial",
-        "address": "1258 East Bristol Road, Burton, MI 48529",
-        "website": "https://location.westernunion.com/us/mi/burton/257165c5c0712e9872bfe2ad9acfa7d9"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:f63776e1-18fe-4139-a882-b7e328e13260",
       "geometry": {
         "type": "Point",
@@ -21229,24 +19658,6 @@
         "address": "1513 S Center Rd, Burton, MI 48509",
         "phone": "(810) 744-0660",
         "website": "http://www.genesys.org"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:f646357c-1896-48a9-a31e-1b23d38b7280",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.606295,
-          43.024493
-        ]
-      },
-      "properties": {
-        "name": "Colberg Radiator Inc",
-        "category": "Automotive",
-        "address": "4114 Davison Rd, Burton, MI 48509",
-        "phone": "8102304855",
-        "website": "http://www.colbergradiator.com/"
       }
     },
     {
@@ -21359,24 +19770,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:f83b5a55-67e2-4fe3-8053-65601b724a68",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.65998155,
-          42.97066823
-        ]
-      },
-      "properties": {
-        "name": "Bendle High School",
-        "category": "Education",
-        "address": "2283 E Scottwood Ave, Burton, MI 48529-1721",
-        "phone": "+18105915103",
-        "website": "http://Bendleschools.org/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:f8846aa6-a4fa-49c1-9041-42a1652dbdb4",
       "geometry": {
         "type": "Point",
@@ -21407,22 +19800,6 @@
         "name": "CHAIN PAINT GROUP INC",
         "category": "Retail & Shopping",
         "address": "BURTON, MI 48529"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:f8e56dd9-a77a-49f3-9919-c7e307079958",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.6832046508789,
-          42.97386169433594
-        ]
-      },
-      "properties": {
-        "name": "ATM Speedway",
-        "category": "Financial",
-        "address": "1258 E Bristol Rd, Burton, MI 48529"
       }
     },
     {
@@ -21551,24 +19928,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:fb70a567-9042-4697-ac8c-ddcea996e56a",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63450157,
-          42.99102988
-        ]
-      },
-      "properties": {
-        "name": "Hungry Howie's Pizza",
-        "category": "Dining",
-        "address": "2466 S Center Rd, Burton, MI 48519-1152",
-        "phone": "+18107421122",
-        "website": "https://www.hungryhowies.com/stores/mi/burton/2466-south-center?utm_source=google&utm_medium=organic&utm_campaign=googlebusinessprofile"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:fbaf5805-bc37-4977-9094-c6f22e1e83e3",
       "geometry": {
         "type": "Point",
@@ -21601,23 +19960,6 @@
         "address": "2333 S Center Rd, Burton, MI 48519-1147",
         "phone": "+18107444279",
         "website": "http://upinstylehairsalon.godaddysites.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:fbfee758-48e2-418a-8a4a-cf5c26b9a22a",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.595413,
-          43.03336
-        ]
-      },
-      "properties": {
-        "name": "1 STOP #22",
-        "category": "Automotive",
-        "address": "6010 DAVISON RD, BURTON, MI 48509",
-        "website": "https://www.exxon.com/en/find-station/mobil-burton-mi-1stop22-200320379"
       }
     },
     {
@@ -21907,24 +20249,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:fefa7016-4590-4939-9aa5-fa10fdbbd5ed",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.59389247,
-          43.03450416
-        ]
-      },
-      "properties": {
-        "name": "IMA Brookwood Golf Club",
-        "category": "Arts & Entertainment",
-        "address": "6045 Davison Rd, Burton, MI 48509",
-        "phone": "+18107424930",
-        "website": "http://www.brookwoodgolfclub.com/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:ff13da24-5d58-44ff-87b5-e75aa9f49949",
       "geometry": {
         "type": "Point",
@@ -21974,24 +20298,6 @@
         "address": "1069 E Bristol Rd, Burton, MI 48529",
         "phone": "8103707676",
         "website": "https://mollymaid.com/flint"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:ff5f06bd-132a-4bad-bc23-48a03e8b30a4",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.69034956,
-          42.97424127
-        ]
-      },
-      "properties": {
-        "name": "Little Caesars Pizza",
-        "category": "Dining",
-        "address": "1063 E Bristol Rd, Burton, MI 48529-1126",
-        "phone": "+18102326121",
-        "website": "https://littlecaesars.com/en-us/store/1230"
       }
     },
     {

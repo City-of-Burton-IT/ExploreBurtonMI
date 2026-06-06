@@ -140,6 +140,13 @@ body,
   outline: none;
   box-shadow: var(--pub-focus-ring);
 }
+/* On phones the header is tight; the city seal already links to burtonmi.gov, so
+   the redundant Home button is hidden to free up the bar. */
+@media (max-width: 860px) {
+  .home-btn {
+    display: none;
+  }
+}
 
 /* Primary section nav: Map / Finances / Demographics (segmented pill) */
 .viewnav {
@@ -205,15 +212,16 @@ body,
   min-height: 0;
 }
 
-/* Zoning legend panel: floats on the right while the zoning overlay is enabled. */
+/* Zoning legend panel: floats bottom-right while the zoning overlay is enabled,
+   clear of the (always-open) layer control in the top-right corner. */
 .zoning-legend-panel {
   position: absolute;
-  top: 56px;
+  bottom: 26px;
   right: 10px;
   z-index: 1000;
   width: 300px;
   max-width: 78vw;
-  max-height: 72%;
+  max-height: 60%;
   overflow: auto;
   background: #fff;
   border: 1px solid var(--pub-border, #d8dde4);

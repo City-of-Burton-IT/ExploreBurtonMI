@@ -14,6 +14,7 @@ ALLOWED_PROPERTIES = {
     "website",
     "hours",
     "description",
+    "services",  # list of in-store services on a collapsed big-box record (display only)
 }
 
 

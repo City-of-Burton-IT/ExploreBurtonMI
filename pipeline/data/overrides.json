@@ -143,7 +143,8 @@
   "osm:node/7055480269": {
     "address": "4163 E Ct, Burton, MI 48509",
     "phone": "(810) 743-6479",
-    "_why": "Auto-enrichment from Overture match (score 0.67, 27m); sanitized + captured 2026-06-05. Verify if questioned."
+    "_why": "Duplicate of overture:e03a4fbc-930e-42cd-9717-a9e1a0af699f (Sprint Store) at 4163 E Ct, Burton, MI 48509.",
+    "hidden": true
   },
   "osm:node/7055480270": {
     "address": "4161 E Court St, Burton, MI 48509-1717",
@@ -280,7 +281,8 @@
   "osm:way/636390334": {
     "address": "6340 Roberta St, Burton, MI 48509-2438",
     "phone": "(810) 742-3151",
-    "_why": "Auto-enrichment from Overture match (score 0.68, 31m); sanitized + captured 2026-06-05. Verify if questioned."
+    "_why": "Duplicate of overture:d6560797-9c44-4c84-9000-314145bec6e4 (Blessed Sacrament Catholic Church) at 6340 Roberta St, Burton, MI 48509-2438.",
+    "hidden": true
   },
   "osm:way/675099708": {
     "address": "2029 E Bristol Rd, Burton, MI 48529-1318",
@@ -452,7 +454,8 @@
     "address": "G3410 S Grand Traverse St, Burton, MI 48529-1150",
     "phone": "(810) 742-7860",
     "website": "http://www.thegdl.org/branches/bp",
-    "_why": "Auto-enrichment from Overture match (score 0.97, 16m); sanitized + captured 2026-06-05. Verify if questioned."
+    "_why": "Duplicate of overture:17354916-8bf0-41b5-a07f-fa445fab8145 (Baker Park Library) at G3410 S Grand Traverse St, Burton, MI 48529-1150.",
+    "hidden": true
   },
   "osm:way/755542482": {
     "address": "1318 E Bristol Rd, Burton, MI 48529-2212",
@@ -504,7 +507,8 @@
     "address": "1256 S Belsay Rd, Burton, MI 48509-1918",
     "phone": "(810) 742-7005",
     "website": "http://finishlineautotire.com/",
-    "_why": "Auto-enrichment from Overture match (score 1.00, 26m); sanitized + captured 2026-06-05. Verify if questioned."
+    "_why": "Duplicate of overture:8fcb721b-e494-4ed2-a4b9-102f54191a80 (Finish Line Auto & Tire Service) at 1256 S Belsay Rd, Burton, MI 48509-1918.",
+    "hidden": true
   },
   "osm:way/911687422": {
     "address": "1232 S Belsay Rd, Burton, MI 48509-1918",
@@ -549,5 +553,417 @@
     "phone": "(810) 744-0474",
     "website": "http://flintsailandpowersquadron.com/",
     "_why": "Auto-enrichment from Overture match (score 0.80, 16m); sanitized + captured 2026-06-05. Verify if questioned."
+  },
+  "overture:040ad1d7-73c1-4f7e-801b-e3b86a46d396": {
+    "hidden": true,
+    "_why": "Duplicate of burton:fire-station-3 (Burton Fire Station 3) at 4515 Davison Rd, Burton, MI 48509-1411."
+  },
+  "overture:32be73fb-d193-44a9-b281-121220edb7f2": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/353915434 (Barhitte School) at 6080 Roberta St, Burton, MI 48509-2223."
+  },
+  "overture:b6cf39bf-6296-47ae-9675-705101f2e27d": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/353926892 (Dillon School) at 1197 E Schumacher St, Burton, MI 48529-1558."
+  },
+  "overture:7e03a9ac-561c-4670-a49b-92539c84c4bf": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/353932853 (Friel Street School) at 4469 Greenly St, Burton, MI 48529-2058."
+  },
+  "osm:node/7054835941": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/683978470 (Meijer) at 2333 South Center Road, Burton, MI 48519."
+  },
+  "overture:fb70a567-9042-4697-ac8c-ddcea996e56a": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/7054836048 (Hungry Howie's) at 2466 S Center Rd, Burton, MI 48519-1152."
+  },
+  "overture:e9f3e5bb-ae34-4faa-990a-2d67574c6697": {
+    "hidden": true,
+    "_why": "Duplicate of overture:2fc9223b-6318-406f-ad40-b1b9cbeb3d69 (UPS Alliance Shipping Partner) at 4190 E Court St, Burton, MI 48509."
+  },
+  "overture:91f45c7e-c75e-4c0e-a3ba-f5c4be2988a1": {
+    "hidden": true,
+    "_why": "Duplicate of overture:3b3a20a4-4c8f-4172-9dc5-1a879e2bdf9b (Bath & Body Works) at 4190 E Court St, Burton, MI 48509-1732."
+  },
+  "overture:b0216747-8021-45f4-8707-1aec65b103c1": {
+    "hidden": true,
+    "_why": "Duplicate of overture:a13b361f-b311-4c4d-8dd7-020490307216 (Magoo's Pet Outlet) at 4190 E Court St, Burton, MI 48509-1732."
+  },
+  "overture:9c10a413-674e-4de6-8ee1-2d3137220d04": {
+    "hidden": true,
+    "_why": "Duplicate of overture:e03a4fbc-930e-42cd-9717-a9e1a0af699f (Sprint Store) at 4163 E Ct, Burton, MI 48509."
+  },
+  "overture:d1a1102e-ebd1-443e-89ab-b68348c7b5b1": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/7055480271 (H&R Block) at 4159 E Court St, Burton, MI 48509."
+  },
+  "overture:e2e62181-6a14-4ca2-95a0-bc0c99ff0659": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/7055502481 (Check 'n Go) at G-3017 South Dort Hwy, Burton, MI 48529."
+  },
+  "overture:f62d7d84-baf9-4cf0-be9d-52e7bd0436e2": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/7178265743 (Speedway) at 1258 East Bristol Road, Burton, MI 48529."
+  },
+  "overture:f8e56dd9-a77a-49f3-9919-c7e307079958": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/7178265743 (Speedway) at 1258 E Bristol Rd, Burton, MI 48529."
+  },
+  "osm:node/8132984922": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/8132984923 (BP) at 2514 South Belsay Road, Burton, MI 48519."
+  },
+  "overture:a617bfbf-df7d-444f-87c2-3a38f027db2e": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/8132985002 (Speedway) at 1466 East Bristol Road, Burton, MI 48529."
+  },
+  "overture:bd95ae3a-fb8e-4d34-9c0e-fe338778260e": {
+    "hidden": true,
+    "_why": "Duplicate of osm:node/8163114525 (Little Caesars) at 1193 S Belsay Rd, Burton, MI 48509-1915."
+  },
+  "overture:aa465cc4-953e-4eaf-88b9-565d4dc81c10": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/1208118668 (Van Y School) at 2400 Clarice Ave, Burton, MI 48519-1011."
+  },
+  "overture:9301014f-86f9-488b-90bc-3b9ae2149457": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/1408925605 (Bendle West School) at 4020 Cerdan Dr, Burton, MI 48529-1608."
+  },
+  "osm:way/1454279070": {
+    "hidden": true,
+    "_why": "Duplicate of overture:baf432ab-062f-4372-98a8-63984cb086a6 (St Nicholas Orthodox Church) at 2143 South Center Road, Burton, MI 48519."
+  },
+  "overture:2894c683-5af4-4e76-a400-45a0f0c4f547": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/628515087 (Walmart Supercenter) at 5323 E Court St N, Burton, MI 48509-1539."
+  },
+  "overture:b5c1d144-8f05-4012-881c-6d5ecd05107f": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/628515087 (Walmart Supercenter) at 5323 E Court St N, Burton, MI 48509-1539."
+  },
+  "overture:244c0d13-33da-444b-8c28-b9e08ffb86bb": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/628515087 (Walmart Supercenter) at 5323 E Court St N, Burton, MI 48509."
+  },
+  "overture:8de032f7-02e3-49e4-bc21-f42021cddaee": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/628515087 (Walmart Supercenter) at 5323 E Court St N, Burton, MI 48509-1539."
+  },
+  "overture:980fbd58-6d6b-4ea2-8c02-7b5176d85d34": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/628515087 (Walmart Supercenter) at 5323 E Court St N, Burton, MI 48509-1539."
+  },
+  "overture:ef65c62d-c090-49c8-a96a-ea253ddd81f9": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/628515087 (Walmart Supercenter) at 5323 E Court St N, Burton, MI 48509-1539."
+  },
+  "overture:6c0b5f5e-c2e4-40ab-bf42-8d3c86831ba6": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/628515087 (Walmart Supercenter) at 5323 E Court St N, Burton, MI 48509-1539."
+  },
+  "overture:5d69132e-8298-43ba-ad4f-68e89fa951f4": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/628515087 (Walmart Supercenter) at 5323 E Court St N, Burton, MI 48509."
+  },
+  "overture:c3961734-87ad-47b5-8bcf-6a370b4fb49a": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/628515087 (Walmart Supercenter) at 5323 E Court St N, Burton, MI 48509."
+  },
+  "overture:a36e2c19-1d0d-4255-8c98-569fb62435f0": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/678519309 (Sovita Credit Union) at 5399 E Court St N, Burton, MI 48509."
+  },
+  "overture:9a2a9c4c-85bd-4a04-a02b-914211749827": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/678727214 (The Home Depot) at 4245 E Court St, Burton, MI 48509."
+  },
+  "overture:cf9e6d3b-dde6-4d48-9c3a-d9d32add7e66": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/678727214 (The Home Depot) at 4245 E Court St, Burton, MI 48509."
+  },
+  "overture:54adfc99-011d-4811-bbc6-13ef9d21c452": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/678727218 (Big Lots) at 4157 E Court St, Burton, MI 48509."
+  },
+  "overture:e2a22c2f-0351-45d8-9053-99d494aa000e": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/713392288 (Eastgate Church) at 4226 E Atherton Rd, Burton, MI 48519-1438."
+  },
+  "overture:44764b12-1db0-4031-a694-d9eb0e95de54": {
+    "hidden": true,
+    "_why": "Duplicate of overture:2a9babbe-d796-45b9-a39a-e0a7766c6f0c (Atherton High School) at 3354 S Genesee Rd, Burton, MI 48519-1426."
+  },
+  "osm:way/713671446": {
+    "hidden": true,
+    "_why": "Duplicate of overture:2a9babbe-d796-45b9-a39a-e0a7766c6f0c (Atherton High School) at 3354 South Genesee Road, Burton, MI 48519."
+  },
+  "osm:way/713671447": {
+    "hidden": true,
+    "_why": "Duplicate of overture:e4279303-819c-4de6-a268-1ea4391e1cd3 (Madison Academy) at 3266 South Genesee Road, Burton, MI 48519."
+  },
+  "overture:c58eb82f-7f0b-4c75-9169-65d56e4c18b0": {
+    "hidden": true,
+    "_why": "Duplicate of overture:e5b61fe6-a44e-41d8-9743-ccb45c3e1056 (NCG Cinemas) at 4190 E Court St Ste 200, Burton, MI 48509."
+  },
+  "overture:ef3cab81-61bf-4ad2-ab51-3ba7b966831b": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/750487578 (Starlite’s Original Burger and Coney Shop) at 4125 E Court St, Burton, MI 48509-1717."
+  },
+  "overture:b943c541-6141-4730-af28-50dc3859a3fb": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755222688 (Gordon Food Service) at 2170 S Center Rd, Burton, MI 48519-1151."
+  },
+  "overture:492f9c0e-aeda-4f77-a219-c7a4289336f1": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755222696 (Elga Credit Union) at 2305 S Center Rd, Burton, MI 48519."
+  },
+  "overture:9c0621e5-163f-4cc8-9025-4cea9eb9d427": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755222699 (AT&T) at 2350 S Center Rd, Burton, MI 48519-1165."
+  },
+  "overture:1d15a5c2-f3e3-4a86-ab65-d7ed0fd36142": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755222699 (AT&T) at 2350 S Center Rd, Burton, MI 48519-1165."
+  },
+  "overture:85682d20-2574-45d5-9068-883496dcca33": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755302819 (Discount Tire) at 4210 E COURT ST, BURTON, MI 48509-1720."
+  },
+  "overture:c1c120d0-57fd-44a4-adda-62aa18c00256": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755306640 (PM Trailer Service LLC) at 4101 Flint Asphalt Dr, Burton, MI 48529-1824."
+  },
+  "overture:ca011d05-12f7-40b2-b3f5-ed411b3a0f77": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755310650 (Little Caesars) at 3064 E Atherton Rd, Burton, MI 48529-1039."
+  },
+  "overture:0fb4c38f-484b-4706-aaef-e9762fa82482": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755329778 (Starlite Coney Island) at 1500 N Center Rd, Burton, MI 48509-1430."
+  },
+  "overture:2ea1ad5e-ac9a-43db-bb8a-8febe6e2f0e0": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755329800 (Chase) at 4154 Davison Rd, Burton, MI 48509."
+  },
+  "overture:d30b590a-613d-4794-aa92-052cdee3d88f": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755542482 (Huntington Bank) at 1318 E Bristol Rd, Burton, MI 48529-2212."
+  },
+  "overture:84add775-4060-4af6-b1e1-f21205cdf7b0": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/755542710 (Tia Helita's) at G4070 S Saginaw St, Burton, MI 48529-1653."
+  },
+  "overture:ff5f06bd-132a-4bad-bc23-48a03e8b30a4": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/768969583 (Little Caesars) at 1063 E Bristol Rd, Burton, MI 48529-1126."
+  },
+  "overture:c7f473de-0710-4d5a-b953-30bee24b039c": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/768972650 (Hungry Howie's) at 4495 Fenton Rd, Burton, MI 48507."
+  },
+  "overture:5b6cdda4-c800-4381-b768-b2dac76e3c50": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/911687422 (Chase) at 1232 S Belsay Rd, Burton, MI 48509-1918."
+  },
+  "overture:f0cc9543-163f-4b4d-a419-de42c953ac06": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/911687427 (Johnny's Hardware) at 5507 Lapeer Rd, Burton, MI 48509-2237."
+  },
+  "overture:1fb05a49-be71-47d4-9fc1-efc26c4f36fa": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/911687431 (Scotti's Coney Island) at 5522 Lapeer Rd, Burton, MI 48509."
+  },
+  "overture:ad6f37ab-8ccb-4d1f-a4d9-7f0bee19ef91": {
+    "hidden": true,
+    "_why": "Duplicate of overture:01a29c0a-4a5d-436e-bbff-32bfe61f7d07 (DENAM Auto Brokers & Trailer Sales) at G4510 S Dort Hwy, Burton, MI 48529-1806."
+  },
+  "overture:3ea850c6-cc25-42b0-bea0-0200fe24cebc": {
+    "hidden": true,
+    "_why": "Duplicate of overture:55c1921c-3140-4e07-a704-6f25fc7b2023 (Art Van PureSleep) at 4095 E Court St, Burton, MI 48509."
+  },
+  "overture:01a940a8-aac9-4f08-bd2d-7490f590fda3": {
+    "hidden": true,
+    "_why": "Duplicate of overture:55c1921c-3140-4e07-a704-6f25fc7b2023 (Art Van PureSleep) at 4095 E Court St, Burton, MI 48509."
+  },
+  "overture:f83b5a55-67e2-4fe3-8053-65601b724a68": {
+    "hidden": true,
+    "_why": "Duplicate of overture:34981853-1fdf-4688-87f3-ae1b1a91a3ec (Bendle High School) at 2283 E Scottwood Ave, Burton, MI 48529-1721."
+  },
+  "overture:a45c353b-9209-4c79-8215-063191ca36cb": {
+    "hidden": true,
+    "_why": "Duplicate of overture:0d837511-57e5-4596-80d3-643592f80198 (Burlington) at 4153 E Ct St, Burton, MI 48509."
+  },
+  "overture:fefa7016-4590-4939-9aa5-fa10fdbbd5ed": {
+    "hidden": true,
+    "_why": "Duplicate of overture:0d953a19-6071-48c1-bb34-a148b62b090f (IMA Brookwood Golf Club) at 6045 Davison Rd, Burton, MI 48509."
+  },
+  "overture:de0c4429-2924-4964-bfc9-6d6688de9d48": {
+    "hidden": true,
+    "_why": "Duplicate of overture:9218824c-cbc2-4553-a849-cc18b9960792 (H&R Block) at G3021 S Dort Hwy, Burton, MI 48529."
+  },
+  "overture:0f329da0-d579-4c84-879f-a99b944e9027": {
+    "hidden": true,
+    "_why": "Duplicate of overture:9218824c-cbc2-4553-a849-cc18b9960792 (H&R Block) at G3021 S Dort Hwy, Burton, MI 48529."
+  },
+  "overture:11c55467-23d4-4b5b-8f5f-5d3ea25bac6e": {
+    "hidden": true,
+    "_why": "Duplicate of overture:6bce66aa-e202-4176-a00e-a979445a56d2 (Patrick L. Chatterton) at 4085 S Center Rd, Burton, MI 48519-1957."
+  },
+  "overture:361b6c7f-cc6a-44c3-81fe-8316469bcde7": {
+    "hidden": true,
+    "_why": "Duplicate of overture:5f1c041a-9c97-45fd-87ec-cc347e6698d1 (Two Guys & A Grow Shop) at 3374 E Atherton Rd, Burton, MI 48529-1008."
+  },
+  "overture:45bdf8e9-2ab6-4df5-a2a5-dd9a24cc05d3": {
+    "hidden": true,
+    "_why": "Duplicate of overture:20363e70-906b-489d-9ca7-c718bd047268 (Jcpenney) at 4190 E Court St Ste 500, Burton, MI 48509."
+  },
+  "overture:3ac2417c-0be1-4b9c-97be-d367f71e9394": {
+    "hidden": true,
+    "_why": "Duplicate of overture:20363e70-906b-489d-9ca7-c718bd047268 (Jcpenney) at 4190 E Court St Ste 500, Burton, MI 48509."
+  },
+  "overture:24d35a49-ab64-4452-b805-4ef5508da3b6": {
+    "hidden": true,
+    "_why": "Duplicate of overture:c3856ab1-822d-4501-bdc2-384c834c3c47 (The Pines Of Burton Memory Care) at 5340 Davison Rd, Burton, MI 48509-1519."
+  },
+  "overture:5df36f90-8066-4bed-b900-18bb12981cf8": {
+    "hidden": true,
+    "_why": "Duplicate of overture:29bdf3d8-ace8-4b48-b4b0-d23f005c2e61 (Gotta Have It) at 6020 Davison Rd, Burton, MI 48509-1607."
+  },
+  "overture:97151039-c9b3-4b8e-a3f0-1232110e0545": {
+    "hidden": true,
+    "_why": "Duplicate of overture:b4782880-2b1a-42e7-bb84-828df9908b1d (KROGER #406) at 1200 E Bristol Rd, Burton, MI 48529."
+  },
+  "overture:a018686c-4200-42cb-a320-be192c38064d": {
+    "hidden": true,
+    "_why": "Duplicate of overture:2b22fb78-dc14-4be5-8bed-2c837949aa3e (Viking Sewing Gallery) at G-4220 E Court St Unit 101, Burton, MI 48509."
+  },
+  "overture:ab8c07b7-59d1-440f-81ed-5bbff94ccb37": {
+    "hidden": true,
+    "_why": "Duplicate of overture:cdeb113a-f6cb-48ac-8b0d-47da49a89eaa (Henry Ford Family Medicine - Burton) at 1460 N Center Rd, Burton, MI 48509."
+  },
+  "overture:b552e707-bda4-4756-8e12-66f25f00e6ef": {
+    "hidden": true,
+    "_why": "Duplicate of overture:86047763-2c7d-44d2-bbad-143e1645fb2e (Maaco Auto Body Shop & Painting) at G3345 S Dort Hwy, Burton, MI 48529."
+  },
+  "overture:f616cb02-e68c-4213-b77e-82e212b7db8b": {
+    "hidden": true,
+    "_why": "Duplicate of overture:2ea4ad96-4b4d-4b3b-9fec-e4f1d19d3de7 (Bendle Middle School) at 2294 E Bristol Rd, Burton, MI 48529-1371."
+  },
+  "overture:9ca05b5e-3a14-48fc-b981-cf069ee4b90b": {
+    "hidden": true,
+    "_why": "Duplicate of overture:3ded74bf-4d8c-42c9-8467-c8d1bc2ee1c2 (Bitcoin Depot - Bitcoin ATM) at G4330 Saginaw St, Burton, MI 48529."
+  },
+  "overture:660a0105-e010-4f89-aad5-739f3b739dce": {
+    "hidden": true,
+    "_why": "Duplicate of overture:447b332f-c6c3-4f45-a175-b1739e7ea062 (Family Dollar) at G4386 S Saginaw St, Burton, MI 48529."
+  },
+  "overture:4769c54d-3b47-466f-b010-bb1d81325307": {
+    "hidden": true,
+    "_why": "Duplicate of overture:fc0769e0-a823-417f-8025-ea309d726054 (Oak Street Health) at G3525 S Saginaw St, Burton, MI 48529."
+  },
+  "overture:5d8156de-a400-4367-9db0-147a6bd86e4f": {
+    "hidden": true,
+    "_why": "Duplicate of overture:4919c245-de73-464f-94e0-c01ecd187e5d (Tall Oaks Realty) at 5046 Davison Rd, Burton, MI 48509-1514."
+  },
+  "overture:bcc5b36a-db60-4868-87cb-2c786044a4d6": {
+    "hidden": true,
+    "_why": "Duplicate of overture:73363656-8483-4a3f-a689-49e329e7fdfc (New Testament Church) at 3484 S Belsay Rd, Burton, MI 48519-1625."
+  },
+  "overture:c2e740e9-f384-417c-b2e0-6ee13273645a": {
+    "hidden": true,
+    "_why": "Duplicate of overture:4f642721-0c7d-45a7-9ada-03ca95878606 (Burton Glen Charter Academy) at 4171 E Atherton Rd, Burton, MI 48519."
+  },
+  "overture:523e43e8-7019-4bb0-9a71-467909708657": {
+    "hidden": true,
+    "_why": "Duplicate of overture:7c27569f-fda3-4e9e-b50a-f3b986dd4638 (Valley Church Burton) at 4201 Lippincott Blvd, Burton, MI 48519."
+  },
+  "overture:fbfee758-48e2-418a-8a4a-cf5c26b9a22a": {
+    "hidden": true,
+    "_why": "Duplicate of overture:fad0eada-f61c-41fe-bb45-2c300f4849de (One Stop Food Store) at 6010 DAVISON RD, BURTON, MI 48509."
+  },
+  "overture:5930c75e-9bc8-43e5-a6f7-9ad40459517a": {
+    "hidden": true,
+    "_why": "Duplicate of overture:901ce903-8d25-41f3-8400-430248e453ee (Walker Farms & Greenhouse) at 5253 E Atherton Rd, Burton, MI 48519-1529."
+  },
+  "overture:f646357c-1896-48a9-a31e-1b23d38b7280": {
+    "hidden": true,
+    "_why": "Duplicate of overture:5b65a594-1a25-47f7-b3d1-0573dc3ca1b2 (Colberg Radiator) at 4114 Davison Rd, Burton, MI 48509."
+  },
+  "overture:5d177efb-58e1-4790-9f24-7f10b760b895": {
+    "hidden": true,
+    "_why": "Duplicate of overture:9dd23b7d-0712-43a1-a26c-bdee8190c229 (Michigan Drain &Sewer) at 1363 Audrey St, Burton, MI 48509."
+  },
+  "overture:be7d22bf-2d24-4706-b05d-bd403c5c306a": {
+    "hidden": true,
+    "_why": "Duplicate of overture:5e22d28f-fa40-4ee1-b416-409cc4fa5a65 (Dotty's Pet Center) at 1375 E Bristol Rd, Burton, MI 48529."
+  },
+  "overture:9ba6bc98-603e-405a-830a-a58e052a418f": {
+    "hidden": true,
+    "_why": "Duplicate of overture:879fb858-03f7-4235-bafe-c1f9d3b333ac (Greater Flint Imaging) at 4001 Walli Strasse Dr, Burton, MI 48509."
+  },
+  "overture:70dbc9b1-959a-4745-a671-1ab7405ca07c": {
+    "hidden": true,
+    "_why": "Duplicate of overture:69dbc29e-8a4e-4b67-a264-58255fa0f02f (DaVita Burton Dialysis) at 4015 Davison Rd, Burton, MI 48509."
+  },
+  "overture:f4fed651-64d5-4c89-a0af-275b00389a04": {
+    "hidden": true,
+    "_why": "Duplicate of overture:6a47c035-cfc0-4362-9843-353f7927124b (US Speedo Inc) at 1096 N Center Rd, Burton, MI 48509."
+  },
+  "overture:be56edef-1aa9-4f22-8032-34f126229f60": {
+    "hidden": true,
+    "_why": "Duplicate of overture:71d97a8e-3829-4beb-9290-678f40a7041e (All-Weather Seal) at G-4258 S Saginaw St, Burton, MI 48529."
+  },
+  "overture:b96c3286-35ba-4120-a5f1-ffb79631ef66": {
+    "hidden": true,
+    "_why": "Duplicate of overture:8f43ebc2-72fa-420b-a4d6-7f621bbc0931 (Regional Medical Imaging) at G2065 S Center Rd, Burton, MI 48519."
+  },
+  "overture:c7df8c5e-910a-47ac-b9f2-24dfc6e5c00b": {
+    "hidden": true,
+    "_why": "Duplicate of overture:94a28d0e-075e-43a7-a873-5d2232ff824d (Forever Bella Boutique) at G3314 S Saginaw St, Burton, MI 48529."
+  },
+  "overture:981816d9-82c5-4cac-a6e7-0899ef83a90a": {
+    "hidden": true,
+    "_why": "Duplicate of overture:e267d3a8-492f-4da1-9472-c4c8648d9124 (Dollar Tree) at G4007 South Saginaw St, Burton, MI 48529-1617."
+  },
+  "osm:way/628515087": {
+    "category": [
+      "Grocery & Food",
+      "Health & Medical",
+      "Automotive",
+      "Retail & Shopping"
+    ],
+    "services": [
+      "Pharmacy",
+      "Auto Center",
+      "Tire & Lube Express",
+      "Bakery",
+      "Photo Center",
+      "Wireless Services",
+      "Grocery Pickup & Delivery"
+    ],
+    "_why": "Big-box: collapsed 9 department pins into one. services + multi-category kept so e.g. a Pharmacy/Automotive filter still surfaces Walmart."
+  },
+  "osm:way/678727214": {
+    "category": [
+      "Retail & Shopping",
+      "Automotive"
+    ],
+    "services": [
+      "Tool & Truck Rental",
+      "Home Services"
+    ],
+    "_why": "Big-box: collapsed department pins into one; services + multi-category kept."
+  },
+  "overture:20363e70-906b-489d-9ca7-c718bd047268": {
+    "name": "JCPenney",
+    "services": [
+      "Sephora"
+    ],
+    "_why": "Collapsed Sephora-inside-JCPenney into the store; service kept in the popup."
+  },
+  "osm:node/8132984977": {
+    "hidden": true,
+    "_why": "Duplicate of osm:way/683978470 (Meijer) at 2333 South Center Road, Burton, MI 48519."
   }
 }

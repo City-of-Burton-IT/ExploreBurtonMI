@@ -120,12 +120,16 @@ export interface SearchConfig {
 
 export interface FeatureProperties {
   name: string;
-  category?: string;
+  /** One category, or several when a record collapses co-located services
+   *  (e.g. a big-box store with a pharmacy + auto center). The first is primary. */
+  category?: string | string[];
   address?: string;
   phone?: string;
   website?: string;
   hours?: string;
   description?: string;
+  /** In-store services on a collapsed big-box record (display only). */
+  services?: string[];
   [key: string]: unknown;
 }
 

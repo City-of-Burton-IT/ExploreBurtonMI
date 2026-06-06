@@ -22,7 +22,10 @@
   const DEFAULT_COLOR = '#555555';
 
   function colorFor(feature: PlaceFeature): string {
-    const cat = feature.properties[config.categoryField] as string | undefined;
+    // A record may carry several categories (a collapsed big-box store); the first
+    // is its primary, which drives the marker color.
+    const raw = feature.properties[config.categoryField];
+    const cat = (Array.isArray(raw) ? raw[0] : raw) as string | undefined;
     return (cat && config.categories[cat]?.color) || DEFAULT_COLOR;
   }
 
@@ -156,8 +159,10 @@
       const pane = map.getPane('dataLayers');
       if (pane) pane.style.zIndex = '350';
       const palette = ['#1565c0', '#2e7d32', '#e65100', '#6a1b9a', '#00838f', '#b3261e', '#9e9d24'];
+      // Left expanded so the available overlays are always visible (the collapsed
+      // toggle hid that there were layers to turn on at all).
       const layerControl = L.control
-        .layers(undefined, undefined, { collapsed: true, position: 'topright' })
+        .layers(undefined, undefined, { collapsed: false, position: 'topright' })
         .addTo(map);
 
       // Georeferenced image overlays (e.g. the zoning map) -- stretched to their
@@ -313,6 +318,18 @@
         marker.setStyle(baseStyle(feature));
       }
     }
+  });
+
+  // Selecting a place (from the list or a marker) zooms in to reveal it -- using
+  // markercluster's zoomToShowLayer so a marker hidden inside a cluster is
+  // declustered and centred rather than left invisible. offMap features have no
+  // marker and are skipped.
+  $effect(() => {
+    const id = ui.selected?.id;
+    if (!id || !map || !cluster) return;
+    const marker = markers.get(id);
+    if (!marker) return;
+    cluster.zoomToShowLayer(marker, () => marker.bringToFront());
   });
 
   onDestroy(() => {

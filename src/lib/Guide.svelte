@@ -37,12 +37,12 @@
           </li>
         {/each}
       </ul>
+      <button class="about" onclick={openAbout}>About this site &amp; credits</button>
       {#if bundle.pdf}
         <a class="pdf" href={bundle.pdf} target="_blank" rel="noopener noreferrer">
           Download the official packet (PDF)
         </a>
       {/if}
-      <button class="about" onclick={openAbout}>About this site &amp; credits</button>
     </nav>
 
     <div class="guide-body">
@@ -100,16 +100,13 @@
     font-weight: 700;
     box-shadow: inset 3px 0 0 var(--civic-blue, #2c57a0);
   }
+  /* "About" anchors the guide's footer actions to the bottom of the nav column;
+     the PDF download sits directly beneath it as the very last item. */
   .pdf {
-    margin-top: auto;
+    margin-top: 0;
     font-size: 0.85rem;
     color: var(--civic-blue-link, #386fc5);
     padding: 0.5rem 0.7rem;
-  }
-  /* "About" sits with the PDF link as the guide's footer actions. When there is
-     no PDF, push it to the bottom of the nav column itself. */
-  .pdf + .about {
-    margin-top: 0;
   }
   .about {
     margin-top: auto;

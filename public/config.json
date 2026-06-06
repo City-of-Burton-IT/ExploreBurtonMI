@@ -56,6 +56,7 @@
   },
   "properties": [
     { "field": "category", "label": "Category" },
+    { "field": "services", "label": "In-store services" },
     { "field": "address", "label": "Address" },
     { "field": "address", "label": "Directions", "format": "directions" },
     { "field": "phone", "label": "Phone", "format": "phone" },
@@ -68,6 +69,6 @@
   },
   "list": ["name", "address"],
   "search": {
-    "keys": ["name", "category", "address", "description"]
+    "keys": ["name", "category", "address", "description", "services"]
   }
 }

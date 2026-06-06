@@ -104,11 +104,13 @@ def main(refresh: bool = False) -> int:
     count = emit(clean, util.path(out))
     print(f"wrote {count} features -> {out}")
 
-    # category breakdown
+    # category breakdown (a record may carry several categories, e.g. a big-box
+    # store collapsed from per-department pins -- count it under each).
     counts: dict = {}
     for f in clean:
         c = f["properties"].get("category", "(none)")
-        counts[c] = counts.get(c, 0) + 1
+        for one in (c if isinstance(c, list) else [c]):
+            counts[one] = counts.get(one, 0) + 1
     print("\nCategory breakdown:")
     for cat, n in sorted(counts.items(), key=lambda kv: -kv[1]):
         print(f"  {n:4d}  {cat}")
