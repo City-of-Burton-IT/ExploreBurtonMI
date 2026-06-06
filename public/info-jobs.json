@@ -1,0 +1,189 @@
+{
+  "title": "Jobs & Employers",
+  "subtitle": "Genesee County employment -- Census County Business Patterns 2022 + BLS",
+  "stats": [
+    {
+      "label": "Establishments",
+      "value": "7,695",
+      "hint": "Genesee County, 2022"
+    },
+    {
+      "label": "Paid employees",
+      "value": "120,612",
+      "hint": "Genesee County, 2022"
+    },
+    {
+      "label": "Annual payroll",
+      "value": "$5.85B",
+      "hint": "Genesee County, 2022"
+    },
+    {
+      "label": "Average annual wage",
+      "value": "$48.5K",
+      "hint": "payroll / employees, 2022"
+    },
+    {
+      "label": "Unemployment rate",
+      "value": "5.8%",
+      "hint": "Genesee County, December 2025"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "Jobs by industry (Genesee County, 2022)",
+      "unit": "",
+      "series": [
+        {
+          "label": "Health care & social assistance",
+          "value": 24006
+        },
+        {
+          "label": "Retail trade",
+          "value": 18578
+        },
+        {
+          "label": "Manufacturing",
+          "value": 14910
+        },
+        {
+          "label": "Accommodation & food service",
+          "value": 14135
+        },
+        {
+          "label": "Administrative & waste services",
+          "value": 9928
+        },
+        {
+          "label": "Wholesale trade",
+          "value": 7172
+        },
+        {
+          "label": "Construction",
+          "value": 6343
+        },
+        {
+          "label": "Other services",
+          "value": 6308
+        },
+        {
+          "label": "Professional & technical",
+          "value": 4333
+        },
+        {
+          "label": "Finance & insurance",
+          "value": 3576
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Average annual wage by industry",
+      "unit": "$",
+      "series": [
+        {
+          "label": "Company management",
+          "value": 87389
+        },
+        {
+          "label": "Construction",
+          "value": 74082
+        },
+        {
+          "label": "Finance & insurance",
+          "value": 71933
+        },
+        {
+          "label": "Wholesale trade",
+          "value": 64995
+        },
+        {
+          "label": "Manufacturing",
+          "value": 60613
+        },
+        {
+          "label": "Professional & technical",
+          "value": 58047
+        },
+        {
+          "label": "Health care & social assistance",
+          "value": 57197
+        },
+        {
+          "label": "Transportation & warehousing",
+          "value": 45702
+        },
+        {
+          "label": "Real estate",
+          "value": 44305
+        },
+        {
+          "label": "Administrative & waste services",
+          "value": 38159
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Unemployment rate (Genesee County, annual avg)",
+      "unit": "%",
+      "points": [
+        {
+          "x": "2016",
+          "y": 5.6
+        },
+        {
+          "x": "2017",
+          "y": 5.6
+        },
+        {
+          "x": "2018",
+          "y": 4.9
+        },
+        {
+          "x": "2019",
+          "y": 5.0
+        },
+        {
+          "x": "2020",
+          "y": 11.4
+        },
+        {
+          "x": "2021",
+          "y": 7.1
+        },
+        {
+          "x": "2022",
+          "y": 5.3
+        },
+        {
+          "x": "2023",
+          "y": 4.9
+        },
+        {
+          "x": "2024",
+          "y": 5.6
+        },
+        {
+          "x": "2025",
+          "y": 6.4
+        }
+      ]
+    }
+  ],
+  "source": "U.S. Census County Business Patterns 2022 (establishments, employment, payroll by NAICS sector) and U.S. Bureau of Labor Statistics Local Area Unemployment Statistics (county unemployment rate). Genesee County, MI (FIPS 26049).",
+  "links": [
+    {
+      "text": "Census County Business Patterns",
+      "href": "https://www.census.gov/programs-surveys/cbp.html"
+    },
+    {
+      "text": "BLS Local Area Unemployment",
+      "href": "https://www.bls.gov/lau/"
+    }
+  ],
+  "notes": [
+    "These figures are for all of Genesee County, not Burton alone -- the federal business and labor series are not published at the city level. Burton is one of the county's communities.",
+    "Establishment, employment, and payroll counts exclude most government, agricultural, and self-employed workers (a County Business Patterns convention)."
+  ]
+}

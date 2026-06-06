@@ -1,0 +1,251 @@
+{
+  "title": "Community Health",
+  "subtitle": "Estimated adult health in Burton -- CDC PLACES, 2025 release",
+  "stats": [
+    {
+      "label": "Without health insurance (18-64)",
+      "value": "8.1%",
+      "hint": "adults 18-64"
+    },
+    {
+      "label": "Routine checkup, past year",
+      "value": "79.0%",
+      "hint": "adults"
+    },
+    {
+      "label": "High blood pressure",
+      "value": "37.9%",
+      "hint": "adults"
+    },
+    {
+      "label": "Diabetes",
+      "value": "12.8%",
+      "hint": "adults"
+    },
+    {
+      "label": "Currently smoke",
+      "value": "19.3%",
+      "hint": "adults"
+    },
+    {
+      "label": "Obesity",
+      "value": "40.8%",
+      "hint": "adults"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "Chronic conditions (estimated adult prevalence)",
+      "unit": "%",
+      "series": [
+        {
+          "label": "Obesity",
+          "value": 40.8
+        },
+        {
+          "label": "High blood pressure",
+          "value": 37.9
+        },
+        {
+          "label": "High cholesterol",
+          "value": 37.2
+        },
+        {
+          "label": "Arthritis",
+          "value": 32.2
+        },
+        {
+          "label": "Depression",
+          "value": 28.9
+        },
+        {
+          "label": "Diabetes",
+          "value": 12.8
+        },
+        {
+          "label": "Current asthma",
+          "value": 12.5
+        },
+        {
+          "label": "COPD",
+          "value": 10.3
+        },
+        {
+          "label": "Heart disease",
+          "value": 7.8
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Prevention & screening (share of adults)",
+      "unit": "%",
+      "series": [
+        {
+          "label": "Cholesterol screening",
+          "value": 85.5
+        },
+        {
+          "label": "Routine checkup, past year",
+          "value": 79.0
+        },
+        {
+          "label": "Mammogram (women 50-74)",
+          "value": 76.4
+        },
+        {
+          "label": "Colon cancer screening",
+          "value": 67.7
+        },
+        {
+          "label": "Dental visit, past year",
+          "value": 63.6
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Lifestyle & risk factors",
+      "unit": "%",
+      "series": [
+        {
+          "label": "Short sleep (under 7 hrs)",
+          "value": 39.5
+        },
+        {
+          "label": "No leisure-time exercise",
+          "value": 29.0
+        },
+        {
+          "label": "Currently smoke",
+          "value": 19.3
+        },
+        {
+          "label": "Binge drinking",
+          "value": 15.5
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Health-related social needs",
+      "unit": "%",
+      "series": [
+        {
+          "label": "Social isolation",
+          "value": 36.5
+        },
+        {
+          "label": "Food insecurity",
+          "value": 20.4
+        },
+        {
+          "label": "Housing insecurity",
+          "value": 14.7
+        },
+        {
+          "label": "Utility shut-off risk",
+          "value": 11.2
+        },
+        {
+          "label": "Lack of transportation",
+          "value": 10.7
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "How Burton compares to Genesee County",
+      "rows": [
+        {
+          "label": "Without health insurance (18-64)",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 8.1
+            },
+            {
+              "name": "Genesee County",
+              "value": 7.3
+            }
+          ]
+        },
+        {
+          "label": "Currently smoke",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 19.3
+            },
+            {
+              "name": "Genesee County",
+              "value": 17.0
+            }
+          ]
+        },
+        {
+          "label": "Obesity",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 40.8
+            },
+            {
+              "name": "Genesee County",
+              "value": 40.6
+            }
+          ]
+        },
+        {
+          "label": "Diabetes",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 12.8
+            },
+            {
+              "name": "Genesee County",
+              "value": 13.2
+            }
+          ]
+        },
+        {
+          "label": "High blood pressure",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 37.9
+            },
+            {
+              "name": "Genesee County",
+              "value": 39.0
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "source": "CDC PLACES: Local Data for Better Health, 2025 release (model-based small-area estimates from the Behavioral Risk Factor Surveillance System). Burton place FIPS 2612060; Genesee County FIPS 26049.",
+  "links": [
+    {
+      "text": "CDC PLACES",
+      "href": "https://www.cdc.gov/places/"
+    },
+    {
+      "text": "Health & support resources (Resident Guide)",
+      "href": "#guide/help"
+    }
+  ],
+  "notes": [
+    "Estimates cover Burton's adult population (city total ~29,715).",
+    "These are model-based ESTIMATES of how common each condition or behaviour is among Burton adults -- not counts of diagnosed residents. They come from CDC's PLACES program, which projects national survey (BRFSS) results down to each community (2025 release).",
+    "Every figure is shown against Genesee County so it reads as context. Small differences fall within the estimates' margin of error.",
+    "Need care or help? See the Health & support resources in the Resident Guide."
+  ]
+}

@@ -161,7 +161,13 @@ export interface PlaceCollection {
 // Resident-facing snapshot views, each driven by a committed JSON file. No PII;
 // display-only public data, so they live outside the map's public-safe gate.
 
-export type InfoView = 'finances' | 'demographics' | 'schools';
+export type InfoView =
+  | 'finances'
+  | 'demographics'
+  | 'schools'
+  | 'health'
+  | 'jobs'
+  | 'environment';
 export type AppView = 'map' | InfoView | 'guide';
 
 export interface InfoStat {

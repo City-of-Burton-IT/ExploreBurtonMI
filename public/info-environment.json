@@ -1,0 +1,141 @@
+{
+  "title": "Environment",
+  "subtitle": "Air quality in Genesee County -- EPA AirData, through 2025",
+  "stats": [
+    {
+      "label": "Good air-quality days",
+      "value": "83%",
+      "hint": "252 of 303 days, 2025"
+    },
+    {
+      "label": "Median AQI",
+      "value": "38",
+      "hint": "2025 (0-50 = good)"
+    },
+    {
+      "label": "Moderate days",
+      "value": "48",
+      "hint": "2025"
+    },
+    {
+      "label": "Unhealthy days",
+      "value": "3",
+      "hint": "any sensitive+ level, 2025"
+    }
+  ],
+  "charts": [
+    {
+      "type": "trend",
+      "title": "Median AQI by year (lower is better)",
+      "unit": "",
+      "points": [
+        {
+          "x": "2015",
+          "y": 48
+        },
+        {
+          "x": "2016",
+          "y": 42
+        },
+        {
+          "x": "2017",
+          "y": 42
+        },
+        {
+          "x": "2018",
+          "y": 43
+        },
+        {
+          "x": "2019",
+          "y": 42
+        },
+        {
+          "x": "2020",
+          "y": 39
+        },
+        {
+          "x": "2021",
+          "y": 41
+        },
+        {
+          "x": "2022",
+          "y": 44
+        },
+        {
+          "x": "2023",
+          "y": 44
+        },
+        {
+          "x": "2024",
+          "y": 42
+        },
+        {
+          "x": "2025",
+          "y": 38
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Air-quality days by level (2025)",
+      "unit": "",
+      "series": [
+        {
+          "label": "Good",
+          "value": 252
+        },
+        {
+          "label": "Moderate",
+          "value": 48
+        },
+        {
+          "label": "Unhealthy for sensitive groups",
+          "value": 3
+        },
+        {
+          "label": "Unhealthy or worse",
+          "value": 0
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Days set by each pollutant (2025)",
+      "unit": "",
+      "series": [
+        {
+          "label": "Ozone",
+          "value": 220
+        },
+        {
+          "label": "Fine particles (PM2.5)",
+          "value": 83
+        }
+      ]
+    }
+  ],
+  "source": "U.S. EPA AirData, Annual Air Quality Index (AQI) by County, for Genesee County, MI. The AQI summarizes ground-level ozone and particle pollution into a 0-500 scale (0-50 good, 51-100 moderate, 101-150 unhealthy for sensitive groups).",
+  "links": [
+    {
+      "text": "Live air quality (AirNow)",
+      "href": "https://www.airnow.gov/?city=Burton&state=MI&country=USA"
+    },
+    {
+      "text": "Burton drinking-water quality report (EPA)",
+      "href": "https://ofmpub.epa.gov/apex/safewater/f?p=136:102"
+    },
+    {
+      "text": "EPA EJScreen (environmental justice)",
+      "href": "https://www.epa.gov/ejscreen"
+    },
+    {
+      "text": "Michigan EGLE (environment)",
+      "href": "https://www.michigan.gov/egle"
+    }
+  ],
+  "notes": [
+    "Air-quality figures are for Genesee County (air monitors are not sited per city); Burton is within the county.",
+    "The AQI is a daily 0-500 index: 0-50 good, 51-100 moderate, 101-150 unhealthy for sensitive groups. 'Days set by each pollutant' shows what drove the daily index most often -- usually fine particles (PM2.5) or ozone.",
+    "Drinking water, live air readings, and environmental-justice screening are linked above (live or detailed data lives better at the source than in a yearly snapshot)."
+  ]
+}

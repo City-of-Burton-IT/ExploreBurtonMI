@@ -148,61 +148,51 @@ body,
   }
 }
 
-/* Primary section nav: Map / Finances / Demographics (segmented pill) */
+/* Primary section nav: Map | Dashboards (dropdown) | Resident Guide.
+   Individual rounded pills (not a segmented frame), so the Dashboards dropdown can
+   overflow the bar without being clipped. Direct-child selectors so the dropdown
+   menu's own buttons keep their component styles. */
 .viewnav {
   display: inline-flex;
-  border: 1px solid var(--civic-blue);
-  border-radius: 999px;
-  overflow: hidden;
+  align-items: center;
+  gap: 0.4rem;
   flex-shrink: 0;
 }
-.viewnav button {
-  border: none;
+.viewnav > button {
+  border: 1px solid var(--civic-blue);
   background: #fff;
   color: var(--civic-blue);
   font-family: var(--font-body);
   font-weight: 700;
   font-size: 0.85rem;
   padding: 0.4rem 0.9rem;
+  border-radius: 999px;
   white-space: nowrap;
   cursor: pointer;
   transition: background 0.15s, color 0.15s;
 }
-.viewnav button + button {
-  border-left: 1px solid var(--civic-blue-soft);
-}
-.viewnav button:hover {
+.viewnav > button:hover {
   background: var(--civic-blue-soft);
 }
-.viewnav button.active {
+.viewnav > button.active {
   background: var(--civic-blue);
   color: #fff;
 }
-.viewnav button:focus-visible {
+.viewnav > button:focus-visible {
   outline: none;
   box-shadow: var(--pub-focus-ring);
   position: relative;
 }
-/* Narrow screens: wrap the section tabs onto multiple rows so every section stays
-   visible (a horizontal scroller hid the last tab with no scroll affordance). The
-   single-pill frame is dropped in favour of individually rounded pills. */
+/* Narrow screens: let the three pills wrap + center if the header gets tight. */
 @media (max-width: 860px) {
   .viewnav {
     flex-wrap: wrap;
-    overflow: visible;
     max-width: 100%;
-    border: none;
-    border-radius: 0;
     gap: 0.3rem;
     justify-content: center;
   }
-  .viewnav button {
+  .viewnav > button {
     flex: 0 0 auto;
-    border: 1px solid var(--civic-blue);
-    border-radius: 999px;
-  }
-  .viewnav button + button {
-    border-left: 1px solid var(--civic-blue);
   }
 }
 

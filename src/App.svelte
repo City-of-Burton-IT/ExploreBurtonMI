@@ -5,7 +5,7 @@
   import { filterFeatures } from './lib/filter';
   import { buildIndex, searchIds } from './lib/search';
   import type { AppConfig, PlaceCollection, InfoPanel } from './lib/types';
-  import { ui, setMobileView, setView, syncViewFromHash, openAbout } from './lib/store.svelte';
+  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard } from './lib/store.svelte';
   import Map from './lib/Map.svelte';
   import Detail from './lib/Detail.svelte';
   import Facets from './lib/Facets.svelte';
@@ -14,15 +14,16 @@
   import About from './lib/About.svelte';
   import InfoView from './lib/InfoView.svelte';
   import Guide from './lib/Guide.svelte';
+  import DashboardMenu from './lib/DashboardMenu.svelte';
 
   let config = $state<AppConfig | null>(null);
   let data = $state<PlaceCollection | null>(null);
   let error = $state<string | null>(null);
 
   // Info panels load independently of the map and never block or break it.
-  let finances = $state<InfoPanel | null>(null);
-  let demographics = $state<InfoPanel | null>(null);
-  let schools = $state<InfoPanel | null>(null);
+  // Keyed by view id so the nav + activePanel lookup stay in sync with the
+  // DASHBOARDS list (one place to add a dashboard).
+  let panels = $state<Record<string, InfoPanel | null>>({});
   let infoLoading = $state(true);
 
   async function start() {
@@ -36,11 +37,9 @@
       fetch(url)
         .then((r) => (r.ok ? (r.json() as Promise<InfoPanel>) : null))
         .catch(() => null);
-    [finances, demographics, schools] = await Promise.all([
-      safe('info-finances.json'),
-      safe('info-demographics.json'),
-      safe('info-schools.json'),
-    ]);
+    const ids = ['finances', 'demographics', 'schools', 'health', 'jobs', 'environment'];
+    const loaded = await Promise.all(ids.map((id) => safe(`info-${id}.json`)));
+    panels = Object.fromEntries(ids.map((id, i) => [id, loaded[i]]));
     infoLoading = false;
   }
 
@@ -69,15 +68,7 @@
     data ? data.features.filter((f) => filteredIds.has(f.id)) : [],
   );
 
-  const activePanel = $derived(
-    ui.view === 'finances'
-      ? finances
-      : ui.view === 'demographics'
-        ? demographics
-        : ui.view === 'schools'
-          ? schools
-          : null,
-  );
+  const activePanel = $derived(isDashboard(ui.view) ? (panels[ui.view] ?? null) : null);
 </script>
 
 <div class="app">
@@ -95,10 +86,8 @@
       <span class="spacer"></span>
       <nav class="viewnav" aria-label="Sections">
         <button class:active={ui.view === 'map'} onclick={() => setView('map')}>Map</button>
-        <button class:active={ui.view === 'finances'} onclick={() => setView('finances')}>Finances</button>
-        <button class:active={ui.view === 'demographics'} onclick={() => setView('demographics')}>Demographics</button>
-        <button class:active={ui.view === 'schools'} onclick={() => setView('schools')}>Schools</button>
-        <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}>Guide</button>
+        <DashboardMenu />
+        <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}>Resident Guide</button>
       </nav>
       {#if data && result && ui.view === 'map'}
         <div class="view-toggle" role="group" aria-label="Switch between map and list">
@@ -136,7 +125,7 @@
         >&copy;</button>
       </main>
     </div>
-    {#if ui.view === 'finances' || ui.view === 'demographics' || ui.view === 'schools'}
+    {#if isDashboard(ui.view)}
       <div class="infowrap">
         <InfoView panel={activePanel} loading={infoLoading} />
       </div>

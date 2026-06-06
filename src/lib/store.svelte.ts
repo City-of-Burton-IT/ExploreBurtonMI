@@ -2,15 +2,32 @@
 // Keeps cross-component state (selection + facet selections) in one place so
 // Map, List, and Facets stay in sync without prop-drilling.
 
-import type { PlaceFeature, AppView } from './types';
+import type { PlaceFeature, AppView, InfoView } from './types';
 import type { Selections } from './filter';
+
+/** The dashboards offered under the "Dashboards" menu, in display order. The
+ *  single source of truth for the menu, hash routing, and which panels to load. */
+export const DASHBOARDS: { id: InfoView; label: string }[] = [
+  { id: 'finances', label: 'Finances' },
+  { id: 'demographics', label: 'Demographics' },
+  { id: 'schools', label: 'Schools' },
+  { id: 'health', label: 'Community Health' },
+  { id: 'jobs', label: 'Jobs & Employers' },
+  { id: 'environment', label: 'Environment' },
+];
+
+const DASHBOARD_IDS = new Set<string>(DASHBOARDS.map((d) => d.id));
+
+/** True when a view is one of the dashboard info-panels. */
+export function isDashboard(view: AppView): view is InfoView {
+  return DASHBOARD_IDS.has(view);
+}
 
 /** Map a URL hash (#finances, #guide, #guide/trash) to a top-level view. */
 export function viewFromHash(hash: string): AppView {
   const key = hash.replace(/^#/, '').split('/')[0];
-  return key === 'finances' || key === 'demographics' || key === 'schools' || key === 'guide'
-    ? key
-    : 'map';
+  if (key === 'guide' || DASHBOARD_IDS.has(key)) return key as AppView;
+  return 'map';
 }
 
 /** The guide section id from a `#guide/<id>` hash, or null. */
