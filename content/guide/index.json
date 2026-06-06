@@ -5,6 +5,7 @@
     { "id": "welcome", "title": "Welcome", "type": "markdown", "file": "welcome.md" },
     { "id": "contacts", "title": "Staff & Council", "type": "contacts", "file": "contacts.json" },
     { "id": "meetings", "title": "Meetings", "type": "meetings", "file": "meetings.json" },
+    { "id": "agendas", "title": "Agendas & Minutes", "type": "civicclerk" },
     { "id": "trash-recycling", "title": "Trash & Recycling", "type": "markdown", "file": "trash-recycling.md" },
     { "id": "pickup-schedule", "title": "Pickup Schedule", "type": "waste" },
     { "id": "permits", "title": "Permits", "type": "markdown", "file": "permits.md" },

@@ -224,7 +224,7 @@ export interface InfoPanel {
 export interface GuideSectionMeta {
   id: string;
   title: string;
-  type: 'markdown' | 'contacts' | 'meetings' | 'waste';
+  type: 'markdown' | 'contacts' | 'meetings' | 'waste' | 'civicclerk';
 }
 
 export interface GuidePerson {

@@ -36,9 +36,9 @@ for (const s of index.sections) {
     out.contacts = JSON.parse(readFileSync(file, 'utf8'));
   } else if (s.type === 'meetings') {
     out.meetings = JSON.parse(readFileSync(file, 'utf8'));
-  } else if (s.type === 'waste') {
-    // Rendered by a component that fetches public/waste-schedule.json at runtime;
-    // only the section meta needs to ship in the bundle.
+  } else if (s.type === 'waste' || s.type === 'civicclerk') {
+    // Rendered by a component that fetches live/static data at runtime; only the
+    // section meta needs to ship in the bundle.
   } else {
     throw new Error(`Unknown section type '${s.type}' for '${s.id}'`);
   }

@@ -16,6 +16,11 @@
       "type": "meetings"
     },
     {
+      "id": "agendas",
+      "title": "Agendas & Minutes",
+      "type": "civicclerk"
+    },
+    {
       "id": "trash-recycling",
       "title": "Trash & Recycling",
       "type": "markdown"
