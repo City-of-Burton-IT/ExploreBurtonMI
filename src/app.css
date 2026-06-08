@@ -85,6 +85,9 @@ body,
   background: #fff;
   color: var(--pub-ink);
   padding: 0.5rem 1rem;
+  /* Pad below a notch / status bar when the WebView runs edge-to-edge (iOS, and
+     any Android case where the bar overlays); 0 on the web + non-overlay Android. */
+  padding-top: calc(0.5rem + env(safe-area-inset-top, 0px));
   display: flex;
   align-items: center;
   gap: 0.85rem;
@@ -403,7 +406,7 @@ body,
   }
   .topbar {
     gap: 0.4rem;
-    padding: 0.5rem 0.6rem;
+    padding-inline: 0.6rem; /* keep the base vertical + safe-area padding-top */
   }
   .topbar .seal {
     width: 36px;
