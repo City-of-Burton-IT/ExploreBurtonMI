@@ -56,6 +56,8 @@ export const ui = $state<{
   view: AppView;
   /** active Resident Guide section id (null = the guide's first section) */
   guideSection: string | null;
+  /** the user's location once they tap "Near me" (drives map centering + list sort) */
+  userLocation: { lat: number; lng: number } | null;
 }>({
   selected: null,
   selections: {},
@@ -64,7 +66,13 @@ export const ui = $state<{
   aboutOpen: false,
   view: initialView(),
   guideSection: initialGuideSection(),
+  userLocation: null,
 });
+
+/** Record (or clear) the user's location after a "Near me" request. */
+export function setUserLocation(loc: { lat: number; lng: number } | null): void {
+  ui.userLocation = loc;
+}
 
 /** Switch the top-level view and reflect it in the URL hash (shareable + Back). */
 export function setView(view: AppView): void {

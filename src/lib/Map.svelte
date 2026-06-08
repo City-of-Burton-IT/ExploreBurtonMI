@@ -6,7 +6,7 @@
   import 'leaflet.markercluster/dist/MarkerCluster.css';
   import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
   import type { AppConfig, PlaceCollection, PlaceFeature } from './types';
-  import { ui, select } from './store.svelte';
+  import { ui, select, setUserLocation } from './store.svelte';
 
   let {
     config,
@@ -19,6 +19,13 @@
   let cluster: L.MarkerClusterGroup | undefined;
   const markers = new Map<string, L.CircleMarker>();
   const featureById = new Map<string, PlaceFeature>();
+  let userMarker: L.CircleMarker | undefined;
+  let locateMsg = $state('');
+
+  function flashLocateMsg(msg: string): void {
+    locateMsg = msg;
+    setTimeout(() => (locateMsg = ''), 4500);
+  }
 
   const DEFAULT_COLOR = '#555555';
 
@@ -291,6 +298,63 @@
       featureById.set(feature.id, feature);
     }
     map.addLayer(cluster);
+
+    // "Near me": a custom control that uses the browser's geolocation to center the
+    // map on the user, drop a "you are here" marker, and feed ui.userLocation (which
+    // sorts the list by distance). Pure client-side; degrades gracefully if denied.
+    const NearMeControl = L.Control.extend({
+      options: { position: 'topleft' as L.ControlPosition },
+      onAdd() {
+        const btn = L.DomUtil.create('button', 'near-me-btn');
+        btn.type = 'button';
+        btn.title = 'Center the map on my location';
+        btn.setAttribute('aria-label', 'Center the map on my location');
+        btn.textContent = '◎'; // ◎
+        L.DomEvent.disableClickPropagation(btn);
+        L.DomEvent.on(btn, 'click', () => {
+          if (!map) return;
+          flashLocateMsg('Locating…');
+          // No setView: we recenter ourselves only when the user is inside the city
+          // bounds (the map is locked to Burton, so centering on a far-away user would
+          // just clamp to the edge and leave their marker unreachable off-map).
+          map.locate({ enableHighAccuracy: true });
+        });
+        return btn;
+      },
+    });
+    map.addControl(new NearMeControl());
+
+    map.on('locationfound', (e: L.LocationEvent) => {
+      locateMsg = '';
+      setUserLocation({ lat: e.latlng.lat, lng: e.latlng.lng });
+      // Always sort the list nearest-first; but only recenter + drop the "you are
+      // here" marker when the user is within the city bounds.
+      // maxBounds is set to a LatLngBounds at construction (and tightened to the
+      // city outline on load), so it's a bounds instance at runtime.
+      const bounds = map!.options.maxBounds as L.LatLngBounds | undefined;
+      if (bounds && !bounds.contains(e.latlng)) {
+        flashLocateMsg('You appear to be outside Burton — showing the closest places on the city map.');
+        return;
+      }
+      map!.setView(e.latlng, Math.max(map!.getZoom(), 15));
+      if (!userMarker) {
+        userMarker = L.circleMarker(e.latlng, {
+          radius: 8,
+          color: '#ffffff',
+          weight: 3,
+          fillColor: '#1976d2',
+          fillOpacity: 1,
+        });
+        userMarker.bindTooltip('You are here');
+        userMarker.addTo(map!);
+      } else {
+        userMarker.setLatLng(e.latlng);
+      }
+      userMarker.bringToFront();
+    });
+    map.on('locationerror', () => {
+      flashLocateMsg('Couldn’t get your location — check that location access is allowed for this site.');
+    });
   });
 
   // Sync which markers are on the map with the filtered set.
@@ -368,10 +432,49 @@
 </script>
 
 <div class="map" bind:this={mapEl} aria-label="Map of Burton"></div>
+{#if locateMsg}
+  <div class="locate-msg" role="status" aria-live="polite">{locateMsg}</div>
+{/if}
 
 <style>
   .map {
     width: 100%;
     height: 100%;
+  }
+  /* "Near me" control button -- matches Leaflet's own control look. */
+  :global(.near-me-btn) {
+    width: 34px;
+    height: 34px;
+    border: 2px solid rgba(0, 0, 0, 0.2);
+    border-radius: 4px;
+    background: #fff;
+    color: var(--civic-blue, #2c57a0);
+    font-size: 1.2rem;
+    line-height: 1;
+    cursor: pointer;
+    box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
+  }
+  :global(.near-me-btn:hover) {
+    background: #f4f4f4;
+  }
+  :global(.near-me-btn:focus-visible) {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+  }
+  /* Transient location status/error toast, centered over the map. */
+  .locate-msg {
+    position: absolute;
+    bottom: 1.25rem;
+    left: 50%;
+    transform: translateX(-50%);
+    max-width: 90%;
+    background: rgba(20, 20, 20, 0.9);
+    color: #fff;
+    font-size: 0.85rem;
+    padding: 0.5rem 0.9rem;
+    border-radius: 999px;
+    box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
+    z-index: 1200;
+    pointer-events: none;
   }
 </style>

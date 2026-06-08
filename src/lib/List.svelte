@@ -14,7 +14,9 @@
 </script>
 
 <div class="list">
-  <p class="count">{features.length} result{features.length === 1 ? '' : 's'}</p>
+  <p class="count">
+    {features.length} result{features.length === 1 ? '' : 's'}{#if ui.userLocation} &middot; nearest first{/if}
+  </p>
   <ul>
     {#each features as feature (feature.id)}
       <li>
