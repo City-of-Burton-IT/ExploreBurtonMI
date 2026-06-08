@@ -1,7 +1,10 @@
 ext {
     minSdkVersion = 24
     compileSdkVersion = 36
-    targetSdkVersion = 36
+    // Target 34 (Android 14): avoids Android 15+ FORCED edge-to-edge, so the system
+    // insets the WebView between the status + navigation bars (no content under either).
+    // Still Play-acceptable. Revisit with proper edge-to-edge inset handling later.
+    targetSdkVersion = 34
     androidxActivityVersion = '1.11.0'
     androidxAppCompatVersion = '1.7.1'
     androidxCoordinatorLayoutVersion = '1.3.0'

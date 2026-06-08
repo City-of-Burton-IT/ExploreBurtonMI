@@ -38,6 +38,14 @@ jobs:
       - name: Point Gradle at the SDK
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
 
+      # Sign every build with the SAME debug keystore (from a secret) instead of a
+      # fresh per-run key -- otherwise the signature changes each build and Android
+      # refuses the in-place update (forcing an uninstall/reinstall).
+      - name: Restore the shared debug keystore
+        run: |
+          mkdir -p ~/.android
+          echo "${{ secrets.ANDROID_DEBUG_KEYSTORE_B64 }}" | base64 -d > ~/.android/debug.keystore
+
       - name: Build debug APK
         run: |
           cd android
