@@ -83,7 +83,11 @@
     onclick={() => (open ? closeMenu(false) : openMenu())}
     onkeydown={onTriggerKey}
   >
-    {active ? active.label : 'Dashboards'}
+    <!-- Desktop/tablet shows the active dashboard's name; phones show a fixed
+         "Dashboards" so the trigger width stays bounded and the nav fits one row
+         (the active pill styling + the panel title already show which one). -->
+    <span class="lbl-active">{active ? active.label : 'Dashboards'}</span>
+    <span class="lbl-compact">Dashboards</span>
     <span class="caret" class:up={open} aria-hidden="true">▾</span>
   </button>
 
@@ -136,6 +140,23 @@
   .trigger:focus-visible {
     outline: none;
     box-shadow: var(--pub-focus-ring);
+  }
+  .lbl-compact {
+    display: none;
+  }
+  /* Match the smaller section pills on phones, and show the fixed "Dashboards"
+     label (not the longer active-dashboard name) so the nav fits one row. */
+  @media (max-width: 860px) {
+    .trigger {
+      font-size: 0.78rem;
+      padding: 0.32rem 0.46rem;
+    }
+    .lbl-active {
+      display: none;
+    }
+    .lbl-compact {
+      display: inline;
+    }
   }
   .caret {
     font-size: 0.7rem;

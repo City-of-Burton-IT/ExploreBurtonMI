@@ -197,16 +197,18 @@ body,
   box-shadow: var(--pub-focus-ring);
   position: relative;
 }
-/* Narrow screens: let the three pills wrap + center if the header gets tight. */
+/* Narrow screens: keep the section pills on ONE line, inline with the seal --
+   don't wrap to a second row. Smaller pills so seal + Map/Dashboards/Guide + the
+   Map/List toggle all fit across one header row. */
 @media (max-width: 860px) {
   .viewnav {
-    flex-wrap: wrap;
-    max-width: 100%;
+    flex-wrap: nowrap;
     gap: 0.3rem;
-    justify-content: center;
   }
   .viewnav > button {
     flex: 0 0 auto;
+    font-size: 0.78rem;
+    padding: 0.32rem 0.46rem;
   }
 }
 
@@ -336,9 +338,11 @@ body,
 }
 
 @media (max-width: 860px) {
-  /* Header: drop the long tagline, tighten spacing, show the toggle */
+  /* Header: one non-wrapping row -- seal stays inline with the nav; drop the long
+     tagline, tighten spacing, show the Map/List toggle. */
   .topbar {
-    gap: 0.55rem;
+    gap: 0.5rem;
+    flex-wrap: nowrap;
   }
   .topbar .tagline {
     display: none;
@@ -356,8 +360,8 @@ body,
     color: var(--civic-blue);
     font-family: var(--font-body);
     font-weight: 700;
-    font-size: 0.85rem;
-    padding: 0.4rem 0.9rem;
+    font-size: 0.78rem;
+    padding: 0.32rem 0.46rem;
     min-height: 36px;
     cursor: pointer;
   }
@@ -399,6 +403,19 @@ body,
   }
   .topbar {
     gap: 0.4rem;
+    padding: 0.5rem 0.6rem;
+  }
+  .topbar .seal {
+    width: 36px;
+    height: 36px;
+  }
+  .viewnav {
+    gap: 0.25rem;
+  }
+  /* Shorten the "Resident Guide" pill to just "Guide" so the three section pills
+     fit on one line beside the seal + Map/List toggle on a phone. */
+  .viewnav .rg-prefix {
+    display: none;
   }
 }
 

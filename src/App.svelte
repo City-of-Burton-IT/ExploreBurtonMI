@@ -109,7 +109,7 @@
       <nav class="viewnav" aria-label="Sections">
         <button class:active={ui.view === 'map'} onclick={() => setView('map')}>Map</button>
         <DashboardMenu />
-        <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}>Resident Guide</button>
+        <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}><span class="rg-prefix">Resident </span>Guide</button>
       </nav>
       {#if data && result && ui.view === 'map'}
         <div class="view-toggle" role="group" aria-label="Switch between map and list">
