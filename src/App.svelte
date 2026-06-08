@@ -15,6 +15,7 @@
   import InfoView from './lib/InfoView.svelte';
   import Guide from './lib/Guide.svelte';
   import DashboardMenu from './lib/DashboardMenu.svelte';
+  import InstallPrompt from './lib/InstallPrompt.svelte';
 
   let config = $state<AppConfig | null>(null);
   let data = $state<PlaceCollection | null>(null);
@@ -158,4 +159,6 @@
   {:else}
     <div class="status">Loading&hellip;</div>
   {/if}
+
+  <InstallPrompt />
 </div>

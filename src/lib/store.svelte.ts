@@ -58,6 +58,8 @@ export const ui = $state<{
   guideSection: string | null;
   /** the user's location once they tap "Near me" (drives map centering + list sort) */
   userLocation: { lat: number; lng: number } | null;
+  /** true once the browser signals the PWA can be installed (Android/desktop) */
+  canInstall: boolean;
 }>({
   selected: null,
   selections: {},
@@ -67,11 +69,44 @@ export const ui = $state<{
   view: initialView(),
   guideSection: initialGuideSection(),
   userLocation: null,
+  canInstall: false,
 });
 
 /** Record (or clear) the user's location after a "Near me" request. */
 export function setUserLocation(loc: { lat: number; lng: number } | null): void {
   ui.userLocation = loc;
+}
+
+// --- PWA install -----------------------------------------------------------
+// The browser fires `beforeinstallprompt` (Android/desktop Chromium) once the app
+// is installable; we stash it so an in-app button can trigger the native prompt on
+// demand. iOS has no such event -- the component shows a manual hint instead.
+export interface BeforeInstallPromptEvent extends Event {
+  prompt: () => Promise<void>;
+  userChoice: Promise<{ outcome: 'accepted' | 'dismissed' }>;
+}
+
+let deferredInstallPrompt: BeforeInstallPromptEvent | null = null;
+
+/** Called from main.ts when the browser offers an install. */
+export function captureInstallPrompt(e: BeforeInstallPromptEvent): void {
+  deferredInstallPrompt = e;
+  ui.canInstall = true;
+}
+
+/** Fire the stored native install prompt (Android/desktop). */
+export async function triggerInstall(): Promise<void> {
+  if (!deferredInstallPrompt) return;
+  await deferredInstallPrompt.prompt();
+  await deferredInstallPrompt.userChoice;
+  deferredInstallPrompt = null;
+  ui.canInstall = false;
+}
+
+/** Called when the app has been installed (clears any install UI). */
+export function markInstalled(): void {
+  deferredInstallPrompt = null;
+  ui.canInstall = false;
 }
 
 /** Switch the top-level view and reflect it in the URL hash (shareable + Back). */
