@@ -4,13 +4,14 @@ import './app.css'
 import App from './App.svelte'
 import { captureInstallPrompt, markInstalled, type BeforeInstallPromptEvent } from './lib/store.svelte'
 
-// Native (Capacitor) only: keep the WebView BELOW the status bar instead of drawing
-// edge-to-edge under it (which hid the top nav). Give the status bar an opaque civic
-// background with light icons. No-op on the web/PWA build.
+// Native (Capacitor) only: the status-bar colour + light icons are set in the Android
+// theme (styles.xml) so the WebView sits cleanly below the status bar. Reinforce the
+// colour/style at runtime, but DON'T toggle overlaysWebView -- at targetSDK 34 (non
+// edge-to-edge) the OS already insets the WebView, and forcing overlay there caused a
+// black bar + top-toolbar glitch. No-op on the web/PWA build.
 if (Capacitor.isNativePlatform()) {
   import('@capacitor/status-bar')
     .then(({ StatusBar, Style }) => {
-      StatusBar.setOverlaysWebView({ overlay: false }).catch(() => {})
       StatusBar.setBackgroundColor({ color: '#2c57a0' }).catch(() => {})
       StatusBar.setStyle({ style: Style.Light }).catch(() => {})
     })

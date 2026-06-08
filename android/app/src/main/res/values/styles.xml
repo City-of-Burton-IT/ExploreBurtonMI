@@ -13,6 +13,10 @@
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
+        <!-- Civic-blue status bar with light (white) icons -- set in the theme so it's
+             reliable (applies before JS, regardless of edge-to-edge / day-night). -->
+        <item name="android:statusBarColor">#2c57a0</item>
+        <item name="android:windowLightStatusBar">false</item>
     </style>
 
 
