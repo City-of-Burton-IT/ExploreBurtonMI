@@ -1,0 +1,46 @@
+name: iOS build (unsigned)
+
+# Manual-only. Builds the iOS app UNSIGNED for the simulator on a macOS runner --
+# this verifies the Capacitor iOS project compiles WITHOUT needing an Apple Developer
+# account or signing certificates. It produces nothing installable on a real device.
+#
+# When the Apple Developer Program account ($99/yr) exists, add a separate signed job:
+#   - import the distribution cert + provisioning profile from GitHub Secrets
+#     (e.g. via `fastlane match` or apple-actions/import-codesign-certs),
+#   - xcodebuild -project ios/App/App.xcodeproj -scheme App -configuration Release
+#       -archivePath ... archive   (then -exportArchive to an .ipa),
+#   - upload to TestFlight (apple-actions/upload-testflight-build or fastlane pilot).
+# A physical Mac is NOT required for any of that -- this runner is the build machine.
+on:
+  workflow_dispatch:
+
+jobs:
+  build:
+    runs-on: macos-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Sync to the iOS project (resolves Swift Package Manager deps)
+        run: npx cap sync ios
+
+      - name: Build (unsigned, simulator) to verify it compiles
+        run: |
+          xcodebuild \
+            -project ios/App/App.xcodeproj \
+            -scheme App \
+            -sdk iphonesimulator \
+            -configuration Debug \
+            -destination 'generic/platform=iOS Simulator' \
+            CODE_SIGNING_ALLOWED=NO \
+            build
