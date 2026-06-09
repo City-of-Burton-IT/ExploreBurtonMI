@@ -16,6 +16,20 @@ android {
             ignoreAssetsPattern = '!.svn:!.git:!.ds_store:!*.scc:.*:!CVS:!thumbs.db:!picasa.ini:!*~'
         }
     }
+    // Stable DEBUG signing: CI writes a shared keystore to android/debug-shared.keystore
+    // so every build is signed with the SAME key and the app updates in place. When the
+    // file is absent (local builds), the default per-machine debug key is used unchanged.
+    signingConfigs {
+        debug {
+            def sharedKs = rootProject.file("debug-shared.keystore")
+            if (sharedKs.exists()) {
+                storeFile sharedKs
+                storePassword "android"
+                keyAlias "androiddebugkey"
+                keyPassword "android"
+            }
+        }
+    }
     buildTypes {
         release {
             minifyEnabled false

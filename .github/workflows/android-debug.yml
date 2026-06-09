@@ -38,19 +38,22 @@ jobs:
       - name: Point Gradle at the SDK
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
 
-      # Sign every build with the SAME debug keystore (from a secret) instead of a
-      # fresh per-run key -- otherwise the signature changes each build and Android
-      # refuses the in-place update (forcing an uninstall/reinstall).
+      # Sign every build with the SAME keystore (from a secret) at the exact path the
+      # build.gradle debug signingConfig reads -- otherwise the signature changes each
+      # build and Android refuses the in-place update (forcing an uninstall/reinstall).
       - name: Restore the shared debug keystore
-        run: |
-          mkdir -p ~/.android
-          echo "${{ secrets.ANDROID_DEBUG_KEYSTORE_B64 }}" | base64 -d > ~/.android/debug.keystore
+        run: echo "${{ secrets.ANDROID_DEBUG_KEYSTORE_B64 }}" | base64 -d > android/debug-shared.keystore
 
       - name: Build debug APK
         run: |
           cd android
           chmod +x gradlew
           ./gradlew assembleDebug --no-daemon --stacktrace
+
+      - name: Show signing certificate (should be identical every build)
+        run: |
+          APKSIGNER=$(find "$ANDROID_SDK_ROOT/build-tools" -name apksigner | sort -V | tail -1)
+          "$APKSIGNER" verify --print-certs android/app/build/outputs/apk/debug/app-debug.apk | grep -i "SHA-256 digest" | head -1
 
       - name: Upload APK
         uses: actions/upload-artifact@v4
