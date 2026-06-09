@@ -20,6 +20,16 @@
       "label": "Have gigabit access",
       "value": "48.1%",
       "hint": "1000/100 Mbps"
+    },
+    {
+      "label": "Home-internet providers",
+      "value": "9",
+      "hint": "6 wired/wireless + 3 satellite"
+    },
+    {
+      "label": "Households with broadband",
+      "value": "85.5%",
+      "hint": "actually subscribe (Census ACS)"
     }
   ],
   "charts": [
@@ -68,18 +78,51 @@
           "value": 1.4
         }
       ]
+    },
+    {
+      "type": "bars",
+      "title": "Where each provider reaches (% of Burton homes)",
+      "unit": "%",
+      "series": [
+        {
+          "label": "Comcast (Xfinity)",
+          "value": 99.8
+        },
+        {
+          "label": "T-Mobile Home Internet",
+          "value": 78.4
+        },
+        {
+          "label": "AT&T",
+          "value": 68.4
+        },
+        {
+          "label": "Verizon",
+          "value": 57.1
+        },
+        {
+          "label": "Charter (Spectrum)",
+          "value": 1.6
+        },
+        {
+          "label": "Bitwise",
+          "value": 1.5
+        }
+      ]
     }
   ],
   "source": "FCC National Broadband Map (Broadband Data Collection), fixed residential availability, Burton city, as of 2025-12-31.",
   "links": [
     {
-      "text": "FCC National Broadband Map",
-      "href": "https://broadbandmap.fcc.gov/"
+      "text": "Look up your address on the FCC National Broadband Map",
+      "href": "https://broadbandmap.fcc.gov/area-summary/fixed?type=place&geoid=2612060"
     }
   ],
   "notes": [
-    "Shows reported availability (where service can be ordered) -- not subscription rates, actual speeds, or price.",
-    "\"Broadband\" is the FCC benchmark of 100/20 Mbps. Figures are the share of broadband-serviceable homes with reported access at each speed.",
+    "Availability = where service can be ordered (reported by providers), not actual speeds or price -- the FCC collects no pricing data.",
+    "\"Broadband\" is the FCC benchmark of 100/20 Mbps. Speed figures are the share of broadband-serviceable homes with reported access at each speed.",
+    "Satellite (HughesNet (EchoStar), Viasat, Starlink (SpaceX)) reaches all of Burton, so it is counted but not charted with the wired/wireless providers most homes actually choose between.",
+    "\"Households with broadband\" is actual subscriptions (US Census ACS 2023) -- a different measure than availability. Not endorsed by the Census Bureau.",
     "Source: FCC National Broadband Map. This product is not endorsed or certified by the FCC."
   ]
 }

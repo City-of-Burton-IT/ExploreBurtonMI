@@ -34,11 +34,85 @@ SPEED_TIERS = [
     ("speed_1000_100", "Gigabit (1000 / 100)"),
 ]
 
+# Satellite-only holding companies cover ~everyone, so they're listed separately
+# from the terrestrial providers residents actually choose between.
+SATELLITE_HINTS = ("echostar", "hughes", "viasat", "space exploration", "starlink")
+# Friendlier brand names for the well-known holding companies.
+BRANDS = {
+    "Comcast Corporation": "Comcast (Xfinity)",
+    "Charter Communications": "Charter (Spectrum)",
+    "AT&T Inc.": "AT&T",
+    "Verizon Communications Inc.": "Verizon",
+    "T-Mobile USA, Inc.": "T-Mobile Home Internet",
+    "EchoStar Corporation": "HughesNet (EchoStar)",
+    "Space Exploration Technologies Corp.": "Starlink (SpaceX)",
+    "Viasat, Inc.": "Viasat",
+    "Bitwise Inc.": "Bitwise",
+}
+
 
 def _get(url: str, headers: dict, timeout: int = 120) -> bytes:
     req = urllib.request.Request(url, headers=headers)
     with urllib.request.urlopen(req, timeout=timeout) as resp:
         return resp.read()
+
+
+def _download_rows(H: dict, file_meta: dict) -> list:
+    raw = _get(f"{API}/downloads/downloadFile/availability/{file_meta['file_id']}", H, 240)
+    try:
+        with zipfile.ZipFile(io.BytesIO(raw)) as z:
+            text = z.read(z.namelist()[0]).decode("utf-8", "replace")
+    except zipfile.BadZipFile:
+        text = raw.decode("utf-8", "replace")
+    return list(csv.DictReader(io.StringIO(text)))
+
+
+def build_providers(files: list, H: dict) -> list:
+    """Burton's fixed-broadband providers with residential coverage %, named and
+    flagged satellite. From the FCC public Provider Summary + Provider List files."""
+    ps = next((f for f in files
+               if f.get("subcategory") == "Provider Summary by Geography Type"
+               and (f.get("file_type") or "").lower() == "csv"), None)
+    pl = next((f for f in files
+               if "provider" in (f.get("subcategory") or "").lower()
+               and "list" in (f.get("subcategory") or "").lower()), None)
+    if not ps or not pl:
+        return []
+    names = {}
+    for row in _download_rows(H, pl):
+        pid = row.get("provider_id")
+        if pid:
+            names[pid] = (row.get("holding_company") or row.get("provider_name") or "").strip()
+    provs = []
+    for r in _download_rows(H, ps):
+        if r.get("geography_id") != BURTON_GEOID or r.get("data_type") != "Fixed Broadband":
+            continue
+        coverage = round(100 * float(r.get("res_st_pct") or 0), 1)
+        if coverage <= 0:           # drop business-only / no-residential providers
+            continue
+        raw_name = names.get(r["provider_id"], "")
+        provs.append({
+            "name": BRANDS.get(raw_name, raw_name) or "(unknown provider)",
+            "pct": coverage,
+            "satellite": any(h in raw_name.lower() for h in SATELLITE_HINTS),
+        })
+    provs.sort(key=lambda p: -p["pct"])
+    return provs
+
+
+def fetch_adoption(census_key: str | None) -> float | None:
+    """% of Burton households that actually subscribe to broadband (Census ACS 2023
+    B28002_004E "broadband of any type" / B28002_001E total households). Needs a key."""
+    if not census_key:
+        return None
+    url = ("https://api.census.gov/data/2023/acs/acs5?get=B28002_001E,B28002_004E"
+           f"&for=place:12060&in=state:26&key={census_key}")
+    try:
+        data = json.loads(_get(url, {"User-Agent": "Mozilla/5.0"}, 45))
+        total, broadband = int(data[1][0]), int(data[1][1])
+        return round(100 * broadband / total, 1) if total > 0 else None
+    except Exception:
+        return None
 
 
 def main() -> None:
@@ -47,6 +121,8 @@ def main() -> None:
                     help="FCC API username (registration email)")
     ap.add_argument("--token", default=os.environ.get("FCC_HASH"),
                     help="FCC API token / hash value")
+    ap.add_argument("--census-key", default=os.environ.get("CENSUS_API_KEY"),
+                    help="Census API key (for the broadband-adoption stat; optional)")
     args = ap.parse_args()
     if not args.user or not args.token:
         sys.exit("FCC API needs BOTH a username and a token (set --user/--token or "
@@ -119,6 +195,39 @@ def main() -> None:
             "series": [{"label": t, "value": v} for t, v in tech_rows],
         })
 
+    # Provider competition (FCC public Provider Summary) + adoption (Census ACS).
+    providers = build_providers(files, H)
+    terrestrial = [p for p in providers if not p["satellite"]]
+    satellite = [p for p in providers if p["satellite"]]
+    if providers:
+        stats.append({"label": "Home-internet providers", "value": str(len(providers)),
+                      "hint": f"{len(terrestrial)} wired/wireless + {len(satellite)} satellite"})
+    adoption = fetch_adoption(args.census_key)
+    if adoption is not None:
+        stats.append({"label": "Households with broadband", "value": f"{adoption:g}%",
+                      "hint": "actually subscribe (Census ACS)"})
+    if terrestrial:
+        charts.append({
+            "type": "bars", "title": "Where each provider reaches (% of Burton homes)", "unit": "%",
+            "series": [{"label": p["name"], "value": p["pct"]} for p in terrestrial],
+        })
+
+    notes = [
+        "Availability = where service can be ordered (reported by providers), not "
+        "actual speeds or price -- the FCC collects no pricing data.",
+        "\"Broadband\" is the FCC benchmark of 100/20 Mbps. Speed figures are the share "
+        "of broadband-serviceable homes with reported access at each speed.",
+    ]
+    if satellite:
+        notes.append("Satellite (" + ", ".join(p["name"] for p in satellite) + ") reaches "
+                     "all of Burton, so it is counted but not charted with the wired/wireless "
+                     "providers most homes actually choose between.")
+    if adoption is not None:
+        notes.append("\"Households with broadband\" is actual subscriptions (US Census ACS "
+                     "2023) -- a different measure than availability. Not endorsed by the Census Bureau.")
+    notes.append("Source: FCC National Broadband Map. This product is not endorsed or "
+                 "certified by the FCC.")
+
     panel = {
         "title": "Broadband Access",
         "subtitle": f"Home internet availability in Burton -- FCC National Broadband Map ({as_of})",
@@ -126,16 +235,9 @@ def main() -> None:
         "charts": charts,
         "source": f"FCC National Broadband Map (Broadband Data Collection), fixed "
                   f"residential availability, Burton city, as of {as_of}.",
-        "links": [{"text": "FCC National Broadband Map",
-                   "href": "https://broadbandmap.fcc.gov/"}],
-        "notes": [
-            "Shows reported availability (where service can be ordered) -- not "
-            "subscription rates, actual speeds, or price.",
-            "\"Broadband\" is the FCC benchmark of 100/20 Mbps. Figures are the share "
-            "of broadband-serviceable homes with reported access at each speed.",
-            "Source: FCC National Broadband Map. This product is not endorsed or "
-            "certified by the FCC.",
-        ],
+        "links": [{"text": "Look up your address on the FCC National Broadband Map",
+                   "href": f"https://broadbandmap.fcc.gov/area-summary/fixed?type=place&geoid={BURTON_GEOID}"}],
+        "notes": notes,
     }
     with open(OUT, "w", encoding="utf-8") as f:
         json.dump(panel, f, indent=2, ensure_ascii=False)
@@ -143,6 +245,10 @@ def main() -> None:
     print(f"Wrote {OUT}")
     print(f"  as_of={as_of} homes={homes:,} 100/20={served_100_20}% gigabit={gig}%")
     print(f"  by tech (100/20): {tech_rows}")
+    print(f"  providers={len(providers)} (terrestrial={len(terrestrial)}, satellite={len(satellite)}); "
+          f"adoption={adoption}")
+    for p in providers:
+        print(f"    {p['pct']:5.1f}%  {'[sat] ' if p['satellite'] else ''}{p['name']}")
 
 
 if __name__ == "__main__":
