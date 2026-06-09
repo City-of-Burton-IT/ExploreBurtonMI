@@ -167,7 +167,8 @@ export type InfoView =
   | 'schools'
   | 'health'
   | 'jobs'
-  | 'environment';
+  | 'environment'
+  | 'water';
 export type AppView = 'map' | InfoView | 'guide';
 
 export interface InfoStat {
