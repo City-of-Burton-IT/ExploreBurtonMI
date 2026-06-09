@@ -222,6 +222,21 @@ export interface InfoLink {
   href: string;
 }
 
+/** One row of an InfoTable: one cell per column, plus an optional status color
+ *  rendered as a leading decorative dot (e.g. a bridge's Good/Fair/Poor color). */
+export interface InfoTableRow {
+  cells: string[];
+  color?: string;
+}
+
+/** A simple per-item table (e.g. every bridge in Burton). Cells are plain text
+ *  (Svelte auto-escapes them); `columns` are the header labels in order. */
+export interface InfoTable {
+  title: string;
+  columns: string[];
+  rows: InfoTableRow[];
+}
+
 export interface InfoPanel {
   title: string;
   subtitle?: string;
@@ -229,6 +244,8 @@ export interface InfoPanel {
   draft?: boolean;
   stats: InfoStat[];
   charts: InfoChart[];
+  /** optional per-item tables rendered after the charts (e.g. a bridge list) */
+  tables?: InfoTable[];
   source?: string;
   links?: InfoLink[];
   /** small footnotes under the source line (data caveats, required attributions) */

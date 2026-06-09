@@ -73,3 +73,30 @@ def test_name_and_popup_rows():
 def test_rows_without_coords_are_skipped():
     fc = fb.build_bridges_geojson([mk_row(LAT_016="0", LONG_017="0")])
     assert fc["features"] == []
+
+
+def test_cond_pct():
+    rows = [mk_row(DECK_COND_058="7"), mk_row(DECK_COND_058="7"),
+            mk_row(DECK_COND_058="5"), mk_row(DECK_COND_058="3")]  # 2 Good / 1 Fair / 1 Poor
+    assert fb._cond_pct(rows) == {"Good": 50, "Fair": 25, "Poor": 25}
+
+
+def test_cond_pct_excludes_unrated_from_denominator():
+    rated = mk_row(DECK_COND_058="7")
+    unrated = mk_row(DECK_COND_058="N", SUPERSTRUCTURE_COND_059="N",
+                     SUBSTRUCTURE_COND_060="N", CULVERT_COND_062="N")
+    assert fb._cond_pct([rated, unrated]) == {"Good": 100, "Fair": 0, "Poor": 0}
+
+
+def test_build_bridges_table_sorts_by_traffic_and_colors_condition():
+    busy = mk_row(ADT_029="48100", FACILITY_CARRIED_007="I-69 EB", FEATURES_DESC_006A="CENTER RD")
+    quiet = mk_row(ADT_029="500", DECK_COND_058="3", FACILITY_CARRIED_007="OAK ST",
+                   FEATURES_DESC_006A="CREEK", YEAR_BUILT_027="1965", OWNER_022="04")
+    table = fb.build_bridges_table([quiet, busy])
+    assert table["columns"] == ["Bridge", "Condition", "Built", "Daily traffic", "Maintained by"]
+    # Busiest first.
+    assert table["rows"][0]["cells"][0] == "I-69 EB over CENTER RD"
+    assert table["rows"][0]["cells"][3] == "48,100"
+    # The quiet bridge is Poor + City-maintained, with the Poor color.
+    assert table["rows"][1]["cells"] == ["OAK ST over CREEK", "Poor", "1965", "500", "City"]
+    assert table["rows"][1]["color"] == fb.COND_COLOR["Poor"]

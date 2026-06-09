@@ -55,6 +55,66 @@
       ]
     },
     {
+      "type": "compare",
+      "title": "How Burton compares -- bridge condition",
+      "rows": [
+        {
+          "label": "Good condition",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 30
+            },
+            {
+              "name": "Genesee Co.",
+              "value": 23
+            },
+            {
+              "name": "Michigan",
+              "value": 34
+            }
+          ]
+        },
+        {
+          "label": "Fair condition",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 65
+            },
+            {
+              "name": "Genesee Co.",
+              "value": 62
+            },
+            {
+              "name": "Michigan",
+              "value": 55
+            }
+          ]
+        },
+        {
+          "label": "Poor condition",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 5
+            },
+            {
+              "name": "Genesee Co.",
+              "value": 15
+            },
+            {
+              "name": "Michigan",
+              "value": 11
+            }
+          ]
+        }
+      ]
+    },
+    {
       "type": "bars",
       "title": "Who maintains them",
       "unit": "",
@@ -105,6 +165,220 @@
       ]
     }
   ],
+  "tables": [
+    {
+      "title": "Every bridge in Burton",
+      "columns": [
+        "Bridge",
+        "Condition",
+        "Built",
+        "Daily traffic",
+        "Maintained by"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "I-69 EB over CENTER RD",
+            "Fair",
+            "1971",
+            "48,100",
+            "State"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "I-69 WB over CENTER RD",
+            "Fair",
+            "1971",
+            "48,100",
+            "State"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "I-69 EB over GENESEE RD",
+            "Fair",
+            "1971",
+            "33,948",
+            "State"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "I-69 WB over GENESEE RD",
+            "Fair",
+            "1971",
+            "33,948",
+            "State"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "BRISTOL RD over GIBSON DRAIN",
+            "Fair",
+            "1977",
+            "25,568",
+            "City"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "I-475 SB over MAPLE RD",
+            "Fair",
+            "1971",
+            "20,200",
+            "State"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "I-475 NB over MAPLE RD",
+            "Fair",
+            "1971",
+            "20,200",
+            "State"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "BRISTOL RD(OLDM121 over I-475",
+            "Fair",
+            "1971",
+            "17,300",
+            "State"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "HEMPHILL RD over I-475",
+            "Poor",
+            "1971",
+            "15,000",
+            "State"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "BRISTOL ROAD over THREAD RIVER",
+            "Good",
+            "1973",
+            "12,844",
+            "City"
+          ],
+          "color": "#4ea735"
+        },
+        {
+          "cells": [
+            "BELSAY ROAD over KEARSLEY CREEK",
+            "Good",
+            "1994",
+            "12,023",
+            "City"
+          ],
+          "color": "#4ea735"
+        },
+        {
+          "cells": [
+            "BELSAY RD over I-69",
+            "Fair",
+            "1971",
+            "11,800",
+            "State"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "DAVISON ROAD over KEARSLEY CREEK",
+            "Good",
+            "2003",
+            "11,350",
+            "City"
+          ],
+          "color": "#4ea735"
+        },
+        {
+          "cells": [
+            "GENESEE ROAD over GILKEY CREEK",
+            "Fair",
+            "1970",
+            "11,283",
+            "City"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "ATHERTON ROAD over THREAD RIVER",
+            "Fair",
+            "1928",
+            "10,339",
+            "City"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "GENESEE ROAD over GILKEY CREEK",
+            "Good",
+            "1968",
+            "9,818",
+            "City"
+          ],
+          "color": "#4ea735"
+        },
+        {
+          "cells": [
+            "MAPLE AVE over THREAD RIVER",
+            "Good",
+            "2011",
+            "8,600",
+            "City"
+          ],
+          "color": "#4ea735"
+        },
+        {
+          "cells": [
+            "LIPPINCOTT BLVD over GILKEY CREEK",
+            "Good",
+            "1984",
+            "7,000",
+            "City"
+          ],
+          "color": "#4ea735"
+        },
+        {
+          "cells": [
+            "LEFT TURN LANE NO1 over I-475",
+            "Fair",
+            "1971",
+            "3,300",
+            "State"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "TERM STREET over THREAD CREEK",
+            "Fair",
+            "2004",
+            "2,324",
+            "City"
+          ],
+          "color": "#e08a00"
+        }
+      ]
+    }
+  ],
   "source": "Federal Highway Administration (FHWA) National Bridge Inventory, 2024, bridges within the City of Burton.",
   "links": [
     {
@@ -115,6 +389,7 @@
   "notes": [
     "Condition is the federal Good/Fair/Poor rating (the lowest of a bridge's deck, superstructure, substructure, and culvert ratings). \"Fair\" is serviceable; \"Poor\" means significant repair is needed -- not that a bridge is unsafe or closed.",
     "Covers all 20 bridges within Burton regardless of owner -- the city maintains 10, the rest are state or county (e.g. the I-69 and I-475 overpasses). Together they carry about 2,075 ft of deck.",
+    "The comparison is by bridge count (not deck area) using the same FHWA file: Genesee County (371 bridges) and Michigan statewide are tallied by the identical Good/Fair/Poor rule. With only 20 bridges, each Burton bridge is about 5% -- the comparison shows the broad pattern, not a precise rank.",
     "Source: FHWA NBI; not endorsed or certified by FHWA."
   ]
 }

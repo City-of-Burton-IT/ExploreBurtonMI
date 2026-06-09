@@ -6,6 +6,7 @@
   import Bars from './charts/Bars.svelte';
   import TrendLine from './charts/TrendLine.svelte';
   import CompareBars from './charts/CompareBars.svelte';
+  import InfoTable from './InfoTable.svelte';
 
   let {
     panel,
@@ -54,6 +55,14 @@
               <CompareBars rows={chart.rows ?? []} />
             {/if}
           </figure>
+        {/each}
+      </div>
+    {/if}
+
+    {#if panel.tables?.length}
+      <div class="tables">
+        {#each panel.tables as table (table.title)}
+          <InfoTable {table} />
         {/each}
       </div>
     {/if}
@@ -129,6 +138,11 @@
   .chart {
     margin: 0;
     min-width: 0;
+  }
+  .tables {
+    display: grid;
+    gap: 1.4rem;
+    margin-top: 1.6rem;
   }
   figcaption {
     font-family: var(--font-head, sans-serif);

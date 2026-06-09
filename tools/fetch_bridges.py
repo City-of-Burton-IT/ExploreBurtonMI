@@ -84,10 +84,60 @@ def _condition(r: dict) -> str | None:
     return "Good" if lo >= 7 else "Fair" if lo >= 5 else "Poor"
 
 
+def _cond_pct(rows: list) -> dict:
+    """Good/Fair/Poor percentages (rounded ints) over the rows that have a
+    determinable FHWA condition. Unrated rows are excluded from the denominator,
+    matching how FHWA reports the Good/Fair/Poor split."""
+    c = Counter(cond for cond in (_condition(r) for r in rows) if cond)
+    n = sum(c.values())
+    return {k: round(100 * c.get(k, 0) / n) for k in ("Good", "Fair", "Poor")} if n else {}
+
+
+def build_compare(burton: list, genesee: list, michigan: list) -> dict:
+    """A 'compare' chart: Burton (subject) vs Genesee County vs Michigan statewide,
+    one grouped metric per condition. All three computed from the same NBI file."""
+    bp, gp, mp = _cond_pct(burton), _cond_pct(genesee), _cond_pct(michigan)
+    return {
+        "type": "compare",
+        "title": "How Burton compares -- bridge condition",
+        "rows": [
+            {"label": f"{k} condition", "unit": "%", "values": [
+                {"name": "Burton", "value": bp.get(k, 0)},
+                {"name": "Genesee Co.", "value": gp.get(k, 0)},
+                {"name": "Michigan", "value": mp.get(k, 0)},
+            ]}
+            for k in ("Good", "Fair", "Poor")
+        ],
+    }
+
+
 def _carries_crosses(r: dict) -> tuple[str, str]:
     carries = (r.get("FACILITY_CARRIED_007") or "").strip().strip("'\"")
     crosses = (r.get("FEATURES_DESC_006A") or "").strip().strip("'\"")
     return carries, crosses
+
+
+def build_bridges_table(burton: list) -> dict:
+    """A per-bridge table (busiest first): name, condition (+color dot), year,
+    daily traffic, owner -- the 'what are the bridges' detail for the dashboard."""
+    rows = []
+    for r in sorted(burton, key=lambda r: _int(r.get("ADT_029")), reverse=True):
+        cond = _condition(r) or "Unrated"
+        carries, crosses = _carries_crosses(r)
+        name = f"{carries} over {crosses}" if carries and crosses else (carries or crosses or "Bridge")
+        year = (r.get("YEAR_BUILT_027") or "").strip()
+        adt = _int(r.get("ADT_029"))
+        owner = OWNER_LABELS.get((r.get("OWNER_022") or "").strip(), "Other")
+        rows.append({
+            "cells": [name, cond, year if year.isdigit() else "n/a",
+                      f"{adt:,}" if adt else "n/a", owner],
+            "color": COND_COLOR.get(cond, COND_FALLBACK),
+        })
+    return {
+        "title": "Every bridge in Burton",
+        "columns": ["Bridge", "Condition", "Built", "Daily traffic", "Maintained by"],
+        "rows": rows,
+    }
 
 
 def _bridge_point(r: dict) -> dict | None:
@@ -151,6 +201,10 @@ def main() -> None:
     if not burton:
         sys.exit("No Burton bridges found inside the boundary")
 
+    # County + statewide pools for the comparison chart -- same file, same FHWA rule.
+    genesee = [r for r in rows if (r.get("COUNTY_CODE_003") or "").strip() == GENESEE]
+    michigan = rows
+
     cond = Counter(_condition(r) or "Unrated" for r in burton)
     years = [int(r["YEAR_BUILT_027"]) for r in burton if (r.get("YEAR_BUILT_027") or "").strip().isdigit()]
     adt = sum(_int(r.get("ADT_029")) for r in burton)
@@ -194,11 +248,14 @@ def main() -> None:
         {"type": "bars", "title": "Bridges by decade built", "unit": "",
          "series": [{"label": f"{d}s", "value": decade[d]} for d in sorted(decade)]},
     ]
+    # Burton vs Genesee County vs Michigan, right after the Burton condition donut.
+    charts.insert(1, build_compare(burton, genesee, michigan))
     panel = {
         "title": "Bridges & Infrastructure",
         "subtitle": f"Burton's road bridges -- FHWA National Bridge Inventory ({args.year})",
         "stats": stats,
         "charts": charts,
+        "tables": [build_bridges_table(burton)],
         "source": f"Federal Highway Administration (FHWA) National Bridge Inventory, "
                   f"{args.year}, bridges within the City of Burton.",
         "links": [{"text": "FHWA InfoBridge", "href": "https://infobridge.fhwa.dot.gov/"}],
@@ -211,6 +268,10 @@ def main() -> None:
             f"maintains {owner.get('City', 0)}, the rest are state or county "
             f"(e.g. the I-69 and I-475 overpasses). Together they carry about "
             f"{total_len_ft:,} ft of deck.",
+            f"The comparison is by bridge count (not deck area) using the same FHWA file: "
+            f"Genesee County ({len(genesee)} bridges) and Michigan statewide are tallied by "
+            f"the identical Good/Fair/Poor rule. With only {total} bridges, each Burton bridge "
+            f"is about {round(100/total)}% -- the comparison shows the broad pattern, not a precise rank.",
             "Source: FHWA NBI; not endorsed or certified by FHWA.",
         ],
     }
@@ -220,6 +281,10 @@ def main() -> None:
     print(f"Wrote {OUT}")
     print(f"  bridges={total} condition={dict(cond)} oldest={min(years) if years else None} adt={adt:,}")
     print(f"  by decade: {dict(sorted(decade.items()))}")
+    # Cross-check the comparison tiers (verify Michigan vs FHWA's published split).
+    print(f"  condition %%: Burton={_cond_pct(burton)} "
+          f"Genesee(n={len(genesee)})={_cond_pct(genesee)} "
+          f"Michigan(n={len(michigan)})={_cond_pct(michigan)}")
 
     # Per-bridge map overlay: condition-colored points the viewer toggles on.
     geojson = build_bridges_geojson(burton)
