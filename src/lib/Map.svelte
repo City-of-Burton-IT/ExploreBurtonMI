@@ -261,6 +261,11 @@
             const gj = L.geoJSON(geojson, {
               pane: 'dataLayers',
               style: (f) => {
+                // Leaflet applies `style` to EVERY layer with setStyle -- including
+                // the circle markers from pointToLayer -- after pointToLayer runs.
+                // Returning {} for points is a no-op setStyle (merges nothing), so
+                // their marker styling stays intact; polygon/line layers are unaffected.
+                if (f?.geometry?.type === 'Point') return {};
                 const color = (f?.properties?._color as string) ?? palette[0];
                 // Per-feature style overrides (e.g. flood zones use a heavier fill so
                 // the areas read as filled, not just outlined).
@@ -268,7 +273,35 @@
                 const fillOpacity = (f?.properties?._fillOpacity as number) ?? 0.12;
                 return { color, weight, opacity: 0.9, fillColor: color, fillOpacity };
               },
+              // Point features (e.g. bridges) become colored circle markers. Leaflet
+              // only calls pointToLayer for Point/MultiPoint geometry, so polygon/line
+              // layers are unaffected; the `style` callback above does NOT apply to
+              // these markers, so their look is set here from the feature's _color.
+              pointToLayer: (feature, latlng) => {
+                const color = (feature?.properties?._color as string) ?? palette[0];
+                return L.circleMarker(latlng, {
+                  pane: 'dataLayers',
+                  radius: 7,
+                  color: '#ffffff',
+                  weight: 1.5,
+                  fillColor: color,
+                  fillOpacity: 0.95,
+                });
+              },
               onEachFeature: (feature, lyr) => {
+                // Multi-field point popup: a name heading + escaped [label, value]
+                // rows baked by the data tool. Each value is escaped here (the JS
+                // XSS guard), so the GeoJSON never carries raw HTML.
+                const rows = feature.properties?._popupRows as [string, string][] | undefined;
+                if (Array.isArray(rows) && rows.length) {
+                  const name = feature.properties?.[nameField];
+                  const head = name ? `<strong>${escapeHtml(String(name))}</strong>` : '';
+                  const body = rows
+                    .map(([k, v]) => `<div>${escapeHtml(String(k))}: ${escapeHtml(String(v))}</div>`)
+                    .join('');
+                  lyr.bindPopup(`${head}${body}`);
+                  return;
+                }
                 const label = feature.properties?.[nameField];
                 if (!label) return;
                 // Show the area name in a click/tap popup at the tap point. A popup

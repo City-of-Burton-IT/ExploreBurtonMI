@@ -60,13 +60,17 @@ export interface BoundaryConfig {
   dimOpacity?: number;
 }
 
-/** A toggleable GeoJSON overlay (e.g. school districts) shown via the map's layer control. */
+/** A toggleable GeoJSON overlay (e.g. school districts, bridges) shown via the map's
+ *  layer control. Polygon/line features are styled via the `style` callback; Point
+ *  features render as circle markers colored by a `_color` property (e.g. bridge
+ *  condition). A feature may carry `_popupRows` ([label, value] pairs) for a
+ *  multi-field popup, else `nameField` is shown. */
 export interface DataLayerConfig {
-  /** path (relative to the site root) to a GeoJSON FeatureCollection of polygons */
+  /** path (relative to the site root) to a GeoJSON FeatureCollection (polygons, lines, or points) */
   source: string;
   /** label shown in the layer-toggle control */
   label: string;
-  /** feature property used as the hover label (default "name") */
+  /** feature property used as the popup label / heading (default "name") */
   nameField?: string;
 }
 

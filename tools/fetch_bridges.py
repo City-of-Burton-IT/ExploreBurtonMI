@@ -26,11 +26,13 @@ from collections import Counter
 
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 OUT = os.path.join(ROOT, "public", "info-bridges.json")
+OUT_GEOJSON = os.path.join(ROOT, "public", "bridges.geojson")
 BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
 GENESEE = "049"
 COND_COLS = ("DECK_COND_058", "SUPERSTRUCTURE_COND_059",
              "SUBSTRUCTURE_COND_060", "CULVERT_COND_062")
 COND_COLOR = {"Good": "#4ea735", "Fair": "#e08a00", "Poor": "#c0392b"}
+COND_FALLBACK = "#888888"  # Unrated / unknown condition marker color
 # NBI item 22 owner code -> who maintains the bridge.
 OWNER_LABELS = {
     "01": "State", "02": "County", "03": "Township", "04": "City",
@@ -80,6 +82,52 @@ def _condition(r: dict) -> str | None:
         return None
     lo = min(vals)
     return "Good" if lo >= 7 else "Fair" if lo >= 5 else "Poor"
+
+
+def _carries_crosses(r: dict) -> tuple[str, str]:
+    carries = (r.get("FACILITY_CARRIED_007") or "").strip().strip("'\"")
+    crosses = (r.get("FEATURES_DESC_006A") or "").strip().strip("'\"")
+    return carries, crosses
+
+
+def _bridge_point(r: dict) -> dict | None:
+    """One NBI row -> a condition-colored GeoJSON Point feature, or None if it has
+    no usable coordinates. NBI packs longitude as a positive West value, so the
+    geographic longitude (and the x in [lon, lat]) is NEGATIVE: -lon."""
+    lat = _dms(r.get("LAT_016"), 2)
+    lon = _dms(r.get("LONG_017"), 3)
+    if not (lat and lon):
+        return None
+    cond = _condition(r) or "Unrated"
+    carries, crosses = _carries_crosses(r)
+    adt = _int(r.get("ADT_029"))
+    year = (r.get("YEAR_BUILT_027") or "").strip()
+    owner = OWNER_LABELS.get((r.get("OWNER_022") or "").strip(), "Other")
+    name = f"{carries} over {crosses}" if carries and crosses else (carries or crosses or "Bridge")
+    # [label, value] pairs the viewer renders as an escaped popup table, under the
+    # name heading (which already states what the bridge carries / crosses).
+    rows = [["Condition", cond]]
+    if adt:
+        rows.append(["Traffic", f"{adt:,}/day"])
+    if year.isdigit():
+        rows.append(["Built", year])
+    rows.append(["Maintained by", owner])
+    return {
+        "type": "Feature",
+        "geometry": {"type": "Point", "coordinates": [round(-lon, 5), round(lat, 5)]},
+        "properties": {
+            "name": name,
+            "condition": cond,
+            "_color": COND_COLOR.get(cond, COND_FALLBACK),
+            "_popupRows": rows,
+        },
+    }
+
+
+def build_bridges_geojson(rows: list) -> dict:
+    """Pure NBI-rows -> GeoJSON FeatureCollection of condition-colored bridge points."""
+    feats = [f for f in (_bridge_point(r) for r in rows) if f]
+    return {"type": "FeatureCollection", "features": feats}
 
 
 def main() -> None:
@@ -172,6 +220,13 @@ def main() -> None:
     print(f"Wrote {OUT}")
     print(f"  bridges={total} condition={dict(cond)} oldest={min(years) if years else None} adt={adt:,}")
     print(f"  by decade: {dict(sorted(decade.items()))}")
+
+    # Per-bridge map overlay: condition-colored points the viewer toggles on.
+    geojson = build_bridges_geojson(burton)
+    with open(OUT_GEOJSON, "w", encoding="utf-8") as f:
+        json.dump(geojson, f, ensure_ascii=False, separators=(",", ":"))
+        f.write("\n")
+    print(f"Wrote {OUT_GEOJSON} ({len(geojson['features'])} points)")
 
 
 if __name__ == "__main__":
