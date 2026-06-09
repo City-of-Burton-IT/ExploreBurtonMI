@@ -1,0 +1,85 @@
+{
+  "title": "Broadband Access",
+  "subtitle": "Home internet availability in Burton -- FCC National Broadband Map (2025-12-31)",
+  "stats": [
+    {
+      "label": "Broadband-serviceable homes",
+      "value": "14,416",
+      "hint": "FCC, 2025-12-31"
+    },
+    {
+      "label": "Have 100/20 Mbps access",
+      "value": "100%",
+      "hint": "FCC broadband benchmark"
+    },
+    {
+      "label": "Have 250/25 Mbps",
+      "value": "100%"
+    },
+    {
+      "label": "Have gigabit access",
+      "value": "48.1%",
+      "hint": "1000/100 Mbps"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "Home internet availability by speed",
+      "unit": "%",
+      "series": [
+        {
+          "label": "25 / 3 Mbps",
+          "value": 100.0
+        },
+        {
+          "label": "100 / 20 Mbps",
+          "value": 100.0
+        },
+        {
+          "label": "250 / 25 Mbps",
+          "value": 100.0
+        },
+        {
+          "label": "Gigabit (1000 / 100)",
+          "value": 48.1
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Availability by technology (100/20 Mbps)",
+      "unit": "%",
+      "series": [
+        {
+          "label": "Cable",
+          "value": 99.8
+        },
+        {
+          "label": "Licensed Fixed Wireless",
+          "value": 24.0
+        },
+        {
+          "label": "Copper",
+          "value": 8.8
+        },
+        {
+          "label": "Fiber",
+          "value": 1.4
+        }
+      ]
+    }
+  ],
+  "source": "FCC National Broadband Map (Broadband Data Collection), fixed residential availability, Burton city, as of 2025-12-31.",
+  "links": [
+    {
+      "text": "FCC National Broadband Map",
+      "href": "https://broadbandmap.fcc.gov/"
+    }
+  ],
+  "notes": [
+    "Shows reported availability (where service can be ordered) -- not subscription rates, actual speeds, or price.",
+    "\"Broadband\" is the FCC benchmark of 100/20 Mbps. Figures are the share of broadband-serviceable homes with reported access at each speed.",
+    "Source: FCC National Broadband Map. This product is not endorsed or certified by the FCC."
+  ]
+}

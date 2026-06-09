@@ -169,7 +169,8 @@ export type InfoView =
   | 'jobs'
   | 'environment'
   | 'water'
-  | 'housing';
+  | 'housing'
+  | 'broadband';
 export type AppView = 'map' | InfoView | 'guide';
 
 export interface InfoStat {
