@@ -5,7 +5,7 @@
   import { filterFeatures } from './lib/filter';
   import { buildIndex, searchIds } from './lib/search';
   import type { AppConfig, PlaceCollection, InfoPanel } from './lib/types';
-  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard } from './lib/store.svelte';
+  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard, DASHBOARDS } from './lib/store.svelte';
   import Map from './lib/Map.svelte';
   import Detail from './lib/Detail.svelte';
   import Facets from './lib/Facets.svelte';
@@ -38,7 +38,10 @@
       fetch(url)
         .then((r) => (r.ok ? (r.json() as Promise<InfoPanel>) : null))
         .catch(() => null);
-    const ids = ['finances', 'demographics', 'schools', 'health', 'jobs', 'environment'];
+    // Derive from DASHBOARDS (single source of truth) so a new dashboard added
+    // there is fetched automatically -- never hardcode this list (it silently
+    // dropped newly-added panels before).
+    const ids = DASHBOARDS.map((d) => d.id);
     const loaded = await Promise.all(ids.map((id) => safe(`info-${id}.json`)));
     panels = Object.fromEntries(ids.map((id, i) => [id, loaded[i]]));
     infoLoading = false;
