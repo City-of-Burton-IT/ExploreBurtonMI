@@ -183,6 +183,14 @@
       map.createPane('dataLayers');
       const pane = map.getPane('dataLayers');
       if (pane) pane.style.zIndex = '350';
+      // Point overlays (e.g. bridge markers) go ABOVE the business marker cluster
+      // (markerPane z-600) so they stay tappable -- in the dataLayers pane (z-350)
+      // a cluster sits on top and swallows the tap (most visible on the zoomed-out
+      // mobile fit, where clusters blanket the map). Polygon/line overlays stay in
+      // dataLayers (below the markers, so they never block a business-marker click).
+      map.createPane('overlayMarkers');
+      const ompane = map.getPane('overlayMarkers');
+      if (ompane) ompane.style.zIndex = '650';
       const palette = ['#1565c0', '#2e7d32', '#e65100', '#6a1b9a', '#00838f', '#b3261e', '#9e9d24'];
       // Left expanded so the available overlays are always visible (the collapsed
       // toggle hid that there were layers to turn on at all).
@@ -280,7 +288,7 @@
               pointToLayer: (feature, latlng) => {
                 const color = (feature?.properties?._color as string) ?? palette[0];
                 return L.circleMarker(latlng, {
-                  pane: 'dataLayers',
+                  pane: 'overlayMarkers',
                   radius: 7,
                   color: '#ffffff',
                   weight: 1.5,
