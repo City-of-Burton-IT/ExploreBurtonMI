@@ -1,0 +1,99 @@
+{
+  "title": "Bridges & Infrastructure",
+  "subtitle": "Burton's road bridges -- FHWA National Bridge Inventory (2024)",
+  "stats": [
+    {
+      "label": "Bridges in Burton",
+      "value": "20",
+      "hint": "FHWA NBI 2024"
+    },
+    {
+      "label": "In good condition",
+      "value": "6",
+      "hint": "30% of bridges"
+    },
+    {
+      "label": "Needing repair (poor)",
+      "value": "1",
+      "hint": "significant repair needed"
+    },
+    {
+      "label": "Daily crossings",
+      "value": "363,045",
+      "hint": "vehicles/day (total)"
+    },
+    {
+      "label": "Oldest bridge",
+      "value": "1928"
+    }
+  ],
+  "charts": [
+    {
+      "type": "donut",
+      "title": "Bridge condition (FHWA rating)",
+      "series": [
+        {
+          "label": "Good",
+          "value": 6,
+          "color": "#4ea735"
+        },
+        {
+          "label": "Fair",
+          "value": 13,
+          "color": "#e08a00"
+        },
+        {
+          "label": "Poor",
+          "value": 1,
+          "color": "#c0392b"
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Bridges by decade built",
+      "unit": "",
+      "series": [
+        {
+          "label": "1920s",
+          "value": 1
+        },
+        {
+          "label": "1960s",
+          "value": 1
+        },
+        {
+          "label": "1970s",
+          "value": 13
+        },
+        {
+          "label": "1980s",
+          "value": 1
+        },
+        {
+          "label": "1990s",
+          "value": 1
+        },
+        {
+          "label": "2000s",
+          "value": 2
+        },
+        {
+          "label": "2010s",
+          "value": 1
+        }
+      ]
+    }
+  ],
+  "source": "Federal Highway Administration (FHWA) National Bridge Inventory, 2024, bridges within the City of Burton.",
+  "links": [
+    {
+      "text": "FHWA InfoBridge",
+      "href": "https://infobridge.fhwa.dot.gov/"
+    }
+  ],
+  "notes": [
+    "Condition is the federal Good/Fair/Poor rating (the lowest of a bridge's deck, superstructure, substructure, and culvert ratings). \"Fair\" is serviceable; \"Poor\" means significant repair is needed -- not that a bridge is unsafe or closed.",
+    "Includes bridges of all owners (city, county, and state) located within Burton. Source: FHWA NBI; not endorsed or certified by FHWA."
+  ]
+}

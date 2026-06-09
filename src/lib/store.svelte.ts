@@ -17,6 +17,7 @@ export const DASHBOARDS: { id: InfoView; label: string }[] = [
   { id: 'water', label: 'Drinking Water' },
   { id: 'housing', label: 'Housing & Growth' },
   { id: 'broadband', label: 'Broadband Access' },
+  { id: 'bridges', label: 'Bridges & Infrastructure' },
 ];
 
 const DASHBOARD_IDS = new Set<string>(DASHBOARDS.map((d) => d.id));
