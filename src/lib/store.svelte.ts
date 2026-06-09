@@ -5,20 +5,54 @@
 import type { PlaceFeature, AppView, InfoView } from './types';
 import type { Selections } from './filter';
 
-/** The dashboards offered under the "Dashboards" menu, in display order. The
- *  single source of truth for the menu, hash routing, and which panels to load. */
-export const DASHBOARDS: { id: InfoView; label: string }[] = [
-  { id: 'finances', label: 'Finances' },
-  { id: 'demographics', label: 'Demographics' },
-  { id: 'schools', label: 'Schools' },
-  { id: 'health', label: 'Community Health' },
-  { id: 'jobs', label: 'Jobs & Employers' },
-  { id: 'environment', label: 'Environment' },
-  { id: 'water', label: 'Drinking Water' },
-  { id: 'housing', label: 'Housing & Growth' },
-  { id: 'broadband', label: 'Broadband Access' },
-  { id: 'bridges', label: 'Bridges & Infrastructure' },
+export interface DashboardItem {
+  id: InfoView;
+  label: string;
+}
+export interface DashboardGroup {
+  label: string;
+  items: DashboardItem[];
+}
+
+/** Dashboards organized into themed groups -- the single source of truth for the
+ *  grouped menu, hash routing, and which panels to load. Add a dashboard by
+ *  placing it in the right group; everything else derives from this. */
+export const DASHBOARD_GROUPS: DashboardGroup[] = [
+  {
+    label: 'People & Housing',
+    items: [
+      { id: 'demographics', label: 'Demographics' },
+      { id: 'housing', label: 'Housing & Growth' },
+      { id: 'schools', label: 'Schools' },
+    ],
+  },
+  {
+    label: 'Money & Jobs',
+    items: [
+      { id: 'finances', label: 'Finances' },
+      { id: 'jobs', label: 'Jobs & Employers' },
+    ],
+  },
+  {
+    label: 'Health & Environment',
+    items: [
+      { id: 'health', label: 'Community Health' },
+      { id: 'water', label: 'Drinking Water' },
+      { id: 'environment', label: 'Environment' },
+    ],
+  },
+  {
+    label: 'Infrastructure',
+    items: [
+      { id: 'broadband', label: 'Broadband Access' },
+      { id: 'bridges', label: 'Bridges & Infrastructure' },
+    ],
+  },
 ];
+
+/** Flat list (display order) derived from the groups -- used by hash routing,
+ *  panel loading, and the active-dashboard lookup. */
+export const DASHBOARDS: DashboardItem[] = DASHBOARD_GROUPS.flatMap((g) => g.items);
 
 const DASHBOARD_IDS = new Set<string>(DASHBOARDS.map((d) => d.id));
 

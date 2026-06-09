@@ -1,6 +1,6 @@
 <script lang="ts">
   import { tick } from 'svelte';
-  import { ui, setView, DASHBOARDS } from './store.svelte';
+  import { ui, setView, DASHBOARDS, DASHBOARD_GROUPS } from './store.svelte';
   import type { InfoView } from './types';
 
   let open = $state(false);
@@ -93,17 +93,20 @@
 
   {#if open}
     <div class="menu" role="group" aria-label="Dashboards">
-      {#each DASHBOARDS as d (d.id)}
-        <button
-          data-id={d.id}
-          class:current={d.id === ui.view}
-          aria-current={d.id === ui.view ? 'true' : undefined}
-          onclick={() => choose(d.id)}
-          onkeydown={onMenuKey}
-        >
-          {d.label}
-          {#if d.id === ui.view}<span class="check" aria-hidden="true">✓</span>{/if}
-        </button>
+      {#each DASHBOARD_GROUPS as group (group.label)}
+        <p class="group-label" aria-hidden="true">{group.label}</p>
+        {#each group.items as d (d.id)}
+          <button
+            data-id={d.id}
+            class:current={d.id === ui.view}
+            aria-current={d.id === ui.view ? 'true' : undefined}
+            onclick={() => choose(d.id)}
+            onkeydown={onMenuKey}
+          >
+            {d.label}
+            {#if d.id === ui.view}<span class="check" aria-hidden="true">✓</span>{/if}
+          </button>
+        {/each}
       {/each}
     </div>
   {/if}
@@ -170,7 +173,9 @@
     top: calc(100% + 6px);
     left: 50%;
     transform: translateX(-50%);
-    min-width: 200px;
+    min-width: 232px;
+    max-height: min(70vh, 520px);
+    overflow-y: auto;
     background: #fff;
     border: 1px solid var(--pub-border, #e3e3e3);
     border-radius: var(--pub-radius, 12px);
@@ -207,6 +212,22 @@
   .menu button:focus-visible {
     outline: none;
     box-shadow: var(--pub-focus-ring);
+  }
+  .group-label {
+    margin: 0.4rem 0.5rem 0.15rem;
+    font-family: var(--font-head, sans-serif);
+    font-size: 0.68rem;
+    font-weight: 700;
+    letter-spacing: 0.06em;
+    text-transform: uppercase;
+    color: var(--pub-muted, #6b7280);
+  }
+  .group-label:first-child {
+    margin-top: 0.2rem;
+  }
+  /* Sub-dashboards sit slightly indented beneath their category heading. */
+  .menu button {
+    padding-left: 1rem;
   }
   .check {
     color: var(--civic-blue, #2c57a0);
