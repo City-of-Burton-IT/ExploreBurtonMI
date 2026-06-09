@@ -18,9 +18,14 @@
       "hint": "significant repair needed"
     },
     {
-      "label": "Daily crossings",
-      "value": "363,045",
-      "hint": "vehicles/day (total)"
+      "label": "Busiest bridge",
+      "value": "48,100/day",
+      "hint": "I-69 EB over CENTER RD"
+    },
+    {
+      "label": "City-maintained",
+      "value": "10",
+      "hint": "vs 10 state, 0 county"
     },
     {
       "label": "Oldest bridge",
@@ -46,6 +51,21 @@
           "label": "Poor",
           "value": 1,
           "color": "#c0392b"
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Who maintains them",
+      "unit": "",
+      "series": [
+        {
+          "label": "State",
+          "value": 10
+        },
+        {
+          "label": "City",
+          "value": 10
         }
       ]
     },
@@ -94,6 +114,7 @@
   ],
   "notes": [
     "Condition is the federal Good/Fair/Poor rating (the lowest of a bridge's deck, superstructure, substructure, and culvert ratings). \"Fair\" is serviceable; \"Poor\" means significant repair is needed -- not that a bridge is unsafe or closed.",
-    "Includes bridges of all owners (city, county, and state) located within Burton. Source: FHWA NBI; not endorsed or certified by FHWA."
+    "Covers all 20 bridges within Burton regardless of owner -- the city maintains 10, the rest are state or county (e.g. the I-69 and I-475 overpasses). Together they carry about 2,075 ft of deck.",
+    "Source: FHWA NBI; not endorsed or certified by FHWA."
   ]
 }

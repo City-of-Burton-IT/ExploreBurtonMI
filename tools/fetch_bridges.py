@@ -31,6 +31,17 @@ GENESEE = "049"
 COND_COLS = ("DECK_COND_058", "SUPERSTRUCTURE_COND_059",
              "SUBSTRUCTURE_COND_060", "CULVERT_COND_062")
 COND_COLOR = {"Good": "#4ea735", "Fair": "#e08a00", "Poor": "#c0392b"}
+# NBI item 22 owner code -> who maintains the bridge.
+OWNER_LABELS = {
+    "01": "State", "02": "County", "03": "Township", "04": "City",
+    "11": "State park", "21": "Other state", "25": "Other local",
+    "26": "Private", "27": "Railroad", "31": "State toll", "32": "Local toll",
+}
+
+
+def _int(s) -> int:
+    s = (s or "").strip()
+    return int(s) if s.isdigit() else 0
 
 
 def _dms(s: str | None, deg_digits: int) -> float | None:
@@ -94,7 +105,7 @@ def main() -> None:
 
     cond = Counter(_condition(r) or "Unrated" for r in burton)
     years = [int(r["YEAR_BUILT_027"]) for r in burton if (r.get("YEAR_BUILT_027") or "").strip().isdigit()]
-    adt = sum(int(r["ADT_029"]) for r in burton if (r.get("ADT_029") or "").strip().isdigit())
+    adt = sum(_int(r.get("ADT_029")) for r in burton)
     total = len(burton)
     good = cond.get("Good", 0)
 
@@ -102,18 +113,36 @@ def main() -> None:
     for y in years:
         decade[(y // 10) * 10] += 1
 
+    # Who maintains them (NBI owner code).
+    owner = Counter(OWNER_LABELS.get((r.get("OWNER_022") or "").strip(), "Other") for r in burton)
+
+    # Busiest bridge: highest daily traffic + what it carries / crosses.
+    busiest = max(burton, key=lambda r: _int(r.get("ADT_029")))
+    carries = (busiest.get("FACILITY_CARRIED_007") or "").strip().strip("'\"") or "a road"
+    crosses = (busiest.get("FEATURES_DESC_006A") or "").strip().strip("'\"")
+    busiest_adt = _int(busiest.get("ADT_029"))
+    busiest_hint = f"{carries} over {crosses}" if crosses else carries
+
+    # Total deck length carried by Burton's bridges (NBI structure length, metres -> feet).
+    total_len_ft = round(sum(float(r["STRUCTURE_LEN_MT_049"]) for r in burton
+                             if (r.get("STRUCTURE_LEN_MT_049") or "").replace(".", "", 1).strip().isdigit()) * 3.281)
+
     stats = [
         {"label": "Bridges in Burton", "value": str(total), "hint": f"FHWA NBI {args.year}"},
         {"label": "In good condition", "value": f"{good}", "hint": f"{round(100*good/total)}% of bridges"},
         {"label": "Needing repair (poor)", "value": f"{cond.get('Poor', 0)}",
          "hint": "significant repair needed"},
-        {"label": "Daily crossings", "value": f"{adt:,}", "hint": "vehicles/day (total)"},
+        {"label": "Busiest bridge", "value": f"{busiest_adt:,}/day", "hint": busiest_hint},
+        {"label": "City-maintained", "value": f"{owner.get('City', 0)}",
+         "hint": f"vs {owner.get('State', 0)} state, {owner.get('County', 0)} county"},
         {"label": "Oldest bridge", "value": str(min(years)) if years else "n/a"},
     ]
     charts = [
         {"type": "donut", "title": "Bridge condition (FHWA rating)",
          "series": [{"label": k, "value": cond[k], "color": COND_COLOR[k]}
                     for k in ("Good", "Fair", "Poor") if cond.get(k)]},
+        {"type": "bars", "title": "Who maintains them", "unit": "",
+         "series": [{"label": k, "value": v} for k, v in owner.most_common()]},
         {"type": "bars", "title": "Bridges by decade built", "unit": "",
          "series": [{"label": f"{d}s", "value": decade[d]} for d in sorted(decade)]},
     ]
@@ -130,8 +159,11 @@ def main() -> None:
             "bridge's deck, superstructure, substructure, and culvert ratings). "
             "\"Fair\" is serviceable; \"Poor\" means significant repair is needed -- "
             "not that a bridge is unsafe or closed.",
-            "Includes bridges of all owners (city, county, and state) located within "
-            "Burton. Source: FHWA NBI; not endorsed or certified by FHWA.",
+            f"Covers all {total} bridges within Burton regardless of owner -- the city "
+            f"maintains {owner.get('City', 0)}, the rest are state or county "
+            f"(e.g. the I-69 and I-475 overpasses). Together they carry about "
+            f"{total_len_ft:,} ft of deck.",
+            "Source: FHWA NBI; not endorsed or certified by FHWA.",
         ],
     }
     with open(OUT, "w", encoding="utf-8") as f:
