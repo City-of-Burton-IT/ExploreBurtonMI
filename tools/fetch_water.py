@@ -41,10 +41,40 @@ SOURCE_LABELS = {
 }
 
 
+LEAD_AL = 0.015  # EPA lead action level (90th-percentile), mg/L
+
+
 def _get(url: str):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=60) as resp:
         return json.load(resp)
+
+
+def fetch_lead():
+    """Latest Lead & Copper Rule 90th-percentile LEAD result (PB90) for Burton, with
+    the monitoring-period range and the peak across periods. Copper (CU90) is not
+    reported for Burton in SDWIS, so it is omitted rather than shown as missing."""
+    try:
+        samples = {s["sample_id"]: s for s in _get(f"{EF}/LCR_SAMPLE/PWSID/{PWSID}/JSON")}
+        results = _get(f"{EF}/LCR_SAMPLE_RESULT/PWSID/{PWSID}/JSON")
+    except Exception:
+        return None
+    lead = []
+    for r in results:
+        if r.get("contaminant_code") != "PB90":
+            continue
+        end = (samples.get(r.get("sample_id"), {}).get("sampling_end_date") or "")[:10]
+        try:
+            lead.append((end, float(r.get("sample_measure")), r.get("unit_of_measure") or "mg/L"))
+        except (TypeError, ValueError):
+            continue
+    if not lead:
+        return None
+    lead.sort()
+    date, value, unit = lead[-1]
+    return {"value": value, "unit": unit, "last_year": date[:4],
+            "first_year": lead[0][0][:4], "periods": len(lead),
+            "peak": max(v for _, v, _ in lead)}
 
 
 def main() -> None:
@@ -88,6 +118,16 @@ def main() -> None:
          "hint": "all resolved" if open_count == 0 else f"{open_count} open"},
     ]
 
+    # Lead & Copper Rule: the 90th-percentile lead result -- a headline residents
+    # (especially Flint-adjacent) care about. Shown prominently after the source.
+    lead = fetch_lead()
+    if lead:
+        stats.insert(3, {
+            "label": "Lead (90th percentile)",
+            "value": f"{lead['value']:g} {lead['unit']}",
+            "hint": f"EPA action level {LEAD_AL:g}; tested {lead['last_year']}",
+        })
+
     charts = []
     if by_cat:
         charts.append({
@@ -102,6 +142,27 @@ def main() -> None:
             "points": [{"x": y, "y": by_year[y]} for y in years],
         })
 
+    notes = [
+        "\"Violations\" includes both health-based exceedances and "
+        "monitoring/reporting (paperwork) requirements; most are the latter. "
+        "A monitoring/reporting violation does not mean the water was unsafe.",
+        "Counts are everything on record in EPA SDWIS"
+        + (f" (since {first_year})" if first_year else "")
+        + (". No violations are currently open." if open_count == 0 else "."),
+        "Source: US EPA Safe Drinking Water Information System via the public "
+        "Envirofacts service. This product is not endorsed or certified by the EPA.",
+    ]
+    if lead:
+        v = lead["value"]
+        level = (f"at or below the detection limit (reported {v:g} {lead['unit']})"
+                 if v == 0 else f"{v:g} {lead['unit']}")
+        rel = "well below" if lead["peak"] < LEAD_AL else "against"
+        notes.insert(0,
+            f"Under the federal Lead & Copper Rule, Burton's 90th-percentile lead result "
+            f"has been {level} -- {rel} the EPA action level of {LEAD_AL:g} {lead['unit']} -- "
+            f"every monitoring period on record ({lead['first_year']}-{lead['last_year']}). "
+            f"Copper is monitored but not separately reported for Burton in SDWIS.")
+
     panel = {
         "title": "Drinking Water",
         "subtitle": "Burton's public water system -- EPA compliance snapshot",
@@ -113,16 +174,7 @@ def main() -> None:
             {"text": "EPA drinking-water data (ECHO)",
              "href": f"https://echodata.epa.gov/echo/sdw_report.get_report?pgm_sys_id_in={PWSID}"},
         ],
-        "notes": [
-            "\"Violations\" includes both health-based exceedances and "
-            "monitoring/reporting (paperwork) requirements; most are the latter. "
-            "A monitoring/reporting violation does not mean the water was unsafe.",
-            "Counts are everything on record in EPA SDWIS"
-            + (f" (since {first_year})" if first_year else "")
-            + (". No violations are currently open." if open_count == 0 else "."),
-            "Source: US EPA Safe Drinking Water Information System via the public "
-            "Envirofacts service. This product is not endorsed or certified by the EPA.",
-        ],
+        "notes": notes,
     }
 
     with open(OUT, "w", encoding="utf-8") as f:
@@ -130,6 +182,7 @@ def main() -> None:
         f.write("\n")
     print(f"Wrote {OUT}")
     print(f"  pop={pop:,} conns={conns:,} source={source}")
+    print(f"  lead(90th): {lead}")
     print(f"  violations: total={total} health-based={health} open={open_count}")
     print(f"  by year: {dict(sorted(by_year.items()))}")
     print(f"  by category: {dict(by_cat)}")

@@ -16,6 +16,11 @@
       "value": "Surface water (purchased)"
     },
     {
+      "label": "Lead (90th percentile)",
+      "value": "0 mg/L",
+      "hint": "EPA action level 0.015; tested 2023"
+    },
+    {
       "label": "Open health violations",
       "value": "0",
       "hint": "currently unresolved"
@@ -95,6 +100,7 @@
     }
   ],
   "notes": [
+    "Under the federal Lead & Copper Rule, Burton's 90th-percentile lead result has been at or below the detection limit (reported 0 mg/L) -- well below the EPA action level of 0.015 mg/L -- every monitoring period on record (2017-2023). Copper is monitored but not separately reported for Burton in SDWIS.",
     "\"Violations\" includes both health-based exceedances and monitoring/reporting (paperwork) requirements; most are the latter. A monitoring/reporting violation does not mean the water was unsafe.",
     "Counts are everything on record in EPA SDWIS (since 2001). No violations are currently open.",
     "Source: US EPA Safe Drinking Water Information System via the public Envirofacts service. This product is not endorsed or certified by the EPA."
