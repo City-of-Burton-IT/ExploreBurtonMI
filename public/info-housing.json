@@ -1,0 +1,107 @@
+{
+  "title": "Housing & Growth",
+  "subtitle": "Burton's housing stock -- US Census ACS 2023 5-year",
+  "stats": [
+    {
+      "label": "Housing units",
+      "value": "13,325",
+      "hint": "ACS 2023"
+    },
+    {
+      "label": "Owner-occupied",
+      "value": "75.8%",
+      "hint": "9,478 of 12,505 occupied"
+    },
+    {
+      "label": "Median home value",
+      "value": "$131,200"
+    },
+    {
+      "label": "Median gross rent",
+      "value": "$1,006/mo"
+    },
+    {
+      "label": "Median year built",
+      "value": "1963"
+    },
+    {
+      "label": "Vacancy rate",
+      "value": "6.2%",
+      "hint": "820 units"
+    }
+  ],
+  "charts": [
+    {
+      "type": "donut",
+      "title": "Owner vs. renter (occupied homes)",
+      "series": [
+        {
+          "label": "Owner-occupied",
+          "value": 9478
+        },
+        {
+          "label": "Renter-occupied",
+          "value": 3027
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Homes by decade built",
+      "unit": "",
+      "series": [
+        {
+          "label": "2020 or later",
+          "value": 36
+        },
+        {
+          "label": "2010-2019",
+          "value": 599
+        },
+        {
+          "label": "2000-2009",
+          "value": 1203
+        },
+        {
+          "label": "1990-1999",
+          "value": 1490
+        },
+        {
+          "label": "1980-1989",
+          "value": 678
+        },
+        {
+          "label": "1970-1979",
+          "value": 1630
+        },
+        {
+          "label": "1960-1969",
+          "value": 1567
+        },
+        {
+          "label": "1950-1959",
+          "value": 3742
+        },
+        {
+          "label": "1940-1949",
+          "value": 1404
+        },
+        {
+          "label": "1939 or earlier",
+          "value": 976
+        }
+      ]
+    }
+  ],
+  "source": "US Census Bureau, American Community Survey (ACS) 2023 5-year estimates, Burton city, Michigan.",
+  "links": [
+    {
+      "text": "Census QuickFacts: Burton",
+      "href": "https://www.census.gov/quickfacts/burtoncitymichigan"
+    }
+  ],
+  "notes": [
+    "Figures are ACS model-based estimates (5-year averages), not exact counts.",
+    "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
+  ]
+}
