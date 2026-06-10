@@ -23,6 +23,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     items: [
       { id: 'demographics', label: 'Demographics' },
       { id: 'housing', label: 'Housing & Growth' },
+      { id: 'zoning', label: 'Zoning' },
       { id: 'schools', label: 'Schools' },
     ],
   },

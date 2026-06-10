@@ -15,6 +15,7 @@
     { "id": "elections", "title": "Elections", "type": "markdown", "file": "elections.md" },
     { "id": "transit", "title": "Public Transit", "type": "markdown", "file": "transit.md" },
     { "id": "roads", "title": "Roads & Construction", "type": "markdown", "file": "roads.md" },
+    { "id": "snow-and-ice", "title": "Snow & Ice", "type": "markdown", "file": "snow-and-ice.md" },
     { "id": "help", "title": "Help & Support", "type": "markdown", "file": "help.md" },
     { "id": "get-involved", "title": "Get Involved", "type": "markdown", "file": "get-involved.md" },
     { "id": "worship", "title": "Places of Worship", "type": "markdown", "file": "worship.md" },

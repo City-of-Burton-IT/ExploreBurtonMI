@@ -245,6 +245,7 @@ def main() -> int:
                    f"ratings (RoadSoft, {vintage}), federal-aid eligible roads within the City of "
                    f"Burton."),
         "links": [
+            {"text": "Winter road maintenance (snow & ice plan)", "href": "#guide/snow-and-ice"},
             {"text": "Michigan TAMC dashboard", "href": "https://www.mcgi.state.mi.us/mappingforhealth/"},
             {"text": "GCMPC pavement conditions", "href": "https://www.gcmpc.org/"},
         ],

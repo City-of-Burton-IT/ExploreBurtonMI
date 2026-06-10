@@ -1,0 +1,253 @@
+{
+  "title": "Zoning",
+  "subtitle": "How land in Burton is zoned -- the city's zoning districts",
+  "stats": [
+    {
+      "label": "Zoned acres",
+      "value": "13,246",
+      "hint": "within the city"
+    },
+    {
+      "label": "Zoning districts",
+      "value": "15",
+      "hint": "distinct codes"
+    },
+    {
+      "label": "Residential",
+      "value": "76%",
+      "hint": "of zoned land"
+    },
+    {
+      "label": "Map vintage",
+      "value": "2017",
+      "hint": "City zoning map"
+    }
+  ],
+  "charts": [
+    {
+      "type": "donut",
+      "title": "Zoned land by category (acres)",
+      "series": [
+        {
+          "label": "Residential",
+          "value": 10035,
+          "color": "#f2c84b"
+        },
+        {
+          "label": "Commercial",
+          "value": 1223,
+          "color": "#d9534f"
+        },
+        {
+          "label": "Office",
+          "value": 409,
+          "color": "#4a78b5"
+        },
+        {
+          "label": "Industrial",
+          "value": 1579,
+          "color": "#9b6fb0"
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Largest districts (acres)",
+      "unit": " ac",
+      "series": [
+        {
+          "label": "R-1A",
+          "value": 3841
+        },
+        {
+          "label": "R-1B",
+          "value": 2322
+        },
+        {
+          "label": "R-1C",
+          "value": 1599
+        },
+        {
+          "label": "SE",
+          "value": 1554
+        },
+        {
+          "label": "C-2",
+          "value": 928
+        },
+        {
+          "label": "M-1",
+          "value": 918
+        },
+        {
+          "label": "M-2",
+          "value": 661
+        },
+        {
+          "label": "RO",
+          "value": 409
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "title": "Zoning districts",
+      "columns": [
+        "Code",
+        "District",
+        "Category",
+        "Acres"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "R-1A",
+            "Single Family Residential",
+            "Residential",
+            "3,841"
+          ],
+          "color": "#f2c84b"
+        },
+        {
+          "cells": [
+            "R-1B",
+            "Single Family Residential",
+            "Residential",
+            "2,322"
+          ],
+          "color": "#f2c84b"
+        },
+        {
+          "cells": [
+            "R-1C",
+            "Single Family Residential",
+            "Residential",
+            "1,599"
+          ],
+          "color": "#f2c84b"
+        },
+        {
+          "cells": [
+            "SE",
+            "Suburban Estate Residential",
+            "Residential",
+            "1,554"
+          ],
+          "color": "#f2c84b"
+        },
+        {
+          "cells": [
+            "C-2",
+            "General Business",
+            "Commercial",
+            "928"
+          ],
+          "color": "#d9534f"
+        },
+        {
+          "cells": [
+            "M-1",
+            "Light Industrial",
+            "Industrial",
+            "918"
+          ],
+          "color": "#9b6fb0"
+        },
+        {
+          "cells": [
+            "M-2",
+            "General Industrial",
+            "Industrial",
+            "661"
+          ],
+          "color": "#9b6fb0"
+        },
+        {
+          "cells": [
+            "RO",
+            "Restricted Office",
+            "Office",
+            "409"
+          ],
+          "color": "#4a78b5"
+        },
+        {
+          "cells": [
+            "RM",
+            "Multiple Family Residential",
+            "Residential",
+            "389"
+          ],
+          "color": "#f2c84b"
+        },
+        {
+          "cells": [
+            "RMH",
+            "Mobile Home Park",
+            "Residential",
+            "241"
+          ],
+          "color": "#f2c84b"
+        },
+        {
+          "cells": [
+            "C-4",
+            "Planned Shopping Center",
+            "Commercial",
+            "161"
+          ],
+          "color": "#d9534f"
+        },
+        {
+          "cells": [
+            "C-3",
+            "Highway Oriented Business",
+            "Commercial",
+            "98"
+          ],
+          "color": "#d9534f"
+        },
+        {
+          "cells": [
+            "HRM",
+            "High Rise / Multiple Family Residential",
+            "Residential",
+            "88"
+          ],
+          "color": "#f2c84b"
+        },
+        {
+          "cells": [
+            "C-1",
+            "Local Business",
+            "Commercial",
+            "36"
+          ],
+          "color": "#d9534f"
+        },
+        {
+          "cells": [
+            "P-1",
+            "Vehicle Parking",
+            "Parking",
+            "0"
+          ],
+          "color": "#9e9e9e"
+        }
+      ]
+    }
+  ],
+  "source": "City of Burton zoning map (via the Genesee County GCMPC Zoning_Layer); zoning districts within the city.",
+  "links": [
+    {
+      "text": "Burton zoning division (DPW)",
+      "href": "https://www.burtonmi.gov/departments/department_of_public_works/zoning_division.php"
+    }
+  ],
+  "notes": [
+    "Turn on the \"Zoning\" map overlay to see these districts on the map -- each area is colored by category (residential, commercial, office, industrial). Tap an area for its district code.",
+    "From the City of Burton 2017 zoning map. Zoning is the legal land-use designation, which is not the same as how a parcel is currently used. For the authoritative, current district of a specific property, contact the Burton zoning division.",
+    "Source: GCMPC Zoning_Layer (City of Burton); a regional GIS dataset, not a live city zoning lookup."
+  ]
+}

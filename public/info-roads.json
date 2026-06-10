@@ -458,6 +458,10 @@
   "source": "Genesee County Metropolitan Planning Commission (GCMPC) PASER pavement ratings (RoadSoft, 2024), federal-aid eligible roads within the City of Burton.",
   "links": [
     {
+      "text": "Winter road maintenance (snow & ice plan)",
+      "href": "#guide/snow-and-ice"
+    },
+    {
       "text": "Michigan TAMC dashboard",
       "href": "https://www.mcgi.state.mi.us/mappingforhealth/"
     },
