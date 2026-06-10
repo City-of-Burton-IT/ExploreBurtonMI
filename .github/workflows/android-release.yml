@@ -1,0 +1,104 @@
+name: Android release (Play internal)
+
+# Manual-only: build a RELEASE-signed Android App Bundle (.aab) and upload it to the
+# Google Play "internal testing" track. Play only accepts .aab (not .apk) for uploads,
+# and rejects debug-signed builds -- so this is separate from android-debug.yml.
+#
+# Signing: we sign with our UPLOAD key (decoded from a secret); Google re-signs the
+# delivered app with the app signing key under Play App Signing. versionCode is the
+# GitHub run number so every upload is unique and increasing (Play rejects duplicates).
+#
+# Required repository secrets (Settings > Secrets and variables > Actions):
+#   ANDROID_UPLOAD_KEYSTORE_B64  - base64 of android/upload-keystore.jks
+#   ANDROID_KEYSTORE_PASSWORD    - keystore (store) password
+#   ANDROID_KEY_ALIAS            - key alias (explore-burton-upload)
+#   ANDROID_KEY_PASSWORD         - key password (same as store password here)
+#   PLAY_SERVICE_ACCOUNT_JSON    - full JSON of a Google Cloud service account that has
+#                                  been granted access in the Play Console
+on:
+  workflow_dispatch:
+    inputs:
+      versionName:
+        description: 'User-facing version name (e.g. 1.0.1)'
+        required: true
+        default: '1.0'
+      status:
+        description: 'Play release status'
+        required: true
+        default: 'completed'
+        type: choice
+        options:
+          - completed   # roll out to all internal testers immediately
+          - draft       # create the release in the console but do not release it
+
+jobs:
+  release:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 22
+          cache: npm
+
+      - uses: actions/setup-java@v4
+        with:
+          distribution: temurin
+          java-version: 21 # Capacitor 8's android library compiles to Java 21
+
+      - name: Set up Android SDK
+        uses: android-actions/setup-android@v3
+
+      - name: Install dependencies
+        run: npm ci
+
+      - name: Run tests
+        run: npm test
+
+      - name: Build web app
+        run: npm run build
+
+      - name: Sync to the Android project
+        run: npx cap sync android
+
+      - name: Point Gradle at the SDK
+        run: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
+
+      - name: Restore the upload keystore
+        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE_B64 }}" | base64 -d > android/upload-keystore.jks
+
+      - name: Build release AAB
+        env:
+          ANDROID_VERSION_CODE: ${{ github.run_number }}
+          ANDROID_VERSION_NAME: ${{ inputs.versionName }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          cd android
+          chmod +x gradlew
+          ./gradlew bundleRelease --no-daemon --stacktrace
+
+      - name: Show signing certificate
+        run: |
+          BUNDLETOOL_AAB=android/app/build/outputs/bundle/release/app-release.aab
+          unzip -p "$BUNDLETOOL_AAB" META-INF/*.RSA > /dev/null 2>&1 || true
+          echo "Built signed bundle: $BUNDLETOOL_AAB"
+          ls -la android/app/build/outputs/bundle/release/
+
+      - name: Upload AAB as a build artifact (backup)
+        uses: actions/upload-artifact@v4
+        with:
+          name: explore-burton-release-aab
+          path: android/app/build/outputs/bundle/release/app-release.aab
+          if-no-files-found: error
+
+      - name: Upload to Play (internal testing track)
+        uses: r0adkll/upload-google-play@v1
+        with:
+          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
+          packageName: gov.burtonmi.explore
+          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
+          track: internal
+          status: ${{ inputs.status }}

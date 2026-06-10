@@ -58,6 +58,8 @@ captures/
 #*.keystore
 # Shared debug keystore is injected from a CI secret at build time, never committed.
 debug-shared.keystore
+# Release upload keystore is decoded from a CI secret at build time, never committed.
+upload-keystore.jks
 
 # External native build folder generated in Android Studio 2.2 and later
 .externalNativeBuild

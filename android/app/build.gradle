@@ -7,8 +7,10 @@ android {
         applicationId "gov.burtonmi.explore"
         minSdkVersion rootProject.ext.minSdkVersion
         targetSdkVersion rootProject.ext.targetSdkVersion
-        versionCode 1
-        versionName "1.0"
+        // CI overrides these via env so every Play upload gets a unique, increasing
+        // versionCode (Play rejects a duplicate). Locally they default to 1 / "1.0".
+        versionCode (System.getenv("ANDROID_VERSION_CODE") ?: "1").toInteger()
+        versionName (System.getenv("ANDROID_VERSION_NAME") ?: "1.0")
         testInstrumentationRunner "androidx.test.runner.AndroidJUnitRunner"
         aaptOptions {
              // Files and dirs to omit from the packaged assets dir, modified to accommodate modern web apps.
@@ -29,9 +31,27 @@ android {
                 keyPassword "android"
             }
         }
+        // RELEASE (Play upload) signing: CI decodes the upload keystore from a secret to
+        // android/upload-keystore.jks and supplies the passwords/alias via env. This is the
+        // "upload key" -- Google re-signs with the app signing key under Play App Signing.
+        // The file is absent locally and never committed, so this config stays inert there.
+        release {
+            def uploadKs = rootProject.file("upload-keystore.jks")
+            if (uploadKs.exists()) {
+                storeFile uploadKs
+                storePassword System.getenv("ANDROID_KEYSTORE_PASSWORD")
+                keyAlias System.getenv("ANDROID_KEY_ALIAS")
+                keyPassword System.getenv("ANDROID_KEY_PASSWORD")
+            }
+        }
     }
     buildTypes {
         release {
+            // Only sign with the release key when the keystore is actually present
+            // (CI). A plain `./gradlew assembleRelease` locally stays unsigned, as before.
+            if (rootProject.file("upload-keystore.jks").exists()) {
+                signingConfig signingConfigs.release
+            }
             minifyEnabled false
             proguardFiles getDefaultProguardFile('proguard-android.txt'), 'proguard-rules.pro'
         }
