@@ -42,6 +42,41 @@
           "value": 692
         }
       ]
+    },
+    {
+      "type": "bars",
+      "title": "Students per teacher by district (2023)",
+      "unit": "",
+      "series": [
+        {
+          "label": "Bendle",
+          "value": 15.6
+        },
+        {
+          "label": "Davison",
+          "value": 16.4
+        },
+        {
+          "label": "Bentley",
+          "value": 16.7
+        },
+        {
+          "label": "Atherton",
+          "value": 16.9
+        },
+        {
+          "label": "Grand Blanc",
+          "value": 17.4
+        },
+        {
+          "label": "Kearsley",
+          "value": 17.8
+        },
+        {
+          "label": "Carman-Ainsworth",
+          "value": 18.6
+        }
+      ]
     }
   ],
   "source": "NCES Common Core of Data 2023, via the Urban Institute Education Data API",

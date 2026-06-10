@@ -79,39 +79,49 @@ def load_districts() -> list[dict]:
     return out
 
 
-def enrollment_for(leaid: str, year: int) -> int | None:
-    """Whole-district enrollment for one LEAID; None if unavailable.
+def district_stats(leaid: str, year: int) -> tuple[int | None, float | None]:
+    """(enrollment, teachers_total_fte) for one LEAID; either may be None.
 
-    Primary source is the CCD directory's `enrollment` field; when that is null
-    we fall back to summing the grade-99 (all grades) / race-99 / sex-99 total
-    from the enrollment endpoint.
+    Both come from the CCD directory in a single call. When the directory's
+    `enrollment` is null we fall back to the grade-99 (all grades) / race-99 /
+    sex-99 total from the enrollment endpoint; teacher FTE is directory-only.
     """
+    enr: int | None = None
+    teachers: float | None = None
     try:
         d = _get(f"{API}/directory/{year}/?leaid={leaid}")
         rows = d.get("results", [])
-        if rows and rows[0].get("enrollment") not in (None, ""):
-            return int(rows[0]["enrollment"])
+        if rows:
+            t = rows[0].get("teachers_total_fte")
+            if t not in (None, "", 0):
+                teachers = float(t)
+            e = rows[0].get("enrollment")
+            if e not in (None, ""):
+                enr = int(e)
     except Exception as exc:  # noqa: BLE001 - try the fallback before failing
         print(f"    directory failed for {leaid} ({exc}); trying enrollment endpoint")
 
-    try:
-        e = _get(f"{API}/enrollment/{year}/grade-99/?leaid={leaid}")
-        for r in e.get("results", []):
-            if r.get("race") == 99 and r.get("sex") == 99:
-                val = r.get("enrollment")
-                if val not in (None, "") and int(val) >= 0:
-                    return int(val)
-    except Exception as exc:  # noqa: BLE001
-        print(f"    enrollment endpoint failed for {leaid} ({exc})")
-    return None
+    if enr is None:
+        try:
+            e = _get(f"{API}/enrollment/{year}/grade-99/?leaid={leaid}")
+            for r in e.get("results", []):
+                if r.get("race") == 99 and r.get("sex") == 99:
+                    val = r.get("enrollment")
+                    if val not in (None, "") and int(val) >= 0:
+                        enr = int(val)
+                        break
+        except Exception as exc:  # noqa: BLE001
+            print(f"    enrollment endpoint failed for {leaid} ({exc})")
+    return enr, teachers
 
 
 def build_panel(districts: list[dict], year: int) -> dict:
     series = []
+    ratio_series = []
     links = []
     missing = []
     for d in districts:
-        enr = enrollment_for(d["leaid"], year)
+        enr, teachers = district_stats(d["leaid"], year)
         # Trim the long suffixes so the bar labels stay readable.
         short = (
             d["name"]
@@ -119,16 +129,20 @@ def build_panel(districts: list[dict], year: int) -> dict:
             .replace(" Community Schools", "")
             .replace(" Public Schools", "")
         )
-        print(f"    {short:20} {enr if enr is not None else 'n/a'}")
+        print(f"    {short:20} {enr if enr is not None else 'n/a'}"
+              f"  teachers={teachers if teachers else 'n/a'}")
         if enr is not None:
             series.append({"label": short, "value": enr})
         else:
             missing.append(short)
+        if enr is not None and teachers:
+            ratio_series.append({"label": short, "value": round(enr / teachers, 1)})
         url = DISTRICT_URLS.get(d["leaid"])
         if url:
             links.append({"text": short, "href": url})
 
     series.sort(key=lambda s: s["value"], reverse=True)
+    ratio_series.sort(key=lambda s: s["value"])
 
     # Education levels (attainment) live on the Demographics dashboard -- link to
     # them rather than duplicate the chart. Add the colleges that serve the area
@@ -174,6 +188,15 @@ def build_panel(districts: list[dict], year: int) -> dict:
                 "title": f"Enrollment by district ({year})",
                 "series": series,
             },
+            *(
+                [{
+                    "type": "bars",
+                    "title": f"Students per teacher by district ({year})",
+                    "unit": "",
+                    "series": ratio_series,
+                }]
+                if len(ratio_series) >= 2 else []
+            ),
         ],
         "source": f"NCES Common Core of Data {year}, via the Urban Institute Education Data API",
         "links": links,
