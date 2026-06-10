@@ -4,9 +4,9 @@
   "summary": {
     "heading": "What this means for you",
     "body": [
-      "When you pay your property tax bill, most of it does not go to the City of Burton. The City levies 13.44 mills -- about 29% of a typical owner-occupied (homestead) bill. The single largest piece is Genesee County; the rest funds your school district, the State Education Tax, the Genesee ISD, Mott Community College, public transit, and the airport.",
-      "What you actually pay depends on your home's taxable value and which of Burton's 7 school districts you live in. On a home with $50,000 of taxable value (about a $100,000 market value), the City's share is roughly $672 a year; your full bill -- county and schools included -- runs about $2,093-$2,674 depending on district.",
-      "The City's own rate has held at 13.44 mills since 2022 and is down from 14.20 a decade ago -- Burton has not raised its operating rate."
+      "When you pay your property tax bill, most of it does not go to the City of Burton. The City levies 13.44 mills, about 29% of a typical owner-occupied (homestead) bill. The single largest piece is Genesee County; the rest funds your school district, the State Education Tax, the Genesee ISD, Mott Community College, public transit, and the airport.",
+      "What you actually pay depends on your home's taxable value and which of Burton's 7 school districts you live in. On a home with $50,000 of taxable value (about a $100,000 market value), the City's share is roughly $672 a year; your full bill, county and schools included, runs about $2,093-$2,674 depending on district.",
+      "The City's own rate has held at 13.44 mills since 2022 and is down from 14.20 a decade ago. Burton has not raised its operating rate."
     ]
   },
   "stats": [
@@ -157,7 +157,7 @@
       ]
     }
   ],
-  "source": "City of Burton audited financial statements (ACFR), Statistical Section -- Direct and Overlapping Property Tax Rates (Genesee County Apportionment Report); and Michigan Department of Treasury, 2025 Total Property Tax Rates in Michigan.",
+  "source": "City of Burton audited financial statements (ACFR), Statistical Section: Direct and Overlapping Property Tax Rates (Genesee County Apportionment Report); and Michigan Department of Treasury, 2025 Total Property Tax Rates in Michigan.",
   "links": [
     {
       "text": "City Finances dashboard",
@@ -169,7 +169,7 @@
     }
   ],
   "notes": [
-    "Rates are in mills -- dollars per $1,000 of TAXABLE value, which is usually about half of a home's market value. The breakdown is for a typical HOMESTEAD (owner-occupied) home; non-homestead/rental property pays about 18 mills more, almost all to schools.",
+    "Rates are in mills: dollars per $1,000 of TAXABLE value, which is usually about half of a home's market value. The breakdown is for a typical HOMESTEAD (owner-occupied) home; non-homestead/rental property pays about 18 mills more, almost all to schools.",
     "The City of Burton only sets and keeps the City portion (General, Police, Fire). Every other line is set by and sent to the county, schools, ISD, college, transit, or airport. The school amount varies by which of Burton's 7 districts you are in, so the \"Schools & State Education\" slice is the remainder for a representative district; the full per-authority split for your exact parcel is in the Genesee County Apportionment Report (L-4029).",
     "Source: City of Burton ACFR (FY2025) and Michigan Treasury 2025 Total Property Tax Rates. Public data; not a calculation of any individual tax bill."
   ]

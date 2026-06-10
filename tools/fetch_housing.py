@@ -99,7 +99,7 @@ def main() -> None:
     ]
     panel = {
         "title": "Housing & Growth",
-        "subtitle": f"Burton's housing stock -- US Census ACS {args.year} 5-year",
+        "subtitle": f"Burton's housing stock: US Census ACS {args.year} 5-year",
         "stats": stats,
         "charts": charts,
         "source": f"US Census Bureau, American Community Survey (ACS) {args.year} "

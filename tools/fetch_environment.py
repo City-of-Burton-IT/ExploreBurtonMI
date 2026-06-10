@@ -9,7 +9,7 @@ Drinking water, live/real-time AQI, and environmental-justice screening are LINK
 OUT rather than baked in (they're either volatile or not cleanly fetchable), per
 the project's publish-vs-link rule.
 
-County-level (Genesee) -- air monitors aren't sited per-city. Burton is in the county.
+County-level (Genesee), air monitors aren't sited per-city. Burton is in the county.
 
 Re-runnable (committed output; the site reads the JSON, never the network):
     python tools/fetch_environment.py
@@ -120,7 +120,7 @@ def main() -> int:
 
     panel = {
         "title": "Environment",
-        "subtitle": f"Air quality in Genesee County -- EPA AirData, through {latest_year}",
+        "subtitle": f"Air quality in Genesee County: EPA AirData, through {latest_year}",
         "stats": stats,
         "charts": charts,
         "source": (
@@ -139,7 +139,7 @@ def main() -> int:
             "Burton is within the county.",
             "The AQI is a daily 0-500 index: 0-50 good, 51-100 moderate, 101-150 unhealthy for "
             "sensitive groups. 'Days set by each pollutant' shows what drove the daily index most "
-            "often -- usually fine particles (PM2.5) or ozone.",
+            "often, usually fine particles (PM2.5) or ozone.",
             "Drinking water, live air readings, and environmental-justice screening are linked "
             "above (live or detailed data lives better at the source than in a yearly snapshot).",
         ],

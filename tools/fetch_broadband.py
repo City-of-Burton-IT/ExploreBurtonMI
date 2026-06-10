@@ -214,7 +214,7 @@ def main() -> None:
 
     notes = [
         "Availability = where service can be ordered (reported by providers), not "
-        "actual speeds or price -- the FCC collects no pricing data.",
+        "actual speeds or price, the FCC collects no pricing data.",
         "\"Broadband\" is the FCC benchmark of 100/20 Mbps. Speed figures are the share "
         "of broadband-serviceable homes with reported access at each speed.",
     ]
@@ -224,13 +224,13 @@ def main() -> None:
                      "providers most homes actually choose between.")
     if adoption is not None:
         notes.append("\"Households with broadband\" is actual subscriptions (US Census ACS "
-                     "2023) -- a different measure than availability. Not endorsed by the Census Bureau.")
+                     "2023), a different measure than availability. Not endorsed by the Census Bureau.")
     notes.append("Source: FCC National Broadband Map. This product is not endorsed or "
                  "certified by the FCC.")
 
     panel = {
         "title": "Broadband Access",
-        "subtitle": f"Home internet availability in Burton -- FCC National Broadband Map ({as_of})",
+        "subtitle": f"Home internet availability in Burton: FCC National Broadband Map ({as_of})",
         "stats": stats,
         "charts": charts,
         "source": f"FCC National Broadband Map (Broadband Data Collection), fixed "

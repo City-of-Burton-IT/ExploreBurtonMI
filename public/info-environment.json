@@ -1,6 +1,6 @@
 {
   "title": "Environment",
-  "subtitle": "Air quality in Genesee County -- EPA AirData, through 2025",
+  "subtitle": "Air quality in Genesee County: EPA AirData, through 2025",
   "stats": [
     {
       "label": "Good air-quality days",
@@ -135,7 +135,7 @@
   ],
   "notes": [
     "Air-quality figures are for Genesee County (air monitors are not sited per city); Burton is within the county.",
-    "The AQI is a daily 0-500 index: 0-50 good, 51-100 moderate, 101-150 unhealthy for sensitive groups. 'Days set by each pollutant' shows what drove the daily index most often -- usually fine particles (PM2.5) or ozone.",
+    "The AQI is a daily 0-500 index: 0-50 good, 51-100 moderate, 101-150 unhealthy for sensitive groups. 'Days set by each pollutant' shows what drove the daily index most often, usually fine particles (PM2.5) or ozone.",
     "Drinking water, live air readings, and environmental-justice screening are linked above (live or detailed data lives better at the source than in a yearly snapshot)."
   ]
 }

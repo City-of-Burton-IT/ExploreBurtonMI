@@ -8,7 +8,7 @@
 # This parser reads the day from any column, falls back to a trailing day in the
 # street cell, and merges lowercase continuation rows.
 #
-# Stdlib only (zipfile + ElementTree) -- no openpyxl dependency. The xlsx lives in
+# Stdlib only (zipfile + ElementTree), no openpyxl dependency. The xlsx lives in
 # docs/ (gitignored); the committed JSON is what the site reads.
 #
 # Re-runnable:  python tools/extract_waste_schedule.py
@@ -93,7 +93,7 @@ def main() -> int:
         raise SystemExit(f"Spreadsheet not found: {XLSX}")
     entries = parse(XLSX)
     if not entries:
-        raise SystemExit("No street/day rows parsed -- check the sheet layout.")
+        raise SystemExit("No street/day rows parsed, check the sheet layout.")
     from collections import Counter
     by_day = dict(Counter(e["day"] for e in entries))
     payload = {

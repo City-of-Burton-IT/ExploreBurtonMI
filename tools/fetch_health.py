@@ -1,12 +1,12 @@
 """Build public/info-health.json for the Community Health dashboard.
 
-Source: CDC PLACES (Local Data for Better Health), 2025 release -- model-based
+Source: CDC PLACES (Local Data for Better Health), 2025 release: model-based
 estimates of adult (18+) prevalence from BRFSS, published at the *place* level so
 Burton has its own figures (place FIPS 2612060), with Genesee County as the
 benchmark (county FIPS 26049). Public domain.
 
 These are STATISTICAL ESTIMATES of how common a condition/behaviour is among
-adults, not counts of diagnosed residents -- the notes make that explicit, and
+adults, not counts of diagnosed residents: the notes make that explicit, and
 every headline figure is shown against the county so it reads as context, not a
 scoreboard.
 
@@ -126,7 +126,7 @@ def main() -> int:
 
     panel = {
         "title": "Community Health",
-        "subtitle": f"Estimated adult health in Burton -- CDC PLACES, {RELEASE}",
+        "subtitle": f"Estimated adult health in Burton: CDC PLACES, {RELEASE}",
         "stats": stats,
         "charts": [
             bars("Chronic conditions (estimated adult prevalence)", burton, CHART_CHRONIC),
@@ -147,7 +147,7 @@ def main() -> int:
         ],
         "notes": [
             "These are model-based ESTIMATES of how common each condition or behaviour is "
-            "among Burton adults -- not counts of diagnosed residents. They come from CDC's "
+            "among Burton adults, not counts of diagnosed residents. They come from CDC's "
             "PLACES program, which projects national survey (BRFSS) results down to each "
             f"community ({RELEASE}).",
             "Every figure is shown against Genesee County so it reads as context. Small "

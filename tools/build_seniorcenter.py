@@ -3,7 +3,7 @@
 The figures below are the center's own activity records for CALENDAR YEAR 2025,
 exported from its check-in / membership system (My Senior Center). They are held
 as constants and refreshed once a year from five exports the Senior Center staff
-provide (kept out of git -- they are operational exports, not web data):
+provide (kept out of git: they are operational exports, not web data):
 
   * ExcelAvgAttendance.xls  -> attendance (check-ins, avg per day, by month)
   * ExcelExport (1).xls      -> active-member demographics (age, where they live)
@@ -12,7 +12,7 @@ provide (kept out of git -- they are operational exports, not web data):
   * ExcelExport (3).xls      -> volunteer hours and pay-equivalent value
 
 To refresh next year: open the new exports, update the constants in the "SOURCE
-DATA" block below, and re-run. No PII -- every figure is an aggregate count.
+DATA" block below, and re-run. No PII, every figure is an aggregate count.
 
 Re-runnable (committed output; the site reads the JSON, never the exports):
     python tools/build_seniorcenter.py
@@ -28,7 +28,7 @@ import sys
 OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-seniorcenter.json"))
 
 # ---------------------------------------------------------------------------
-# SOURCE DATA -- Burton Senior Center, calendar year 2025. Refresh yearly.
+# SOURCE DATA: Burton Senior Center, calendar year 2025. Refresh yearly.
 # ---------------------------------------------------------------------------
 YEAR = "2025"
 MEMBERS = 1564          # active members in 2025
@@ -103,7 +103,7 @@ def main() -> int:
         "heading": "What this means for you",
         "body": [
             f"The Burton Senior Center is one of the busiest in the region. In {YEAR} it served "
-            f"{MEMBERS:,} members with about {CHECKINS:,} visits -- an average of {AVG_PER_DAY} people "
+            f"{MEMBERS:,} members with about {CHECKINS:,} visits, an average of {AVG_PER_DAY} people "
             f"every day it was open. Nearly three-quarters of members ({out_pct}%) come from outside "
             "the city, so Burton's center is a hub for older adults across the surrounding area.",
             f"It is far more than a place to gather: the center ran nutrition, health-and-fitness, "
@@ -112,14 +112,14 @@ def main() -> int:
             f"the center. Just over half of members ({LIVES_ALONE_PCT}%) live alone, so for many it is a "
             "primary source of meals, activity, and connection.",
             f"Much of this runs on volunteers: {VOL_PEOPLE} people gave about {VOL_HOURS:,} hours in {YEAR} "
-            f"-- roughly ${VOL_VALUE:,} of donated time -- staffing bingo, the kitchen, tax help, and the "
+            f"(roughly ${VOL_VALUE:,} of donated time), staffing bingo, the kitchen, tax help, and the "
             "reception desk.",
         ],
     }
 
     panel = {
         "title": "Burton Senior Center",
-        "subtitle": f"Who it serves and what it offers -- calendar year {YEAR}",
+        "subtitle": f"Who it serves and what it offers: calendar year {YEAR}",
         "summary": summary,
         "stats": stats,
         "charts": charts,
@@ -134,12 +134,12 @@ def main() -> int:
         "notes": [
             "\"Visits\" and \"program sign-ins\" count every attendance (one person is counted each time "
             "they come); \"members\" and \"volunteers\" count each person once. Members may live outside "
-            "the city -- the center serves older adults across the surrounding area, not Burton residents "
+            "the city: the center serves older adults across the surrounding area, not Burton residents "
             "only.",
             f"Volunteer value is the center's pay-equivalent estimate of donated hours, not money spent. "
             f"Monthly figures are the average attendance per open day; the center was open {OPEN_DAYS} days "
             f"in {YEAR}.",
-            f"Source: City of Burton Senior Center, {YEAR} activity records. Aggregate counts only -- no "
+            f"Source: City of Burton Senior Center, {YEAR} activity records. Aggregate counts only, no "
             "personal information.",
         ],
     }

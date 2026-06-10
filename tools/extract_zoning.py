@@ -165,7 +165,7 @@ def main() -> int:
 
     panel = {
         "title": "Zoning",
-        "subtitle": "How land in Burton is zoned -- the city's zoning districts",
+        "subtitle": "How land in Burton is zoned: the city's zoning districts",
         "stats": stats,
         "charts": charts,
         "tables": [{
@@ -180,7 +180,7 @@ def main() -> int:
              "href": "https://www.burtonmi.gov/departments/department_of_public_works/zoning_division.php"},
         ],
         "notes": [
-            "Turn on the \"Zoning\" map overlay to see these districts on the map -- each area is "
+            "Turn on the \"Zoning\" map overlay to see these districts on the map: each area is "
             "colored by category (residential, commercial, office, industrial). Tap an area for its "
             "district code.",
             f"From the City of Burton {vintage} zoning map. Zoning is the legal land-use designation, "

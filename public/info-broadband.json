@@ -1,6 +1,6 @@
 {
   "title": "Broadband Access",
-  "subtitle": "Home internet availability in Burton -- FCC National Broadband Map (2025-12-31)",
+  "subtitle": "Home internet availability in Burton: FCC National Broadband Map (2025-12-31)",
   "stats": [
     {
       "label": "Broadband-serviceable homes",
@@ -119,10 +119,10 @@
     }
   ],
   "notes": [
-    "Availability = where service can be ordered (reported by providers), not actual speeds or price -- the FCC collects no pricing data.",
+    "Availability = where service can be ordered (reported by providers), not actual speeds or price, the FCC collects no pricing data.",
     "\"Broadband\" is the FCC benchmark of 100/20 Mbps. Speed figures are the share of broadband-serviceable homes with reported access at each speed.",
     "Satellite (HughesNet (EchoStar), Viasat, Starlink (SpaceX)) reaches all of Burton, so it is counted but not charted with the wired/wireless providers most homes actually choose between.",
-    "\"Households with broadband\" is actual subscriptions (US Census ACS 2023) -- a different measure than availability. Not endorsed by the Census Bureau.",
+    "\"Households with broadband\" is actual subscriptions (US Census ACS 2023), a different measure than availability. Not endorsed by the Census Bureau.",
     "Source: FCC National Broadband Map. This product is not endorsed or certified by the FCC."
   ]
 }

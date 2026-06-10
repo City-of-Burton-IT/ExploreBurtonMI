@@ -1,11 +1,11 @@
 # Find same-site name-variant duplicates in public/data.geojson.
 #
 # The pipeline already collapses IDENTICAL names within 120 m (merge.dedupe_
-# proximity). What slips through is name VARIANTS at one address -- "Chase" vs
+# proximity). What slips through is name VARIANTS at one address: "Chase" vs
 # "Chase Bank", "Hungry Howie's" vs "Hungry Howie's Pizza". This is a one-time
 # DISCOVERY tool: it groups records by normalized address, finds variant clusters,
 # tiers them by confidence, and recommends which record to hide (keeping the most
-# complete one). It changes nothing -- it prints a report so a human signs off on
+# complete one). It changes nothing: it prints a report so a human signs off on
 # the actual removals, which are then encoded as explicit hide-overrides in
 # pipeline/data/overrides.json (auditable + refresh-safe).
 #
@@ -192,8 +192,8 @@ def main() -> int:
                 print(f"    hide  {hp.get('name')!r}  [{hp.get('category')}]  "
                       f"fields={completeness(hp)}  id={h['id']}{tag}")
 
-    show("TIER 1 -- HIGH CONFIDENCE (same core name, generic suffix only)", high)
-    show("TIER 2 -- NEEDS EYES (related names; confirm before hiding)", eyes)
+    show("TIER 1: HIGH CONFIDENCE (same core name, generic suffix only)", high)
+    show("TIER 2: NEEDS EYES (related names; confirm before hiding)", eyes)
     print(f"\nTotal: {sum(len(e['hide']) for e in high)} high-confidence + "
           f"{sum(len(e['hide']) for e in eyes)} needs-eyes records flagged.")
     return 0

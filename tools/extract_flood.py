@@ -4,7 +4,7 @@
 # Source: FEMA National Flood Hazard Layer (NFHL), the official public flood-map
 # data, served from FEMA's ArcGIS REST endpoint (layer 28 = Flood Hazard Zones).
 # Public data, redistributable. We keep only Special Flood Hazard Areas
-# (SFHA_TF='T' -- the 1%-annual-chance / high-risk zones like AE and A), which is
+# (SFHA_TF='T': the 1%-annual-chance / high-risk zones like AE and A), which is
 # what residents care about; the low-risk "X" areas (most of the map) are omitted
 # to keep the overlay legible.
 #

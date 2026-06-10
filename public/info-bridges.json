@@ -1,6 +1,6 @@
 {
   "title": "Bridges & Infrastructure",
-  "subtitle": "Burton's road bridges -- FHWA National Bridge Inventory (2024)",
+  "subtitle": "Burton's road bridges: FHWA National Bridge Inventory (2024)",
   "stats": [
     {
       "label": "Bridges in Burton",
@@ -56,7 +56,7 @@
     },
     {
       "type": "compare",
-      "title": "How Burton compares -- bridge condition",
+      "title": "How Burton compares, bridge condition",
       "rows": [
         {
           "label": "Good condition",
@@ -387,9 +387,9 @@
     }
   ],
   "notes": [
-    "Condition is the federal Good/Fair/Poor rating (the lowest of a bridge's deck, superstructure, substructure, and culvert ratings). \"Fair\" is serviceable; \"Poor\" means significant repair is needed -- not that a bridge is unsafe or closed.",
-    "Covers all 20 bridges within Burton regardless of owner -- the city maintains 10, the rest are state or county (e.g. the I-69 and I-475 overpasses). Together they carry about 2,075 ft of deck.",
-    "The comparison is by bridge count (not deck area) using the same FHWA file: Genesee County (371 bridges) and Michigan statewide are tallied by the identical Good/Fair/Poor rule. With only 20 bridges, each Burton bridge is about 5% -- the comparison shows the broad pattern, not a precise rank.",
+    "Condition is the federal Good/Fair/Poor rating (the lowest of a bridge's deck, superstructure, substructure, and culvert ratings). \"Fair\" is serviceable; \"Poor\" means significant repair is needed, not that a bridge is unsafe or closed.",
+    "Covers all 20 bridges within Burton regardless of owner: the city maintains 10, the rest are state or county (e.g. the I-69 and I-475 overpasses). Together they carry about 2,075 ft of deck.",
+    "The comparison is by bridge count (not deck area) using the same FHWA file: Genesee County (371 bridges) and Michigan statewide are tallied by the identical Good/Fair/Poor rule. With only 20 bridges, each Burton bridge is about 5%: the comparison shows the broad pattern, not a precise rank.",
     "Source: FHWA NBI; not endorsed or certified by FHWA."
   ]
 }

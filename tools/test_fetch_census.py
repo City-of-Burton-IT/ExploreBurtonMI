@@ -1,4 +1,4 @@
-# Unit tests for fetch_census.build_panel -- the pure ACS-record -> InfoPanel
+# Unit tests for fetch_census.build_panel, the pure ACS-record -> InfoPanel
 # transformation. No network/API key needed; build_panel takes a record dict and
 # pre-computed trend points. Run: python -m pytest tools/test_fetch_census.py -q
 import os

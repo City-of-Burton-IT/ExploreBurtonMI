@@ -3,7 +3,7 @@
 #
 # Source: State of Michigan "2024 Voting Precincts" open data (Secretary of State),
 # served from the State ArcGIS REST endpoint. Public, redistributable. Only the
-# precinct boundary + number/name are kept -- the dataset's Registered_Voters /
+# precinct boundary + number/name are kept: the dataset's Registered_Voters /
 # Active_Voters count fields are deliberately EXCLUDED (the map answers "which
 # precinct", not "how many voters"). Pairs with the Elections guide section's MVIC
 # polling-place lookup.

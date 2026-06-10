@@ -155,7 +155,7 @@ def main() -> int:
         print(f"    {f['properties']['name']}")
     print(f"  file size: {os.path.getsize(OUT) // 1024} KiB")
 
-    # Bus stops inside Burton (GTFS stops.txt) as a point overlay -- the rider-facing
+    # Bus stops inside Burton (GTFS stops.txt) as a point overlay, the rider-facing
     # stop list (the county ArcGIS stop layers have no usable stop names).
     stops_feats = []
     for s in gtfs.get("stops", []):

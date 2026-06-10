@@ -1,4 +1,4 @@
-# Unit tests for fetch_bridges.build_bridges_geojson -- the pure NBI-row -> GeoJSON
+# Unit tests for fetch_bridges.build_bridges_geojson, the pure NBI-row -> GeoJSON
 # transformation. No network needed. Run: python -m pytest tools/test_fetch_bridges.py -q
 import os
 import sys

@@ -3,10 +3,10 @@
 #
 # Source: Genesee County (GCMPC) RoadSoft / PASER layer, in the official Genesee
 # County ArcGIS organization (services2.arcgis.com/5ckbIY7K9TUKoseK), layer
-# "PASER_Map_2025_WFL1/3" -- the most current (2024-25) ratings. Public county
+# "PASER_Map_2025_WFL1/3", the most current (2024-25) ratings. Public county
 # asset-management data.
 #
-# SCOPE: federal-aid eligible roads only (FEDAID=1) -- the network the state's
+# SCOPE: federal-aid eligible roads only (FEDAID=1), the network the state's
 # Transportation Asset Management Council (TAMC) inspects on a fixed cycle. This
 # is NOT every residential street; local/residential roads carry sparse, less
 # reliable ratings (gravel roads in particular get default low scores), so they
@@ -15,7 +15,7 @@
 # PASER is a 1-10 surface rating. The standard TAMC grouping is used:
 #   Good = 8-10, Fair = 5-7, Poor = 1-4. A 0 / null rating = Not Rated and is
 #   EXCLUDED from the Good/Fair/Poor percentages (it is not a condition).
-# "Poor" means the surface needs major repair/reconstruction -- not that the road
+# "Poor" means the surface needs major repair/reconstruction, not that the road
 # is closed or impassable.
 #
 # Burton's share is shown beside Genesee County's (same layer, same rule) so the
@@ -222,7 +222,7 @@ def main() -> int:
         {"type": "donut", "title": "Pavement condition (PASER, by road-mile)",
          "series": [{"label": k, "value": round(b_miles[k], 1), "color": COND_COLOR[k]}
                     for k in ("Good", "Fair", "Poor") if b_miles.get(k)]},
-        {"type": "compare", "title": "How Burton compares -- pavement condition",
+        {"type": "compare", "title": "How Burton compares: pavement condition",
          "rows": [{"label": f"{k} condition", "unit": "%", "values": [
              {"name": "Burton", "value": b_pct.get(k, 0)},
              {"name": "Genesee Co.", "value": g_pct.get(k, 0)},
@@ -237,7 +237,7 @@ def main() -> int:
     vintage = "/".join(str(y) for y in common_years) if common_years else "recent"
     panel = {
         "title": "Roads & Pavement",
-        "subtitle": "Burton's road pavement condition -- Genesee County PASER ratings",
+        "subtitle": "Burton's road pavement condition: Genesee County PASER ratings",
         "stats": stats,
         "charts": charts,
         "tables": [table],
@@ -251,9 +251,9 @@ def main() -> int:
         ],
         "notes": [
             "PASER is a 1-10 surface rating. Good = 8-10, Fair = 5-7, Poor = 1-4. \"Poor\" means "
-            "the surface needs major repair or reconstruction -- not that a road is closed or "
+            "the surface needs major repair or reconstruction, not that a road is closed or "
             "impassable.",
-            f"Covers federal-aid eligible roads only -- the network the state's asset-management "
+            f"Covers federal-aid eligible roads only, the network the state's asset-management "
             f"council inspects on a cycle. It is NOT every residential street, so a resident may "
             f"not find their own street here. These ratings are from {vintage}.",
             f"Burton's split is shown beside Genesee County's, tallied from the same dataset by the "

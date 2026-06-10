@@ -7,7 +7,7 @@
 # schema, filters by confidence, and writes a committed snapshot that the pure-
 # Python pipeline reads like a curated input.
 #
-# Overture Places is licensed CDLA-Permissive 2.0 -- redistributable with
+# Overture Places is licensed CDLA-Permissive 2.0, redistributable with
 # attribution (add "(c) Overture Maps Foundation" to the viewer attribution when
 # the snapshot first ships).
 #
@@ -66,7 +66,7 @@ def download_places(bbox_wsen: str, dest: Path) -> None:
 def _as_obj(value: Any) -> Any:
     """Return value as a Python object, decoding a JSON-encoded string if needed.
     The overturemaps CLI's GeoJSON writer may emit Overture struct/list fields as
-    nested objects OR as JSON-encoded strings depending on version -- handle both."""
+    nested objects OR as JSON-encoded strings depending on version, handle both."""
     if isinstance(value, str) and value.strip()[:1] in "{[":
         try:
             return json.loads(value)

@@ -166,8 +166,8 @@
     }
   ],
   "notes": [
-    "Mileage is clipped to the City of Burton -- a trail's full length (the county plan's LENMILES) often extends well beyond the city, so only the in-Burton portion is counted.",
-    "\"Existing\" trails are built and usable today (drawn solid on the map). \"Under construction\", \"programmed\" and \"proposed\" routes are planned, not yet open (drawn dashed) -- shown so residents can see what's coming, not as if already built.",
+    "Mileage is clipped to the City of Burton: a trail's full length (the county plan's LENMILES) often extends well beyond the city, so only the in-Burton portion is counted.",
+    "\"Existing\" trails are built and usable today (drawn solid on the map). \"Under construction\", \"programmed\" and \"proposed\" routes are planned, not yet open (drawn dashed): shown so residents can see what's coming, not as if already built.",
     "Source: Genesee County (GCMPC) Legacy Trail Map; a regional planning dataset, not a City of Burton inventory."
   ]
 }

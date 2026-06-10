@@ -1,6 +1,6 @@
 {
   "title": "Community Health",
-  "subtitle": "Estimated adult health in Burton -- CDC PLACES, 2025 release",
+  "subtitle": "Estimated adult health in Burton: CDC PLACES, 2025 release",
   "stats": [
     {
       "label": "Without health insurance (18-64)",
@@ -244,7 +244,7 @@
   ],
   "notes": [
     "Estimates cover Burton's adult population (city total ~29,715).",
-    "These are model-based ESTIMATES of how common each condition or behaviour is among Burton adults -- not counts of diagnosed residents. They come from CDC's PLACES program, which projects national survey (BRFSS) results down to each community (2025 release).",
+    "These are model-based ESTIMATES of how common each condition or behaviour is among Burton adults, not counts of diagnosed residents. They come from CDC's PLACES program, which projects national survey (BRFSS) results down to each community (2025 release).",
     "Every figure is shown against Genesee County so it reads as context. Small differences fall within the estimates' margin of error.",
     "Need care or help? See the Health & support resources in the Resident Guide."
   ]

@@ -1,6 +1,6 @@
 {
   "title": "Roads & Pavement",
-  "subtitle": "Burton's road pavement condition -- Genesee County PASER ratings",
+  "subtitle": "Burton's road pavement condition: Genesee County PASER ratings",
   "stats": [
     {
       "label": "Rated road-miles",
@@ -52,7 +52,7 @@
     },
     {
       "type": "compare",
-      "title": "How Burton compares -- pavement condition",
+      "title": "How Burton compares, pavement condition",
       "rows": [
         {
           "label": "Good condition",
@@ -471,8 +471,8 @@
     }
   ],
   "notes": [
-    "PASER is a 1-10 surface rating. Good = 8-10, Fair = 5-7, Poor = 1-4. \"Poor\" means the surface needs major repair or reconstruction -- not that a road is closed or impassable.",
-    "Covers federal-aid eligible roads only -- the network the state's asset-management council inspects on a cycle. It is NOT every residential street, so a resident may not find their own street here. These ratings are from 2024.",
+    "PASER is a 1-10 surface rating. Good = 8-10, Fair = 5-7, Poor = 1-4. \"Poor\" means the surface needs major repair or reconstruction, not that a road is closed or impassable.",
+    "Covers federal-aid eligible roads only, the network the state's asset-management council inspects on a cycle. It is NOT every residential street, so a resident may not find their own street here. These ratings are from 2024.",
     "Burton's split is shown beside Genesee County's, tallied from the same dataset by the identical rule, so the picture reads as a regional reality (the county is 49% poor by road-mile). Not-rated miles are excluded from the percentages.",
     "Source: Genesee County (GCMPC) PASER / RoadSoft; a regional dataset, not endorsed by the City of Burton."
   ]

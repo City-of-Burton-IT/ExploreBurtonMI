@@ -2,7 +2,7 @@
 
 Answers the question residents actually ask: "when I pay my property tax bill,
 where does the money go?" The key, often-surprising answer is that most of a
-Burton tax bill does NOT go to the City -- the City levies about 13.44 mills
+Burton tax bill does NOT go to the City: the City levies about 13.44 mills
 (roughly 29% of a typical homestead bill); the largest single piece is Genesee
 County, and the rest funds schools, the State Education Tax, the ISD, Mott
 Community College, public transit, and the airport.
@@ -10,7 +10,7 @@ Community College, public transit, and the airport.
 Figures are held as documented constants from authoritative public sources and
 refreshed yearly:
   * City + overlapping per-authority rates: City of Burton audited financial
-    statements (ACFR), Statistical Section -- "Direct and Overlapping Property
+    statements (ACFR), Statistical Section: "Direct and Overlapping Property
     Tax Rates, Last Ten Fiscal Years" (source: Genesee County Apportionment).
   * Total rate by school district: Michigan Dept. of Treasury, "2025 Total
     Property Tax Rates in Michigan" (L-4029 totals), City of Burton block.
@@ -19,7 +19,7 @@ Mills = dollars per $1,000 of TAXABLE value (taxable value is usually about half
 of a home's market value). The per-authority breakdown shown is for a typical
 HOMESTEAD (owner-occupied) home; non-homestead pays about 18 mills more, almost
 all to schools. The exact school portion varies by which of Burton's 7 school
-districts a home is in -- the "Schools & State Education" slice is the remainder
+districts a home is in, the "Schools & State Education" slice is the remainder
 for a representative district so the breakdown sums to a real total bill.
 
 Re-runnable (committed output; the site reads the JSON):
@@ -115,16 +115,16 @@ def main() -> int:
         "heading": "What this means for you",
         "body": [
             f"When you pay your property tax bill, most of it does not go to the City of Burton. "
-            f"The City levies {CITY_TOTAL:.2f} mills -- about {city_share}% of a typical owner-occupied "
+            f"The City levies {CITY_TOTAL:.2f} mills, about {city_share}% of a typical owner-occupied "
             "(homestead) bill. The single largest piece is Genesee County; the rest funds your school "
             "district, the State Education Tax, the Genesee ISD, Mott Community College, public transit, "
             "and the airport.",
             f"What you actually pay depends on your home's taxable value and which of Burton's 7 school "
             f"districts you live in. On a home with ${EXAMPLE_TAXABLE:,} of taxable value (about a "
-            f"$100,000 market value), the City's share is roughly ${city_dollars:,} a year; your full bill "
-            f"-- county and schools included -- runs about ${lo_total:,}-${hi_total:,} depending on district.",
-            "The City's own rate has held at 13.44 mills since 2022 and is down from 14.20 a decade ago "
-            "-- Burton has not raised its operating rate.",
+            f"$100,000 market value), the City's share is roughly ${city_dollars:,} a year; your full bill, "
+            f"county and schools included, runs about ${lo_total:,}-${hi_total:,} depending on district.",
+            "The City's own rate has held at 13.44 mills since 2022 and is down from 14.20 a decade ago. "
+            "Burton has not raised its operating rate.",
         ],
     }
 
@@ -135,7 +135,7 @@ def main() -> int:
         "stats": stats,
         "charts": charts,
         "source": (
-            "City of Burton audited financial statements (ACFR), Statistical Section -- Direct and "
+            "City of Burton audited financial statements (ACFR), Statistical Section: Direct and "
             "Overlapping Property Tax Rates (Genesee County Apportionment Report); and Michigan "
             "Department of Treasury, 2025 Total Property Tax Rates in Michigan."
         ),
@@ -145,7 +145,7 @@ def main() -> int:
              "href": "https://www.geneseecountymi.gov/departments/equalization/l-4029_information.php"},
         ],
         "notes": [
-            "Rates are in mills -- dollars per $1,000 of TAXABLE value, which is usually about half of a "
+            "Rates are in mills: dollars per $1,000 of TAXABLE value, which is usually about half of a "
             "home's market value. The breakdown is for a typical HOMESTEAD (owner-occupied) home; "
             "non-homestead/rental property pays about 18 mills more, almost all to schools.",
             "The City of Burton only sets and keeps the City portion (General, Police, Fire). Every other "

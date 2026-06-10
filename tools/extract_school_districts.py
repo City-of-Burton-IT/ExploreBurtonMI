@@ -2,7 +2,7 @@
 # City of Burton, as a map overlay layer.
 #
 # Source: US Census cartographic boundary file (1:500,000), Michigan (FIPS 26),
-# Unified School Districts -- federal public-domain data. Downloaded, read with pyshp
+# Unified School Districts, federal public-domain data. Downloaded, read with pyshp
 # (pure-Python; no GDAL/shapely, matching the pipeline), filtered to the districts whose
 # polygons cover any point inside Burton's boundary, then written as GeoJSON. The
 # committed output is what the site reads.
@@ -11,7 +11,7 @@
 #     python tools/extract_school_districts.py [--year 2023]
 #
 # Which districts "serve Burton" is derived from public/boundary.geojson each run, so it
-# stays correct if the boundary changes -- not hard-coded.
+# stays correct if the boundary changes, not hard-coded.
 from __future__ import annotations
 
 import argparse
@@ -84,7 +84,7 @@ def burton_interior_points(n: int = 60) -> list[tuple[float, float]]:
             if any(_pip(x, y, poly[0]) for poly in rings):
                 pts.append((x, y))
     if not pts:
-        raise SystemExit("No interior points found -- check public/boundary.geojson")
+        raise SystemExit("No interior points found, check public/boundary.geojson")
     return pts
 
 

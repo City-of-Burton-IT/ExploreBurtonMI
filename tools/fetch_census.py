@@ -14,7 +14,7 @@ Bureau Data API but is not endorsed or certified by the Census Bureau" be
 displayed prominently; it is emitted into the panel's `notes` and rendered in the
 app footer.
 
-Stdlib only (urllib) -- no dependencies, matching the other tools/ scripts. The
+Stdlib only (urllib): no dependencies, matching the other tools/ scripts. The
 output is committed; the public site reads the JSON, never the Census API.
 """
 from __future__ import annotations
@@ -126,7 +126,7 @@ DECENNIAL = [
 #   2000 sf1 H4:  H004001 total occupied, H004002 owner occupied
 #   2010 sf1 H4:  H004001 total, owner = H004002 (w/ mortgage) + H004003 (free & clear)
 #   2020 dhc H10: H10_001N total, H10_002N owner occupied
-# (dataset, total_var, [owner_vars]) -- owner counts are summed.
+# (dataset, total_var, [owner_vars]), owner counts are summed.
 TENURE_SOURCES = [
     ("2000", "2000/dec/sf1", "H004001", ["H004002"]),
     ("2010", "2010/dec/sf1", "H004001", ["H004002", "H004003"]),

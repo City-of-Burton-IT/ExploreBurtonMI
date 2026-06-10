@@ -7,7 +7,7 @@ trends). Fiscal Health re-frames the same audited figures the way a resident
 actually feels them:
 
   * PER-RESIDENT obligations (long-term debt and unfunded pension divided by
-    population) -- a number a household can relate to, which Finances never shows.
+    population): a number a household can relate to, which Finances never shows.
   * A sustainability RATIO (debt as a share of the city's taxable value).
   * Burton's STATEWIDE RANK across fiscal-health measures (cash on hand, general-
     fund reserves, net financial position), drawn as percentiles so "healthier
@@ -55,7 +55,7 @@ DEBT_BY_PURPOSE = [
 ]
 WATER_SEWER_DEBT_PCT = 91
 
-# Retirement promises already earned -- money set aside vs. owed, FY2025 AUDITED
+# Retirement promises already earned, money set aside vs. owed, FY2025 AUDITED
 # (Form 5572 / State PA 202 summary). Fiscal Health is the single home for these
 # (not repeated on City Finances). Using the audited FY2025 valuation keeps them
 # consistent with the unfunded-pension figure ($21.5M) shown above: pension
@@ -193,7 +193,7 @@ def main() -> int:
             f"about {cash_pct}% of cities on cash on hand and {reserve_pct}% on general-fund "
             f"reserves, but below the middle ({netpos_pct}%) on overall net financial position. "
             "In plain terms, the city keeps a reasonable cushion for day-to-day bills, while "
-            "long-term promises -- pensions and retiree health care -- are the main pressure on "
+            "long-term promises like pensions and retiree health care are the main pressure on "
             "the budget."
         )
 
@@ -203,7 +203,7 @@ def main() -> int:
             f"The City of Burton carries about ${debt_per:,} per resident in long-term debt and "
             f"${pension_per:,} per resident toward pensions already earned by current and retired "
             "employees. These are not personal bills: the city repays them over many years through "
-            "utility rates, dedicated road and public-safety millages, and the regular budget -- "
+            "utility rates, dedicated road and public-safety millages, and the regular budget, "
             "not a charge sent to your household. In fact, about "
             f"{WATER_SEWER_DEBT_PCT}% of the city's debt is for the water and sewer system, repaid by "
             "usage bills rather than taxes; the only general-government debt is the fire hall and "
@@ -215,14 +215,14 @@ def main() -> int:
     summary["body"].append(
         "Retirement promises are funded over decades, not all at once. Burton's pension is about "
         f"{PENSION_FUNDED} funded ({PENSION_ASSETS_M:.0f} million set aside against {PENSION_LIAB_M:.0f} "
-        f"million owed) and retiree health care (OPEB) about {OPEB_FUNDED} funded -- both above the "
+        f"million owed) and retiree health care (OPEB) about {OPEB_FUNDED} funded, both above the "
         "level the state flags for concern, with the rest set aside over time. (See City Finances for "
         "the full budget and multi-year trends.)"
     )
 
     panel = {
         "title": "City Fiscal Health",
-        "subtitle": "How sustainable Burton's finances are -- per resident, and ranked against Michigan cities",
+        "subtitle": "How sustainable Burton's finances are: per resident, and ranked against Michigan cities",
         "summary": summary,
         "stats": stats,
         "charts": charts,

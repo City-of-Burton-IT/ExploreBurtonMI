@@ -99,7 +99,7 @@ def build_compare(burton: list, genesee: list, michigan: list) -> dict:
     bp, gp, mp = _cond_pct(burton), _cond_pct(genesee), _cond_pct(michigan)
     return {
         "type": "compare",
-        "title": "How Burton compares -- bridge condition",
+        "title": "How Burton compares: bridge condition",
         "rows": [
             {"label": f"{k} condition", "unit": "%", "values": [
                 {"name": "Burton", "value": bp.get(k, 0)},
@@ -119,7 +119,7 @@ def _carries_crosses(r: dict) -> tuple[str, str]:
 
 def build_bridges_table(burton: list) -> dict:
     """A per-bridge table (busiest first): name, condition (+color dot), year,
-    daily traffic, owner -- the 'what are the bridges' detail for the dashboard."""
+    daily traffic, owner, the 'what are the bridges' detail for the dashboard."""
     rows = []
     for r in sorted(burton, key=lambda r: _int(r.get("ADT_029")), reverse=True):
         cond = _condition(r) or "Unrated"
@@ -201,7 +201,7 @@ def main() -> None:
     if not burton:
         sys.exit("No Burton bridges found inside the boundary")
 
-    # County + statewide pools for the comparison chart -- same file, same FHWA rule.
+    # County + statewide pools for the comparison chart: same file, same FHWA rule.
     genesee = [r for r in rows if (r.get("COUNTY_CODE_003") or "").strip() == GENESEE]
     michigan = rows
 
@@ -252,7 +252,7 @@ def main() -> None:
     charts.insert(1, build_compare(burton, genesee, michigan))
     panel = {
         "title": "Bridges & Infrastructure",
-        "subtitle": f"Burton's road bridges -- FHWA National Bridge Inventory ({args.year})",
+        "subtitle": f"Burton's road bridges: FHWA National Bridge Inventory ({args.year})",
         "stats": stats,
         "charts": charts,
         "tables": [build_bridges_table(burton)],
@@ -262,16 +262,16 @@ def main() -> None:
         "notes": [
             "Condition is the federal Good/Fair/Poor rating (the lowest of a "
             "bridge's deck, superstructure, substructure, and culvert ratings). "
-            "\"Fair\" is serviceable; \"Poor\" means significant repair is needed -- "
+            "\"Fair\" is serviceable; \"Poor\" means significant repair is needed, "
             "not that a bridge is unsafe or closed.",
-            f"Covers all {total} bridges within Burton regardless of owner -- the city "
+            f"Covers all {total} bridges within Burton regardless of owner: the city "
             f"maintains {owner.get('City', 0)}, the rest are state or county "
             f"(e.g. the I-69 and I-475 overpasses). Together they carry about "
             f"{total_len_ft:,} ft of deck.",
             f"The comparison is by bridge count (not deck area) using the same FHWA file: "
             f"Genesee County ({len(genesee)} bridges) and Michigan statewide are tallied by "
             f"the identical Good/Fair/Poor rule. With only {total} bridges, each Burton bridge "
-            f"is about {round(100/total)}% -- the comparison shows the broad pattern, not a precise rank.",
+            f"is about {round(100/total)}%: the comparison shows the broad pattern, not a precise rank.",
             "Source: FHWA NBI; not endorsed or certified by FHWA.",
         ],
     }

@@ -1,7 +1,7 @@
 # Build public/info-schools.json: a Schools dashboard for the public school
 # districts that serve the City of Burton.
 #
-# IMPORTANT framing -- this panel is deliberately PER-DISTRICT, never summed.
+# IMPORTANT framing: this panel is deliberately PER-DISTRICT, never summed.
 # Four of the seven districts (Carman-Ainsworth, Davison, Grand Blanc, Kearsley)
 # only clip Burton; most of their students live and attend school outside the
 # city. CCD reports whole-district enrollment with no way to apportion the Burton
@@ -49,7 +49,7 @@ DISTRICT_URLS = {
 
 
 def _get(url: str, attempts: int = 4) -> dict:
-    """GET JSON with retry/backoff -- the Urban API 522s/times out under load."""
+    """GET JSON with retry/backoff, the Urban API 522s/times out under load."""
     last = None
     for i in range(attempts):
         try:
@@ -131,7 +131,7 @@ def build_panel(districts: list[dict], year: int) -> dict:
     series.sort(key=lambda s: s["value"], reverse=True)
 
     notes = [
-        "Several of these districts extend well beyond Burton's city limits -- "
+        "Several of these districts extend well beyond Burton's city limits: "
         "enrollment shown is each district's total, not the number of Burton "
         "residents it serves. Use the Map's \"School districts\" layer to see which "
         "district covers an address.",

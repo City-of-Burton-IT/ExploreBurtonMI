@@ -4,14 +4,14 @@ Two clearly-separated zones (the city's own ADOPTED BUDGET vs the State's AUDITE
 ACTUALS) so a resident never conflates a plan with a result, or a General-Fund
 figure with an all-funds figure:
 
-  * Adopted budget (plan): the city's current adopted-budget detail -- total by
+  * Adopted budget (plan): the city's current adopted-budget detail, total by
     fund and General-Fund spending mix. Held as constants below; update once a
     year when a new budget is adopted (the scanned budget PDFs have no usable
     text layer, so this can't be auto-extracted).
   * Financial history (audited actuals): pulled live from the State of Michigan
     "Community Financials" API (the same data behind
     micommunityfinancials.michigan.gov), which publishes each city's audited
-    F-65 figures as a clean multi-year series -- 2010 to the latest audited year.
+    F-65 figures as a clean multi-year series, 2010 to the latest audited year.
     This is the authoritative, census-like source for trends + fiscal health.
 
 Re-runnable (committed output; the site reads the JSON, never the API):
@@ -31,7 +31,7 @@ ENTITY_ID = "2612060"  # Burton city (Census GEOID; confirmed against the API)
 API = "https://micommunityfinancials.michigan.gov/api/component"
 OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-finances.json"))
 
-# --- City ADOPTED BUDGET (plan) -- update yearly from the adopted budget --------
+# --- City ADOPTED BUDGET (plan): update yearly from the adopted budget --------
 BUDGET_YEAR = "FY 2026-2027"
 # Note: city millage lives on the Property Taxes dashboard, and pension/OPEB
 # funded ratios on Fiscal Health, so no figure is shown on two dashboards.
@@ -115,18 +115,18 @@ BUDGET_EXPLAINER = {
     "intro": "A quick, plain-language guide to the terms behind these numbers.",
     "items": [
         {"term": "What is a \"fund\"?",
-         "body": "The city keeps its money in separate \"funds\" -- like labeled envelopes -- so each "
+         "body": "The city keeps its money in separate \"funds\", like labeled envelopes, so each "
                  "dollar is spent only on what it's meant for. Money raised for roads, police, or "
                  "seniors is tracked separately to prove it was used as promised."},
         {"term": "The General Fund",
-         "body": "The General Fund is the city's main, most-flexible account -- the money not tied to a "
+         "body": "The General Fund is the city's main, most-flexible account: the money not tied to a "
                  "specific purpose, used for general services. It's usually the most closely watched fund."},
         {"term": "Types of funds",
          "body": "Burton has governmental funds (General, streets, police, fire, parks and more) and "
-                 "enterprise funds that run like a business and pay their own way -- water and sewer, "
+                 "enterprise funds that run like a business and pay their own way: water and sewer, "
                  "funded by usage bills rather than taxes."},
         {"term": "What is \"fund balance\"?",
-         "body": "Fund balance is the city's savings in a fund -- what it owns minus what it owes. It's "
+         "body": "Fund balance is the city's savings in a fund, what it owns minus what it owes. It's "
                  "the cushion for emergencies, big purchases, and steady cash flow, and much of it is "
                  "restricted by law to a specific use."},
         {"term": "How much savings is healthy?",
@@ -134,11 +134,11 @@ BUDGET_EXPLAINER = {
                  "spending in reserve. The GFOA suggests at least about 17%; Michigan's fiscal-stress "
                  "test uses 13% as a floor."},
         {"term": "What \"balanced budget\" really means",
-         "body": "It means the city plans to end the year with a positive fund balance -- not that "
+         "body": "It means the city plans to end the year with a positive fund balance, not that "
                  "spending must exactly equal revenue. In some years it's appropriate to spend down "
                  "savings for a planned project."},
         {"term": "Appropriations (the spending limit)",
-         "body": "When the budget is adopted, the city sets \"appropriations\" -- the legal maximum each "
+         "body": "When the budget is adopted, the city sets \"appropriations\", the legal maximum each "
                  "department may spend. It's a ceiling, not a forecast, and by state law the city can't "
                  "spend money it hasn't appropriated."},
     ],
@@ -234,7 +234,7 @@ def main() -> int:
         "body": [
             f"Property taxes cover only about {PROPERTY_TAX_SHARE}% of the city's day-to-day "
             f"(governmental) budget. The rest comes from state road funding (the Act 51 gas and "
-            "weight tax), state-shared revenue, special assessments, fees, and grants -- so a big "
+            "weight tax), state-shared revenue, special assessments, fees, and grants. A big "
             "share of what runs the city is paid by the state and by users of specific services, "
             "not by local property taxes.",
             "Water and sewer service is separate: it is an enterprise paid for by usage bills, not "
@@ -265,7 +265,7 @@ def main() -> int:
         "notes": [
             "Two views: the FY2026-27 figures and fund/spending charts are the city's ADOPTED BUDGET (a plan, "
             "all funds unless noted General Fund). The dollar trends are AUDITED ACTUALS reported to the State "
-            "of Michigan, which run about a year behind the adopted budget -- the two are not the same measure.",
+            "of Michigan, which run about a year behind the adopted budget; the two are not the same measure.",
             "General Fund figures cover only the General Fund, not the city's total all-funds budget.",
             "Audited trends and fiscal-health figures come from the State of Michigan Community Financials "
             "program (audited F-65 annual financial reports).",

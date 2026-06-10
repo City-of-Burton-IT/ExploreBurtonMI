@@ -76,7 +76,7 @@
     }
   ],
   "notes": [
-    "Several of these districts extend well beyond Burton's city limits -- enrollment shown is each district's total, not the number of Burton residents it serves. Use the Map's \"School districts\" layer to see which district covers an address.",
+    "Several of these districts extend well beyond Burton's city limits: enrollment shown is each district's total, not the number of Burton residents it serves. Use the Map's \"School districts\" layer to see which district covers an address.",
     "Source: Urban Institute Education Data API, which republishes the U.S. Department of Education's National Center for Education Statistics (NCES) Common Core of Data."
   ]
 }

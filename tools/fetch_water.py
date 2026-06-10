@@ -1,12 +1,12 @@
 # Build public/info-water.json for the Drinking Water dashboard.
 #
 # Source: US EPA Safe Drinking Water Information System (SDWIS) via the public
-# Envirofacts REST service (https://data.epa.gov/efservice/) -- keyless, public
+# Envirofacts REST service (https://data.epa.gov/efservice/): keyless, public
 # domain. Burton's community water system is PWSID MI0001010 ("BURTON, CITY OF").
 #
 # This is a *compliance* snapshot, framed honestly: it distinguishes health-based
 # violations from monitoring/reporting (paperwork) violations, and notes whether
-# any remain open. No PII -- it's public infrastructure-compliance data.
+# any remain open. No PII, it's public infrastructure-compliance data.
 #
 # Re-runnable (committed output; the site reads the JSON, never EPA):
 #   python tools/fetch_water.py
@@ -118,7 +118,7 @@ def main() -> None:
          "hint": "all resolved" if open_count == 0 else f"{open_count} open"},
     ]
 
-    # Lead & Copper Rule: the 90th-percentile lead result -- a headline residents
+    # Lead & Copper Rule: the 90th-percentile lead result, a headline residents
     # (especially Flint-adjacent) care about. Shown prominently after the source.
     lead = fetch_lead()
     if lead:
@@ -159,13 +159,13 @@ def main() -> None:
         rel = "well below" if lead["peak"] < LEAD_AL else "against"
         notes.insert(0,
             f"Under the federal Lead & Copper Rule, Burton's 90th-percentile lead result "
-            f"has been {level} -- {rel} the EPA action level of {LEAD_AL:g} {lead['unit']} -- "
+            f"has been {level}, {rel} the EPA action level of {LEAD_AL:g} {lead['unit']}, "
             f"every monitoring period on record ({lead['first_year']}-{lead['last_year']}). "
             f"Copper is monitored but not separately reported for Burton in SDWIS.")
 
     panel = {
         "title": "Drinking Water",
-        "subtitle": "Burton's public water system -- EPA compliance snapshot",
+        "subtitle": "Burton's public water system: EPA compliance snapshot",
         "stats": stats,
         "charts": charts,
         "source": f"US EPA Safe Drinking Water Information System (SDWIS), "

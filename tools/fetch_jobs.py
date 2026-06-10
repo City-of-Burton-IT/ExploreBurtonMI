@@ -1,11 +1,11 @@
 """Build public/info-jobs.json for the Jobs & Employers dashboard.
 
-County-level (Genesee County, 26049) -- the federal business/labor series are not
+County-level (Genesee County, 26049): the federal business/labor series are not
 published at city level, so everything here is labelled "Genesee County". Burton
 is part of that county.
 
 Sources (public domain):
-  * U.S. Census County Business Patterns (CBP), 2022 -- establishments, paid
+  * U.S. Census County Business Patterns (CBP), 2022: establishments, paid
     employment, and annual payroll by industry (NAICS sector). Needs a free Census
     API key (env CENSUS_API_KEY or --key), same as fetch_census.py.
   * U.S. Bureau of Labor Statistics, Local Area Unemployment Statistics (LAUS) --
@@ -28,7 +28,7 @@ import urllib.request
 CBP_YEAR = 2022
 STATE_FIPS = "26"
 COUNTY_FIPS = "049"
-LAUS_SERIES = "LAUCN260490000000003"  # Genesee County, MI -- unemployment rate
+LAUS_SERIES = "LAUCN260490000000003"  # Genesee County, MI: unemployment rate
 OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-jobs.json"))
 
 # Short display labels for the NAICS sector codes CBP returns.
@@ -98,7 +98,7 @@ def fetch_unemployment() -> tuple[dict | None, list]:
         ({"x": d["year"], "y": float(d["value"])} for d in data if d["period"] == "M13"),
         key=lambda p: p["x"],
     )
-    # Latest actual month (skip M13) -- the data is returned newest-first.
+    # Latest actual month (skip M13), the data is returned newest-first.
     latest = None
     for d in data:
         if d["period"] != "M13":
@@ -163,7 +163,7 @@ def main() -> int:
 
     panel = {
         "title": "Jobs & Employers",
-        "subtitle": f"Genesee County employment -- Census County Business Patterns {CBP_YEAR} + BLS",
+        "subtitle": f"Genesee County employment, Census County Business Patterns {CBP_YEAR} + BLS",
         "stats": stats,
         "charts": charts,
         "source": (
@@ -176,7 +176,7 @@ def main() -> int:
             {"text": "BLS Local Area Unemployment", "href": "https://www.bls.gov/lau/"},
         ],
         "notes": [
-            "These figures are for all of Genesee County, not Burton alone -- the federal "
+            "These figures are for all of Genesee County, not Burton alone, the federal "
             "business and labor series are not published at the city level. Burton is one of "
             "the county's communities.",
             "Establishment, employment, and payroll counts exclude most government, agricultural, "

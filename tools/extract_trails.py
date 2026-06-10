@@ -9,7 +9,7 @@
 # full-segment length, much of which can lie outside Burton).
 #
 # STATUS is reported honestly: "Existing" trails are built and usable; "Under
-# Construction", "Programmed" and "Proposed" are planned -- drawn dashed on the
+# Construction", "Programmed" and "Proposed" are planned: drawn dashed on the
 # map and counted separately, never shown as if already built.
 #
 # Re-runnable (committed output; the site reads the JSON/GeoJSON, never ArcGIS):
@@ -101,7 +101,7 @@ def _parts(geom: dict) -> list:
 def _clipped_miles(geom: dict, rings: list) -> float:
     """Length of the portion of a (multi)line that lies inside Burton, in miles.
     Each vertex-to-vertex sub-segment is densified and a sub-piece is counted when
-    its midpoint is inside the boundary -- a good approximation of true clipping
+    its midpoint is inside the boundary, a good approximation of true clipping
     without a polygon-line intersection library (segments here are densely
     vertexed). Avoids overcounting trails that run far past the city."""
     total = 0.0
@@ -283,11 +283,11 @@ def main() -> int:
              "href": "https://www.michigan.gov/dnr/things-to-do/iron-belle-trail"},
         ],
         "notes": [
-            "Mileage is clipped to the City of Burton -- a trail's full length (the county plan's "
+            "Mileage is clipped to the City of Burton: a trail's full length (the county plan's "
             "LENMILES) often extends well beyond the city, so only the in-Burton portion is counted.",
             "\"Existing\" trails are built and usable today (drawn solid on the map). \"Under "
             "construction\", \"programmed\" and \"proposed\" routes are planned, not yet open "
-            "(drawn dashed) -- shown so residents can see what's coming, not as if already built.",
+            "(drawn dashed): shown so residents can see what's coming, not as if already built.",
             "Source: Genesee County (GCMPC) Legacy Trail Map; a regional planning dataset, not a "
             "City of Burton inventory.",
         ],

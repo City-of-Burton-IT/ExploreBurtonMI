@@ -1,13 +1,13 @@
 # Build public/info-access.json: an Access & Equity dashboard for the City of
-# Burton -- cost-of-living burden (housing + transportation), income, car
+# Burton: cost-of-living burden (housing + transportation), income, car
 # dependence, and how many everyday destinations are in town.
 #
 # Sources (all Genesee County / GCMPC public ArcGIS, org 5ckbIY7K9TUKoseK):
 #   - Median_HH_Income_WFL1   (Census tract, Med_HH_Inc)
 #   - Cars_per_Household_WFL1  (block group: perc_inc_housing, perc_inc_trans,
-#                               autos_per_hh_ami, transit_trips_ami -- MODELED for an
+#                               autos_per_hh_ami, transit_trips_ami: MODELED for an
 #                               Area-Median-Income household, GCMPC LRTP)
-#   - LowMod_Income_WFL1       (block group: LOWMOD_PCT -- HUD low/moderate income %)
+#   - LowMod_Income_WFL1       (block group: LOWMOD_PCT, HUD low/moderate income %)
 #   - Access_To_Schools_WFL1 / Access_to_Groceries_WFL1 / Access_to_Medical_Facilities_WFL1
 #     (amenity POINT locations)
 #
@@ -116,7 +116,7 @@ def main() -> int:
     cars = _burton_areas(_query("Cars_per_Household_WFL1",
                                 "perc_inc_housing,perc_inc_trans,autos_per_hh_ami,transit_trips_ami,INTPTLON20,INTPTLAT20"), rings)
     if not (inc and cars):
-        raise SystemExit("No Burton census areas matched -- check the boundary / layers.")
+        raise SystemExit("No Burton census areas matched, check the boundary / layers.")
 
     inc_vals = [v for v in (_num(a.get("Med_HH_Inc")) for a in inc) if v]
     med_income = _median(inc_vals) or 0

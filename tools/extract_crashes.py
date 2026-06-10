@@ -4,7 +4,7 @@
 # Source: GCMPC "Crash_Locations_2014_2018" FeatureServer (RoadSoft / Michigan
 # State Police UD-10 crash data), filtered to CITY='Burton'. Public county data.
 #
-# DASHBOARD ONLY (no map overlay): the data is 2014-2018 -- 7-11 years old -- so it
+# DASHBOARD ONLY (no map overlay): the data is 2014-2018: 7-11 years old: so it
 # is presented as a historical trend/summary, NOT a live "where crashes happen now"
 # map (road changes since, e.g. new roundabouts, would make a current-looking
 # hotspot map misleading).
@@ -138,7 +138,7 @@ def main() -> int:
             {"text": "Roads & Pavement dashboard", "href": "#roads"},
         ],
         "notes": [
-            f"This is HISTORICAL data ({span}) -- a multi-year summary and trend, not a live or "
+            f"This is HISTORICAL data ({span}): a multi-year summary and trend, not a live or "
             "current crash map. Road and intersection changes since then (new signals, the "
             "Bristol/Belsay roundabout, resurfacing) mean today's pattern can differ.",
             "Counts are crash reports where the recorded city is Burton; most crashes are "

@@ -1,5 +1,5 @@
 # Turn the find_dupes report into explicit hide-overrides in
-# pipeline/data/overrides.json (auditable, refresh-safe -- NOT a live heuristic).
+# pipeline/data/overrides.json (auditable, refresh-safe, NOT a live heuristic).
 #
 # Decisions encoded here (reviewed against the find_dupes report):
 #   * Hide the non-survivor in every same-site name-variant cluster (Tier 1 + 2).
@@ -25,7 +25,7 @@ OVERRIDES = os.path.abspath(
     os.path.join(os.path.dirname(__file__), "..", "pipeline", "data", "overrides.json")
 )
 
-# Co-located POIs that are genuinely distinct -- never hide these even though they
+# Co-located POIs that are genuinely distinct, never hide these even though they
 # share an address with a survivor.
 PROTECT = {
     "overture:c4925a6a-3c14-4d1d-8879-9d7c379b6a1b",  # Burton Dog Park (at Our Risen Lord Lutheran Church)
@@ -105,7 +105,7 @@ def main() -> int:
             added += 1
         elif v.get("hidden") and not existing[k].get("hidden"):
             # Record carries a prior enrichment override (phone/website) but is a
-            # confirmed duplicate -- fold hidden:true in (its props become moot once
+            # confirmed duplicate: fold hidden:true in (its props become moot once
             # hidden, and the surviving record already carries the same/better data).
             existing[k] = {**existing[k], "hidden": True, "_why": v["_why"]}
             hidden_merged += 1
@@ -116,7 +116,7 @@ def main() -> int:
           f"{enrich_skipped} left as-is.")
 
     if not write:
-        print("\n(dry run -- pass --write to save)")
+        print("\n(dry run: pass --write to save)")
         return 0
 
     with open(OVERRIDES, "w", encoding="utf-8", newline="\n") as fh:

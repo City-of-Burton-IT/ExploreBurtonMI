@@ -1,6 +1,6 @@
 {
   "title": "Zoning",
-  "subtitle": "How land in Burton is zoned -- the city's zoning districts",
+  "subtitle": "How land in Burton is zoned, the city's zoning districts",
   "stats": [
     {
       "label": "Zoned acres",
@@ -246,7 +246,7 @@
     }
   ],
   "notes": [
-    "Turn on the \"Zoning\" map overlay to see these districts on the map -- each area is colored by category (residential, commercial, office, industrial). Tap an area for its district code.",
+    "Turn on the \"Zoning\" map overlay to see these districts on the map: each area is colored by category (residential, commercial, office, industrial). Tap an area for its district code.",
     "From the City of Burton 2017 zoning map. Zoning is the legal land-use designation, which is not the same as how a parcel is currently used. For the authoritative, current district of a specific property, contact the Burton zoning division.",
     "Source: GCMPC Zoning_Layer (City of Burton); a regional GIS dataset, not a live city zoning lookup."
   ]
