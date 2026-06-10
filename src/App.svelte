@@ -126,16 +126,20 @@
     {#if config}
       <span class="spacer"></span>
       <nav class="viewnav" aria-label="Sections">
-        <button class:active={ui.view === 'map'} onclick={() => setView('map')}>Map</button>
+        <!-- Desktop: single Map pill (the map + list already show side by side). -->
+        <button class="map-pill" class:active={ui.view === 'map'} onclick={() => setView('map')}>Map</button>
+        <!-- Mobile only: segmented Map/List toggle, always available, replaces the Map pill. -->
+        <div class="view-toggle" role="group" aria-label="Map or list">
+          <button
+            class:active={ui.view === 'map' && ui.mobileView === 'map'}
+            onclick={() => { setView('map'); setMobileView('map'); }}>Map</button>
+          <button
+            class:active={ui.view === 'map' && ui.mobileView === 'list'}
+            onclick={() => { setView('map'); setMobileView('list'); }}>List</button>
+        </div>
         <DashboardMenu />
         <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}><span class="rg-prefix">Resident </span>Guide</button>
       </nav>
-      {#if data && result && ui.view === 'map'}
-        <div class="view-toggle" role="group" aria-label="Switch between map and list">
-          <button class:active={ui.mobileView === 'map'} onclick={() => setMobileView('map')}>Map</button>
-          <button class:active={ui.mobileView === 'list'} onclick={() => setMobileView('list')}>List</button>
-        </div>
-      {/if}
       <a class="home-btn" href="https://www.burtonmi.gov">Home</a>
       <!-- Trigger lives at the end of the Guide; this keeps the dialog mounted so
            the map © button (and the Guide's About button) can open it. -->

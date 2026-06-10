@@ -335,7 +335,9 @@ body,
   box-shadow: var(--pub-focus-ring);
 }
 
-/* Map/List toggle — hidden on desktop, a segmented pill on phones/tablets */
+/* Map/List segmented toggle -- MOBILE ONLY. On desktop the map and list show
+   side by side, so the desktop toolbar keeps its single Map pill (.map-pill);
+   this segment replaces that pill on phones/tablets (see the media query below). */
 .view-toggle {
   display: none;
 }
@@ -348,6 +350,10 @@ body,
     flex-wrap: nowrap;
   }
   .topbar .tagline {
+    display: none;
+  }
+  /* On mobile, the segmented Map/List toggle replaces the single Map pill. */
+  .map-pill {
     display: none;
   }
   .view-toggle {
@@ -367,6 +373,9 @@ body,
     padding: 0.32rem 0.46rem;
     min-height: 36px;
     cursor: pointer;
+  }
+  .view-toggle button + button {
+    border-left: 1px solid var(--civic-blue);
   }
   .view-toggle button.active {
     background: var(--civic-blue);
