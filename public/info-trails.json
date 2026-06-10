@@ -1,0 +1,173 @@
+{
+  "title": "Trails & Pathways",
+  "subtitle": "Trails, shared-use paths and non-motorized routes serving Burton",
+  "stats": [
+    {
+      "label": "Existing trail miles in Burton",
+      "value": "12.1",
+      "hint": "built & usable today"
+    },
+    {
+      "label": "Named trails serving Burton",
+      "value": "6",
+      "hint": "4 with an existing segment"
+    },
+    {
+      "label": "Longest existing trail",
+      "value": "ForMar Trails",
+      "hint": "9.7 mi in Burton"
+    },
+    {
+      "label": "Planned / programmed miles",
+      "value": "4",
+      "hint": "proposed, programmed or under construction"
+    }
+  ],
+  "charts": [
+    {
+      "type": "donut",
+      "title": "Trail miles by status (Burton)",
+      "series": [
+        {
+          "label": "Existing",
+          "value": 12.1,
+          "color": "#2e7d32"
+        },
+        {
+          "label": "Under Construction",
+          "value": 1.0,
+          "color": "#e08a00"
+        },
+        {
+          "label": "Programmed",
+          "value": 3.1,
+          "color": "#1565c0"
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Trail miles by type",
+      "unit": " mi",
+      "series": [
+        {
+          "label": "Multi-Use Facility",
+          "value": 11.8
+        },
+        {
+          "label": "Sidewalk",
+          "value": 4.4
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Trail miles by surface",
+      "unit": " mi",
+      "series": [
+        {
+          "label": "Unknown",
+          "value": 9.7
+        },
+        {
+          "label": "Concrete",
+          "value": 4.4
+        },
+        {
+          "label": "Asphalt",
+          "value": 2.1
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "title": "Trails serving Burton",
+      "columns": [
+        "Trail",
+        "Status",
+        "Type",
+        "Surface",
+        "Miles in Burton"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "ForMar Trails",
+            "Existing",
+            "Multi-Use Facility",
+            "n/a",
+            "9.67"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "Davison Road Trail",
+            "Existing",
+            "Sidewalk",
+            "Concrete",
+            "1.98"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "Burton Iron Belle Trail",
+            "Programmed",
+            "Multi-Use Facility",
+            "Asphalt",
+            "1.85"
+          ],
+          "color": "#1565c0"
+        },
+        {
+          "cells": [
+            "Genesee Road Sidewalk",
+            "Existing",
+            "Sidewalk",
+            "Concrete",
+            "1.46"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "Court Street Trail",
+            "Existing",
+            "Sidewalk",
+            "Concrete",
+            "1.00"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "Grand Blanc Iron Belle Phase A",
+            "Programmed",
+            "Multi-Use Facility",
+            "Asphalt",
+            "0.23"
+          ],
+          "color": "#1565c0"
+        }
+      ]
+    }
+  ],
+  "source": "Genesee County Metropolitan Planning Commission (GCMPC) Legacy Trail Map / non-motorized plan, trail segments serving the City of Burton.",
+  "links": [
+    {
+      "text": "Genesee County trails dashboard",
+      "href": "https://gccountymi.maps.arcgis.com/apps/dashboards/882502c5000146ec8cafa9158a8e63c1"
+    },
+    {
+      "text": "Iron Belle Trail (State of Michigan)",
+      "href": "https://www.michigan.gov/dnr/things-to-do/iron-belle-trail"
+    }
+  ],
+  "notes": [
+    "Mileage is clipped to the City of Burton -- a trail's full length (the county plan's LENMILES) often extends well beyond the city, so only the in-Burton portion is counted.",
+    "\"Existing\" trails are built and usable today (drawn solid on the map). \"Under construction\", \"programmed\" and \"proposed\" routes are planned, not yet open (drawn dashed) -- shown so residents can see what's coming, not as if already built.",
+    "Source: Genesee County (GCMPC) Legacy Trail Map; a regional planning dataset, not a City of Burton inventory."
+  ]
+}

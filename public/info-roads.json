@@ -1,0 +1,475 @@
+{
+  "title": "Roads & Pavement",
+  "subtitle": "Burton's road pavement condition -- Genesee County PASER ratings",
+  "stats": [
+    {
+      "label": "Rated road-miles",
+      "value": "65.4",
+      "hint": "federal-aid network in Burton"
+    },
+    {
+      "label": "In good condition",
+      "value": "13%",
+      "hint": "PASER 8-10"
+    },
+    {
+      "label": "Needing major repair (poor)",
+      "value": "54%",
+      "hint": "PASER 1-4"
+    },
+    {
+      "label": "Busiest rated road",
+      "value": "35,043/day",
+      "hint": "S Center Rd"
+    },
+    {
+      "label": "Rated this cycle",
+      "value": "2024",
+      "hint": "PASER rating year"
+    }
+  ],
+  "charts": [
+    {
+      "type": "donut",
+      "title": "Pavement condition (PASER, by road-mile)",
+      "series": [
+        {
+          "label": "Good",
+          "value": 8.3,
+          "color": "#4ea735"
+        },
+        {
+          "label": "Fair",
+          "value": 22.0,
+          "color": "#e08a00"
+        },
+        {
+          "label": "Poor",
+          "value": 35.1,
+          "color": "#c0392b"
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "How Burton compares -- pavement condition",
+      "rows": [
+        {
+          "label": "Good condition",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 13
+            },
+            {
+              "name": "Genesee Co.",
+              "value": 10
+            }
+          ]
+        },
+        {
+          "label": "Fair condition",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 34
+            },
+            {
+              "name": "Genesee Co.",
+              "value": 41
+            }
+          ]
+        },
+        {
+          "label": "Poor condition",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 54
+            },
+            {
+              "name": "Genesee Co.",
+              "value": 49
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Road-miles by surface",
+      "unit": " mi",
+      "series": [
+        {
+          "label": "Asphalt",
+          "value": 33.1
+        },
+        {
+          "label": "Concrete",
+          "value": 20.5
+        },
+        {
+          "label": "Composite",
+          "value": 11.8
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "title": "Federal-aid roads in Burton",
+      "columns": [
+        "Road",
+        "Condition",
+        "Miles",
+        "Daily traffic"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "S Center Rd",
+            "Fair",
+            "3.62",
+            "35,043"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "E Bristol Rd",
+            "Poor",
+            "6.00",
+            "22,145"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Fenton Rd",
+            "Poor",
+            "0.36",
+            "16,524"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "N Saginaw St",
+            "Fair",
+            "1.60",
+            "15,428"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "E Atherton Rd",
+            "Poor",
+            "3.61",
+            "15,142"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "W Court St",
+            "Poor",
+            "3.14",
+            "14,642"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "S Belsay Rd",
+            "Fair",
+            "5.81",
+            "14,578"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "E Maple Ave",
+            "Fair",
+            "5.82",
+            "13,048"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "N Genesee Rd",
+            "Poor",
+            "5.82",
+            "11,568"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Davison Rd",
+            "Poor",
+            "3.00",
+            "11,214"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "S Grand Traverse St",
+            "Poor",
+            "1.61",
+            "9,436"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "W Hemphill Rd",
+            "Poor",
+            "0.62",
+            "8,526"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Belsay Rd",
+            "Poor",
+            "0.37",
+            "8,123"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Lapeer Rd",
+            "Poor",
+            "3.00",
+            "6,387"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "E I 69/Belsay RAMP",
+            "Poor",
+            "0.38",
+            "4,426"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Belsay/W I 69 RAMP",
+            "Poor",
+            "0.58",
+            "3,301"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Lippincott Blvd",
+            "Poor",
+            "2.00",
+            "3,185"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "W I 69/Belsay RAMP",
+            "Poor",
+            "0.39",
+            "2,381"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Covert Rd",
+            "Poor",
+            "0.80",
+            "2,268"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "S Vassar Rd",
+            "Poor",
+            "0.67",
+            "1,346"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Howe Rd",
+            "Poor",
+            "1.00",
+            "1,216"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "E Judd Rd",
+            "Poor",
+            "0.97",
+            "1,209"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Wakefield Rd",
+            "Fair",
+            "0.36",
+            "1,193"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "S Term St",
+            "Poor",
+            "0.66",
+            "1,125"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Iron St",
+            "Poor",
+            "0.22",
+            "923"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Kleinpell St",
+            "Poor",
+            "0.16",
+            "905"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "W I 69/Center RAMP",
+            "Fair",
+            "0.36",
+            "n/a"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "Robert T Longway Blvd",
+            "Poor",
+            "0.51",
+            "n/a"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "W I 69",
+            "Fair",
+            "3.33",
+            "n/a"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "Center/E I 69 RAMP",
+            "Fair",
+            "0.26",
+            "n/a"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "S I 475",
+            "Poor",
+            "1.59",
+            "n/a"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "Belsay/E I 69 RAMP",
+            "Poor",
+            "0.57",
+            "n/a"
+          ],
+          "color": "#c0392b"
+        },
+        {
+          "cells": [
+            "N I 475",
+            "Fair",
+            "1.59",
+            "n/a"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "Center/W I 69 RAMP",
+            "Fair",
+            "0.24",
+            "n/a"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "E I 69",
+            "Fair",
+            "3.10",
+            "n/a"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "N Dort Hwy",
+            "Poor",
+            "1.32",
+            "n/a"
+          ],
+          "color": "#c0392b"
+        }
+      ]
+    }
+  ],
+  "source": "Genesee County Metropolitan Planning Commission (GCMPC) PASER pavement ratings (RoadSoft, 2024), federal-aid eligible roads within the City of Burton.",
+  "links": [
+    {
+      "text": "Michigan TAMC dashboard",
+      "href": "https://www.mcgi.state.mi.us/mappingforhealth/"
+    },
+    {
+      "text": "GCMPC pavement conditions",
+      "href": "https://www.gcmpc.org/"
+    }
+  ],
+  "notes": [
+    "PASER is a 1-10 surface rating. Good = 8-10, Fair = 5-7, Poor = 1-4. \"Poor\" means the surface needs major repair or reconstruction -- not that a road is closed or impassable.",
+    "Covers federal-aid eligible roads only -- the network the state's asset-management council inspects on a cycle. It is NOT every residential street, so a resident may not find their own street here. These ratings are from 2024.",
+    "Burton's split is shown beside Genesee County's, tallied from the same dataset by the identical rule, so the picture reads as a regional reality (the county is 49% poor by road-mile). Not-rated miles are excluded from the percentages.",
+    "Source: Genesee County (GCMPC) PASER / RoadSoft; a regional dataset, not endorsed by the City of Burton."
+  ]
+}

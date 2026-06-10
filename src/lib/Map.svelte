@@ -279,7 +279,10 @@
                 // the areas read as filled, not just outlined).
                 const weight = (f?.properties?._weight as number) ?? 3;
                 const fillOpacity = (f?.properties?._fillOpacity as number) ?? 0.12;
-                return { color, weight, opacity: 0.9, fillColor: color, fillOpacity };
+                // Planned/proposed lines (e.g. trails not yet built) carry a dash
+                // pattern so they never read as existing; solid otherwise.
+                const dashArray = (f?.properties?._dashArray as string | null) ?? undefined;
+                return { color, weight, opacity: 0.9, fillColor: color, fillOpacity, dashArray };
               },
               // Point features (e.g. bridges) become colored circle markers. Leaflet
               // only calls pointToLayer for Point/MultiPoint geometry, so polygon/line

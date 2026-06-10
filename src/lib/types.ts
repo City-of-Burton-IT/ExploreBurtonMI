@@ -175,7 +175,9 @@ export type InfoView =
   | 'water'
   | 'housing'
   | 'broadband'
-  | 'bridges';
+  | 'bridges'
+  | 'roads'
+  | 'trails';
 export type AppView = 'map' | InfoView | 'guide';
 
 export interface InfoStat {

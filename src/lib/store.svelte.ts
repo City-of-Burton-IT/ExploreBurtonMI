@@ -46,6 +46,8 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     items: [
       { id: 'broadband', label: 'Broadband Access' },
       { id: 'bridges', label: 'Bridges & Infrastructure' },
+      { id: 'roads', label: 'Roads & Pavement' },
+      { id: 'trails', label: 'Trails & Pathways' },
     ],
   },
 ];
