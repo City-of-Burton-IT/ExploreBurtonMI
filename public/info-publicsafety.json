@@ -19,11 +19,6 @@
       "hint": "mostly detector/alarm malfunctions"
     },
     {
-      "label": "Hazardous-condition calls",
-      "value": "178",
-      "hint": "downed power lines, gas leaks, CO"
-    },
-    {
       "label": "11-year change",
       "value": "+48%",
       "hint": "513 (2014) -> 758 (2025)"

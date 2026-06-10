@@ -184,9 +184,10 @@ def build_panel(types: dict, yearly: dict) -> dict:
          "hint": f"incl. {types['building_fires']} building fires"},
         {"label": "False alarms", "value": f"{cats.get('False alarm / false call', 0):,}",
          "hint": "mostly detector/alarm malfunctions"},
-        {"label": "Hazardous-condition calls",
-         "value": f"{cats.get('Hazardous condition', 0):,}",
-         "hint": "downed power lines, gas leaks, CO"},
+        # Hazardous-condition count is NOT a stat here: the FD-category by-type
+        # chart (build_fire_trends.py) shows "Hazardous Conditions" authoritatively
+        # from the Chief's workbook, and the NFIRS series-4 count differs slightly,
+        # so a duplicate stat card would read as an inconsistency.
     ]
 
     # The current-year by-TYPE breakdown comes from the Fire Chief's workbooks
