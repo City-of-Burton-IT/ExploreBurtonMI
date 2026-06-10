@@ -25,3 +25,13 @@ Utilities Service.
 
 City offices are on S. Center Rd., north of Maple Rd. and south of Bristol Rd.
 Main line: (810) 743-1500 · Fax: (810) 743-5060 · [burtonmi.gov](https://www.burtonmi.gov)
+
+## A look back
+
+![Historic plat map of Burton Township (Township 7 North, Range 7 East)](/burton-historical-plat-map.jpg)
+
+Before it became a city in 1972, Burton was a township of farms and section roads. This plat
+map shows the township beside a much smaller City of Flint, and many of today's main roads
+still trace those same section lines.
+
+*Map: Library of Congress, Geography and Map Division (public domain).*
