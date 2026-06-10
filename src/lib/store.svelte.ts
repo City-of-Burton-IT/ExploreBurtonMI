@@ -32,6 +32,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     label: 'Money & Jobs',
     items: [
       { id: 'finances', label: 'Finances' },
+      { id: 'fiscalhealth', label: 'Fiscal Health' },
       { id: 'jobs', label: 'Jobs & Employers' },
     ],
   },

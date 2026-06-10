@@ -167,6 +167,7 @@ export interface PlaceCollection {
 
 export type InfoView =
   | 'finances'
+  | 'fiscalhealth'
   | 'demographics'
   | 'schools'
   | 'health'
@@ -228,6 +229,16 @@ export interface InfoLink {
   href: string;
 }
 
+/** A plain-language "what this means for you" callout that interprets a dashboard's
+ *  numbers for a resident -- what the data shows and how it affects them. Rendered as
+ *  a highlighted box near the top of the panel, above the stats. */
+export interface InfoSummary {
+  /** callout heading (default "What this means for you") */
+  heading?: string;
+  /** one or more short plain-language paragraphs */
+  body: string[];
+}
+
 /** One row of an InfoTable: one cell per column, plus an optional status color
  *  rendered as a leading decorative dot (e.g. a bridge's Good/Fair/Poor color). */
 export interface InfoTableRow {
@@ -248,6 +259,8 @@ export interface InfoPanel {
   subtitle?: string;
   /** when true, render a "not yet official" banner (finances until real figures land) */
   draft?: boolean;
+  /** plain-language interpretation shown above the stats (resident "what this means") */
+  summary?: InfoSummary;
   stats: InfoStat[];
   charts: InfoChart[];
   /** optional per-item tables rendered after the charts (e.g. a bridge list) */

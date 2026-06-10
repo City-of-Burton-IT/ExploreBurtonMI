@@ -1,0 +1,86 @@
+{
+  "title": "City Fiscal Health",
+  "subtitle": "How sustainable Burton's finances are -- per resident, and ranked against Michigan cities",
+  "summary": {
+    "heading": "What this means for you",
+    "body": [
+      "The City of Burton carries about $991 per resident in long-term debt and $728 per resident toward pensions already earned by current and retired employees. These are not personal bills: the city repays them over many years through utility rates, dedicated road and public-safety millages, and the regular budget -- not a charge sent to your household.",
+      "Compared with other Michigan cities, Burton sits near the middle: healthier than about 69% of cities on cash on hand and 52% on general-fund reserves, but below the middle (44%) on overall net financial position. In plain terms, the city keeps a reasonable cushion for day-to-day bills, while long-term promises -- pensions and retiree health care -- are the main pressure on the budget.",
+      "Burton's pension is about 68% funded and retiree health care (OPEB) about 77% funded -- so most of those long-term promises are already paid for, with the remainder set aside over time. (See the Finances dashboard for the full budget and multi-year trends.)"
+    ]
+  },
+  "stats": [
+    {
+      "label": "Long-term debt per resident",
+      "value": "$991",
+      "hint": "$29.3M / 29,529 residents (audited FY2025)"
+    },
+    {
+      "label": "Pension owed per resident",
+      "value": "$728",
+      "hint": "$21.5M unfunded / residents (audited FY2025)"
+    },
+    {
+      "label": "Debt vs. property value",
+      "value": "3.5%",
+      "hint": "long-term debt as a share of the city's taxable value"
+    },
+    {
+      "label": "Reserve rank in Michigan",
+      "value": "125 of 261",
+      "hint": "general-fund reserves; 1 = healthiest city"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "Where Burton ranks among Michigan cities (healthier than this share)",
+      "unit": "%",
+      "series": [
+        {
+          "label": "Cash on hand",
+          "value": 69
+        },
+        {
+          "label": "General Fund reserves",
+          "value": 52
+        },
+        {
+          "label": "Net financial position",
+          "value": 44
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Long-term obligations per resident",
+      "unit": "$",
+      "series": [
+        {
+          "label": "Debt",
+          "value": 991
+        },
+        {
+          "label": "Unfunded pension",
+          "value": 728
+        }
+      ]
+    }
+  ],
+  "source": "State of Michigan Community Financials program (audited F-65 annual financial reports). Per-resident figures use the U.S. Census 2020 population (29,529).",
+  "links": [
+    {
+      "text": "Finances dashboard (budget + trends)",
+      "href": "#finances"
+    },
+    {
+      "text": "Michigan Community Financials dashboard",
+      "href": "https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/2612060"
+    }
+  ],
+  "notes": [
+    "Statewide ranks: rank 1 is the healthiest city for that measure; the bar chart shows the share of Michigan cities Burton is healthier than. \"Cash on hand\" and reserves measure short-term financial cushion; net financial position is a longer-term measure of assets minus what is owed.",
+    "These figures are AUDITED actuals reported to the State of Michigan and run about a year behind the city's current adopted budget. Per-resident amounts are the city's total obligations divided by population, not amounts billed to individual households.",
+    "Revenue-by-source and a debt-by-purpose / maturity breakdown are not in the state's public dataset; those would come from the city's adopted-budget revenue schedule and annual financial report (ACFR)."
+  ]
+}
