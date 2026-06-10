@@ -139,9 +139,8 @@
             onclick={() => { setView('map'); setMobileView('list'); }}>List</button>
         </div>
         <DashboardMenu />
-        <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}><span class="rg-prefix">Resident </span>Guide</button>
+        <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}>Resident Guide</button>
       </nav>
-      <a class="home-btn" href="https://www.burtonmi.gov">Home</a>
       <!-- Trigger lives at the end of the Guide; this keeps the dialog mounted so
            the map © button (and the Guide's About button) can open it. -->
       <About {config} showButton={false} />

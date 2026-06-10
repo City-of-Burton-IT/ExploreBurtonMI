@@ -153,6 +153,9 @@
     .trigger {
       font-size: 0.78rem;
       padding: 0.32rem 0.46rem;
+      /* Match the section pills + Map/List toggle (38px outer) so the header
+         row is uniform on phones. */
+      min-height: 38px;
     }
     .lbl-active {
       display: none;

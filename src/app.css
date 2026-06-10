@@ -136,35 +136,6 @@ body,
   flex: 1 1 auto;
 }
 
-.home-btn {
-  border: 1px solid var(--civic-blue);
-  background: #fff;
-  color: var(--civic-blue);
-  border-radius: var(--pub-radius);
-  padding: 0.4rem 0.95rem;
-  font-family: var(--font-body);
-  font-weight: 700;
-  font-size: 0.9rem;
-  text-decoration: none;
-  white-space: nowrap;
-  transition: background 0.15s, color 0.15s;
-}
-.home-btn:hover {
-  background: var(--civic-blue);
-  color: #fff;
-}
-.home-btn:focus-visible {
-  outline: none;
-  box-shadow: var(--pub-focus-ring);
-}
-/* On phones the header is tight; the city seal already links to burtonmi.gov, so
-   the redundant Home button is hidden to free up the bar. */
-@media (max-width: 860px) {
-  .home-btn {
-    display: none;
-  }
-}
-
 /* Primary section nav: Map | Dashboards (dropdown) | Resident Guide.
    Individual rounded pills (not a segmented frame), so the Dashboards dropdown can
    overflow the bar without being clipped. Direct-child selectors so the dropdown
@@ -208,10 +179,20 @@ body,
     flex-wrap: nowrap;
     gap: 0.3rem;
   }
-  .viewnav > button {
+  /* :not(.map-pill) -- the desktop Map pill is display:none on mobile (the
+     Map/List toggle replaces it); without this exclusion the inline-flex below
+     would out-specify that rule and resurrect the Map pill on phones. */
+  .viewnav > button:not(.map-pill) {
     flex: 0 0 auto;
     font-size: 0.78rem;
-    padding: 0.32rem 0.46rem;
+    padding: 0.32rem 0.7rem;
+    /* Match the Map/List segmented toggle's OUTER height: its buttons are
+       min-height 36px inside a 1px-bordered wrapper (= 38px), so the pills use
+       38px to line up exactly across the header row. */
+    min-height: 38px;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
   }
 }
 
@@ -423,11 +404,6 @@ body,
   }
   .viewnav {
     gap: 0.25rem;
-  }
-  /* Shorten the "Resident Guide" pill to just "Guide" so the three section pills
-     fit on one line beside the seal + Map/List toggle on a phone. */
-  .viewnav .rg-prefix {
-    display: none;
   }
 }
 
