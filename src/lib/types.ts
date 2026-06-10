@@ -193,6 +193,12 @@ export interface InfoStat {
   value: string;
   /** optional small note under the value (e.g. a year or qualifier) */
   hint?: string;
+  /** optional area benchmarks (e.g. Genesee County / Michigan) shown small
+   *  beneath the value, so a number reads as "high or low for the area". */
+  benchmarks?: { name: string; value: string }[];
+  /** optional multi-decade series (e.g. decennial population) drawn as a tiny
+   *  sparkline under the value. */
+  spark?: { x: string; y: number }[];
 }
 
 export interface InfoSeriesItem {
@@ -212,6 +218,10 @@ export interface CompareRow {
   /** unit for this metric's values ("%", "$", "" for plain) */
   unit?: string;
   values: CompareValue[];
+  /** Optional "Burton vs all Genesee County cities" ranking for this metric,
+   *  every city sorted high-to-low (Burton included). When present on any row,
+   *  CompareBars offers a region/cities toggle. */
+  cities?: CompareValue[];
 }
 
 export interface InfoChart {

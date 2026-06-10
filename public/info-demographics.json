@@ -4,11 +4,39 @@
   "stats": [
     {
       "label": "Population",
-      "value": "29,529"
+      "value": "29,529",
+      "spark": [
+        {
+          "x": "2000",
+          "y": 30308
+        },
+        {
+          "x": "2010",
+          "y": 29999
+        },
+        {
+          "x": "2020",
+          "y": 29715
+        },
+        {
+          "x": "2023 (est.)",
+          "y": 29529
+        }
+      ]
     },
     {
       "label": "Median age",
-      "value": "42.5"
+      "value": "42.5",
+      "benchmarks": [
+        {
+          "name": "Genesee Co.",
+          "value": "40.6"
+        },
+        {
+          "name": "Michigan",
+          "value": "40.1"
+        }
+      ]
     },
     {
       "label": "Households",
@@ -16,24 +44,74 @@
     },
     {
       "label": "Median household income",
-      "value": "$57,767"
+      "value": "$57,767",
+      "benchmarks": [
+        {
+          "name": "Genesee Co.",
+          "value": "$60,673"
+        },
+        {
+          "name": "Michigan",
+          "value": "$71,149"
+        }
+      ]
     },
     {
       "label": "Median home value",
-      "value": "$131,200"
+      "value": "$131,200",
+      "benchmarks": [
+        {
+          "name": "Genesee Co.",
+          "value": "$172,900"
+        },
+        {
+          "name": "Michigan",
+          "value": "$217,600"
+        }
+      ]
     },
     {
       "label": "Owner-occupied homes",
-      "value": "76%"
+      "value": "76%",
+      "benchmarks": [
+        {
+          "name": "Genesee Co.",
+          "value": "71%"
+        },
+        {
+          "name": "Michigan",
+          "value": "73%"
+        }
+      ]
     },
     {
       "label": "Unemployment rate",
       "value": "8%",
-      "hint": "civilian labor force"
+      "hint": "civilian labor force",
+      "benchmarks": [
+        {
+          "name": "Genesee Co.",
+          "value": "8%"
+        },
+        {
+          "name": "Michigan",
+          "value": "6%"
+        }
+      ]
     },
     {
       "label": "Below poverty line",
-      "value": "17%"
+      "value": "17%",
+      "benchmarks": [
+        {
+          "name": "Genesee Co.",
+          "value": "16%"
+        },
+        {
+          "name": "Michigan",
+          "value": "13%"
+        }
+      ]
     },
     {
       "label": "Veterans",
@@ -256,6 +334,52 @@
               "name": "Michigan",
               "value": 71149
             }
+          ],
+          "cities": [
+            {
+              "name": "Fenton",
+              "value": 82917
+            },
+            {
+              "name": "Linden",
+              "value": 77434
+            },
+            {
+              "name": "Flushing",
+              "value": 77372
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 73862
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 67284
+            },
+            {
+              "name": "Burton",
+              "value": 57767
+            },
+            {
+              "name": "Clio",
+              "value": 50678
+            },
+            {
+              "name": "Davison",
+              "value": 50450
+            },
+            {
+              "name": "Montrose",
+              "value": 44625
+            },
+            {
+              "name": "Mount Morris",
+              "value": 42886
+            },
+            {
+              "name": "Flint",
+              "value": 36194
+            }
           ]
         },
         {
@@ -273,6 +397,52 @@
             {
               "name": "Michigan",
               "value": 217600
+            }
+          ],
+          "cities": [
+            {
+              "name": "Linden",
+              "value": 232300
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 228000
+            },
+            {
+              "name": "Fenton",
+              "value": 211000
+            },
+            {
+              "name": "Flushing",
+              "value": 189500
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 168900
+            },
+            {
+              "name": "Davison",
+              "value": 166100
+            },
+            {
+              "name": "Burton",
+              "value": 131200
+            },
+            {
+              "name": "Clio",
+              "value": 119100
+            },
+            {
+              "name": "Montrose",
+              "value": 109700
+            },
+            {
+              "name": "Mount Morris",
+              "value": 79500
+            },
+            {
+              "name": "Flint",
+              "value": 47600
             }
           ]
         },
@@ -292,6 +462,52 @@
               "name": "Michigan",
               "value": 73
             }
+          ],
+          "cities": [
+            {
+              "name": "Linden",
+              "value": 91
+            },
+            {
+              "name": "Burton",
+              "value": 76
+            },
+            {
+              "name": "Flushing",
+              "value": 72
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 70
+            },
+            {
+              "name": "Fenton",
+              "value": 65
+            },
+            {
+              "name": "Mount Morris",
+              "value": 59
+            },
+            {
+              "name": "Montrose",
+              "value": 58
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 56
+            },
+            {
+              "name": "Flint",
+              "value": 55
+            },
+            {
+              "name": "Clio",
+              "value": 50
+            },
+            {
+              "name": "Davison",
+              "value": 48
+            }
           ]
         },
         {
@@ -309,6 +525,52 @@
             {
               "name": "Michigan",
               "value": 13
+            }
+          ],
+          "cities": [
+            {
+              "name": "Flint",
+              "value": 34
+            },
+            {
+              "name": "Mount Morris",
+              "value": 28
+            },
+            {
+              "name": "Montrose",
+              "value": 26
+            },
+            {
+              "name": "Burton",
+              "value": 17
+            },
+            {
+              "name": "Clio",
+              "value": 17
+            },
+            {
+              "name": "Davison",
+              "value": 16
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 9
+            },
+            {
+              "name": "Flushing",
+              "value": 7
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 7
+            },
+            {
+              "name": "Fenton",
+              "value": 6
+            },
+            {
+              "name": "Linden",
+              "value": 5
             }
           ]
         },
@@ -328,6 +590,52 @@
               "name": "Michigan",
               "value": 6
             }
+          ],
+          "cities": [
+            {
+              "name": "Flint",
+              "value": 17
+            },
+            {
+              "name": "Mount Morris",
+              "value": 12
+            },
+            {
+              "name": "Davison",
+              "value": 10
+            },
+            {
+              "name": "Linden",
+              "value": 10
+            },
+            {
+              "name": "Burton",
+              "value": 8
+            },
+            {
+              "name": "Fenton",
+              "value": 8
+            },
+            {
+              "name": "Clio",
+              "value": 7
+            },
+            {
+              "name": "Flushing",
+              "value": 6
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 4
+            },
+            {
+              "name": "Montrose",
+              "value": 2
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 2
+            }
           ]
         },
         {
@@ -345,6 +653,52 @@
             {
               "name": "Michigan",
               "value": 40.1
+            }
+          ],
+          "cities": [
+            {
+              "name": "Swartz Creek",
+              "value": 45.8
+            },
+            {
+              "name": "Clio",
+              "value": 44.8
+            },
+            {
+              "name": "Davison",
+              "value": 43.3
+            },
+            {
+              "name": "Burton",
+              "value": 42.5
+            },
+            {
+              "name": "Linden",
+              "value": 39.7
+            },
+            {
+              "name": "Flushing",
+              "value": 39.5
+            },
+            {
+              "name": "Fenton",
+              "value": 38.2
+            },
+            {
+              "name": "Flint",
+              "value": 36.2
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 36.2
+            },
+            {
+              "name": "Mount Morris",
+              "value": 32.8
+            },
+            {
+              "name": "Montrose",
+              "value": 32.0
             }
           ]
         }

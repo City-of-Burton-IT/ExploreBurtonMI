@@ -198,10 +198,72 @@ def _metrics(rec: dict) -> dict:
     }
 
 
-def build_compare(burton: dict, year: int, key: str) -> dict | None:
+def fetch_genesee_cities(year: int, key: str, bench_vars: list[str]) -> list[tuple[str, dict]]:
+    """Every incorporated CITY in Genesee County, as [(short_name, record), ...].
+
+    Michigan is a strong-MCD state, so a city is a county subdivision; querying
+    Genesee County subdivisions is county-accurate and returns full ACS variables.
+    Burton's subdivision is coextensive with place 12060 (its values match), so the
+    cities ranking shows the same Burton figure as the region comparison.
+    """
+    geo = f"for=county%20subdivision:*&in=state:{STATE_FIPS}%20county:{COUNTY_FIPS}"
+    url = f"https://api.census.gov/data/{year}/acs/acs5?get={','.join(bench_vars)}&{geo}&key={key}"
+    with urllib.request.urlopen(url, timeout=30) as resp:
+        rows = json.load(resp)
+    header = rows[0]
+    out: list[tuple[str, dict]] = []
+    for row in rows[1:]:
+        rec = dict(zip(header, row))
+        name = rec.get("NAME", "")
+        if " city," not in name:   # skip townships ("X township,"); cities only
+            continue
+        out.append((name.split(" city,")[0], rec))
+    return out
+
+
+# Headline stats that get a Genesee County / Michigan benchmark line (#16). Maps
+# the stat's `label` to its _metrics() key and display unit.
+STAT_BENCHMARKS = {
+    "Median household income": ("median_income", "$"),
+    "Median home value": ("median_home_value", "$"),
+    "Owner-occupied homes": ("owner_pct", "%"),
+    "Unemployment rate": ("unemployment_pct", "%"),
+    "Below poverty line": ("poverty_pct", "%"),
+    "Median age": ("median_age", ""),
+}
+
+
+def _fmt_bench(value, unit: str) -> str:
+    if unit == "$":
+        return f"${value:,}"
+    if unit == "%":
+        return f"{value}%"
+    return f"{value}"
+
+
+def attach_benchmarks(stats: list[dict], metrics: dict) -> None:
+    """Add a Genesee County / Michigan benchmark line to each benchmarkable stat."""
+    county, state = metrics.get("Genesee County"), metrics.get("Michigan")
+    if not (county and state):
+        return
+    for stat in stats:
+        spec = STAT_BENCHMARKS.get(stat["label"])
+        if not spec:
+            continue
+        mkey, unit = spec
+        stat["benchmarks"] = [
+            {"name": "Genesee Co.", "value": _fmt_bench(county[mkey], unit)},
+            {"name": "Michigan", "value": _fmt_bench(state[mkey], unit)},
+        ]
+
+
+def build_compare(burton: dict, year: int, key: str) -> tuple[dict | None, dict]:
     """Build the "How Burton compares" chart (Burton vs Genesee County vs Michigan).
 
-    Returns None on any benchmark-fetch failure so the refresh still succeeds.
+    Each metric also carries a `cities` ranking (Burton vs every Genesee County
+    city) for the in-chart toggle (#28). Returns `(chart, place_metrics)`; the
+    chart is None on any benchmark-fetch failure (so the refresh still succeeds),
+    and `place_metrics` (Burton/County/Michigan) feeds the stat benchmarks (#16).
     """
     bench_vars = ["NAME", *CORE_VARS.values(), *(f"B15003_{c}E" for c in BACHELOR_CODES)]
     try:
@@ -209,19 +271,38 @@ def build_compare(burton: dict, year: int, key: str) -> dict | None:
         state = _fetch_vars(year, key, bench_vars, f"for=state:{STATE_FIPS}")
     except Exception as exc:  # noqa: BLE001 - benchmarks are optional
         print(f"  benchmark fetch failed ({exc}); omitting the comparison chart")
-        return None
+        return None, {}
 
     places = [("Burton", burton), ("Genesee County", county), ("Michigan", state)]
     metrics = {name: _metrics(rec) for name, rec in places}
-    rows = [
-        {
+
+    # All Genesee County cities for the "Burton vs county cities" toggle (#28).
+    try:
+        city_metrics = {name: _metrics(rec) for name, rec in fetch_genesee_cities(year, key, bench_vars)}
+    except Exception as exc:  # noqa: BLE001 - the cities toggle is optional
+        print(f"  Genesee cities fetch failed ({exc}); cities toggle omitted")
+        city_metrics = {}
+
+    rows = []
+    for label, unit, mkey in COMPARE_SPECS:
+        row: dict = {
             "label": label,
             "unit": unit,
             "values": [{"name": name, "value": metrics[name][mkey]} for name, _ in places],
         }
-        for label, unit, mkey in COMPARE_SPECS
-    ]
-    return {"type": "compare", "title": f"How Burton compares ({year})", "rows": rows}
+        # Ranked high-to-low across every city (Burton included). The component
+        # marks Burton's position; bars + numbers carry the meaning (no good/bad
+        # colouring, since lower is better for poverty/unemployment).
+        ranked = sorted(
+            ({"name": n, "value": m[mkey]} for n, m in city_metrics.items() if m[mkey] > 0),
+            key=lambda d: d["value"], reverse=True,
+        )
+        if len(ranked) >= 3:
+            row["cities"] = ranked
+        rows.append(row)
+
+    print(f"  compare: {len(rows)} metrics; Genesee cities ranked: {len(city_metrics)}")
+    return {"type": "compare", "title": f"How Burton compares ({year})", "rows": rows}, metrics
 
 
 def fetch_population(dataset: str, var: str, key: str) -> int | None:
@@ -438,6 +519,11 @@ def main() -> int:
 
     trend = build_trend(record, args.year, args.key)
     panel = build_panel(record, args.year, trend)
+    # Sparkline on the Population stat card from the decennial series (#16 A.4).
+    if len(trend) >= 2:
+        for stat in panel["stats"]:
+            if stat["label"] == "Population":
+                stat["spark"] = trend
     homeownership = build_homeownership_trend(args.key)
     if homeownership:
         panel["charts"].append({
@@ -471,9 +557,11 @@ def main() -> int:
 
     # The wide benchmark comparison reads better at the end of the panel than in the
     # middle of the single-topic charts, so append it last.
-    compare = build_compare(record, args.year, args.key)
+    compare, bench_metrics = build_compare(record, args.year, args.key)
     if compare:
         panel["charts"].append(compare)
+    # Benchmark context on the headline stats: Burton vs Genesee County vs Michigan (#16).
+    attach_benchmarks(panel["stats"], bench_metrics)
     out = os.path.join(os.path.dirname(__file__), "..", "public", "info-demographics.json")
     out = os.path.abspath(out)
     with open(out, "w", encoding="utf-8", newline="\n") as fh:

@@ -1,6 +1,7 @@
 <script lang="ts">
-  import type { InfoPanel } from './types';
+  import type { InfoPanel, InfoChart } from './types';
   import { safeHref } from './templates';
+  import { formatValue } from './charts/scale';
   import StatCard from './StatCard.svelte';
   import Donut from './charts/Donut.svelte';
   import Bars from './charts/Bars.svelte';
@@ -15,6 +16,33 @@
   }: { panel: InfoPanel | null; loading?: boolean } = $props();
 
   let explainerOpen = $state(false);
+
+  // Accessible plain-data fallback for any chart: a collapsible table with the
+  // same numbers the SVG/bars show. Helps screen-reader and no-JS-render users,
+  // and lets anyone read exact values. One generic builder covers every type.
+  function chartTable(chart: InfoChart): { headers: string[]; rows: string[][] } | null {
+    const unit = chart.unit ?? '';
+    if (chart.type === 'bars' || chart.type === 'donut') {
+      const series = chart.series ?? [];
+      if (!series.length) return null;
+      return { headers: ['Category', 'Value'], rows: series.map((s) => [s.label, formatValue(s.value, unit)]) };
+    }
+    if (chart.type === 'trend') {
+      const points = chart.points ?? [];
+      if (!points.length) return null;
+      return { headers: ['Period', 'Value'], rows: points.map((p) => [p.x, formatValue(p.y, unit)]) };
+    }
+    if (chart.type === 'compare') {
+      const rows = chart.rows ?? [];
+      if (!rows.length) return null;
+      const places = rows[0].values.map((v) => v.name);
+      return {
+        headers: ['Metric', ...places],
+        rows: rows.map((r) => [r.label, ...r.values.map((v) => formatValue(v.value, r.unit ?? ''))]),
+      };
+    }
+    return null;
+  }
 </script>
 
 <section class="info" aria-label={panel?.title ?? 'Information'}>
@@ -74,6 +102,7 @@
     {#if panel.charts?.length}
       <div class="charts">
         {#each panel.charts as chart (chart.title)}
+          {@const dt = chartTable(chart)}
           <figure class="chart">
             <figcaption>{chart.title}</figcaption>
             {#if chart.type === 'donut'}
@@ -84,6 +113,25 @@
               <TrendLine points={chart.points ?? []} unit={chart.unit} />
             {:else if chart.type === 'compare'}
               <CompareBars rows={chart.rows ?? []} />
+            {/if}
+            {#if dt}
+              <details class="data-table">
+                <summary>View data table</summary>
+                <table>
+                  <caption class="sr-only">{chart.title}</caption>
+                  <thead>
+                    <tr>{#each dt.headers as h}<th scope="col">{h}</th>{/each}</tr>
+                  </thead>
+                  <tbody>
+                    {#each dt.rows as r}
+                      <tr>
+                        <th scope="row">{r[0]}</th>
+                        {#each r.slice(1) as cell}<td>{cell}</td>{/each}
+                      </tr>
+                    {/each}
+                  </tbody>
+                </table>
+              </details>
             {/if}
           </figure>
         {/each}
@@ -227,6 +275,55 @@
   .chart {
     margin: 0;
     min-width: 0;
+  }
+  .data-table {
+    margin-top: 0.6rem;
+  }
+  .data-table > summary {
+    font-size: 0.78rem;
+    color: var(--civic-blue-link, #1a4b8f);
+    cursor: pointer;
+    width: fit-content;
+  }
+  .data-table > summary:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+    border-radius: 4px;
+  }
+  .data-table table {
+    border-collapse: collapse;
+    margin-top: 0.5rem;
+    font-size: 0.8rem;
+    width: 100%;
+  }
+  .data-table th,
+  .data-table td {
+    text-align: left;
+    padding: 0.28rem 0.6rem 0.28rem 0;
+    border-bottom: 1px solid var(--pub-border, #e3e3e3);
+    white-space: nowrap;
+  }
+  .data-table thead th {
+    color: var(--pub-muted, #5c5c5c);
+    font-weight: 700;
+  }
+  .data-table tbody th {
+    font-weight: 600;
+    white-space: normal;
+  }
+  .data-table td {
+    font-variant-numeric: tabular-nums;
+  }
+  .sr-only {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0, 0, 0, 0);
+    white-space: nowrap;
+    border: 0;
   }
   .tables {
     display: grid;
