@@ -1,10 +1,13 @@
 ext {
     minSdkVersion = 24
     compileSdkVersion = 36
-    // Target 34 (Android 14): avoids Android 15+ FORCED edge-to-edge, so the system
-    // insets the WebView between the status + navigation bars (no content under either).
-    // Still Play-acceptable. Revisit with proper edge-to-edge inset handling later.
-    targetSdkVersion = 34
+    // Target 35 (Android 15) -- required by Google Play for new uploads. Android 15
+    // forces edge-to-edge by default (content draws under the status + nav bars); we
+    // OPT OUT via android:windowOptOutEdgeToEdgeEnforcement in res/values/styles.xml so
+    // the system keeps insetting the WebView exactly as before. The opt-out is valid
+    // until we target 36 (Android 16) -- proper edge-to-edge inset handling is the
+    // follow-up to do before then.
+    targetSdkVersion = 35
     androidxActivityVersion = '1.11.0'
     androidxAppCompatVersion = '1.7.1'
     androidxCoordinatorLayoutVersion = '1.3.0'

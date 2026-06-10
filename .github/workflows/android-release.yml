@@ -82,7 +82,6 @@ jobs:
           ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
           ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
         run: |
-          echo "version inputs -> code='${ANDROID_VERSION_CODE}' name='${ANDROID_VERSION_NAME}'"
           cd android
           chmod +x gradlew
           ./gradlew bundleRelease --no-daemon --stacktrace
