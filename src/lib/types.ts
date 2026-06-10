@@ -247,6 +247,26 @@ export interface InfoExplainer {
   source?: string;
 }
 
+/** One school district's total tax rate (mills) for the estimator. */
+export interface EstimatorDistrict {
+  name: string;
+  /** total mills for a homestead (owner-occupied) home */
+  homestead: number;
+  /** total mills for a non-homestead (rental / second home) property */
+  nonHomestead: number;
+}
+
+/** Data driving the interactive property-tax estimator. The city and county
+ *  millages are uniform across Burton; the school portion varies by district, so
+ *  the per-district totals carry it. */
+export interface InfoEstimator {
+  /** City of Burton's own rate (General + Police + Fire), in mills */
+  cityMills: number;
+  /** Genesee County's rate, in mills (uniform countywide) */
+  countyMills: number;
+  districts: EstimatorDistrict[];
+}
+
 /** A plain-language "what this means for you" callout that interprets a dashboard's
  *  numbers for a resident -- what the data shows and how it affects them. Rendered as
  *  a highlighted box near the top of the panel, above the stats. */
@@ -281,6 +301,8 @@ export interface InfoPanel {
   summary?: InfoSummary;
   /** optional interactive "learn how this works" explainer shown after the charts */
   explainer?: InfoExplainer;
+  /** optional interactive property-tax estimator (Property Taxes dashboard) */
+  estimator?: InfoEstimator;
   stats: InfoStat[];
   charts: InfoChart[];
   /** optional per-item tables rendered after the charts (e.g. a bridge list) */

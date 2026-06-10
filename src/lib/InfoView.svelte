@@ -7,6 +7,7 @@
   import TrendLine from './charts/TrendLine.svelte';
   import CompareBars from './charts/CompareBars.svelte';
   import InfoTable from './InfoTable.svelte';
+  import TaxEstimator from './TaxEstimator.svelte';
 
   let {
     panel,
@@ -49,6 +50,10 @@
           <StatCard {stat} />
         {/each}
       </div>
+    {/if}
+
+    {#if panel.estimator?.districts?.length}
+      <TaxEstimator data={panel.estimator} />
     {/if}
 
     {#if panel.charts?.length}

@@ -9,6 +9,47 @@
       "The City's own rate has held at 13.44 mills since 2022 and is down from 14.20 a decade ago. Burton has not raised its operating rate."
     ]
   },
+  "estimator": {
+    "cityMills": 13.44,
+    "countyMills": 17.46,
+    "districts": [
+      {
+        "name": "Atherton",
+        "homestead": 41.86,
+        "nonHomestead": 59.72
+      },
+      {
+        "name": "Carman-Ainsworth",
+        "homestead": 43.12,
+        "nonHomestead": 61.12
+      },
+      {
+        "name": "Kearsley",
+        "homestead": 44.23,
+        "nonHomestead": 62.23
+      },
+      {
+        "name": "Bentley",
+        "homestead": 44.36,
+        "nonHomestead": 61.84
+      },
+      {
+        "name": "Davison",
+        "homestead": 44.37,
+        "nonHomestead": 62.14
+      },
+      {
+        "name": "Grand Blanc",
+        "homestead": 45.78,
+        "nonHomestead": 63.78
+      },
+      {
+        "name": "Bendle",
+        "homestead": 53.47,
+        "nonHomestead": 71.47
+      }
+    ]
+  },
   "stats": [
     {
       "label": "City of Burton's rate",

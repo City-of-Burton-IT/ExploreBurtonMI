@@ -52,15 +52,17 @@ AIRPORT = 0.47       # Bishop International Airport
 HOMESTEAD_TOTAL = 45.99
 
 # --- Total tax rate by school district, homestead (MI Treasury 2025 Total Rates) -
-DISTRICT_HOMESTEAD = [
-    ("Atherton", 41.86),
-    ("Carman-Ainsworth", 43.12),
-    ("Kearsley", 44.23),
-    ("Bentley", 44.36),
-    ("Davison", 44.37),
-    ("Grand Blanc", 45.78),
-    ("Bendle", 53.47),
+# (district, homestead total, non-homestead total) mills, MI Treasury 2025.
+DISTRICT_RATES = [
+    ("Atherton", 41.86, 59.72),
+    ("Carman-Ainsworth", 43.12, 61.12),
+    ("Kearsley", 44.23, 62.23),
+    ("Bentley", 44.36, 61.84),
+    ("Davison", 44.37, 62.14),
+    ("Grand Blanc", 45.78, 63.78),
+    ("Bendle", 53.47, 71.47),
 ]
+DISTRICT_HOMESTEAD = [(name, hs) for name, hs, _ in DISTRICT_RATES]
 
 # --- City total direct millage, last 10 fiscal years (ACFR p.118) ----------------
 CITY_MILLAGE_HISTORY = [
@@ -128,10 +130,20 @@ def main() -> int:
         ],
     }
 
+    estimator = {
+        "cityMills": CITY_TOTAL,
+        "countyMills": COUNTY,
+        "districts": [
+            {"name": name, "homestead": hs, "nonHomestead": nhs}
+            for name, hs, nhs in DISTRICT_RATES
+        ],
+    }
+
     panel = {
         "title": "Property Taxes",
         "subtitle": "Where your property tax bill actually goes",
         "summary": summary,
+        "estimator": estimator,
         "stats": stats,
         "charts": charts,
         "source": (
