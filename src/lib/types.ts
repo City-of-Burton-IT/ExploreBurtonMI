@@ -182,7 +182,8 @@ export type InfoView =
   | 'zoning'
   | 'parks'
   | 'roadsafety'
-  | 'access';
+  | 'access'
+  | 'seniorcenter';
 export type AppView = 'map' | InfoView | 'guide';
 
 export interface InfoStat {
