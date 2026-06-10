@@ -1,6 +1,6 @@
 {
   "title": "Housing & Growth",
-  "subtitle": "Burton's housing stock, US Census ACS 2023 5-year",
+  "subtitle": "Burton's housing stock: US Census ACS 2023 5-year",
   "stats": [
     {
       "label": "Housing units",
@@ -91,6 +91,44 @@
           "value": 976
         }
       ]
+    },
+    {
+      "type": "trend",
+      "title": "Median home value ($)",
+      "unit": "$",
+      "points": [
+        {
+          "x": "2013",
+          "y": 74600
+        },
+        {
+          "x": "2018",
+          "y": 83400
+        },
+        {
+          "x": "2023",
+          "y": 131200
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Median gross rent ($/mo)",
+      "unit": "$",
+      "points": [
+        {
+          "x": "2013",
+          "y": 766
+        },
+        {
+          "x": "2018",
+          "y": 761
+        },
+        {
+          "x": "2023",
+          "y": 1006
+        }
+      ]
     }
   ],
   "source": "US Census Bureau, American Community Survey (ACS) 2023 5-year estimates, Burton city, Michigan.",
@@ -101,7 +139,7 @@
     }
   ],
   "notes": [
-    "Figures are ACS model-based estimates (5-year averages), not exact counts.",
+    "Figures are ACS model-based estimates (5-year averages), not exact counts. Trend points use non-overlapping 5-year windows (2009-2013, 2014-2018, 2019-2023) and are nominal dollars (not inflation-adjusted).",
     "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
   ]
 }

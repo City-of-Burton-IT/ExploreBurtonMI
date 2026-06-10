@@ -97,6 +97,24 @@ def main() -> None:
         {"type": "bars", "title": "Homes by decade built", "unit": "",
          "series": [{"label": lab, "value": _int(yb[code])} for code, lab in YEAR_BUILT]},
     ]
+    # Median home value + gross rent trends (non-overlapping ACS 5-year windows).
+    value_pts, rent_pts = [], []
+    for yr in (2013, 2018, args.year):
+        try:
+            t = _fetch(yr, args.key, ["B25077_001E", "B25064_001E"])
+        except Exception as e:  # noqa: BLE001 - skip a year the API can't serve
+            print(f"  housing trend {yr} skipped ({e})")
+            continue
+        v, r = _int(t["B25077_001E"]), _int(t["B25064_001E"])
+        if v > 0:
+            value_pts.append({"x": str(yr), "y": v})
+        if r > 0:
+            rent_pts.append({"x": str(yr), "y": r})
+    if len(value_pts) >= 2:
+        charts.append({"type": "trend", "title": "Median home value ($)", "unit": "$", "points": value_pts})
+    if len(rent_pts) >= 2:
+        charts.append({"type": "trend", "title": "Median gross rent ($/mo)", "unit": "$", "points": rent_pts})
+
     panel = {
         "title": "Housing & Growth",
         "subtitle": f"Burton's housing stock: US Census ACS {args.year} 5-year",
@@ -107,7 +125,9 @@ def main() -> None:
         "links": [{"text": "Census QuickFacts: Burton",
                    "href": "https://www.census.gov/quickfacts/burtoncitymichigan"}],
         "notes": [
-            "Figures are ACS model-based estimates (5-year averages), not exact counts.",
+            "Figures are ACS model-based estimates (5-year averages), not exact counts. "
+            "Trend points use non-overlapping 5-year windows (2009-2013, 2014-2018, 2019-2023) "
+            "and are nominal dollars (not inflation-adjusted).",
             "This product uses the Census Bureau Data API but is not endorsed or "
             "certified by the Census Bureau.",
         ],
