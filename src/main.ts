@@ -2,6 +2,8 @@ import { mount } from 'svelte'
 import { Capacitor } from '@capacitor/core'
 import './app.css'
 import App from './App.svelte'
+import ComingSoon from './lib/ComingSoon.svelte'
+import { COMING_SOON_ENABLED, shouldGate } from './lib/comingSoon'
 import { captureInstallPrompt, markInstalled, type BeforeInstallPromptEvent } from './lib/store.svelte'
 
 // Native (Capacitor) only: the status-bar colour + light icons are set in the Android
@@ -18,16 +20,35 @@ if (Capacitor.isNativePlatform()) {
     .catch(() => {})
 }
 
-// Capture the install offer as early as possible -- the browser can fire
-// beforeinstallprompt before the app finishes mounting.
-window.addEventListener('beforeinstallprompt', (e) => {
-  e.preventDefault()
-  captureInstallPrompt(e as BeforeInstallPromptEvent)
-})
-window.addEventListener('appinstalled', () => markInstalled())
+// COMING-SOON SOFT LAUNCH (web only)
+// While COMING_SOON_ENABLED is on, keep search engines off the public web build.
+// Native app: no SEO surface, skip. Googlebot renders JS and honors this tag.
+// (To open the site fully at launch: flip COMING_SOON_ENABLED in lib/comingSoon.ts.)
+if (COMING_SOON_ENABLED && !Capacitor.isNativePlatform()) {
+  const robots = document.createElement('meta')
+  robots.name = 'robots'
+  robots.content = 'noindex, nofollow'
+  document.head.appendChild(robots)
+}
 
-const app = mount(App, {
-  target: document.getElementById('app')!,
-})
+const target = document.getElementById('app')!
+
+let app
+if (shouldGate()) {
+  // Public web visitor without the access phrase -> holding page only.
+  // The real app (and its data loading) never starts. The native app and any
+  // unlocked device skip this branch entirely.
+  app = mount(ComingSoon, { target })
+} else {
+  // Capture the install offer as early as possible -- the browser can fire
+  // beforeinstallprompt before the app finishes mounting.
+  window.addEventListener('beforeinstallprompt', (e) => {
+    e.preventDefault()
+    captureInstallPrompt(e as BeforeInstallPromptEvent)
+  })
+  window.addEventListener('appinstalled', () => markInstalled())
+
+  app = mount(App, { target })
+}
 
 export default app
