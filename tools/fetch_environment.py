@@ -89,6 +89,15 @@ def main() -> int:
     # Trend: median AQI by year (lower is better).
     median_trend = [{"x": str(y), "y": _i(rows[y], "Median AQI")} for y in sorted(rows)]
 
+    # Trend: % of days rated GOOD, by year (higher is better). The same Good Days /
+    # Days with AQI fields as the headline stat, but as a multi-year series -- a more
+    # intuitive "is our air getting better?" view for residents than median AQI.
+    def _good_pct_for(r: dict) -> int:
+        t = _i(r, "Days with AQI")
+        return round(_i(r, "Good Days") / t * 100) if t else 0
+
+    good_trend = [{"x": str(y), "y": _good_pct_for(rows[y])} for y in sorted(rows)]
+
     # Latest-year distribution of days by AQI category.
     days_chart = {
         "type": "bars", "title": f"Air-quality days by level ({latest_year})", "unit": "",
@@ -113,6 +122,7 @@ def main() -> int:
     }
 
     charts = [
+        {"type": "trend", "title": "Good air-quality days by year (higher is better)", "unit": "%", "points": good_trend},
         {"type": "trend", "title": "Median AQI by year (lower is better)", "unit": "", "points": median_trend},
         days_chart,
         pollutant_chart,

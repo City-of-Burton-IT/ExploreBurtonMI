@@ -26,6 +26,57 @@
   "charts": [
     {
       "type": "trend",
+      "title": "Good air-quality days by year (higher is better)",
+      "unit": "%",
+      "points": [
+        {
+          "x": "2015",
+          "y": 57
+        },
+        {
+          "x": "2016",
+          "y": 67
+        },
+        {
+          "x": "2017",
+          "y": 68
+        },
+        {
+          "x": "2018",
+          "y": 70
+        },
+        {
+          "x": "2019",
+          "y": 66
+        },
+        {
+          "x": "2020",
+          "y": 79
+        },
+        {
+          "x": "2021",
+          "y": 68
+        },
+        {
+          "x": "2022",
+          "y": 65
+        },
+        {
+          "x": "2023",
+          "y": 65
+        },
+        {
+          "x": "2024",
+          "y": 73
+        },
+        {
+          "x": "2025",
+          "y": 83
+        }
+      ]
+    },
+    {
+      "type": "trend",
       "title": "Median AQI by year (lower is better)",
       "unit": "",
       "points": [
