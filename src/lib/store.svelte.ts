@@ -22,6 +22,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     label: 'People & Housing',
     items: [
       { id: 'demographics', label: 'Demographics' },
+      { id: 'access', label: 'Access & Equity' },
       { id: 'housing', label: 'Housing & Growth' },
       { id: 'zoning', label: 'Zoning' },
       { id: 'schools', label: 'Schools' },
@@ -49,6 +50,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
       { id: 'broadband', label: 'Broadband Access' },
       { id: 'bridges', label: 'Bridges & Infrastructure' },
       { id: 'roads', label: 'Roads & Pavement' },
+      { id: 'roadsafety', label: 'Traffic Safety' },
       { id: 'trails', label: 'Trails & Pathways' },
     ],
   },

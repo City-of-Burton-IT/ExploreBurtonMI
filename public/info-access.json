@@ -1,0 +1,86 @@
+{
+  "title": "Access & Equity",
+  "subtitle": "Cost of living, mobility, and household income across Burton",
+  "stats": [
+    {
+      "label": "Typical household income",
+      "value": "$53,945",
+      "hint": "median across Burton's neighborhoods"
+    },
+    {
+      "label": "Housing + transport cost",
+      "value": "48% of income",
+      "hint": "housing 22% + transport 25% (45% = affordable)"
+    },
+    {
+      "label": "Cars per household",
+      "value": "1.9",
+      "hint": "modeled, typical household"
+    },
+    {
+      "label": "Neighborhood income range",
+      "value": "$33k-$109k",
+      "hint": "across 8 census areas (the equity gap)"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "Cost of living: share of income (modeled)",
+      "unit": "%",
+      "series": [
+        {
+          "label": "Housing",
+          "value": 22
+        },
+        {
+          "label": "Transportation",
+          "value": 25
+        },
+        {
+          "label": "Housing + transport",
+          "value": 48
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Household income across Burton neighborhoods",
+      "unit": "",
+      "series": [
+        {
+          "label": "Under $40k",
+          "value": 2
+        },
+        {
+          "label": "$40k-$60k",
+          "value": 3
+        },
+        {
+          "label": "$60k-$80k",
+          "value": 1
+        },
+        {
+          "label": "$80k+",
+          "value": 2
+        }
+      ]
+    }
+  ],
+  "source": "Genesee County (GCMPC) Long Range Transportation Plan equity layers (median income, and modeled housing + transportation cost) for the City of Burton.",
+  "links": [
+    {
+      "text": "Housing + Transportation Affordability Index (CNT)",
+      "href": "https://htaindex.cnt.org/"
+    },
+    {
+      "text": "Demographics dashboard",
+      "href": "#demographics"
+    }
+  ],
+  "notes": [
+    "The housing + transportation figures are MODELED estimates for a typical (area-median-income) household from the regional planning agency (GCMPC), not billed amounts. The widely used affordability benchmark is 45% of income for housing + transportation combined; in an auto-dependent suburb, transportation can cost as much as or more than housing.",
+    "Figures are aggregated across Burton's census tracts and block groups (a city-wide summary), so a specific street or household will differ. Income is the median across neighborhoods.",
+    "Source: Genesee County (GCMPC) equity/access layers; regional planning data, not a City of Burton statistic."
+  ]
+}

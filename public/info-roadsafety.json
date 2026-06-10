@@ -1,0 +1,211 @@
+{
+  "title": "Traffic Safety",
+  "subtitle": "Reported traffic crashes in Burton, 2014-2018",
+  "stats": [
+    {
+      "label": "Crashes recorded",
+      "value": "3,011",
+      "hint": "2014-2018 (all severities)"
+    },
+    {
+      "label": "Injury crashes",
+      "value": "700",
+      "hint": "1,020 people injured"
+    },
+    {
+      "label": "Fatal crashes",
+      "value": "9",
+      "hint": "9 lives lost (2014-2018)"
+    },
+    {
+      "label": "Most common type",
+      "value": "Rear End Straight",
+      "hint": "22% of crashes"
+    },
+    {
+      "label": "Typical crashes / year",
+      "value": "602",
+      "hint": "full years on record"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "Crashes by year",
+      "unit": "",
+      "series": [
+        {
+          "label": "2014",
+          "value": 576
+        },
+        {
+          "label": "2015",
+          "value": 636
+        },
+        {
+          "label": "2016",
+          "value": 653
+        },
+        {
+          "label": "2017",
+          "value": 563
+        },
+        {
+          "label": "2018",
+          "value": 583
+        }
+      ]
+    },
+    {
+      "type": "donut",
+      "title": "Crashes by severity",
+      "series": [
+        {
+          "label": "Fatal",
+          "value": 9,
+          "color": "#c0392b"
+        },
+        {
+          "label": "Injury",
+          "value": 700,
+          "color": "#e08a00"
+        },
+        {
+          "label": "Property Damage Only",
+          "value": 2302,
+          "color": "#4ea735"
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Most common crash types",
+      "unit": "",
+      "series": [
+        {
+          "label": "Rear End Straight",
+          "value": 672
+        },
+        {
+          "label": "Angle Straight",
+          "value": 429
+        },
+        {
+          "label": "Side-Swipe Same",
+          "value": 338
+        },
+        {
+          "label": "Fixed Object",
+          "value": 314
+        },
+        {
+          "label": "Animal",
+          "value": 168
+        },
+        {
+          "label": "Head-On Left-Turn Not Associated with Driveway",
+          "value": 149
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "title": "Most frequent crash locations",
+      "columns": [
+        "Intersection",
+        "Crashes"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "Bristol & Grand Traverse",
+            "153"
+          ]
+        },
+        {
+          "cells": [
+            "Belsay & Court",
+            "116"
+          ]
+        },
+        {
+          "cells": [
+            "Atherton & Center",
+            "110"
+          ]
+        },
+        {
+          "cells": [
+            "Belsay & Davison",
+            "94"
+          ]
+        },
+        {
+          "cells": [
+            "Bristol & Fenton",
+            "90"
+          ]
+        },
+        {
+          "cells": [
+            "Davison & Genesee",
+            "83"
+          ]
+        },
+        {
+          "cells": [
+            "Bristol & Saginaw",
+            "71"
+          ]
+        },
+        {
+          "cells": [
+            "Bristol & Center",
+            "63"
+          ]
+        },
+        {
+          "cells": [
+            "Court & Genesee",
+            "60"
+          ]
+        },
+        {
+          "cells": [
+            "Belsay & Lapeer",
+            "59"
+          ]
+        },
+        {
+          "cells": [
+            "Bristol & Dort",
+            "54"
+          ]
+        },
+        {
+          "cells": [
+            "Atherton & Genesee",
+            "54"
+          ]
+        }
+      ]
+    }
+  ],
+  "source": "Genesee County (GCMPC) crash records (Michigan State Police UD-10 / RoadSoft), City of Burton, 2014-2018.",
+  "links": [
+    {
+      "text": "Michigan Traffic Crash Facts",
+      "href": "https://www.michigantrafficcrashfacts.org/"
+    },
+    {
+      "text": "Roads & Pavement dashboard",
+      "href": "#roads"
+    }
+  ],
+  "notes": [
+    "This is HISTORICAL data (2014-2018) -- a multi-year summary and trend, not a live or current crash map. Road and intersection changes since then (new signals, the Bristol/Belsay roundabout, resurfacing) mean today's pattern can differ.",
+    "Counts are crash reports where the recorded city is Burton; most crashes are property-damage-only. \"Fatal\" and \"injury\" count crashes in which someone was killed or injured.",
+    "Source: Genesee County (GCMPC) / Michigan State Police UD-10 crash data; provided for public awareness, not endorsed by the City of Burton."
+  ]
+}
