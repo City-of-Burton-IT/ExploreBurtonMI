@@ -44,6 +44,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
       { id: 'water', label: 'Drinking Water' },
       { id: 'environment', label: 'Environment' },
       { id: 'parks', label: 'Parks' },
+      { id: 'trails', label: 'Trails & Pathways' },
       { id: 'seniorcenter', label: 'Senior Center' },
     ],
   },
@@ -54,7 +55,6 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
       { id: 'bridges', label: 'Bridges & Infrastructure' },
       { id: 'roads', label: 'Roads & Pavement' },
       { id: 'roadsafety', label: 'Traffic Safety' },
-      { id: 'trails', label: 'Trails & Pathways' },
     ],
   },
 ];

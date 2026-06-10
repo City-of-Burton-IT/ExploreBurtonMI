@@ -27,11 +27,6 @@
       "value": "76%"
     },
     {
-      "label": "Bachelor's degree or higher",
-      "value": "16%",
-      "hint": "age 25+"
-    },
-    {
       "label": "Unemployment rate",
       "value": "8%",
       "hint": "civilian labor force"
@@ -114,32 +109,6 @@
       ]
     },
     {
-      "type": "bars",
-      "title": "Educational attainment (age 25+)",
-      "series": [
-        {
-          "label": "No diploma",
-          "value": 2190
-        },
-        {
-          "label": "High school / GED",
-          "value": 7562
-        },
-        {
-          "label": "Some college / associate",
-          "value": 7718
-        },
-        {
-          "label": "Bachelor's degree",
-          "value": 2383
-        },
-        {
-          "label": "Graduate / professional",
-          "value": 1036
-        }
-      ]
-    },
-    {
       "type": "donut",
       "title": "How residents get to work",
       "series": [
@@ -207,25 +176,6 @@
         {
           "x": "2020",
           "y": 71.7
-        }
-      ]
-    },
-    {
-      "type": "trend",
-      "title": "Bachelor's degree or higher (% age 25+)",
-      "unit": "%",
-      "points": [
-        {
-          "x": "2013",
-          "y": 14
-        },
-        {
-          "x": "2018",
-          "y": 16
-        },
-        {
-          "x": "2023",
-          "y": 16
         }
       ]
     },
@@ -341,24 +291,6 @@
             {
               "name": "Michigan",
               "value": 73
-            }
-          ]
-        },
-        {
-          "label": "Bachelor's degree or higher",
-          "unit": "%",
-          "values": [
-            {
-              "name": "Burton",
-              "value": 16
-            },
-            {
-              "name": "Genesee County",
-              "value": 23
-            },
-            {
-              "name": "Michigan",
-              "value": 32
             }
           ]
         },

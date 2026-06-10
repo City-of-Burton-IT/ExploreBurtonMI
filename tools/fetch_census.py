@@ -39,7 +39,6 @@ COMPARE_SPECS = [
     ("Median household income", "$", "median_income"),
     ("Median home value", "$", "median_home_value"),
     ("Owner-occupied homes", "%", "owner_pct"),
-    ("Bachelor's degree or higher", "%", "bachelors_pct"),
     ("Below poverty line", "%", "poverty_pct"),
     ("Unemployment rate", "%", "unemployment_pct"),
     ("Median age", "", "median_age"),
@@ -304,9 +303,6 @@ def build_panel(record: dict, year: int, trend_points: list[dict]) -> dict:
     owner_pct = _pct(owner, owner + renter)
 
     # Derived rates.
-    edu_total = _int(record, CORE_VARS["edu_total"])
-    bachelors_plus = _sum(record, "B15003", ["022", "023", "024", "025"])
-    bachelors_pct = _pct(bachelors_plus, edu_total)
     unemployment_pct = _pct(_int(record, CORE_VARS["unemployed"]),
                             _int(record, CORE_VARS["civilian_labor_force"]))
     poverty_pct = _pct(_int(record, CORE_VARS["poverty_below"]),
@@ -331,11 +327,6 @@ def build_panel(record: dict, year: int, trend_points: list[dict]) -> dict:
         {"type": "bars", "title": "Age distribution", "series": _series(record, "B01001", AGE_BANDS)},
         {"type": "bars", "title": "Households by income", "series": income_series},
         {
-            "type": "bars",
-            "title": "Educational attainment (age 25+)",
-            "series": _series(record, "B15003", EDU_GROUPS),
-        },
-        {
             "type": "donut",
             "title": "How residents get to work",
             "series": _series(record, "B08301", COMMUTE_GROUPS),
@@ -358,7 +349,6 @@ def build_panel(record: dict, year: int, trend_points: list[dict]) -> dict:
             {"label": "Median household income", "value": f"${median_income:,}"},
             {"label": "Median home value", "value": f"${median_home_value:,}"},
             {"label": "Owner-occupied homes", "value": f"{owner_pct}%"},
-            {"label": "Bachelor's degree or higher", "value": f"{bachelors_pct}%", "hint": "age 25+"},
             {"label": "Unemployment rate", "value": f"{unemployment_pct}%", "hint": "civilian labor force"},
             {"label": "Below poverty line", "value": f"{poverty_pct}%"},
             {"label": "Veterans", "value": f"{veterans_pct}%", "hint": "of adults 18+"},
@@ -400,12 +390,11 @@ def build_acs_trends(key: str) -> dict:
     work-from-home. One API call per year; missing years are skipped."""
     needed = [
         "B19013_001E",                                  # median household income
-        "B15003_001E", *(f"B15003_{c}E" for c in BACH_CODES),
         "B17001_001E", "B17001_002E",                   # poverty (total, below)
         "B08301_001E", "B08301_021E",                   # commute total, worked at home
     ]
     geo = f"for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}"
-    income, bachelors, poverty, wfh = [], [], [], []
+    income, poverty, wfh = [], [], []
     for yr in TREND_YEARS:
         try:
             rec = _fetch_vars(yr, key, needed, geo)
@@ -416,16 +405,13 @@ def build_acs_trends(key: str) -> dict:
         mi = _int(rec, "B19013_001E")
         if mi > 0:
             income.append({"x": x, "y": mi})
-        et = _int(rec, "B15003_001E")
-        if et:
-            bachelors.append({"x": x, "y": _pct(_sum(rec, "B15003", BACH_CODES), et)})
         pt = _int(rec, "B17001_001E")
         if pt:
             poverty.append({"x": x, "y": _pct(_int(rec, "B17001_002E"), pt)})
         ct = _int(rec, "B08301_001E")
         if ct:
             wfh.append({"x": x, "y": _pct(_int(rec, "B08301_021E"), ct)})
-    return {"income": income, "bachelors": bachelors, "poverty": poverty, "wfh": wfh}
+    return {"income": income, "poverty": poverty, "wfh": wfh}
 
 
 def main() -> int:
@@ -468,7 +454,6 @@ def main() -> int:
     # Multi-year ACS trend lines (education, income, poverty, remote work).
     trends = build_acs_trends(args.key)
     trend_charts = [
-        ("bachelors", "Bachelor's degree or higher (% age 25+)", "%"),
         ("income", "Median household income ($)", "$"),
         ("poverty", "Residents below the poverty line (%)", "%"),
         ("wfh", "Residents who work from home (%)", "%"),

@@ -6,6 +6,11 @@
       "label": "Districts serving Burton",
       "value": "7",
       "hint": "public school districts"
+    },
+    {
+      "label": "Bachelor's degree or higher",
+      "value": "16%",
+      "hint": "Burton adults 25+, citywide"
     }
   ],
   "charts": [
@@ -77,9 +82,133 @@
           "value": 18.6
         }
       ]
+    },
+    {
+      "type": "bars",
+      "title": "Adults' education levels (citywide, age 25+)",
+      "unit": "",
+      "series": [
+        {
+          "label": "No diploma",
+          "value": 2190
+        },
+        {
+          "label": "High school / GED",
+          "value": 7562
+        },
+        {
+          "label": "Some college / associate",
+          "value": 7718
+        },
+        {
+          "label": "Bachelor's degree",
+          "value": 2383
+        },
+        {
+          "label": "Graduate / professional",
+          "value": 1036
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Bachelor's degree or higher (% age 25+)",
+      "unit": "%",
+      "points": [
+        {
+          "x": "2013",
+          "y": 14
+        },
+        {
+          "x": "2018",
+          "y": 16
+        },
+        {
+          "x": "2023",
+          "y": 16
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "Education levels: Burton vs. county & state",
+      "rows": [
+        {
+          "label": "High school or higher",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 90
+            },
+            {
+              "name": "Genesee County",
+              "value": 91
+            },
+            {
+              "name": "Michigan",
+              "value": 92
+            }
+          ]
+        },
+        {
+          "label": "Some college or higher",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 53
+            },
+            {
+              "name": "Genesee County",
+              "value": 59
+            },
+            {
+              "name": "Michigan",
+              "value": 64
+            }
+          ]
+        },
+        {
+          "label": "Bachelor's or higher",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 16
+            },
+            {
+              "name": "Genesee County",
+              "value": 23
+            },
+            {
+              "name": "Michigan",
+              "value": 32
+            }
+          ]
+        },
+        {
+          "label": "Graduate / professional",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 5
+            },
+            {
+              "name": "Genesee County",
+              "value": 8
+            },
+            {
+              "name": "Michigan",
+              "value": 12
+            }
+          ]
+        }
+      ]
     }
   ],
-  "source": "NCES Common Core of Data 2023, via the Urban Institute Education Data API",
+  "source": "NCES Common Core of Data 2023, via the Urban Institute Education Data API; U.S. Census ACS 5-year (educational attainment)",
   "links": [
     {
       "text": "Atherton",
@@ -133,6 +262,7 @@
   "notes": [
     "Several of these districts extend well beyond Burton's city limits: enrollment shown is each district's total, not the number of Burton residents it serves. Use the Map's \"School districts\" layer to see which district covers an address.",
     "Adults' education levels (high-school and college attainment) for Burton are on the Demographics dashboard. Colleges serving the area include Mott Community College, the University of Michigan-Flint, Kettering University, and Baker College.",
-    "Source: Urban Institute Education Data API, which republishes the U.S. Department of Education's National Center for Education Statistics (NCES) Common Core of Data."
+    "Source: Urban Institute Education Data API, which republishes the U.S. Department of Education's National Center for Education Statistics (NCES) Common Core of Data.",
+    "Educational attainment is for Burton adults age 25+ citywide (U.S. Census ACS) -- residents' own completed education, separate from the per-district K-12 enrollment shown above."
   ]
 }

@@ -55,7 +55,8 @@ def test_headline_stats():
 
 def test_derived_rates():
     stats = {s["label"]: s["value"] for s in fc.build_panel(mk_record(), 2023, TREND)["stats"]}
-    assert stats["Bachelor's degree or higher"] == "18%"   # (100+50+20+10)/1000
+    # Educational attainment moved to the Schools dashboard.
+    assert "Bachelor's degree or higher" not in stats
     assert stats["Unemployment rate"] == "8%"              # 80/1000 civilian labor force
     assert stats["Below poverty line"] == "15%"            # 150/1000
     assert stats["Veterans"] == "12%"                      # 120/1000
@@ -66,16 +67,16 @@ def test_charts_present_with_trend():
     titles = [c["title"] for c in charts]
     assert "Population" in titles            # trend chart present
     assert "Age distribution" in titles
-    assert "Educational attainment (age 25+)" in titles
+    assert "Educational attainment (age 25+)" not in titles  # moved to Schools
     assert "How residents get to work" in titles
-    assert len(charts) == 6
+    assert len(charts) == 5
 
 
 def test_trend_omitted_when_insufficient_points():
     panel = fc.build_panel(mk_record(), 2023, [])
     titles = [c["title"] for c in panel["charts"]]
     assert "Population" not in titles
-    assert len(panel["charts"]) == 5
+    assert len(panel["charts"]) == 4
     assert "Decennial" not in panel["source"]
 
 
