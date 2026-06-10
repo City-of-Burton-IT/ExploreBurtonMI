@@ -177,12 +177,6 @@ def build_panel(types: dict, yearly: dict) -> dict:
     year = types["year"] or yearly["headline_year"]
     cats = types["by_category"]
 
-    series = sorted(
-        ({"label": k, "value": v} for k, v in cats.items()),
-        key=lambda s: (-s["value"], CATEGORY_ORDER.index(s["label"])
-                       if s["label"] in CATEGORY_ORDER else 99),
-    )
-
     stats = [
         {"label": "Total responses", "value": f"{types['total']:,}",
          "hint": f"{year} (first full year)"},
@@ -195,9 +189,10 @@ def build_panel(types: dict, yearly: dict) -> dict:
          "hint": "downed power lines, gas leaks, CO"},
     ]
 
+    # The current-year by-TYPE breakdown comes from the Fire Chief's workbooks
+    # (FD plain-language categories, with history) via build_fire_trends.py, so
+    # the NFIRS series is not charted here -- only the current-year month spread.
     charts = [
-        {"type": "bars", "title": f"Responses by type ({year})", "unit": "",
-         "series": series},
         {"type": "trend", "title": f"Responses by month ({year})", "unit": "",
          "points": [{"x": MONTHS[i], "y": yearly["headline_monthly"][i]}
                     for i in range(12)]},
@@ -207,25 +202,18 @@ def build_panel(types: dict, yearly: dict) -> dict:
         "Aggregates from the City of Burton Fire Department records system "
         "(Emergency Networking RMS). Counts only -- no addresses, names, or "
         "individual incidents.",
-        "Categories follow the national NFIRS incident-type series. These are "
-        "fire/rescue incident counts; EMS-coded calls are few in this dataset "
-        "(medical transport may be recorded separately).",
+        "These are fire/rescue incident counts; EMS-coded calls are few in this "
+        "dataset (medical transport may be recorded separately).",
     ]
     for p in yearly["partial_years"]:
         notes.append(
             f"{p['year']} is a partial year ({MONTHS[p['first_month'] - 1]}-Dec, "
             f"{p['count']:,} responses) -- the FD adopted this records system mid-"
             f"{p['year']}. {year} is the first full calendar year.")
-    notes.append("Draft -- figures pending Fire Department review. A national "
-                 "(USFA) comparison is a planned addition.")
-
     return {
         "title": "Burton Fire & Rescue",
         "subtitle": f"Fire & Rescue responses, {year}",
-        "draft": True,
-        "draftNote": "These are real aggregate counts from the Fire Department's "
-                     "records system (Emergency Networking), shown for department "
-                     "review. Figures are not yet published as official.",
+        "logo": "burton-fire-logo.jpg",
         "stats": stats,
         "charts": charts,
         "source": f"City of Burton Fire Department incident records "

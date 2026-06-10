@@ -296,6 +296,9 @@ export interface InfoTable {
 export interface InfoPanel {
   title: string;
   subtitle?: string;
+  /** optional logo image (path relative to the site root) shown in the panel
+   *  header, e.g. a department badge. Hidden gracefully if the file is missing. */
+  logo?: string;
   /** when true, render a "not yet official" banner (finances until real figures land) */
   draft?: boolean;
   /** banner text for a draft panel; defaults to a generic "provisional" note. Use to

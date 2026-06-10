@@ -31,21 +31,41 @@ def test_parse_total_by_year(monkeypatch):
     ]
 
 
-def test_parse_station_latest_picks_max_year_and_skips_footer(monkeypatch):
+def test_parse_station_by_year_skips_footer(monkeypatch):
     rows = [
         ("", "YEAR", "STA. #1", "STA. #2", "STA. #3", "Total"),
-        ("", 2024, 272, 316, 82, 670),
+        ("", 2015, 224, 192, 59, 475),
         ("", 2025, 325, 335, 96, 756),
         ("", "Total:", 8031, 7130, 2451, 17897),   # footer must be ignored
     ]
     monkeypatch.setattr(bft, "_rows", lambda p: rows)
-    out = bft.parse_station_latest("x")
-    assert out["year"] == 2025
-    assert out["stations"] == [
+    out = bft.parse_station_by_year("x")
+    assert set(out) == {2015, 2025}
+    assert out[2025] == [
         ("Station 1 area", 325),
         ("Station 2 area", 335),
         ("Station 3 area", 96),
     ]
+
+
+def test_parse_category_by_year_maps_labels_and_skips_total(monkeypatch):
+    rows = [
+        ("", 2015, 2025),
+        ("Structure Fires", 62, 63),
+        ("Fire & CO Alarm Calls", 82, 174),
+        ("Total Calls for Service", 483, 758),   # unrecognized -> skipped
+    ]
+    monkeypatch.setattr(bft, "_rows", lambda p: rows)
+    out = bft.parse_category_by_year("x")
+    assert out == {
+        "Structure Fires": {2015: 62, 2025: 63},
+        "Fire & CO Alarms": {2015: 82, 2025: 174},
+    }
+
+
+def test_baseline_year_prefers_decade_then_earliest():
+    assert bft._baseline_year([2014, 2015, 2020, 2025], 2025) == 2015
+    assert bft._baseline_year([2020, 2025], 2025) == 2020   # 2015 absent -> earliest
 
 
 def test_parse_monthly_average_excludes_partial_year(monkeypatch):
@@ -65,22 +85,32 @@ def test_parse_monthly_average_excludes_partial_year(monkeypatch):
 
 
 def _base_panel():
+    # The current-year month trend is the EN base chart that survives a merge.
     return {
         "stats": [{"label": "Total responses", "value": "758"}],
-        "charts": [{"type": "bars", "title": "Responses by type (2025)"}],
+        "charts": [{"type": "trend", "title": "Responses by month (2025)"}],
         "notes": ["Aggregates from the City of Burton Fire Department records...",
                   "Draft -- figures pending Fire Department review."],
     }
 
 
 def test_merge_strips_deprecated_charts():
-    # A stale mutual-aid chart from an earlier run must be removed on re-merge.
+    # Stale superseded charts from earlier runs must be removed on re-merge:
+    # the mutual-aid trend, the NFIRS single-year by-type bars, and the
+    # single-year station bars (all replaced by the current chart set).
     panel = _base_panel()
-    panel["charts"].append(
-        {"type": "trend", "title": "Mutual aid given to neighbors by year (2016-2025)"})
+    panel["charts"] += [
+        {"type": "trend", "title": "Mutual aid given to neighbors by year (2016-2025)"},
+        {"type": "bars", "title": "Responses by type (2025)"},
+        {"type": "bars", "title": "Calls by station area (2025)"},
+    ]
     out = bft.merge_into_panel(panel, _fragment())
     titles = [c["title"] for c in out["charts"]]
     assert not any(t.startswith("Mutual aid given to neighbors") for t in titles)
+    assert not any(t.startswith("Responses by type (") for t in titles)
+    assert not any(t.startswith("Calls by station area (") for t in titles)
+    # the current-year month trend (not deprecated) is preserved
+    assert "Responses by type (2025)" not in titles
 
 
 def _fragment():
@@ -105,7 +135,7 @@ def test_merge_is_idempotent():
 
 def test_merge_keeps_existing_charts_and_draft_note_last():
     out = bft.merge_into_panel(_base_panel(), _fragment())
-    assert out["charts"][0]["title"] == "Responses by type (2025)"   # base preserved
+    assert out["charts"][0]["title"] == "Responses by month (2025)"  # base preserved
     assert out["charts"][-1]["title"].startswith("Total calls")      # trend appended
     assert out["notes"][-1].startswith("Draft")                      # draft stays last
     assert any(n.startswith(bft.HISTORY_MARK) for n in out["notes"])

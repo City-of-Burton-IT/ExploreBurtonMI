@@ -23,9 +23,21 @@
   {:else if !panel}
     <p class="state">This information is temporarily unavailable. Please check back soon.</p>
   {:else}
-    <header>
-      <h2>{panel.title}</h2>
-      {#if panel.subtitle}<p class="subtitle">{panel.subtitle}</p>{/if}
+    <header class:has-logo={panel.logo}>
+      {#if panel.logo}
+        <!-- Hidden gracefully if the file is missing, so referencing a
+             not-yet-added logo never shows a broken-image icon. -->
+        <img
+          class="panel-logo"
+          src={panel.logo}
+          alt="{panel.title} logo"
+          onerror={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
+        />
+      {/if}
+      <div class="header-text">
+        <h2>{panel.title}</h2>
+        {#if panel.subtitle}<p class="subtitle">{panel.subtitle}</p>{/if}
+      </div>
     </header>
 
     {#if panel.draft}
@@ -147,6 +159,16 @@
   }
   header {
     margin-bottom: 1rem;
+  }
+  header.has-logo {
+    display: flex;
+    align-items: center;
+    gap: 0.85rem;
+  }
+  .panel-logo {
+    height: 56px;
+    width: auto;
+    flex: none;
   }
   h2 {
     margin: 0;

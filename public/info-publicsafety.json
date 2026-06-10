@@ -1,8 +1,7 @@
 {
   "title": "Burton Fire & Rescue",
   "subtitle": "Fire & Rescue responses, 2025",
-  "draft": true,
-  "draftNote": "These are real aggregate counts from the Fire Department's records system (Emergency Networking), shown for department review. Figures are not yet published as official.",
+  "logo": "burton-fire-logo.jpg",
   "stats": [
     {
       "label": "Total responses",
@@ -31,41 +30,6 @@
     }
   ],
   "charts": [
-    {
-      "type": "bars",
-      "title": "Responses by type (2025)",
-      "unit": "",
-      "series": [
-        {
-          "label": "Good intent",
-          "value": 184
-        },
-        {
-          "label": "Hazardous condition",
-          "value": 178
-        },
-        {
-          "label": "False alarm / false call",
-          "value": 174
-        },
-        {
-          "label": "Fire",
-          "value": 108
-        },
-        {
-          "label": "Service call",
-          "value": 94
-        },
-        {
-          "label": "Rescue & EMS",
-          "value": 18
-        },
-        {
-          "label": "Other",
-          "value": 2
-        }
-      ]
-    },
     {
       "type": "trend",
       "title": "Responses by month (2025)",
@@ -118,6 +82,152 @@
         {
           "x": "Dec",
           "y": 51
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "Calls by type: 2025 vs 2015",
+      "rows": [
+        {
+          "label": "Hazardous Conditions",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 185
+            },
+            {
+              "name": "2015",
+              "value": 112
+            }
+          ]
+        },
+        {
+          "label": "Fire & CO Alarms",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 174
+            },
+            {
+              "name": "2015",
+              "value": 82
+            }
+          ]
+        },
+        {
+          "label": "Good Intent / Service",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 100
+            },
+            {
+              "name": "2015",
+              "value": 82
+            }
+          ]
+        },
+        {
+          "label": "Cancelled En Route",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 94
+            },
+            {
+              "name": "2015",
+              "value": 33
+            }
+          ]
+        },
+        {
+          "label": "Open Burning",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 79
+            },
+            {
+              "name": "2015",
+              "value": 52
+            }
+          ]
+        },
+        {
+          "label": "Structure Fires",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 63
+            },
+            {
+              "name": "2015",
+              "value": 62
+            }
+          ]
+        },
+        {
+          "label": "Vehicle Fires",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 27
+            },
+            {
+              "name": "2015",
+              "value": 19
+            }
+          ]
+        },
+        {
+          "label": "Rescues & Extrications",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 18
+            },
+            {
+              "name": "2015",
+              "value": 14
+            }
+          ]
+        },
+        {
+          "label": "Brush & Trash Fires",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 17
+            },
+            {
+              "name": "2015",
+              "value": 22
+            }
+          ]
+        },
+        {
+          "label": "Other Fires",
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 1
+            },
+            {
+              "name": "2015",
+              "value": 5
+            }
+          ]
         }
       ]
     },
@@ -177,21 +287,50 @@
       ]
     },
     {
-      "type": "bars",
-      "title": "Calls by station area (2025)",
-      "unit": "",
-      "series": [
+      "type": "compare",
+      "title": "Calls by station area: 2025 vs 2015",
+      "rows": [
         {
           "label": "Station 1 area",
-          "value": 325
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 325
+            },
+            {
+              "name": "2015",
+              "value": 224
+            }
+          ]
         },
         {
           "label": "Station 2 area",
-          "value": 335
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 335
+            },
+            {
+              "name": "2015",
+              "value": 192
+            }
+          ]
         },
         {
           "label": "Station 3 area",
-          "value": 96
+          "unit": "",
+          "values": [
+            {
+              "name": "2025",
+              "value": 96
+            },
+            {
+              "name": "2015",
+              "value": 59
+            }
+          ]
         }
       ]
     },
@@ -257,7 +396,6 @@
     "Aggregates from the City of Burton Fire Department records system (Emergency Networking RMS). Counts only -- no addresses, names, or individual incidents.",
     "Categories follow the national NFIRS incident-type series. These are fire/rescue incident counts; EMS-coded calls are few in this dataset (medical transport may be recorded separately).",
     "2024 is a partial year (Jun-Dec, 437 responses) -- the FD adopted this records system mid-2024. 2025 is the first full calendar year.",
-    "Multi-year trends are from the Fire Department's annual summary workbooks (calls for service by year, station, and month), maintained by the Fire Chief's office. Year totals are full calendar years. Month averages show seasonality from a separate monthly tally, so their yearly sum differs slightly from the annual totals.",
-    "Draft -- figures pending Fire Department review. A national (USFA) comparison is a planned addition."
+    "Multi-year trends are from the Fire Department's annual summary workbooks (calls for service by year, type, station, and month), maintained by the Fire Chief's office. Year totals are full calendar years; by-type and by-station comparisons show the latest year against about a decade earlier. Month averages show seasonality from a separate monthly tally, so their yearly sum differs slightly from the annual totals."
   ]
 }
