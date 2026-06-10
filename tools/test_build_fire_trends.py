@@ -64,12 +64,6 @@ def test_parse_monthly_average_excludes_partial_year(monkeypatch):
     assert out["avg"] == [15.0] * 12             # (10 + 20) / 2
 
 
-def test_parse_mutual_aid_missing_row_returns_empty(monkeypatch):
-    rows = [("", 2016, 2017), ("Structure Fires", 44, 61)]
-    monkeypatch.setattr(bft, "_rows", lambda p: rows)
-    assert bft.parse_mutual_aid_given("x") == []
-
-
 def _base_panel():
     return {
         "stats": [{"label": "Total responses", "value": "758"}],
@@ -77,6 +71,16 @@ def _base_panel():
         "notes": ["Aggregates from the City of Burton Fire Department records...",
                   "Draft -- figures pending Fire Department review."],
     }
+
+
+def test_merge_strips_deprecated_charts():
+    # A stale mutual-aid chart from an earlier run must be removed on re-merge.
+    panel = _base_panel()
+    panel["charts"].append(
+        {"type": "trend", "title": "Mutual aid given to neighbors by year (2016-2025)"})
+    out = bft.merge_into_panel(panel, _fragment())
+    titles = [c["title"] for c in out["charts"]]
+    assert not any(t.startswith("Mutual aid given to neighbors") for t in titles)
 
 
 def _fragment():

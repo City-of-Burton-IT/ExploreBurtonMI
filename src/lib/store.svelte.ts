@@ -54,8 +54,13 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
       { id: 'broadband', label: 'Broadband Access' },
       { id: 'bridges', label: 'Bridges & Infrastructure' },
       { id: 'roads', label: 'Roads & Pavement' },
-      { id: 'roadsafety', label: 'Traffic Safety' },
-      { id: 'publicsafety', label: 'Public Safety' },
+    ],
+  },
+  {
+    label: 'Public Safety',
+    items: [
+      { id: 'publicsafety', label: 'Burton Fire & Rescue' },
+      { id: 'roadsafety', label: 'Roadway Safety' },
     ],
   },
 ];

@@ -1,6 +1,6 @@
 {
-  "title": "Public Safety",
-  "subtitle": "Burton Fire & Rescue -- 2025 responses",
+  "title": "Burton Fire & Rescue",
+  "subtitle": "Fire & Rescue responses, 2025",
   "draft": true,
   "draftNote": "These are real aggregate counts from the Fire Department's records system (Emergency Networking), shown for department review. Figures are not yet published as official.",
   "stats": [
@@ -8,11 +8,6 @@
       "label": "Total responses",
       "value": "758",
       "hint": "2025 (first full year)"
-    },
-    {
-      "label": "Avg response time",
-      "value": "9:37",
-      "hint": "min:sec, dispatch to arrival"
     },
     {
       "label": "Fire responses",
@@ -254,53 +249,6 @@
           "value": 45.2
         }
       ]
-    },
-    {
-      "type": "trend",
-      "title": "Mutual aid given to neighbors by year (2016-2025)",
-      "unit": "",
-      "points": [
-        {
-          "x": "2016",
-          "y": 15
-        },
-        {
-          "x": "2017",
-          "y": 24
-        },
-        {
-          "x": "2018",
-          "y": 19
-        },
-        {
-          "x": "2019",
-          "y": 23
-        },
-        {
-          "x": "2020",
-          "y": 20
-        },
-        {
-          "x": "2021",
-          "y": 29
-        },
-        {
-          "x": "2022",
-          "y": 29
-        },
-        {
-          "x": "2023",
-          "y": 36
-        },
-        {
-          "x": "2024",
-          "y": 25
-        },
-        {
-          "x": "2025",
-          "y": 23
-        }
-      ]
     }
   ],
   "source": "City of Burton Fire Department incident records (Emergency Networking RMS), calendar year 2025.",
@@ -308,7 +256,6 @@
   "notes": [
     "Aggregates from the City of Burton Fire Department records system (Emergency Networking RMS). Counts only -- no addresses, names, or individual incidents.",
     "Categories follow the national NFIRS incident-type series. These are fire/rescue incident counts; EMS-coded calls are few in this dataset (medical transport may be recorded separately).",
-    "Average response time is dispatch-to-arrival, averaged over incidents with a recorded on-scene time; it includes mutual-aid runs outside the city. Method and figure pending FD confirmation.",
     "2024 is a partial year (Jun-Dec, 437 responses) -- the FD adopted this records system mid-2024. 2025 is the first full calendar year.",
     "Multi-year trends are from the Fire Department's annual summary workbooks (calls for service by year, station, and month), maintained by the Fire Chief's office. Year totals are full calendar years. Month averages show seasonality from a separate monthly tally, so their yearly sum differs slightly from the annual totals.",
     "Draft -- figures pending Fire Department review. A national (USFA) comparison is a planned addition."

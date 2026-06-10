@@ -11,9 +11,9 @@
 #   * Annual Stats.xlsx          -> Total calls for service by year (2014-2025)
 #   * Station Comparison.xlsx     -> Calls by station area (latest full year)
 #   * Monthly Average Worksheet   -> Busiest months (multi-year monthly average)
-#   * Annual Comparison.xlsx      -> Mutual aid given to neighbors by year
-#   * Quarterly Statistics.xlsx   -> reviewed, NOT charted (quarterly detail is
-#                                    redundant with the annual + monthly views).
+#   * Annual Comparison.xlsx / Quarterly Statistics.xlsx -> reviewed, NOT charted
+#     (Quarterly is redundant with the annual + monthly views; the mutual-aid
+#     series from Annual Comparison was removed at the department's request).
 #
 # GOVERNANCE:
 #   * The current-year snapshot (stats + "by type" NFIRS chart) stays as the
@@ -59,6 +59,11 @@ MONTHS = ["Jan", "Feb", "Mar", "Apr", "May", "Jun",
 # before re-adding, so repeated runs (or a build_publicsafety merge) never
 # duplicate. Titles carry the year range, so they are built, not literals.
 HISTORY_MARK = "Multi-year trends are from the Fire Department's annual summary"
+
+# Chart-title prefixes this tool no longer emits but that may linger in an
+# already-merged panel. merge_into_panel strips them so a re-run cleans them up
+# (e.g. the mutual-aid chart, removed at the department's request).
+DEPRECATED_TITLE_PREFIXES = ("Mutual aid given to neighbors",)
 
 
 # --- workbook readers ------------------------------------------------------
@@ -168,25 +173,6 @@ def parse_monthly_average(path: str) -> dict:
     return {"years": sorted(used_years), "avg": avg}
 
 
-def parse_mutual_aid_given(path: str) -> list[dict]:
-    """Annual Comparison.xlsx -> [{year, given}] from the 'Mutual Aid Given' row."""
-    rows = _rows(path)
-    years = _year_header(rows[0])
-    given_row = next(
-        (r for r in rows[1:] if _label(r[0]).lower().startswith("mutual aid given")),
-        None,
-    )
-    if given_row is None or not years:
-        return []  # optional chart -- omit silently if the row is absent
-    points = []
-    for yr in sorted(years):
-        ci = years[yr]
-        v = given_row[ci] if ci < len(given_row) else None
-        if isinstance(v, (int, float)):
-            points.append({"year": yr, "given": int(v)})
-    return points
-
-
 # --- chart assembly --------------------------------------------------------
 
 def build_fragment(src: str) -> dict:
@@ -194,7 +180,6 @@ def build_fragment(src: str) -> dict:
     totals = parse_total_by_year(os.path.join(src, "Annual Stats.xlsx"))
     station = parse_station_latest(os.path.join(src, "Station Comparison.xlsx"))
     monthly = parse_monthly_average(os.path.join(src, "Monthly Average Worksheet.xlsx"))
-    mutual = parse_mutual_aid_given(os.path.join(src, "Annual Comparison.xlsx"))
 
     charts: list[dict] = []
 
@@ -226,15 +211,6 @@ def build_fragment(src: str) -> dict:
                        for m in range(12)],
         })
 
-    if mutual:
-        y0, y1 = mutual[0]["year"], mutual[-1]["year"]
-        charts.append({
-            "type": "trend",
-            "title": f"Mutual aid given to neighbors by year ({y0}-{y1})",
-            "unit": "",
-            "points": [{"x": str(p["year"]), "y": p["given"]} for p in mutual],
-        })
-
     # A trend stat: growth over the available annual span.
     stats: list[dict] = []
     if len(totals) >= 2 and totals[0]["total"] > 0:
@@ -261,8 +237,14 @@ def merge_into_panel(panel: dict, fragment: dict) -> dict:
     """Idempotently fold the fragment's charts/stats/notes into a panel. Charts
     and notes this tool owns are removed first, so repeated runs do not stack."""
     owned_titles = {c["title"] for c in fragment["charts"]}
-    panel["charts"] = [c for c in panel.get("charts", [])
-                       if c.get("title") not in owned_titles] + fragment["charts"]
+
+    def _keep(chart: dict) -> bool:
+        t = chart.get("title", "")
+        if t in owned_titles:
+            return False  # this tool re-adds it below
+        return not t.startswith(DEPRECATED_TITLE_PREFIXES)
+
+    panel["charts"] = [c for c in panel.get("charts", []) if _keep(c)] + fragment["charts"]
 
     owned_stat_labels = {s["label"] for s in fragment["stats"]}
     panel["stats"] = [s for s in panel.get("stats", [])

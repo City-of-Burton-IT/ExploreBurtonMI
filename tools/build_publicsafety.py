@@ -173,33 +173,7 @@ def parse_year_report(path: str) -> dict:
     }
 
 
-def parse_response_report(path: str, year: int | None) -> str | None:
-    """Read #922 'Average Response Time for Year' -> the MM:SS string for the
-    given year (or the only/last row). Reads the aggregate sheet only -- not the
-    per-incident Source Data. Returns None if the file/sheet/year is absent."""
-    if not path or not os.path.isfile(path):
-        return None
-    try:
-        rows = _sheet_rows(path, "Average Response Time for Year")
-    except SystemExit:
-        return None
-    idx = _header_index(rows)
-    yi, di = idx.get("Year"), idx.get("Response Duration")
-    if yi is None or di is None:
-        return None
-    found = None
-    for r in rows[1:]:
-        yr = str(r[yi]).strip() if yi < len(r) and r[yi] is not None else ""
-        dur = str(r[di]).strip() if di < len(r) and r[di] is not None else ""
-        if not dur:
-            continue
-        found = dur                         # remember the latest valid row
-        if year is not None and yr == str(year):
-            return dur
-    return found
-
-
-def build_panel(types: dict, yearly: dict, response: str | None = None) -> dict:
+def build_panel(types: dict, yearly: dict) -> dict:
     year = types["year"] or yearly["headline_year"]
     cats = types["by_category"]
 
@@ -212,12 +186,6 @@ def build_panel(types: dict, yearly: dict, response: str | None = None) -> dict:
     stats = [
         {"label": "Total responses", "value": f"{types['total']:,}",
          "hint": f"{year} (first full year)"},
-    ]
-    if response:
-        stats.append({"label": "Avg response time",
-                      "value": response.lstrip("0") or response,
-                      "hint": "min:sec, dispatch to arrival"})
-    stats += [
         {"label": "Fire responses", "value": f"{types['total_fires']:,}",
          "hint": f"incl. {types['building_fires']} building fires"},
         {"label": "False alarms", "value": f"{cats.get('False alarm / false call', 0):,}",
@@ -243,26 +211,17 @@ def build_panel(types: dict, yearly: dict, response: str | None = None) -> dict:
         "fire/rescue incident counts; EMS-coded calls are few in this dataset "
         "(medical transport may be recorded separately).",
     ]
-    if response:
-        notes.append(
-            "Average response time is dispatch-to-arrival, averaged over incidents "
-            "with a recorded on-scene time; it includes mutual-aid runs outside the "
-            "city. Method and figure pending FD confirmation.")
     for p in yearly["partial_years"]:
         notes.append(
             f"{p['year']} is a partial year ({MONTHS[p['first_month'] - 1]}-Dec, "
             f"{p['count']:,} responses) -- the FD adopted this records system mid-"
             f"{p['year']}. {year} is the first full calendar year.")
-    tail = "Draft -- figures pending Fire Department review."
-    if not response:
-        tail += " Average response time and a national (USFA) comparison are planned additions."
-    else:
-        tail += " A national (USFA) comparison is a planned addition."
-    notes.append(tail)
+    notes.append("Draft -- figures pending Fire Department review. A national "
+                 "(USFA) comparison is a planned addition.")
 
     return {
-        "title": "Public Safety",
-        "subtitle": f"Burton Fire & Rescue -- {year} responses",
+        "title": "Burton Fire & Rescue",
+        "subtitle": f"Fire & Rescue responses, {year}",
         "draft": True,
         "draftNote": "These are real aggregate counts from the Fire Department's "
                      "records system (Emergency Networking), shown for department "
@@ -294,9 +253,6 @@ def main() -> None:
     ap.add_argument("--year-report",
                     default=os.path.join(DOWNLOADS, "incidents-per-year.xlsx"),
                     help="#22 export (.xlsx)")
-    ap.add_argument("--response-report",
-                    default=os.path.join(DOWNLOADS, "average-response-time-for-year.xlsx"),
-                    help="#922 export (.xlsx); optional -- adds the avg-response stat")
     ap.add_argument("--trends-cache",
                     default=os.path.join(os.path.dirname(__file__), "fire-trends.json"),
                     help="multi-year trend fragment from build_fire_trends.py; "
@@ -311,7 +267,6 @@ def main() -> None:
 
     types = parse_type_report(args.type_report)
     yearly = parse_year_report(args.year_report)
-    response = parse_response_report(args.response_report, types["year"])
 
     # Cross-check the two reports agree on the headline-year total.
     hy = types["year"]
@@ -320,7 +275,7 @@ def main() -> None:
               f"({yearly['per_year'][hy]}). Using #1390 for categories.",
               file=sys.stderr)
 
-    panel = build_panel(types, yearly, response)
+    panel = build_panel(types, yearly)
 
     # Fold in the Fire Chief's multi-year trend charts when the cache is present
     # (produced by build_fire_trends.py from the OneDrive summary workbooks), so
@@ -339,7 +294,7 @@ def main() -> None:
     print(f"Wrote {args.out}")
     print(f"  year={panel['subtitle']}")
     print(f"  total={types['total']}  fires={types['total_fires']} "
-          f"(building={types['building_fires']})  avg_response={response or 'n/a'}")
+          f"(building={types['building_fires']})")
     print(f"  categories: " + ", ".join(f"{s['label']}={s['value']}"
                                          for s in panel['charts'][0]['series']))
     print(f"  years in #22: {yearly['per_year']}")

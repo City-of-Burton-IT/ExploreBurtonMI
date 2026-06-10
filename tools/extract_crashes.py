@@ -1,4 +1,4 @@
-# Build public/info-roadsafety.json: a Traffic Safety dashboard from historical
+# Build public/info-roadsafety.json: a Roadway Safety dashboard from historical
 # Genesee County (GCMPC) crash records for the City of Burton.
 #
 # Source: GCMPC "Crash_Locations_2014_2018" FeatureServer (RoadSoft / Michigan
@@ -126,7 +126,7 @@ def main() -> int:
     }
 
     panel = {
-        "title": "Traffic Safety",
+        "title": "Roadway Safety",
         "subtitle": f"Reported traffic crashes in Burton, {span}",
         "stats": stats,
         "charts": charts,
