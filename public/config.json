@@ -34,7 +34,9 @@
     { "source": "bridges.geojson", "label": "Bridges (condition)", "nameField": "name" },
     { "source": "paser-roads.geojson", "label": "Road conditions (PASER)", "nameField": "name" },
     { "source": "trails.geojson", "label": "Trails & pathways", "nameField": "name" },
-    { "source": "zoning.geojson", "label": "Zoning", "nameField": "name" }
+    { "source": "zoning.geojson", "label": "Zoning", "nameField": "name" },
+    { "source": "parks.geojson", "label": "Parks", "nameField": "name" },
+    { "source": "bus-stops.geojson", "label": "Bus stops", "nameField": "name" }
   ],
   "imageOverlays": [],
   "categoryField": "category",

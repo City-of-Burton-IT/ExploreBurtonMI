@@ -27,7 +27,9 @@ GTFS_URL = "https://www.mtaflint.org/wp-content/media/gtfs.zip"
 ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
 BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
 OUT = os.path.join(ROOT, "public", "transit-routes.geojson")
+OUT_STOPS = os.path.join(ROOT, "public", "bus-stops.geojson")
 DEFAULT_COLOR = "1f6fb2"
+STOP_COLOR = "#1f6fb2"
 
 
 def _rings(geom: dict) -> list:
@@ -68,7 +70,7 @@ def _in_burton(lon: float, lat: float, rings: list, bbox: tuple) -> bool:
 
 def _read_gtfs(path: str | None) -> dict[str, list[dict]]:
     """Return {table: list-of-row-dicts} for the GTFS tables we need."""
-    want = ("routes", "trips", "shapes")
+    want = ("routes", "trips", "shapes", "stops")
     if path and os.path.isdir(path):
         blobs = {t: open(os.path.join(path, f"{t}.txt"), encoding="utf-8-sig").read() for t in want}
     else:
@@ -152,6 +154,34 @@ def main() -> int:
     for f in features:
         print(f"    {f['properties']['name']}")
     print(f"  file size: {os.path.getsize(OUT) // 1024} KiB")
+
+    # Bus stops inside Burton (GTFS stops.txt) as a point overlay -- the rider-facing
+    # stop list (the county ArcGIS stop layers have no usable stop names).
+    stops_feats = []
+    for s in gtfs.get("stops", []):
+        try:
+            lon = float(s["stop_lon"])
+            lat = float(s["stop_lat"])
+        except (KeyError, ValueError, TypeError):
+            continue
+        if not _in_burton(lon, lat, rings, bbox):
+            continue
+        name = (s.get("stop_name") or "Bus stop").strip()
+        stops_feats.append({
+            "type": "Feature",
+            "properties": {"name": name, "_color": STOP_COLOR},
+            "geometry": {"type": "Point", "coordinates": [round(lon, 5), round(lat, 5)]},
+        })
+    stops_feats.sort(key=lambda f: f["properties"]["name"])
+    stops_fc = {
+        "type": "FeatureCollection",
+        "_source": "MTA Flint GTFS bus stops within the City of Burton.",
+        "features": stops_feats,
+    }
+    with open(OUT_STOPS, "w", encoding="utf-8", newline="\n") as fh:
+        json.dump(stops_fc, fh, ensure_ascii=False, separators=(",", ":"))
+        fh.write("\n")
+    print(f"Wrote {OUT_STOPS} ({len(stops_feats)} bus stops in Burton)")
     return 0
 
 

@@ -40,6 +40,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
       { id: 'health', label: 'Community Health' },
       { id: 'water', label: 'Drinking Water' },
       { id: 'environment', label: 'Environment' },
+      { id: 'parks', label: 'Parks' },
     ],
   },
   {

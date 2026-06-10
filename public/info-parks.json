@@ -1,0 +1,128 @@
+{
+  "title": "Parks",
+  "subtitle": "Public parks and green space in Burton",
+  "stats": [
+    {
+      "label": "Parks in Burton",
+      "value": "7",
+      "hint": "with a footprint in the city"
+    },
+    {
+      "label": "Total park acres",
+      "value": "416",
+      "hint": "all parks combined"
+    },
+    {
+      "label": "Largest park",
+      "value": "For-Mar Nature Preserve and Arboretum",
+      "hint": "364.3 acres"
+    },
+    {
+      "label": "City of Burton parks",
+      "value": "5",
+      "hint": "46 acres city-run"
+    }
+  ],
+  "charts": [
+    {
+      "type": "donut",
+      "title": "Park acres by who runs it",
+      "series": [
+        {
+          "label": "City of Burton",
+          "value": 46,
+          "color": "#2e7d32"
+        },
+        {
+          "label": "Genesee County",
+          "value": 370,
+          "color": "#1565c0"
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "title": "Parks in Burton",
+      "columns": [
+        "Park",
+        "Type",
+        "Acres"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "For-Mar Nature Preserve and Arboretum",
+            "County Park",
+            "364.3"
+          ],
+          "color": "#1565c0"
+        },
+        {
+          "cells": [
+            "Kelly Lake Park",
+            "City of Burton Park",
+            "40.7"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "Davison Roadside Park",
+            "County Park",
+            "5.2"
+          ],
+          "color": "#1565c0"
+        },
+        {
+          "cells": [
+            "Settlement Park",
+            "City of Burton Park",
+            "3.8"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "Veteran's Memorial Park",
+            "City of Burton Park",
+            "1"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "Water Tower Park",
+            "City of Burton Park",
+            "0.3"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "Fireman's Park",
+            "City of Burton Park",
+            "0.3"
+          ],
+          "color": "#2e7d32"
+        }
+      ]
+    }
+  ],
+  "source": "Genesee County parks dataset (GCMPC), park footprints within the City of Burton.",
+  "links": [
+    {
+      "text": "Burton Parks & Recreation",
+      "href": "https://www.burtonmi.gov/departments/parks_and_recreation/index.php"
+    },
+    {
+      "text": "Genesee County Parks",
+      "href": "https://www.geneseecountyparks.org/"
+    }
+  ],
+  "notes": [
+    "Turn on the \"Parks\" map overlay to see park boundaries. Acreage is the park's full size from the county dataset; for a park on the city edge, part of that area may extend beyond Burton.",
+    "Includes city, county and neighborhood parks whose footprint centers in Burton. Park buildings and offices also appear as pins in the main map's Parks & Recreation category.",
+    "Source: Genesee County (GCMPC) parks dataset; a regional GIS layer, not a live city facilities list."
+  ]
+}

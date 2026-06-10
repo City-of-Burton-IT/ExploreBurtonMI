@@ -178,7 +178,8 @@ export type InfoView =
   | 'bridges'
   | 'roads'
   | 'trails'
-  | 'zoning';
+  | 'zoning'
+  | 'parks';
 export type AppView = 'map' | InfoView | 'guide';
 
 export interface InfoStat {
