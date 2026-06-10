@@ -1,4 +1,5 @@
 import type { AppConfig } from './types';
+import { dataFetch } from './remote';
 
 /**
  * Load and validate public/config.json.
@@ -8,7 +9,7 @@ import type { AppConfig } from './types';
  * app, where config could reference missing fields with no warning.
  */
 export async function loadConfig(url = 'config.json'): Promise<AppConfig> {
-  const res = await fetch(url);
+  const res = await dataFetch(url);
   if (!res.ok) {
     throw new Error(`Failed to load ${url}: HTTP ${res.status}`);
   }

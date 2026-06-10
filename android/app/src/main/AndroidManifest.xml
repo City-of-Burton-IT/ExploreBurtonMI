@@ -32,4 +32,10 @@
     <!-- Permissions -->
 
     <uses-permission android:name="android.permission.INTERNET" />
+
+    <!-- "Near me": center the map on the user and sort places by distance. Location is
+         read on-device only (never collected, stored, or shared). Coarse is enough for
+         city-scale centering; fine improves accuracy when the user allows it. -->
+    <uses-permission android:name="android.permission.ACCESS_COARSE_LOCATION" />
+    <uses-permission android:name="android.permission.ACCESS_FINE_LOCATION" />
 </manifest>

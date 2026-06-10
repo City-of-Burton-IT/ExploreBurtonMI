@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import { dataFetch } from '../remote';
 
   type Entry = { street: string; day: string };
 
@@ -9,7 +10,7 @@
 
   onMount(async () => {
     try {
-      const r = await fetch('waste-schedule.json');
+      const r = await dataFetch('waste-schedule.json');
       if (r.ok) {
         const d = (await r.json()) as { entries?: Entry[] };
         entries = d.entries ?? [];
