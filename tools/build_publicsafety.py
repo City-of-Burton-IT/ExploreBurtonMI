@@ -297,6 +297,11 @@ def main() -> None:
     ap.add_argument("--response-report",
                     default=os.path.join(DOWNLOADS, "average-response-time-for-year.xlsx"),
                     help="#922 export (.xlsx); optional -- adds the avg-response stat")
+    ap.add_argument("--trends-cache",
+                    default=os.path.join(os.path.dirname(__file__), "fire-trends.json"),
+                    help="multi-year trend fragment from build_fire_trends.py; "
+                         "merged in when present so a from-scratch rebuild keeps "
+                         "the historical charts. Optional.")
     ap.add_argument("--out", default=OUT, help="output JSON path")
     args = ap.parse_args()
 
@@ -316,6 +321,15 @@ def main() -> None:
               file=sys.stderr)
 
     panel = build_panel(types, yearly, response)
+
+    # Fold in the Fire Chief's multi-year trend charts when the cache is present
+    # (produced by build_fire_trends.py from the OneDrive summary workbooks), so
+    # a from-scratch rebuild keeps the historical charts rather than dropping them.
+    if args.trends_cache and os.path.isfile(args.trends_cache):
+        from build_fire_trends import merge_into_panel
+        with open(args.trends_cache, encoding="utf-8") as f:
+            panel = merge_into_panel(panel, json.load(f))
+
     assert_no_pii(panel)
 
     with open(args.out, "w", encoding="utf-8") as f:

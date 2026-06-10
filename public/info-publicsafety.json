@@ -28,6 +28,11 @@
       "label": "Hazardous-condition calls",
       "value": "178",
       "hint": "downed power lines, gas leaks, CO"
+    },
+    {
+      "label": "11-year change",
+      "value": "+48%",
+      "hint": "513 (2014) -> 758 (2025)"
     }
   ],
   "charts": [
@@ -120,6 +125,182 @@
           "y": 51
         }
       ]
+    },
+    {
+      "type": "trend",
+      "title": "Total calls for service by year (2014-2025)",
+      "unit": "",
+      "points": [
+        {
+          "x": "2014",
+          "y": 513
+        },
+        {
+          "x": "2015",
+          "y": 483
+        },
+        {
+          "x": "2016",
+          "y": 474
+        },
+        {
+          "x": "2017",
+          "y": 464
+        },
+        {
+          "x": "2018",
+          "y": 421
+        },
+        {
+          "x": "2019",
+          "y": 451
+        },
+        {
+          "x": "2020",
+          "y": 444
+        },
+        {
+          "x": "2021",
+          "y": 626
+        },
+        {
+          "x": "2022",
+          "y": 643
+        },
+        {
+          "x": "2023",
+          "y": 635
+        },
+        {
+          "x": "2024",
+          "y": 682
+        },
+        {
+          "x": "2025",
+          "y": 758
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Calls by station area (2025)",
+      "unit": "",
+      "series": [
+        {
+          "label": "Station 1 area",
+          "value": 325
+        },
+        {
+          "label": "Station 2 area",
+          "value": 335
+        },
+        {
+          "label": "Station 3 area",
+          "value": 96
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Busiest months (2020-2025 average)",
+      "unit": "",
+      "series": [
+        {
+          "label": "Jan",
+          "value": 43.2
+        },
+        {
+          "label": "Feb",
+          "value": 35.7
+        },
+        {
+          "label": "Mar",
+          "value": 48.2
+        },
+        {
+          "label": "Apr",
+          "value": 45.2
+        },
+        {
+          "label": "May",
+          "value": 50.7
+        },
+        {
+          "label": "Jun",
+          "value": 54.2
+        },
+        {
+          "label": "Jul",
+          "value": 56.5
+        },
+        {
+          "label": "Aug",
+          "value": 82.8
+        },
+        {
+          "label": "Sep",
+          "value": 58.2
+        },
+        {
+          "label": "Oct",
+          "value": 55.3
+        },
+        {
+          "label": "Nov",
+          "value": 54.8
+        },
+        {
+          "label": "Dec",
+          "value": 45.2
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Mutual aid given to neighbors by year (2016-2025)",
+      "unit": "",
+      "points": [
+        {
+          "x": "2016",
+          "y": 15
+        },
+        {
+          "x": "2017",
+          "y": 24
+        },
+        {
+          "x": "2018",
+          "y": 19
+        },
+        {
+          "x": "2019",
+          "y": 23
+        },
+        {
+          "x": "2020",
+          "y": 20
+        },
+        {
+          "x": "2021",
+          "y": 29
+        },
+        {
+          "x": "2022",
+          "y": 29
+        },
+        {
+          "x": "2023",
+          "y": 36
+        },
+        {
+          "x": "2024",
+          "y": 25
+        },
+        {
+          "x": "2025",
+          "y": 23
+        }
+      ]
     }
   ],
   "source": "City of Burton Fire Department incident records (Emergency Networking RMS), calendar year 2025.",
@@ -129,6 +310,7 @@
     "Categories follow the national NFIRS incident-type series. These are fire/rescue incident counts; EMS-coded calls are few in this dataset (medical transport may be recorded separately).",
     "Average response time is dispatch-to-arrival, averaged over incidents with a recorded on-scene time; it includes mutual-aid runs outside the city. Method and figure pending FD confirmation.",
     "2024 is a partial year (Jun-Dec, 437 responses) -- the FD adopted this records system mid-2024. 2025 is the first full calendar year.",
+    "Multi-year trends are from the Fire Department's annual summary workbooks (calls for service by year, station, and month), maintained by the Fire Chief's office. Year totals are full calendar years. Month averages show seasonality from a separate monthly tally, so their yearly sum differs slightly from the annual totals.",
     "Draft -- figures pending Fire Department review. A national (USFA) comparison is a planned addition."
   ]
 }
