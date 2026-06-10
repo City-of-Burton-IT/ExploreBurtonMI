@@ -130,11 +130,27 @@ def build_panel(districts: list[dict], year: int) -> dict:
 
     series.sort(key=lambda s: s["value"], reverse=True)
 
+    # Education levels (attainment) live on the Demographics dashboard -- link to
+    # them rather than duplicate the chart. Add the colleges that serve the area
+    # (issue #22, higher education).
+    links.append({"text": "Education levels (Demographics)", "href": "#demographics"})
+    for name, url in (
+        ("Mott Community College", "https://www.mcc.edu"),
+        ("University of Michigan-Flint", "https://www.umflint.edu"),
+        ("Kettering University", "https://www.kettering.edu"),
+        ("Baker College", "https://www.baker.edu"),
+    ):
+        links.append({"text": name, "href": url})
+
     notes = [
         "Several of these districts extend well beyond Burton's city limits: "
         "enrollment shown is each district's total, not the number of Burton "
         "residents it serves. Use the Map's \"School districts\" layer to see which "
         "district covers an address.",
+        "Adults' education levels (high-school and college attainment) for Burton "
+        "are on the Demographics dashboard. Colleges serving the area include Mott "
+        "Community College, the University of Michigan-Flint, Kettering University, "
+        "and Baker College.",
         "Source: Urban Institute Education Data API, which republishes the U.S. "
         "Department of Education's National Center for Education Statistics (NCES) "
         "Common Core of Data.",
