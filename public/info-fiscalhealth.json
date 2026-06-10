@@ -6,7 +6,7 @@
     "body": [
       "The City of Burton carries about $991 per resident in long-term debt and $728 per resident toward pensions already earned by current and retired employees. These are not personal bills: the city repays them over many years through utility rates, dedicated road and public-safety millages, and the regular budget -- not a charge sent to your household. In fact, about 91% of the city's debt is for the water and sewer system, repaid by usage bills rather than taxes; the only general-government debt is the fire hall and fire trucks.",
       "Compared with other Michigan cities, Burton sits near the middle: healthier than about 69% of cities on cash on hand and 52% on general-fund reserves, but below the middle (44%) on overall net financial position. In plain terms, the city keeps a reasonable cushion for day-to-day bills, while long-term promises -- pensions and retiree health care -- are the main pressure on the budget.",
-      "Burton's pension is about 68% funded and retiree health care (OPEB) about 77% funded -- so most of those long-term promises are already paid for, with the remainder set aside over time. (See the Finances dashboard for the full budget and multi-year trends.)"
+      "Retirement promises are funded over decades, not all at once. Burton's pension is about 65% funded (41 million set aside against 62 million owed) and retiree health care (OPEB) about 62% funded -- both above the level the state flags for concern, with the rest set aside over time. (See City Finances for the full budget and multi-year trends.)"
     ]
   },
   "stats": [
@@ -32,12 +32,12 @@
     },
     {
       "label": "Pension funded",
-      "value": "68%",
+      "value": "65%",
       "hint": "share of earned pensions already set aside"
     },
     {
       "label": "Retiree health (OPEB) funded",
-      "value": "77.48%",
+      "value": "62%",
       "hint": "share of retiree health-care promises set aside"
     }
   ],
@@ -89,6 +89,40 @@
           "label": "Fire hall & trucks",
           "value": 2.74,
           "color": "#2c57a0"
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "Retirement promises: money set aside vs. owed ($M)",
+      "rows": [
+        {
+          "label": "Pension",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Set aside",
+              "value": 40.72
+            },
+            {
+              "name": "Owed",
+              "value": 62.2
+            }
+          ]
+        },
+        {
+          "label": "Retiree health (OPEB)",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Set aside",
+              "value": 5.4
+            },
+            {
+              "name": "Owed",
+              "value": 8.66
+            }
+          ]
         }
       ]
     }

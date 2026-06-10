@@ -231,6 +231,22 @@ export interface InfoLink {
   href: string;
 }
 
+/** One expandable concept in an interactive explainer (e.g. "What is a fund?"). */
+export interface InfoExplainerItem {
+  term: string;
+  body: string;
+}
+
+/** An optional interactive "learn how this works" explainer for a panel: a button
+ *  that reveals a set of plain-language concept cards the resident can expand. */
+export interface InfoExplainer {
+  /** button + heading label, e.g. "How city budgeting works" */
+  title: string;
+  intro?: string;
+  items: InfoExplainerItem[];
+  source?: string;
+}
+
 /** A plain-language "what this means for you" callout that interprets a dashboard's
  *  numbers for a resident -- what the data shows and how it affects them. Rendered as
  *  a highlighted box near the top of the panel, above the stats. */
@@ -263,6 +279,8 @@ export interface InfoPanel {
   draft?: boolean;
   /** plain-language interpretation shown above the stats (resident "what this means") */
   summary?: InfoSummary;
+  /** optional interactive "learn how this works" explainer shown after the charts */
+  explainer?: InfoExplainer;
   stats: InfoStat[];
   charts: InfoChart[];
   /** optional per-item tables rendered after the charts (e.g. a bridge list) */

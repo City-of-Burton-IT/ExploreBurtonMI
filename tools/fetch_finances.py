@@ -106,6 +106,47 @@ TREND_SERIES = [
 ]
 
 
+# --- Interactive explainer: how municipal budgeting works ------------------------
+# Plain-language adaptation of "Funds, Fund Balance, and Budgeting Concepts," a
+# presentation to the City of Burton by Plante Moran (Pam Hill, CPA; Steven
+# Pochini, CPA). Rendered as an expandable "learn how this works" element.
+BUDGET_EXPLAINER = {
+    "title": "How city budgeting works",
+    "intro": "A quick, plain-language guide to the terms behind these numbers.",
+    "items": [
+        {"term": "What is a \"fund\"?",
+         "body": "The city keeps its money in separate \"funds\" -- like labeled envelopes -- so each "
+                 "dollar is spent only on what it's meant for. Money raised for roads, police, or "
+                 "seniors is tracked separately to prove it was used as promised."},
+        {"term": "The General Fund",
+         "body": "The General Fund is the city's main, most-flexible account -- the money not tied to a "
+                 "specific purpose, used for general services. It's usually the most closely watched fund."},
+        {"term": "Types of funds",
+         "body": "Burton has governmental funds (General, streets, police, fire, parks and more) and "
+                 "enterprise funds that run like a business and pay their own way -- water and sewer, "
+                 "funded by usage bills rather than taxes."},
+        {"term": "What is \"fund balance\"?",
+         "body": "Fund balance is the city's savings in a fund -- what it owns minus what it owes. It's "
+                 "the cushion for emergencies, big purchases, and steady cash flow, and much of it is "
+                 "restricted by law to a specific use."},
+        {"term": "How much savings is healthy?",
+         "body": "There's no single right number, but most governments aim to keep 10-20% of a year's "
+                 "spending in reserve. The GFOA suggests at least about 17%; Michigan's fiscal-stress "
+                 "test uses 13% as a floor."},
+        {"term": "What \"balanced budget\" really means",
+         "body": "It means the city plans to end the year with a positive fund balance -- not that "
+                 "spending must exactly equal revenue. In some years it's appropriate to spend down "
+                 "savings for a planned project."},
+        {"term": "Appropriations (the spending limit)",
+         "body": "When the budget is adopted, the city sets \"appropriations\" -- the legal maximum each "
+                 "department may spend. It's a ceiling, not a forecast, and by state law the city can't "
+                 "spend money it hasn't appropriated."},
+    ],
+    "source": ("Adapted from \"Funds, Fund Balance, and Budgeting Concepts,\" a presentation to the "
+               "City of Burton by Plante Moran (Pam Hill, CPA; Steven Pochini, CPA)."),
+}
+
+
 def _get(url: str) -> Any:
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
     with urllib.request.urlopen(req, timeout=40) as resp:
@@ -207,6 +248,7 @@ def main() -> int:
         "title": "City Finances",
         "subtitle": f"{BUDGET_YEAR} adopted budget + audited financial history",
         "summary": summary,
+        "explainer": BUDGET_EXPLAINER,
         "stats": CITY_STATS + health,
         "charts": [revenue_chart] + CITY_CHARTS + trends,
         "source": (

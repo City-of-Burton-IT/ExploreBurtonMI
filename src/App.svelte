@@ -42,8 +42,24 @@
     // there is fetched automatically -- never hardcode this list (it silently
     // dropped newly-added panels before).
     const ids = DASHBOARDS.map((d) => d.id);
-    const loaded = await Promise.all(ids.map((id) => safe(`info-${id}.json`)));
-    panels = Object.fromEntries(ids.map((id, i) => [id, loaded[i]]));
+    // Shared "What this means" summaries for panels whose data-generator doesn't
+    // embed one (kept in one committed file so the resident text lives in a single
+    // place and survives every tool regeneration).
+    type SummaryMap = Record<string, InfoPanel['summary']>;
+    const summariesP: Promise<SummaryMap> = fetch('summaries.json')
+      .then((r) => (r.ok ? (r.json() as Promise<SummaryMap>) : ({} as SummaryMap)))
+      .catch(() => ({}) as SummaryMap);
+    const [loaded, summaries] = await Promise.all([
+      Promise.all(ids.map((id) => safe(`info-${id}.json`))),
+      summariesP,
+    ]);
+    panels = Object.fromEntries(
+      ids.map((id, i) => {
+        const panel = loaded[i];
+        if (panel && !panel.summary && summaries[id]) panel.summary = summaries[id];
+        return [id, panel];
+      }),
+    );
     infoLoading = false;
   }
 

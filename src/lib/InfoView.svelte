@@ -12,6 +12,8 @@
     panel,
     loading = false,
   }: { panel: InfoPanel | null; loading?: boolean } = $props();
+
+  let explainerOpen = $state(false);
 </script>
 
 <section class="info" aria-label={panel?.title ?? 'Information'}>
@@ -73,6 +75,31 @@
         {#each panel.tables as table (table.title)}
           <InfoTable {table} />
         {/each}
+      </div>
+    {/if}
+
+    {#if panel.explainer?.items?.length}
+      <div class="explainer">
+        <button
+          class="explainer-toggle"
+          aria-expanded={explainerOpen}
+          onclick={() => (explainerOpen = !explainerOpen)}
+        >
+          <span class="ex-icon" aria-hidden="true">{explainerOpen ? '−' : '+'}</span>
+          {panel.explainer.title}
+        </button>
+        {#if explainerOpen}
+          <div class="explainer-body">
+            {#if panel.explainer.intro}<p class="ex-intro">{panel.explainer.intro}</p>{/if}
+            {#each panel.explainer.items as item (item.term)}
+              <details class="ex-card">
+                <summary>{item.term}</summary>
+                <p>{item.body}</p>
+              </details>
+            {/each}
+            {#if panel.explainer.source}<p class="ex-source">{panel.explainer.source}</p>{/if}
+          </div>
+        {/if}
       </div>
     {/if}
 
@@ -184,6 +211,70 @@
     margin-bottom: 0.7rem;
     padding-left: 0.5rem;
     border-left: 3px solid var(--civic-blue, #2c57a0);
+  }
+  .explainer {
+    margin-top: 1.8rem;
+  }
+  .explainer-toggle {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    background: var(--civic-blue, #2c57a0);
+    color: #fff;
+    border: none;
+    border-radius: var(--pub-radius-sm, 6px);
+    padding: 0.6rem 1rem;
+    font-family: var(--font-head, sans-serif);
+    font-weight: 600;
+    font-size: 0.95rem;
+    cursor: pointer;
+  }
+  .explainer-toggle:hover {
+    background: var(--civic-blue-link, #1a4b8f);
+  }
+  .ex-icon {
+    font-size: 1.1rem;
+    line-height: 1;
+    font-weight: 700;
+  }
+  .explainer-body {
+    margin-top: 0.8rem;
+    animation: ex-reveal 0.22s ease;
+  }
+  @keyframes ex-reveal {
+    from { opacity: 0; transform: translateY(-4px); }
+    to { opacity: 1; transform: translateY(0); }
+  }
+  .ex-intro {
+    margin: 0 0 0.7rem;
+    font-size: 0.92rem;
+    color: #444;
+  }
+  .ex-card {
+    border: 1px solid #e2e6ee;
+    border-left: 3px solid var(--civic-green, #4ea735);
+    border-radius: var(--pub-radius-sm, 6px);
+    padding: 0.55rem 0.85rem;
+    margin-bottom: 0.55rem;
+    background: #fafbfd;
+  }
+  .ex-card summary {
+    font-family: var(--font-head, sans-serif);
+    font-weight: 600;
+    font-size: 0.92rem;
+    color: var(--civic-blue, #2c57a0);
+    cursor: pointer;
+  }
+  .ex-card p {
+    margin: 0.5rem 0 0.1rem;
+    font-size: 0.9rem;
+    line-height: 1.5;
+    color: #333;
+  }
+  .ex-source {
+    margin: 0.6rem 0 0;
+    font-size: 0.72rem;
+    color: var(--pub-muted, #5c5c5c);
   }
   hr {
     border: none;

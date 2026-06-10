@@ -55,10 +55,17 @@ DEBT_BY_PURPOSE = [
 ]
 WATER_SEWER_DEBT_PCT = 91
 
-# Retirement promises already earned, % set aside (City actuarial, FY2026-27).
-# Fiscal Health is the single home for these -- not repeated on City Finances.
-PENSION_FUNDED = "68%"
-OPEB_FUNDED = "77.48%"
+# Retirement promises already earned -- money set aside vs. owed, FY2025 AUDITED
+# (Form 5572 / State PA 202 summary). Fiscal Health is the single home for these
+# (not repeated on City Finances). Using the audited FY2025 valuation keeps them
+# consistent with the unfunded-pension figure ($21.5M) shown above: pension
+# assets $40.72M vs liabilities $62.20M = $21.48M unfunded.
+PENSION_ASSETS_M = 40.72
+PENSION_LIAB_M = 62.20
+OPEB_ASSETS_M = 5.40
+OPEB_LIAB_M = 8.66
+PENSION_FUNDED = "65%"   # 40.72 / 62.20
+OPEB_FUNDED = "62%"      # 5.40 / 8.66
 
 # Statewide-rank measures to chart (analytics key -> resident-friendly label).
 # Each is "higher value = healthier = lower rank number"; we render a percentile.
@@ -165,6 +172,15 @@ def main() -> int:
          ]},
         {"type": "donut", "title": "What the city's debt paid for",
          "series": [{"label": lbl, "value": v, "color": c} for lbl, v, c in DEBT_BY_PURPOSE]},
+        {"type": "compare", "title": "Retirement promises: money set aside vs. owed ($M)",
+         "rows": [
+             {"label": "Pension", "unit": "$M",
+              "values": [{"name": "Set aside", "value": PENSION_ASSETS_M},
+                         {"name": "Owed", "value": PENSION_LIAB_M}]},
+             {"label": "Retiree health (OPEB)", "unit": "$M",
+              "values": [{"name": "Set aside", "value": OPEB_ASSETS_M},
+                         {"name": "Owed", "value": OPEB_LIAB_M}]},
+         ]},
     ]
 
     cash_pct = pct_lookup.get("general_fund_cash_Ratio")
@@ -197,9 +213,11 @@ def main() -> int:
     if rank_sentence:
         summary["body"].append(rank_sentence)
     summary["body"].append(
-        "Burton's pension is about 68% funded and retiree health care (OPEB) about 77% funded -- "
-        "so most of those long-term promises are already paid for, with the remainder set aside "
-        "over time. (See the Finances dashboard for the full budget and multi-year trends.)"
+        "Retirement promises are funded over decades, not all at once. Burton's pension is about "
+        f"{PENSION_FUNDED} funded ({PENSION_ASSETS_M:.0f} million set aside against {PENSION_LIAB_M:.0f} "
+        f"million owed) and retiree health care (OPEB) about {OPEB_FUNDED} funded -- both above the "
+        "level the state flags for concern, with the rest set aside over time. (See City Finances for "
+        "the full budget and multi-year trends.)"
     )
 
     panel = {
