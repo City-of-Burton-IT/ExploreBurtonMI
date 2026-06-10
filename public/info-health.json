@@ -35,6 +35,25 @@
   ],
   "charts": [
     {
+      "type": "trend",
+      "title": "Uninsured rate, working-age adults (19-64), by year",
+      "unit": "%",
+      "points": [
+        {
+          "x": "2013",
+          "y": 15.0
+        },
+        {
+          "x": "2018",
+          "y": 9.1
+        },
+        {
+          "x": "2023",
+          "y": 10.0
+        }
+      ]
+    },
+    {
       "type": "bars",
       "title": "Chronic conditions (estimated adult prevalence)",
       "unit": "%",
@@ -231,7 +250,7 @@
       ]
     }
   ],
-  "source": "CDC PLACES: Local Data for Better Health, 2025 release (model-based small-area estimates from the Behavioral Risk Factor Surveillance System). Burton place FIPS 2612060; Genesee County FIPS 26049.",
+  "source": "CDC PLACES: Local Data for Better Health, 2025 release (model-based small-area estimates from the Behavioral Risk Factor Surveillance System). Burton place FIPS 2612060; Genesee County FIPS 26049. The 'Uninsured rate ... by year' line is a separate source: U.S. Census ACS 5-year, table B27001 (working-age adults 19-64), non-overlapping vintages.",
   "links": [
     {
       "text": "CDC PLACES",
@@ -245,6 +264,7 @@
   "notes": [
     "Estimates cover Burton's adult population (city total ~29,715).",
     "These are model-based ESTIMATES of how common each condition or behaviour is among Burton adults, not counts of diagnosed residents. They come from CDC's PLACES program, which projects national survey (BRFSS) results down to each community (2025 release).",
+    "The 'Uninsured rate, working-age adults (19-64), by year' line is from the U.S. Census ACS (5-year survey) -- a different source and method than the CDC PLACES estimates, shown at non-overlapping years so the points are comparable. It is not the same series as the PLACES 'Without health insurance (18-64)' figure.",
     "Every figure is shown against Genesee County so it reads as context. Small differences fall within the estimates' margin of error.",
     "Need care or help? See the Health & support resources in the Resident Guide."
   ]
