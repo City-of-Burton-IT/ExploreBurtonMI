@@ -44,6 +44,11 @@
         contributors &amp;
         <a href="https://overturemaps.org" target="_blank" rel="noopener noreferrer">Overture Maps Foundation</a>.
       </p>
+      <p class="privacy">
+        <!-- Absolute URL so the link resolves from inside the bundled mobile app,
+             not just on the web origin. -->
+        <a href="https://explore.burtonmi.gov/privacy.html" target="_blank" rel="noopener noreferrer">Privacy policy</a>
+      </p>
     </div>
   </div>
 {/if}
@@ -124,6 +129,11 @@
   .attrib {
     font-size: 0.82rem;
     color: #666;
+  }
+  .privacy {
+    margin: 0.6rem 0 0;
+    font-size: 0.85rem;
+    font-weight: 600;
   }
   a {
     color: var(--civic-blue-link);

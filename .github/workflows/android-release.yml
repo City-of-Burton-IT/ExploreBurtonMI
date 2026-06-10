@@ -9,12 +9,15 @@ name: Android release (Play internal)
 # GitHub run number so every upload is unique and increasing (Play rejects duplicates).
 #
 # Required repository secrets (Settings > Secrets and variables > Actions):
-#   ANDROID_UPLOAD_KEYSTORE_B64  - base64 of android/upload-keystore.jks
-#   ANDROID_KEYSTORE_PASSWORD    - keystore (store) password
-#   ANDROID_KEY_ALIAS            - key alias (explore-burton-upload)
-#   ANDROID_KEY_PASSWORD         - key password (same as store password here)
-#   PLAY_SERVICE_ACCOUNT_JSON    - full JSON of a Google Cloud service account that has
-#                                  been granted access in the Play Console
+#   ANDROID_UPLOAD_KEYSTORE_B64     - base64 of android/upload-keystore.jks
+#   ANDROID_KEYSTORE_PASSWORD       - keystore (store) password
+#   ANDROID_KEY_ALIAS               - key alias (explore-burton-upload)
+#   ANDROID_KEY_PASSWORD            - key password (same as store password here)
+# Keyless Play upload via Workload Identity Federation (NO downloadable key):
+#   GCP_PROJECT_ID                  - the Google Cloud project id
+#   GCP_WORKLOAD_IDENTITY_PROVIDER  - projects/<num>/locations/global/workloadIdentityPools/<pool>/providers/<provider>
+#   GCP_SERVICE_ACCOUNT             - the Play-publisher service account email (impersonated; no key)
+# See PLAY_RELEASE.md step 3 for the one-time GCP setup (gcloud commands + org-policy notes).
 on:
   workflow_dispatch:
     inputs:
@@ -34,6 +37,9 @@ on:
 jobs:
   release:
     runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write    # REQUIRED for keyless auth: lets the job mint a GitHub OIDC token
     steps:
       - uses: actions/checkout@v4
 
@@ -94,11 +100,38 @@ jobs:
           path: android/app/build/outputs/bundle/release/app-release.aab
           if-no-files-found: error
 
-      - name: Upload to Play (internal testing track)
-        uses: r0adkll/upload-google-play@v1
+      # --- Keyless upload (no JSON service-account key) ---------------------------
+      # Authenticate to Google Cloud via Workload Identity Federation: GitHub's OIDC
+      # token is exchanged for short-lived credentials that impersonate the Play
+      # publisher service account. Requesting an androidpublisher-scoped access token
+      # here VERIFIES the whole WIF -> impersonation -> scope chain BEFORE we attempt
+      # the upload, so a misconfiguration fails loudly at this step, not mid-upload.
+      - name: Authenticate to Google Cloud (keyless, WIF)
+        id: auth
+        uses: google-github-actions/auth@v2
         with:
-          serviceAccountJsonPlainText: ${{ secrets.PLAY_SERVICE_ACCOUNT_JSON }}
-          packageName: gov.burtonmi.explore
-          releaseFiles: android/app/build/outputs/bundle/release/app-release.aab
-          track: internal
-          status: ${{ inputs.status }}
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/androidpublisher
+
+      # Gradle Play Publisher reads Application Default Credentials (the file the auth
+      # step just wrote, exported as GOOGLE_APPLICATION_CREDENTIALS) -- no key. The AAB
+      # was already built by bundleRelease above; this reuses it and uploads.
+      # NOTE: the FIRST ever upload will fail until one release exists in the console
+      # (Play App Signing enrollment) -- that's expected; the AAB artifact above still
+      # ships. See PLAY_RELEASE.md step 4.
+      - name: Upload to Play (internal testing track) -- keyless
+        env:
+          ANDROID_VERSION_CODE: ${{ github.run_number }}
+          ANDROID_VERSION_NAME: ${{ inputs.versionName }}
+          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
+          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
+          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+        run: |
+          cd android
+          ./gradlew publishReleaseBundle \
+            --track internal \
+            --release-status ${{ inputs.status }} \
+            --no-daemon --stacktrace
