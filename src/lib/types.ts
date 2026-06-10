@@ -168,6 +168,7 @@ export interface PlaceCollection {
 export type InfoView =
   | 'finances'
   | 'fiscalhealth'
+  | 'propertytax'
   | 'demographics'
   | 'schools'
   | 'health'

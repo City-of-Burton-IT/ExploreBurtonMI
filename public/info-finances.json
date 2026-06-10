@@ -1,6 +1,13 @@
 {
-  "title": "Burton City Finances",
+  "title": "City Finances",
   "subtitle": "FY 2026-2027 adopted budget + audited financial history",
+  "summary": {
+    "heading": "What this means for you",
+    "body": [
+      "Property taxes cover only about 39% of the city's day-to-day (governmental) budget. The rest comes from state road funding (the Act 51 gas and weight tax), state-shared revenue, special assessments, fees, and grants -- so a big share of what runs the city is paid by the state and by users of specific services, not by local property taxes.",
+      "Water and sewer service is separate: it is an enterprise paid for by usage bills, not taxes, so it is not part of these figures. (See the Property Taxes dashboard for how a tax bill splits among the city, county, and schools, and Fiscal Health for debt and pensions.)"
+    ]
+  },
   "stats": [
     {
       "label": "Total budget",
@@ -54,6 +61,45 @@
     }
   ],
   "charts": [
+    {
+      "type": "bars",
+      "title": "Revenue by source (FY2025 audited, governmental funds, $M)",
+      "unit": "$M",
+      "series": [
+        {
+          "label": "Property taxes",
+          "value": 10.64
+        },
+        {
+          "label": "State road funds (Act 51)",
+          "value": 5.46
+        },
+        {
+          "label": "State-shared revenue",
+          "value": 3.59
+        },
+        {
+          "label": "Special assessments",
+          "value": 2.15
+        },
+        {
+          "label": "Fees & charges",
+          "value": 1.39
+        },
+        {
+          "label": "Investment income",
+          "value": 1.4
+        },
+        {
+          "label": "Grants",
+          "value": 1.27
+        },
+        {
+          "label": "Other",
+          "value": 1.12
+        }
+      ]
+    },
     {
       "type": "bars",
       "title": "FY2026-27 adopted budget by fund (all funds)",

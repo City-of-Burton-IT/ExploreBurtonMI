@@ -4,7 +4,7 @@
   "summary": {
     "heading": "What this means for you",
     "body": [
-      "The City of Burton carries about $991 per resident in long-term debt and $728 per resident toward pensions already earned by current and retired employees. These are not personal bills: the city repays them over many years through utility rates, dedicated road and public-safety millages, and the regular budget -- not a charge sent to your household.",
+      "The City of Burton carries about $991 per resident in long-term debt and $728 per resident toward pensions already earned by current and retired employees. These are not personal bills: the city repays them over many years through utility rates, dedicated road and public-safety millages, and the regular budget -- not a charge sent to your household. In fact, about 91% of the city's debt is for the water and sewer system, repaid by usage bills rather than taxes; the only general-government debt is the fire hall and fire trucks.",
       "Compared with other Michigan cities, Burton sits near the middle: healthier than about 69% of cities on cash on hand and 52% on general-fund reserves, but below the middle (44%) on overall net financial position. In plain terms, the city keeps a reasonable cushion for day-to-day bills, while long-term promises -- pensions and retiree health care -- are the main pressure on the budget.",
       "Burton's pension is about 68% funded and retiree health care (OPEB) about 77% funded -- so most of those long-term promises are already paid for, with the remainder set aside over time. (See the Finances dashboard for the full budget and multi-year trends.)"
     ]
@@ -63,6 +63,22 @@
         {
           "label": "Unfunded pension",
           "value": 728
+        }
+      ]
+    },
+    {
+      "type": "donut",
+      "title": "What the city's debt paid for",
+      "series": [
+        {
+          "label": "Water & sewer system",
+          "value": 26.53,
+          "color": "#2e7d32"
+        },
+        {
+          "label": "Fire hall & trucks",
+          "value": 2.74,
+          "color": "#2c57a0"
         }
       ]
     }

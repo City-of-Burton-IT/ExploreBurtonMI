@@ -22,6 +22,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     label: 'People & Housing',
     items: [
       { id: 'demographics', label: 'Demographics' },
+      { id: 'jobs', label: 'Jobs & Employers' },
       { id: 'access', label: 'Access & Equity' },
       { id: 'housing', label: 'Housing & Growth' },
       { id: 'zoning', label: 'Zoning' },
@@ -29,11 +30,11 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     ],
   },
   {
-    label: 'Money & Jobs',
+    label: 'Money & Taxes',
     items: [
-      { id: 'finances', label: 'Finances' },
+      { id: 'finances', label: 'City Finances' },
+      { id: 'propertytax', label: 'Property Taxes' },
       { id: 'fiscalhealth', label: 'Fiscal Health' },
-      { id: 'jobs', label: 'Jobs & Employers' },
     ],
   },
   {

@@ -45,6 +45,16 @@ OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "i
 # Demographics dashboard so the same denominator is used everywhere on the site.
 POPULATION = 29_529
 
+# Debt by purpose (AUDITED ACFR, 6/30/2025). These sum to the same total the state
+# F-65 reports as "Long Term Debt" ($29,271,921): governmental $2,738,964 +
+# business-type $26,532,957. So the breakdown reconciles exactly with the per-
+# resident / debt-vs-value figures below. Update yearly from the new ACFR Note 6.
+DEBT_BY_PURPOSE = [
+    ("Water & sewer system", 26.53, "#2e7d32"),  # ~91%, repaid by utility bills
+    ("Fire hall & trucks", 2.74, "#2c57a0"),      # ~9%, the only general-government debt
+]
+WATER_SEWER_DEBT_PCT = 91
+
 # Statewide-rank measures to chart (analytics key -> resident-friendly label).
 # Each is "higher value = healthier = lower rank number"; we render a percentile.
 RANK_MEASURES = [
@@ -144,6 +154,8 @@ def main() -> int:
              {"label": "Debt", "value": debt_per},
              {"label": "Unfunded pension", "value": pension_per},
          ]},
+        {"type": "donut", "title": "What the city's debt paid for",
+         "series": [{"label": lbl, "value": v, "color": c} for lbl, v, c in DEBT_BY_PURPOSE]},
     ]
 
     cash_pct = pct_lookup.get("general_fund_cash_Ratio")
@@ -167,7 +179,10 @@ def main() -> int:
             f"${pension_per:,} per resident toward pensions already earned by current and retired "
             "employees. These are not personal bills: the city repays them over many years through "
             "utility rates, dedicated road and public-safety millages, and the regular budget -- "
-            "not a charge sent to your household.",
+            "not a charge sent to your household. In fact, about "
+            f"{WATER_SEWER_DEBT_PCT}% of the city's debt is for the water and sewer system, repaid by "
+            "usage bills rather than taxes; the only general-government debt is the fire hall and "
+            "fire trucks.",
         ],
     }
     if rank_sentence:

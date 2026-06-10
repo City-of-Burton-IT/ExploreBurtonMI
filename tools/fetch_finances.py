@@ -77,6 +77,25 @@ CITY_CHARTS = [
     },
 ]
 
+# --- Revenue by source (AUDITED ACFR, governmental funds, FY ended 6/30/2025) ----
+# From the City of Burton audited financial statements (ACFR), Governmental Funds
+# Statement of Revenue, Total Governmental Funds column. These are the city's
+# day-to-day (tax-and-state-supported) funds; water & sewer are enterprise funds
+# paid by usage bills and are NOT included here. Update yearly from the new ACFR.
+REVENUE_FY = "FY2025"
+REVENUE_TOTAL_M = 27.0
+REVENUE_SOURCES = [
+    ("Property taxes", 10.64),
+    ("State road funds (Act 51)", 5.46),
+    ("State-shared revenue", 3.59),
+    ("Special assessments", 2.15),
+    ("Fees & charges", 1.39),
+    ("Investment income", 1.40),
+    ("Grants", 1.27),
+    ("Other", 1.12),
+]
+PROPERTY_TAX_SHARE = 39  # property taxes as % of governmental revenue
+
 # --- State AUDITED ACTUALS (from the Community Financials snapshot) --------------
 # Multi-year trend charts: (snapshot dimension name, chart title, divide-to-millions).
 TREND_SERIES = [
@@ -163,11 +182,34 @@ def main() -> int:
     trends, latest_year = build_trends(snapshot)
     health = build_health_stats(snapshot, analytics, latest_year)
 
+    revenue_chart = {
+        "type": "bars",
+        "title": f"Revenue by source ({REVENUE_FY} audited, governmental funds, $M)",
+        "unit": "$M",
+        "series": [{"label": lbl, "value": v} for lbl, v in REVENUE_SOURCES],
+    }
+
+    summary = {
+        "heading": "What this means for you",
+        "body": [
+            f"Property taxes cover only about {PROPERTY_TAX_SHARE}% of the city's day-to-day "
+            f"(governmental) budget. The rest comes from state road funding (the Act 51 gas and "
+            "weight tax), state-shared revenue, special assessments, fees, and grants -- so a big "
+            "share of what runs the city is paid by the state and by users of specific services, "
+            "not by local property taxes.",
+            "Water and sewer service is separate: it is an enterprise paid for by usage bills, not "
+            "taxes, so it is not part of these figures. (See the Property Taxes dashboard for how a "
+            "tax bill splits among the city, county, and schools, and Fiscal Health for debt and "
+            "pensions.)",
+        ],
+    }
+
     panel = {
-        "title": "Burton City Finances",
+        "title": "City Finances",
         "subtitle": f"{BUDGET_YEAR} adopted budget + audited financial history",
+        "summary": summary,
         "stats": CITY_STATS + health,
-        "charts": CITY_CHARTS + trends,
+        "charts": [revenue_chart] + CITY_CHARTS + trends,
         "source": (
             f"City of Burton {BUDGET_YEAR} Approved Budget (Controller's Office) for the adopted-budget "
             "figures; State of Michigan Community Financials (audited F-65 actuals) for the historical trends."
