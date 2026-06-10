@@ -211,6 +211,82 @@
       ]
     },
     {
+      "type": "trend",
+      "title": "Bachelor's degree or higher (% age 25+)",
+      "unit": "%",
+      "points": [
+        {
+          "x": "2013",
+          "y": 14
+        },
+        {
+          "x": "2018",
+          "y": 16
+        },
+        {
+          "x": "2023",
+          "y": 16
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Median household income ($)",
+      "unit": "$",
+      "points": [
+        {
+          "x": "2013",
+          "y": 43983
+        },
+        {
+          "x": "2018",
+          "y": 44878
+        },
+        {
+          "x": "2023",
+          "y": 57767
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Residents below the poverty line (%)",
+      "unit": "%",
+      "points": [
+        {
+          "x": "2013",
+          "y": 20
+        },
+        {
+          "x": "2018",
+          "y": 20
+        },
+        {
+          "x": "2023",
+          "y": 17
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Residents who work from home (%)",
+      "unit": "%",
+      "points": [
+        {
+          "x": "2013",
+          "y": 2
+        },
+        {
+          "x": "2018",
+          "y": 2
+        },
+        {
+          "x": "2023",
+          "y": 7
+        }
+      ]
+    },
+    {
       "type": "compare",
       "title": "How Burton compares (2023)",
       "rows": [
@@ -353,6 +429,7 @@
   "notes": [
     "Population trend: the 2000-2020 points are decennial census counts; the most recent figure is an ACS 5-year estimate, so it is not directly comparable to them.",
     "Homeownership rate is the owner-occupied share of occupied homes from the 2000, 2010, and 2020 decennial censuses (directly comparable counts).",
+    "Trend lines use ACS 5-year estimates spaced about four years apart; each point is a smoothed 5-year average, and dollar figures are not inflation-adjusted.",
     "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
   ]
 }

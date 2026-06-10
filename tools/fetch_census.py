@@ -121,6 +121,12 @@ DECENNIAL = [
     ("2020", "2020/dec/pl", "P1_001N"),
 ]
 
+# ACS 5-year vintages for trend lines. Non-overlapping 5-year windows
+# (2009-2013, 2014-2018, 2019-2023) so the points are directly comparable.
+# B15003 (attainment) only exists from the 2012 vintage on, so start at 2013.
+TREND_YEARS = [2013, 2018, 2023]
+BACH_CODES = ["022", "023", "024", "025"]  # bachelor's, master's, professional, doctorate
+
 # Homeownership-rate trend from the decennial tenure tables. Variable names verified
 # against each dataset's group JSON (they differ by vintage):
 #   2000 sf1 H4:  H004001 total occupied, H004002 owner occupied
@@ -389,6 +395,39 @@ def build_trend(record: dict, year: int, key: str) -> list[dict]:
     return points if len(points) >= 2 else []
 
 
+def build_acs_trends(key: str) -> dict:
+    """Multi-year ACS 5-year trend lines: median income, bachelor's+, poverty, and
+    work-from-home. One API call per year; missing years are skipped."""
+    needed = [
+        "B19013_001E",                                  # median household income
+        "B15003_001E", *(f"B15003_{c}E" for c in BACH_CODES),
+        "B17001_001E", "B17001_002E",                   # poverty (total, below)
+        "B08301_001E", "B08301_021E",                   # commute total, worked at home
+    ]
+    geo = f"for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}"
+    income, bachelors, poverty, wfh = [], [], [], []
+    for yr in TREND_YEARS:
+        try:
+            rec = _fetch_vars(yr, key, needed, geo)
+        except Exception as exc:  # noqa: BLE001 - skip a year the API can't serve
+            print(f"  ACS trend {yr} skipped ({exc})")
+            continue
+        x = str(yr)
+        mi = _int(rec, "B19013_001E")
+        if mi > 0:
+            income.append({"x": x, "y": mi})
+        et = _int(rec, "B15003_001E")
+        if et:
+            bachelors.append({"x": x, "y": _pct(_sum(rec, "B15003", BACH_CODES), et)})
+        pt = _int(rec, "B17001_001E")
+        if pt:
+            poverty.append({"x": x, "y": _pct(_int(rec, "B17001_002E"), pt)})
+        ct = _int(rec, "B08301_001E")
+        if ct:
+            wfh.append({"x": x, "y": _pct(_int(rec, "B08301_021E"), ct)})
+    return {"income": income, "bachelors": bachelors, "poverty": poverty, "wfh": wfh}
+
+
 def main() -> int:
     parser = argparse.ArgumentParser(description="Fetch Burton demographics from the Census ACS.")
     parser.add_argument("--year", type=int, default=2023, help="ACS 5-year vintage (default 2023)")
@@ -426,6 +465,25 @@ def main() -> int:
             "Homeownership rate is the owner-occupied share of occupied homes from the "
             "2000, 2010, and 2020 decennial censuses (directly comparable counts).",
         )
+    # Multi-year ACS trend lines (education, income, poverty, remote work).
+    trends = build_acs_trends(args.key)
+    trend_charts = [
+        ("bachelors", "Bachelor's degree or higher (% age 25+)", "%"),
+        ("income", "Median household income ($)", "$"),
+        ("poverty", "Residents below the poverty line (%)", "%"),
+        ("wfh", "Residents who work from home (%)", "%"),
+    ]
+    for tkey, title, unit in trend_charts:
+        pts = trends.get(tkey, [])
+        if len(pts) >= 2:
+            panel["charts"].append({"type": "trend", "title": title, "unit": unit, "points": pts})
+    if any(len(trends.get(k, [])) >= 2 for k, _, _ in trend_charts):
+        panel["notes"].insert(
+            len(panel["notes"]) - 1,
+            "Trend lines use ACS 5-year estimates spaced about four years apart; each point "
+            "is a smoothed 5-year average, and dollar figures are not inflation-adjusted.",
+        )
+
     # The wide benchmark comparison reads better at the end of the panel than in the
     # middle of the single-topic charts, so append it last.
     compare = build_compare(record, args.year, args.key)
