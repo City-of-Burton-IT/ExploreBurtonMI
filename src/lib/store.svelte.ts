@@ -55,6 +55,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
       { id: 'bridges', label: 'Bridges & Infrastructure' },
       { id: 'roads', label: 'Roads & Pavement' },
       { id: 'roadsafety', label: 'Traffic Safety' },
+      { id: 'publicsafety', label: 'Public Safety' },
     ],
   },
 ];

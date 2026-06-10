@@ -3,3 +3,7 @@
 # pipeline/requirements.txt so the pipeline stays pure-Python (Python 3.14 safe).
 overturemaps
 pyshp>=2.3
+
+# openpyxl: reads the Fire Department's Emergency Networking .xlsx report exports
+# for tools/build_publicsafety.py (Public Safety dashboard).
+openpyxl>=3.1

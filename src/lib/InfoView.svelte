@@ -30,8 +30,11 @@
 
     {#if panel.draft}
       <p class="draft" role="note">
-        <strong>Sample figures.</strong> These numbers are placeholders for layout review and
-        are not final published figures.
+        {#if panel.draftNote}
+          <strong>Draft.</strong> {panel.draftNote}
+        {:else}
+          <strong>Draft figures.</strong> These numbers are provisional and not yet final.
+        {/if}
       </p>
     {/if}
 

@@ -184,7 +184,8 @@ export type InfoView =
   | 'parks'
   | 'roadsafety'
   | 'access'
-  | 'seniorcenter';
+  | 'seniorcenter'
+  | 'publicsafety';
 export type AppView = 'map' | InfoView | 'guide';
 
 export interface InfoStat {
@@ -297,6 +298,10 @@ export interface InfoPanel {
   subtitle?: string;
   /** when true, render a "not yet official" banner (finances until real figures land) */
   draft?: boolean;
+  /** banner text for a draft panel; defaults to a generic "provisional" note. Use to
+   *  distinguish invented mockup data ("sample") from real-but-unapproved figures
+   *  ("pending department review"). */
+  draftNote?: string;
   /** plain-language interpretation shown above the stats (resident "what this means") */
   summary?: InfoSummary;
   /** optional interactive "learn how this works" explainer shown after the charts */

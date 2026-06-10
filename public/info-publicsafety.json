@@ -1,0 +1,134 @@
+{
+  "title": "Public Safety",
+  "subtitle": "Burton Fire & Rescue -- 2025 responses",
+  "draft": true,
+  "draftNote": "These are real aggregate counts from the Fire Department's records system (Emergency Networking), shown for department review. Figures are not yet published as official.",
+  "stats": [
+    {
+      "label": "Total responses",
+      "value": "758",
+      "hint": "2025 (first full year)"
+    },
+    {
+      "label": "Avg response time",
+      "value": "9:37",
+      "hint": "min:sec, dispatch to arrival"
+    },
+    {
+      "label": "Fire responses",
+      "value": "108",
+      "hint": "incl. 54 building fires"
+    },
+    {
+      "label": "False alarms",
+      "value": "174",
+      "hint": "mostly detector/alarm malfunctions"
+    },
+    {
+      "label": "Hazardous-condition calls",
+      "value": "178",
+      "hint": "downed power lines, gas leaks, CO"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "Responses by type (2025)",
+      "unit": "",
+      "series": [
+        {
+          "label": "Good intent",
+          "value": 184
+        },
+        {
+          "label": "Hazardous condition",
+          "value": 178
+        },
+        {
+          "label": "False alarm / false call",
+          "value": 174
+        },
+        {
+          "label": "Fire",
+          "value": 108
+        },
+        {
+          "label": "Service call",
+          "value": 94
+        },
+        {
+          "label": "Rescue & EMS",
+          "value": 18
+        },
+        {
+          "label": "Other",
+          "value": 2
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Responses by month (2025)",
+      "unit": "",
+      "points": [
+        {
+          "x": "Jan",
+          "y": 56
+        },
+        {
+          "x": "Feb",
+          "y": 36
+        },
+        {
+          "x": "Mar",
+          "y": 84
+        },
+        {
+          "x": "Apr",
+          "y": 48
+        },
+        {
+          "x": "May",
+          "y": 56
+        },
+        {
+          "x": "Jun",
+          "y": 75
+        },
+        {
+          "x": "Jul",
+          "y": 65
+        },
+        {
+          "x": "Aug",
+          "y": 82
+        },
+        {
+          "x": "Sep",
+          "y": 78
+        },
+        {
+          "x": "Oct",
+          "y": 70
+        },
+        {
+          "x": "Nov",
+          "y": 57
+        },
+        {
+          "x": "Dec",
+          "y": 51
+        }
+      ]
+    }
+  ],
+  "source": "City of Burton Fire Department incident records (Emergency Networking RMS), calendar year 2025.",
+  "links": [],
+  "notes": [
+    "Aggregates from the City of Burton Fire Department records system (Emergency Networking RMS). Counts only -- no addresses, names, or individual incidents.",
+    "Categories follow the national NFIRS incident-type series. These are fire/rescue incident counts; EMS-coded calls are few in this dataset (medical transport may be recorded separately).",
+    "Average response time is dispatch-to-arrival, averaged over incidents with a recorded on-scene time; it includes mutual-aid runs outside the city. Method and figure pending FD confirmation.",
+    "2024 is a partial year (Jun-Dec, 437 responses) -- the FD adopted this records system mid-2024. 2025 is the first full calendar year.",
+    "Draft -- figures pending Fire Department review. A national (USFA) comparison is a planned addition."
+  ]
+}
