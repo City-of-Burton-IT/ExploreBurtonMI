@@ -55,6 +55,11 @@ DEBT_BY_PURPOSE = [
 ]
 WATER_SEWER_DEBT_PCT = 91
 
+# Retirement promises already earned, % set aside (City actuarial, FY2026-27).
+# Fiscal Health is the single home for these -- not repeated on City Finances.
+PENSION_FUNDED = "68%"
+OPEB_FUNDED = "77.48%"
+
 # Statewide-rank measures to chart (analytics key -> resident-friendly label).
 # Each is "higher value = healthier = lower rank number"; we render a percentile.
 RANK_MEASURES = [
@@ -134,6 +139,10 @@ def main() -> int:
             "value": f"{reserve_rank} of {reserve_total}",
             "hint": "general-fund reserves; 1 = healthiest city",
         })
+    stats.append({"label": "Pension funded", "value": PENSION_FUNDED,
+                  "hint": "share of earned pensions already set aside"})
+    stats.append({"label": "Retiree health (OPEB) funded", "value": OPEB_FUNDED,
+                  "hint": "share of retiree health-care promises set aside"})
 
     # Centerpiece: statewide percentile across fiscal-health measures.
     rank_series = []

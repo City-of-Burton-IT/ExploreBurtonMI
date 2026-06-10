@@ -33,12 +33,11 @@ OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "i
 
 # --- City ADOPTED BUDGET (plan) -- update yearly from the adopted budget --------
 BUDGET_YEAR = "FY 2026-2027"
+# Note: city millage lives on the Property Taxes dashboard, and pension/OPEB
+# funded ratios on Fiscal Health, so no figure is shown on two dashboards.
 CITY_STATS = [
     {"label": "Total budget", "value": "$67.7M", "hint": "all funds, FY2026-27 adopted"},
-    {"label": "City operating millage", "value": "4.000", "hint": "of 4.6872 max"},
     {"label": "Taxable value", "value": "$895.5M", "hint": "2026, city assessor"},
-    {"label": "Pension funded", "value": "68%", "hint": "FY2026-27"},
-    {"label": "OPEB funded", "value": "77.48%", "hint": "FY2026-27"},
     {"label": "Full-time staff", "value": "102", "hint": "FY2026-27"},
 ]
 CITY_CHARTS = [

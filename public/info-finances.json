@@ -15,24 +15,9 @@
       "hint": "all funds, FY2026-27 adopted"
     },
     {
-      "label": "City operating millage",
-      "value": "4.000",
-      "hint": "of 4.6872 max"
-    },
-    {
       "label": "Taxable value",
       "value": "$895.5M",
       "hint": "2026, city assessor"
-    },
-    {
-      "label": "Pension funded",
-      "value": "68%",
-      "hint": "FY2026-27"
-    },
-    {
-      "label": "OPEB funded",
-      "value": "77.48%",
-      "hint": "FY2026-27"
     },
     {
       "label": "Full-time staff",

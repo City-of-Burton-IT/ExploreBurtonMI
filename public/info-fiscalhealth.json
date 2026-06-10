@@ -29,6 +29,16 @@
       "label": "Reserve rank in Michigan",
       "value": "125 of 261",
       "hint": "general-fund reserves; 1 = healthiest city"
+    },
+    {
+      "label": "Pension funded",
+      "value": "68%",
+      "hint": "share of earned pensions already set aside"
+    },
+    {
+      "label": "Retiree health (OPEB) funded",
+      "value": "77.48%",
+      "hint": "share of retiree health-care promises set aside"
     }
   ],
   "charts": [
