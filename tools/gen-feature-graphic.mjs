@@ -3,11 +3,15 @@
 //   node tools/gen-feature-graphic.mjs
 // Output: C:/utils/explore-burton-feature-graphic.png (upload to the Play listing).
 import sharp from 'sharp';
+import { existsSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
-const SEAL = join(ROOT, 'public', 'burton-seal.png');
+// Transparent seal from the burton-design system (looks clean on the gradient --
+// no white box). Falls back to the bundled white-background seal if absent.
+const SEAL_TRANSPARENT = 'C:/IT/burton-design/assets/logos/burton-seal-transparent.png';
+const SEAL = existsSync(SEAL_TRANSPARENT) ? SEAL_TRANSPARENT : join(ROOT, 'public', 'burton-seal.png');
 const OUT = 'C:/utils/explore-burton-feature-graphic.png';
 
 const W = 1024;
