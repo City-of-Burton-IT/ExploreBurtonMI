@@ -3,6 +3,7 @@
   import type { GuideBundle } from './types';
   import { ui, setGuideSection, openAbout } from './store.svelte';
   import { safeHref } from './templates';
+  import { dataFetch } from './remote';
   import GuideSection from './guide/GuideSection.svelte';
 
   let bundle = $state<GuideBundle | null>(null);
@@ -10,7 +11,7 @@
 
   onMount(async () => {
     try {
-      const r = await fetch('guide.json');
+      const r = await dataFetch('guide.json');
       if (r.ok) bundle = (await r.json()) as GuideBundle;
     } catch {
       bundle = null;

@@ -2,6 +2,7 @@
   import { onMount } from 'svelte';
   import { loadConfig } from './lib/config';
   import { loadData } from './lib/data';
+  import { dataFetch } from './lib/remote';
   import { filterFeatures } from './lib/filter';
   import { buildIndex, searchIds } from './lib/search';
   import type { AppConfig, PlaceCollection, InfoPanel } from './lib/types';
@@ -35,7 +36,7 @@
 
   async function loadInfo() {
     const safe = (url: string): Promise<InfoPanel | null> =>
-      fetch(url)
+      dataFetch(url)
         .then((r) => (r.ok ? (r.json() as Promise<InfoPanel>) : null))
         .catch(() => null);
     // Derive from DASHBOARDS (single source of truth) so a new dashboard added
@@ -46,7 +47,7 @@
     // embed one (kept in one committed file so the resident text lives in a single
     // place and survives every tool regeneration).
     type SummaryMap = Record<string, InfoPanel['summary']>;
-    const summariesP: Promise<SummaryMap> = fetch('summaries.json')
+    const summariesP: Promise<SummaryMap> = dataFetch('summaries.json')
       .then((r) => (r.ok ? (r.json() as Promise<SummaryMap>) : ({} as SummaryMap)))
       .catch(() => ({}) as SummaryMap);
     const [loaded, summaries] = await Promise.all([

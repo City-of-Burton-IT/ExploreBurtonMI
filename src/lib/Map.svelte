@@ -5,8 +5,11 @@
   import 'leaflet.markercluster';
   import 'leaflet.markercluster/dist/MarkerCluster.css';
   import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
+  import { Capacitor } from '@capacitor/core';
+  import { Geolocation } from '@capacitor/geolocation';
   import type { AppConfig, PlaceCollection, PlaceFeature } from './types';
   import { ui, select, setUserLocation } from './store.svelte';
+  import { dataFetch } from './remote';
 
   let {
     config,
@@ -25,6 +28,54 @@
   function flashLocateMsg(msg: string): void {
     locateMsg = msg;
     setTimeout(() => (locateMsg = ''), 4500);
+  }
+
+  // Shared "we have the user's position" handler for both the web (Leaflet locate)
+  // and native (Capacitor Geolocation) paths: sort the list nearest-first, and only
+  // recenter + drop the "you are here" marker when the user is inside the city bounds.
+  function applyUserLocation(lat: number, lng: number): void {
+    if (!map) return;
+    locateMsg = '';
+    const latlng = L.latLng(lat, lng);
+    setUserLocation({ lat, lng });
+    // maxBounds is a LatLngBounds at construction (tightened to the city outline on
+    // load), so it's a bounds instance at runtime.
+    const bounds = map.options.maxBounds as L.LatLngBounds | undefined;
+    if (bounds && !bounds.contains(latlng)) {
+      flashLocateMsg('You appear to be outside Burton — showing the closest places on the city map.');
+      return;
+    }
+    map.setView(latlng, Math.max(map.getZoom(), 15));
+    if (!userMarker) {
+      userMarker = L.circleMarker(latlng, {
+        radius: 8,
+        color: '#ffffff',
+        weight: 3,
+        fillColor: '#1976d2',
+        fillOpacity: 1,
+      });
+      userMarker.bindTooltip('You are here');
+      userMarker.addTo(map);
+    } else {
+      userMarker.setLatLng(latlng);
+    }
+    userMarker.bringToFront();
+  }
+
+  // Native (Capacitor) geolocation: request the runtime permission, then read one
+  // position. Mirrors Leaflet's locationerror messaging on denial/failure.
+  async function locateNative(): Promise<void> {
+    try {
+      const perm = await Geolocation.requestPermissions();
+      if (perm.location === 'denied' && perm.coarseLocation === 'denied') {
+        flashLocateMsg('Couldn’t get your location — location access is turned off for this app.');
+        return;
+      }
+      const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
+      applyUserLocation(pos.coords.latitude, pos.coords.longitude);
+    } catch {
+      flashLocateMsg('Couldn’t get your location — check that location access is allowed for this app.');
+    }
   }
 
   const DEFAULT_COLOR = '#555555';
@@ -130,7 +181,7 @@
         dimColor = '#0b1f2e',
         dimOpacity = 0.5,
       } = config.boundary;
-      fetch(source)
+      dataFetch(source)
         .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`boundary HTTP ${r.status}`))))
         .then((geojson) => {
           if (!map) return;
@@ -215,7 +266,7 @@
             const el = img.getElement() as HTMLElement | null;
             if (el && clip) el.style.clipPath = clip;
           };
-          fetch(config.boundary.source)
+          dataFetch(config.boundary.source)
             .then((r) => (r.ok ? r.json() : Promise.reject(new Error('boundary'))))
             .then((gj) => {
               clip = boundaryClipPath(gj, ov.bounds);
@@ -255,7 +306,7 @@
 
       for (const layer of config.dataLayers ?? []) {
         const nameField = layer.nameField ?? 'name';
-        fetch(layer.source)
+        dataFetch(layer.source)
           .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${layer.source} HTTP ${r.status}`))))
           .then((geojson) => {
             if (!map) return;
@@ -361,41 +412,22 @@
           // No setView: we recenter ourselves only when the user is inside the city
           // bounds (the map is locked to Burton, so centering on a far-away user would
           // just clamp to the edge and leave their marker unreachable off-map).
-          map.locate({ enableHighAccuracy: true });
+          if (Capacitor.isNativePlatform()) {
+            // In the native app the WebView's navigator.geolocation needs the Android
+            // runtime permission, which Leaflet's map.locate() can't request. Use the
+            // Capacitor Geolocation plugin to prompt + read the position, then feed it
+            // through the same handler the web path uses.
+            locateNative();
+          } else {
+            map.locate({ enableHighAccuracy: true });
+          }
         });
         return btn;
       },
     });
     map.addControl(new NearMeControl());
 
-    map.on('locationfound', (e: L.LocationEvent) => {
-      locateMsg = '';
-      setUserLocation({ lat: e.latlng.lat, lng: e.latlng.lng });
-      // Always sort the list nearest-first; but only recenter + drop the "you are
-      // here" marker when the user is within the city bounds.
-      // maxBounds is set to a LatLngBounds at construction (and tightened to the
-      // city outline on load), so it's a bounds instance at runtime.
-      const bounds = map!.options.maxBounds as L.LatLngBounds | undefined;
-      if (bounds && !bounds.contains(e.latlng)) {
-        flashLocateMsg('You appear to be outside Burton — showing the closest places on the city map.');
-        return;
-      }
-      map!.setView(e.latlng, Math.max(map!.getZoom(), 15));
-      if (!userMarker) {
-        userMarker = L.circleMarker(e.latlng, {
-          radius: 8,
-          color: '#ffffff',
-          weight: 3,
-          fillColor: '#1976d2',
-          fillOpacity: 1,
-        });
-        userMarker.bindTooltip('You are here');
-        userMarker.addTo(map!);
-      } else {
-        userMarker.setLatLng(e.latlng);
-      }
-      userMarker.bringToFront();
-    });
+    map.on('locationfound', (e: L.LocationEvent) => applyUserLocation(e.latlng.lat, e.latlng.lng));
     map.on('locationerror', () => {
       flashLocateMsg('Couldn’t get your location — check that location access is allowed for this site.');
     });

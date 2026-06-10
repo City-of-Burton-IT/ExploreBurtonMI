@@ -1,4 +1,5 @@
 import type { PlaceCollection, PlaceFeature } from './types';
+import { dataFetch } from './remote';
 
 /**
  * Load and validate the GeoJSON dataset. Fails LOUDLY on a malformed file
@@ -6,7 +7,7 @@ import type { PlaceCollection, PlaceFeature } from './types';
  * feature that lacks one (used to sync map <-> list <-> filter).
  */
 export async function loadData(url: string): Promise<PlaceCollection> {
-  const res = await fetch(url);
+  const res = await dataFetch(url);
   if (!res.ok) {
     throw new Error(`Failed to load ${url}: HTTP ${res.status}`);
   }
