@@ -1,5 +1,4 @@
 apply plugin: 'com.android.application'
-apply plugin: 'com.github.triplet.play'
 
 android {
     namespace = "gov.burtonmi.explore"
@@ -75,19 +74,6 @@ dependencies {
     androidTestImplementation "androidx.test.ext:junit:$androidxJunitVersion"
     androidTestImplementation "androidx.test.espresso:espresso-core:$androidxEspressoCoreVersion"
     implementation project(':capacitor-cordova-android-plugins')
-}
-
-// Gradle Play Publisher: keyless upload to Play.
-//   * useApplicationDefaultCredentials -> authenticate via ADC (no JSON key). In CI
-//     the google-github-actions/auth step provides ADC from Workload Identity
-//     Federation; the service account is impersonated, never a downloaded key.
-//   * track / releaseStatus default to the internal testing track + a completed
-//     rollout, but the CI workflow overrides them with --track / --release-status.
-// Publish task: ./gradlew publishReleaseBundle  (see .github/workflows/android-release.yml)
-play {
-    useApplicationDefaultCredentials.set(true)
-    track.set("internal")
-    defaultToAppBundles.set(true)
 }
 
 apply from: 'capacitor.build.gradle'

@@ -116,22 +116,45 @@ jobs:
           token_format: access_token
           access_token_scopes: https://www.googleapis.com/auth/androidpublisher
 
-      # Gradle Play Publisher reads Application Default Credentials (the file the auth
-      # step just wrote, exported as GOOGLE_APPLICATION_CREDENTIALS) -- no key. The AAB
-      # was already built by bundleRelease above; this reuses it and uploads.
-      # NOTE: the FIRST ever upload will fail until one release exists in the console
+      # Upload via the Play Developer REST API using the short-lived access token the
+      # auth step minted (keyless -- no JSON key, no Gradle plugin). Flow: open an
+      # edit, upload the .aab, assign it to the internal track, commit.
+      # NOTE: the FIRST ever upload fails until one release exists in the console
       # (Play App Signing enrollment) -- that's expected; the AAB artifact above still
-      # ships. See PLAY_RELEASE.md step 4.
+      # ships, so you can do that first release by hand. See PLAY_RELEASE.md step 4.
       - name: Upload to Play (internal testing track) -- keyless
         env:
-          ANDROID_VERSION_CODE: ${{ github.run_number }}
-          ANDROID_VERSION_NAME: ${{ inputs.versionName }}
-          ANDROID_KEYSTORE_PASSWORD: ${{ secrets.ANDROID_KEYSTORE_PASSWORD }}
-          ANDROID_KEY_ALIAS: ${{ secrets.ANDROID_KEY_ALIAS }}
-          ANDROID_KEY_PASSWORD: ${{ secrets.ANDROID_KEY_PASSWORD }}
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          STATUS: ${{ inputs.status }}
         run: |
-          cd android
-          ./gradlew publishReleaseBundle \
-            --track internal \
-            --release-status ${{ inputs.status }} \
-            --no-daemon --stacktrace
+          set -euo pipefail
+          PKG=gov.burtonmi.explore
+          AAB=android/app/build/outputs/bundle/release/app-release.aab
+          API=https://androidpublisher.googleapis.com/androidpublisher/v3/applications/$PKG
+          UPLOAD=https://androidpublisher.googleapis.com/upload/androidpublisher/v3/applications/$PKG
+          AUTH="Authorization: Bearer $ACCESS_TOKEN"
+
+          die() { echo "::error::$1"; echo "API response: $2"; exit 1; }
+
+          echo "Opening an edit..."
+          resp=$(curl -sS -X POST -H "$AUTH" "$API/edits")
+          EDIT=$(echo "$resp" | jq -r '.id // empty')
+          [ -n "$EDIT" ] || die "Could not open an edit (is the app created and the service account granted access?)" "$resp"
+
+          echo "Uploading $AAB ..."
+          resp=$(curl -sS -X POST -H "$AUTH" -H "Content-Type: application/octet-stream" \
+                 --data-binary @"$AAB" "$UPLOAD/edits/$EDIT/bundles?uploadType=media")
+          VC=$(echo "$resp" | jq -r '.versionCode // empty')
+          [ -n "$VC" ] || die "Bundle upload failed (first ever upload must be done by hand to enroll Play App Signing)" "$resp"
+          echo "Uploaded versionCode $VC"
+
+          echo "Assigning versionCode $VC to the internal track (status: $STATUS)..."
+          resp=$(curl -sS -X PUT -H "$AUTH" -H "Content-Type: application/json" \
+                 -d "{\"track\":\"internal\",\"releases\":[{\"status\":\"$STATUS\",\"versionCodes\":[\"$VC\"]}]}" \
+                 "$API/edits/$EDIT/tracks/internal")
+          echo "$resp" | jq -e '.track == "internal"' >/dev/null || die "Track assignment failed" "$resp"
+
+          echo "Committing the edit..."
+          resp=$(curl -sS -X POST -H "$AUTH" "$API/edits/$EDIT:commit")
+          echo "$resp" | jq -e '.id' >/dev/null || die "Commit failed" "$resp"
+          echo "Uploaded to the internal track (versionCode $VC, status $STATUS)."
