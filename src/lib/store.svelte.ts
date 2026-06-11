@@ -4,6 +4,7 @@
 
 import type { PlaceFeature, AppView, InfoView } from './types';
 import type { Selections } from './filter';
+import { placeIdFromHash, placeHash } from './hash';
 
 export interface DashboardItem {
   id: InfoView;
@@ -207,12 +208,25 @@ export function closeAbout(): void {
 
 export function select(feature: PlaceFeature | null): void {
   ui.selected = feature;
-  // Picking a place from the list should reveal it on the map (+ its detail sheet).
-  if (feature) ui.mobileView = 'map';
+  if (feature) {
+    // Picking a place reveals it on the map (+ its detail sheet) and makes the
+    // URL a shareable permalink (#map/place/<id>). The id-equality guard means
+    // applying a place from the hash re-writes the same value -> no event loop.
+    ui.mobileView = 'map';
+    ui.view = 'map';
+    if (typeof window !== 'undefined') {
+      const h = placeHash(feature.id);
+      if (window.location.hash.replace(/^#/, '') !== h) window.location.hash = h;
+    }
+  }
 }
 
 export function clearSelection(): void {
   ui.selected = null;
+  // Drop the place from the URL (keep the clean map URL) without a history entry.
+  if (typeof window !== 'undefined' && placeIdFromHash(window.location.hash)) {
+    history.replaceState(null, '', window.location.pathname + window.location.search);
+  }
 }
 
 /** Add or remove a value from a facet field's selection. */

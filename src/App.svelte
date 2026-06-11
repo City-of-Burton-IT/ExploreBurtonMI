@@ -6,7 +6,8 @@
   import { filterFeatures } from './lib/filter';
   import { buildIndex, searchIds } from './lib/search';
   import type { AppConfig, PlaceCollection, InfoPanel } from './lib/types';
-  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard, DASHBOARDS } from './lib/store.svelte';
+  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard, DASHBOARDS, select, clearSelection } from './lib/store.svelte';
+  import { placeIdFromHash } from './lib/hash';
   import Map from './lib/Map.svelte';
   import Detail from './lib/Detail.svelte';
   import Facets from './lib/Facets.svelte';
@@ -34,6 +35,28 @@
     const cfg = await loadConfig();
     config = cfg;
     data = await loadData(cfg.data.source);
+    reconcilePlace(); // honor a #map/place/<id> deep link once the data is loaded
+  }
+
+  // Keep the place selection in sync with the URL hash (back/forward + deep links).
+  // select()/clearSelection() write the hash; this reads it. The id-equality guard
+  // prevents an event loop.
+  function reconcilePlace() {
+    if (!data) return;
+    const id = placeIdFromHash(window.location.hash);
+    if (id) {
+      if (ui.selected?.id !== id) {
+        const f = data.features.find((x) => x.id === id);
+        if (f) select(f);
+      }
+    } else if (ui.selected) {
+      clearSelection();
+    }
+  }
+
+  function onHashChange() {
+    syncViewFromHash();
+    reconcilePlace();
   }
 
   async function loadInfo() {
@@ -82,8 +105,8 @@
   loadInfo();
 
   onMount(() => {
-    window.addEventListener('hashchange', syncViewFromHash);
-    return () => window.removeEventListener('hashchange', syncViewFromHash);
+    window.addEventListener('hashchange', onHashChange);
+    return () => window.removeEventListener('hashchange', onHashChange);
   });
 
   const index = $derived(

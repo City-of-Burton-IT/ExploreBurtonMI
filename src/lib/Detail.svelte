@@ -2,8 +2,39 @@
   import type { AppConfig } from './types';
   import { renderProperties } from './templates';
   import { ui, clearSelection } from './store.svelte';
+  import { placeHash } from './hash';
 
   let { config }: { config: AppConfig } = $props();
+
+  // Share the current place via a #map/place/<id> permalink: the native share
+  // sheet where available (mobile + desktop Chrome), else copy to the clipboard.
+  let toast = $state('');
+  let toastTimer: ReturnType<typeof setTimeout> | undefined;
+  function showToast(msg: string) {
+    toast = msg;
+    clearTimeout(toastTimer);
+    toastTimer = setTimeout(() => (toast = ''), 2500);
+  }
+  async function share() {
+    const sel = ui.selected;
+    if (!sel) return;
+    const url = `${location.origin}${location.pathname}#${placeHash(sel.id)}`;
+    const title = String(sel.properties.name);
+    if (navigator.share) {
+      try {
+        await navigator.share({ title, url });
+      } catch {
+        /* user cancelled the share sheet -> do nothing */
+      }
+      return;
+    }
+    try {
+      await navigator.clipboard.writeText(url);
+      showToast('Link copied');
+    } catch {
+      showToast('Copy this link: ' + url);
+    }
+  }
 
   const fields = $derived(
     ui.selected ? renderProperties(config.properties, ui.selected.properties) : [],
@@ -37,6 +68,13 @@
 
 {#if ui.selected}
   <aside class="detail" aria-label="Place details">
+    <button class="share" onclick={share} aria-label="Share this place" title="Share this place">
+      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor"
+        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+        ><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line
+          x1="8.59" x2="15.42" y1="13.51" y2="17.49" /><line x1="15.41" x2="8.59" y1="6.51" y2="10.49" /></svg
+      >
+    </button>
     <button class="close" onclick={clearSelection} aria-label="Close details">&times;</button>
     <h2 bind:this={heading} tabindex="-1">{ui.selected.properties.name}</h2>
     <dl>
@@ -49,6 +87,9 @@
         {/if}
       {/each}
     </dl>
+    {#if toast}
+      <div class="toast" role="status" aria-live="polite">{toast}</div>
+    {/if}
   </aside>
 {/if}
 
@@ -82,9 +123,40 @@
   .close:hover {
     color: var(--civic-blue);
   }
+  .share {
+    position: absolute;
+    top: 0.55rem;
+    right: 2.3rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #666;
+    padding: 0.1rem;
+  }
+  .share:hover {
+    color: var(--civic-blue);
+  }
+  .share:focus-visible,
+  .close:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+    border-radius: var(--pub-radius-sm, 8px);
+  }
+  .toast {
+    margin-top: 0.8rem;
+    padding: 0.45rem 0.7rem;
+    background: var(--civic-blue, #2c57a0);
+    color: #fff;
+    border-radius: var(--pub-radius-sm, 8px);
+    font-size: 0.82rem;
+    text-align: center;
+  }
 
   h2 {
-    margin: 0 1.5rem 0.75rem 0;
+    margin: 0 3rem 0.75rem 0;
     font-family: var(--font-head);
     font-weight: 700;
     font-size: 1.15rem;

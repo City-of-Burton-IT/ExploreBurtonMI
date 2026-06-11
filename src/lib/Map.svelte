@@ -21,6 +21,9 @@
   let map: L.Map | undefined;
   let cluster: L.MarkerClusterGroup | undefined;
   const markers = new Map<string, L.CircleMarker>();
+  // Bumped once the markers are built, so the "center on selected" effect re-runs
+  // after a deep-link selection that was applied before the markers existed.
+  let markerEpoch = $state(0);
   const featureById = new Map<string, PlaceFeature>();
   let userMarker: L.CircleMarker | undefined;
   let locateMsg = $state('');
@@ -396,6 +399,7 @@
       featureById.set(feature.id, feature);
     }
     map.addLayer(cluster);
+    markerEpoch += 1;
 
     // "Near me": a custom control that uses the browser's geolocation to center the
     // map on the user, drop a "you are here" marker, and feed ui.userLocation (which
@@ -496,6 +500,7 @@
   // declustered and centred rather than left invisible. offMap features have no
   // marker and are skipped.
   $effect(() => {
+    markerEpoch; // re-run after the markers are (re)built, for deep-link selections
     const id = ui.selected?.id;
     if (!id || !map || !cluster) return;
     const marker = markers.get(id);
