@@ -43,6 +43,7 @@
         <a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noopener noreferrer">OpenStreetMap</a>
         contributors &amp;
         <a href="https://overturemaps.org" target="_blank" rel="noopener noreferrer">Overture Maps Foundation</a>.
+        Resident Guide icons by <a href="https://lucide.dev" target="_blank" rel="noopener noreferrer">Lucide</a> (ISC).
       </p>
       <p class="privacy">
         <!-- Absolute URL so the link resolves from inside the bundled mobile app,

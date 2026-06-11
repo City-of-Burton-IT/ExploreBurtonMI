@@ -10,6 +10,7 @@ import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
 import { marked } from 'marked';
+import { renderGuideMarkdown } from './guide-callouts.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'content', 'guide');
@@ -28,17 +29,25 @@ const index = JSON.parse(readFileSync(join(SRC, 'index.json'), 'utf8'));
 const out = { sections: [], pdf: index.pdf, content: {} };
 
 for (const s of index.sections) {
-  out.sections.push({ id: s.id, title: s.title, type: s.type });
+  const meta = { id: s.id, title: s.title, type: s.type };
+  if (s.icon) meta.icon = s.icon;
+  // A video section carries its embed details in the section meta (no body).
+  if (s.type === 'video') {
+    meta.src = s.src;
+    if (s.provider) meta.provider = s.provider;
+    if (s.poster) meta.poster = s.poster;
+  }
+  out.sections.push(meta);
+
   const file = s.file ? join(SRC, s.file) : null;
   if (s.type === 'markdown') {
-    out.content[s.id] = sanitize(marked.parse(readFileSync(file, 'utf8')));
+    out.content[s.id] = sanitize(renderGuideMarkdown(readFileSync(file, 'utf8'), (m) => marked.parse(m)));
   } else if (s.type === 'contacts') {
     out.contacts = JSON.parse(readFileSync(file, 'utf8'));
   } else if (s.type === 'meetings') {
     out.meetings = JSON.parse(readFileSync(file, 'utf8'));
-  } else if (s.type === 'waste' || s.type === 'civicclerk') {
-    // Rendered by a component that fetches live/static data at runtime; only the
-    // section meta needs to ship in the bundle.
+  } else if (s.type === 'waste' || s.type === 'civicclerk' || s.type === 'video') {
+    // Rendered by a component from live/static data or section meta; no body to ship.
   } else {
     throw new Error(`Unknown section type '${s.type}' for '${s.id}'`);
   }

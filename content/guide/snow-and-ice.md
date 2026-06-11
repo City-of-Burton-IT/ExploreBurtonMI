@@ -5,6 +5,11 @@ standard of **"safe roads at safe speeds" — not bare roads.** Streets are salt
 you can travel safely at a safe speed, but **you should still expect snow on the road during a
 storm.** Please drive for the conditions.
 
+:::important
+City crews clear to "safe roads at safe speeds," not bare pavement. Expect some snow
+on the road during and after a storm, and slow down.
+:::
+
 Most plowing and salting happens during the day, when most people are traveling — roughly
 **5:00 a.m. to 1:30 p.m.** Expect **reduced coverage in the evening and overnight**, and varying
 road conditions, and drive accordingly.
@@ -42,11 +47,16 @@ in effect.
 
 ## How to reach the Road Division
 
-- **DPW Road Division: [(810) 742-9230](tel:+18107429230)** — office hours Monday–Friday,
-  8:00 a.m.–4:00 p.m.
-- After hours, leave a voicemail and it will be addressed the next business day.
-- From **November 1 through April 1**, the Burton Police Department and Genesee County 911 Dispatch
-  can activate snow-and-ice crews for emergencies.
+:::contact
+**DPW Road Division: [(810) 742-9230](tel:+18107429230)** — office hours Monday–Friday,
+8:00 a.m.–4:00 p.m. After hours, leave a voicemail and it will be addressed the next
+business day.
+:::
+
+:::key-date
+From **November 1 through April 1**, the Burton Police Department and Genesee County 911
+Dispatch can activate snow-and-ice crews for emergencies.
+:::
 
 ## What's on the roads
 

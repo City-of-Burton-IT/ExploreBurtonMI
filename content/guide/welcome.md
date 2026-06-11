@@ -11,6 +11,12 @@ dumping. If you have questions, contact City Hall Monday through Friday, 9:00 a.
 
 *— Mayor Duane Haskins*
 
+:::tip
+Use the sections on the left to jump to what you need: trash and recycling, permits,
+meetings, elections, and more. On a phone, swipe the section bar at the top. Tap any
+photo to view it larger.
+:::
+
 ## City Offices
 
 **Burton City Hall** — 4303 S. Center Rd., Burton, MI 48519

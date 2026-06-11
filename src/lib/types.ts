@@ -346,7 +346,13 @@ export interface InfoPanel {
 export interface GuideSectionMeta {
   id: string;
   title: string;
-  type: 'markdown' | 'contacts' | 'meetings' | 'waste' | 'civicclerk';
+  type: 'markdown' | 'contacts' | 'meetings' | 'waste' | 'civicclerk' | 'video';
+  /** optional section icon id (see src/lib/guide/icons.ts) */
+  icon?: string;
+  /** video sections: the embed URL + provider label (click-to-load) */
+  src?: string;
+  provider?: string;
+  poster?: string;
 }
 
 export interface GuidePerson {

@@ -5,9 +5,13 @@
   import { safeHref } from './templates';
   import { dataFetch } from './remote';
   import GuideSection from './guide/GuideSection.svelte';
+  import GuideIcon from './guide/GuideIcon.svelte';
+  import Lightbox from './Lightbox.svelte';
 
   let bundle = $state<GuideBundle | null>(null);
   let loading = $state(true);
+  let lightbox = $state<{ show: (src: string, caption: string) => void }>();
+  const openImage = (src: string, caption: string) => lightbox?.show(src, caption);
 
   onMount(async () => {
     try {
@@ -34,7 +38,8 @@
         {#each bundle.sections as s (s.id)}
           <li>
             <button class:active={s.id === activeId} onclick={() => setGuideSection(s.id)}>
-              {s.title}
+              {#if s.icon}<GuideIcon name={s.icon} />{/if}
+              <span class="sec-label">{s.title}</span>
             </button>
           </li>
         {/each}
@@ -49,11 +54,15 @@
 
     <div class="guide-body">
       {#if activeSection}
-        <h2>{activeSection.title}</h2>
-        <GuideSection section={activeSection} {bundle} />
+        <h2>
+          {#if activeSection.icon}<GuideIcon name={activeSection.icon} size={24} />{/if}
+          {activeSection.title}
+        </h2>
+        <GuideSection section={activeSection} {bundle} {openImage} />
       {/if}
     </div>
   {/if}
+  <Lightbox bind:this={lightbox} />
 </section>
 
 <style>
@@ -83,6 +92,9 @@
   }
   .sectionnav button {
     width: 100%;
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
     text-align: left;
     border: none;
     background: none;
@@ -92,6 +104,12 @@
     font-size: 0.92rem;
     color: var(--pub-ink, #2c2c2c);
     cursor: pointer;
+  }
+  .sectionnav button :global(.gicon) {
+    color: var(--civic-blue, #2c57a0);
+  }
+  .sec-label {
+    min-width: 0;
   }
   .sectionnav button:hover {
     background: #f5f7fa;
@@ -136,6 +154,9 @@
     min-width: 0;
   }
   .guide-body h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
     margin: 0 0 0.8rem;
     font-family: var(--font-head, sans-serif);
     font-weight: 700;

@@ -79,6 +79,28 @@ body,
   height: 100vh;
 }
 
+/* Scroll-reveal (the use:reveal action). Children start hidden + slightly shifted,
+   then settle as they enter view. Reduced-motion users get no transform, and the
+   action also reveals everything immediately for them. */
+.reveal-init {
+  opacity: 0;
+  transform: translateY(10px);
+}
+.revealed {
+  opacity: 1;
+  transform: none;
+  transition: opacity 0.45s ease, transform 0.45s ease;
+}
+@media (prefers-reduced-motion: reduce) {
+  .reveal-init {
+    opacity: 1;
+    transform: none;
+  }
+  .revealed {
+    transition: none;
+  }
+}
+
 /* ---------- Header: white, seal, blue wordmark, dashed-green motif ---------- */
 .topbar {
   flex: 0 0 auto;
