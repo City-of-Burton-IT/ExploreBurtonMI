@@ -208,16 +208,21 @@
      mobile keeps the single-column dropdown (the default above). */
   @media (min-width: 861px) {
     .menu {
+      /* Right-align under the trigger (which sits on the right of the nav) so the
+         wide menu extends LEFT and never overflows the viewport right edge. */
+      left: auto;
+      right: 0;
+      transform: none;
       flex-flow: row wrap;
       align-items: flex-start;
-      width: min(92vw, 780px);
+      width: min(92vw, 760px);
       max-width: 92vw;
       max-height: min(80vh, 560px);
     }
     .col {
-      flex: 1 1 150px;
-      min-width: 150px;
-      max-width: 210px;
+      flex: 1 1 140px;
+      min-width: 140px;
+      max-width: 180px;
     }
   }
   .menu button {
