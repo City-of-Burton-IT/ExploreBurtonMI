@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { trendLayout, multiTrendLayout, formatValue, CIVIC_BLUE } from './scale';
+  import { trendLayout, multiTrendLayout, formatValue, seriesDelta, CIVIC_BLUE } from './scale';
   import ChartTip from './ChartTip.svelte';
 
   let {
@@ -19,6 +19,10 @@
   const PAD = 28;
 
   const isMulti = $derived(!!(lines && lines.length));
+  // Headline takeaway for a single-series trend: "+15% since 2021". Neutral
+  // (an arrow shows direction; no red/green) and omitted for multi-line charts.
+  const delta = $derived(!isMulti ? seriesDelta(points) : null);
+  const arrow = (d: 'up' | 'down' | 'flat') => (d === 'up' ? '▲' : d === 'down' ? '▼' : '–');
   const single = $derived(trendLayout(points, W, H, PAD));
   const multi = $derived(isMulti && lines ? multiTrendLayout(lines, W, H, PAD) : null);
 
@@ -145,6 +149,13 @@
       </ul>
     {/if}
 
+    {#if delta}
+      <p class="delta">
+        <span class="arrow" aria-hidden="true">{arrow(delta.direction)}</span>
+        <strong>{delta.pctText}</strong> since {delta.fromLabel}
+      </p>
+    {/if}
+
     <ChartTip
       x={tip.x}
       y={tip.y}
@@ -238,5 +249,14 @@
     color: var(--pub-muted, #5c5c5c);
     font-size: 0.9rem;
     font-style: italic;
+  }
+  /* Neutral delta caption: direction comes from the arrow, not colour. */
+  .delta {
+    margin: 0.4rem 0 0;
+    font-size: 0.82rem;
+    color: var(--civic-blue-deep, #1e437e);
+  }
+  .delta .arrow {
+    font-size: 0.78em;
   }
 </style>

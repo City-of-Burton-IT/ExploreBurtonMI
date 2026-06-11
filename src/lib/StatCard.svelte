@@ -1,6 +1,11 @@
 <script lang="ts">
   import type { InfoStat } from './types';
+  import { seriesDelta } from './charts/scale';
   let { stat }: { stat: InfoStat } = $props();
+
+  // Optional "since {first year}" change, derived from the sparkline series.
+  const delta = $derived(stat.spark && stat.spark.length >= 2 ? seriesDelta(stat.spark) : null);
+  const arrow = (d: 'up' | 'down' | 'flat') => (d === 'up' ? '▲' : d === 'down' ? '▼' : '–');
 
   const SPARK_W = 88;
   const SPARK_H = 22;
@@ -27,6 +32,12 @@
 
 <div class="stat">
   <span class="value">{stat.value}</span>
+  {#if delta}
+    <span class="delta"
+      ><span class="arrow" aria-hidden="true">{arrow(delta.direction)}</span>
+      {delta.pctText} since {delta.fromLabel}</span
+    >
+  {/if}
   <span class="label">{stat.label}</span>
   {#if stat.spark && stat.spark.length >= 2}
     <svg
@@ -68,6 +79,14 @@
     text-transform: uppercase;
     letter-spacing: 0.04em;
     color: var(--pub-muted, #5c5c5c);
+  }
+  /* Neutral delta (direction from the arrow, not colour). */
+  .delta {
+    font-size: 0.78rem;
+    color: var(--civic-blue-deep, #1e437e);
+  }
+  .delta .arrow {
+    font-size: 0.78em;
   }
   .hint {
     font-size: 0.76rem;

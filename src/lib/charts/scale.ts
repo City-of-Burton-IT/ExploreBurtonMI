@@ -40,6 +40,30 @@ export function formatValue(value: number, unit = ''): string {
 
 const nonNeg = (n: number): number => (n > 0 ? n : 0);
 
+export interface SeriesDelta {
+  /** signed, rounded percent change, e.g. "+15%" / "-8%" / "0%" */
+  pctText: string;
+  direction: 'up' | 'down' | 'flat';
+  fromLabel: string;
+  toLabel: string;
+}
+
+/** Percent change from the first to the last point of a series (the resident
+ *  takeaway: "up 15% since 2021"). Null for < 2 points or a zero baseline. */
+export function seriesDelta(points: { x: string; y: number }[]): SeriesDelta | null {
+  if (!points || points.length < 2) return null;
+  const first = points[0];
+  const last = points[points.length - 1];
+  if (first.y === 0) return null;
+  const rounded = Math.round(((last.y - first.y) / Math.abs(first.y)) * 100);
+  return {
+    pctText: `${rounded > 0 ? '+' : ''}${rounded}%`,
+    direction: rounded > 0 ? 'up' : rounded < 0 ? 'down' : 'flat',
+    fromLabel: first.x,
+    toLabel: last.x,
+  };
+}
+
 export interface DonutSegment {
   label: string;
   value: number;
