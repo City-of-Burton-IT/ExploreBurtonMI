@@ -18,6 +18,7 @@
   import DashboardMenu from './lib/DashboardMenu.svelte';
   import InstallPrompt from './lib/InstallPrompt.svelte';
   import AlertBanner from './lib/AlertBanner.svelte';
+  import WelcomeStrip from './lib/WelcomeStrip.svelte';
 
   let config = $state<AppConfig | null>(null);
   let data = $state<PlaceCollection | null>(null);
@@ -168,6 +169,8 @@
       <pre>{error}</pre>
     </div>
   {:else if config && data && result}
+    <!-- First-visit orientation; renders only on the map view until dismissed. -->
+    <WelcomeStrip />
     <div class="workspace" data-view={ui.mobileView} class:hidden={ui.view !== 'map'}>
       <aside class="sidebar">
         <Search />
