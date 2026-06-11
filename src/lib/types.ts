@@ -333,6 +333,10 @@ export interface InfoPanel {
   charts: InfoChart[];
   /** optional per-item tables rendered after the charts (e.g. a bridge list) */
   tables?: InfoTable[];
+  /** ISO date (YYYY-MM-DD or YYYY-MM) the data was last refreshed; rendered as a
+   *  "Data as of {Month YYYY}" freshness line by the source. Often supplied via the
+   *  committed freshness.json overlay rather than embedded per panel. */
+  lastUpdated?: string;
   source?: string;
   links?: InfoLink[];
   /** small footnotes under the source line (data caveats, required attributions) */

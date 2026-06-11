@@ -1,0 +1,5 @@
+{
+  "_note": "Data-freshness dates per dashboard id (key matches info-<id>.json). Value is an ISO date (YYYY-MM or YYYY-MM-DD) of the data's latest period; the app renders it as 'Data as of {Month YYYY}' beside the source line. A panel may instead carry its own lastUpdated (e.g. set by its generator); this overlay only fills in when the panel has none, and any key that is not a dashboard id (like this _note) is ignored. Entries below reflect each dataset's latest data period -- confirm/extend as source vintages are verified, ideally emitted by the generators in tools/.",
+  "publicsafety": "2025-12",
+  "roadsafety": "2018-12"
+}

@@ -51,14 +51,26 @@
     const summariesP: Promise<SummaryMap> = dataFetch('summaries.json')
       .then((r) => (r.ok ? (r.json() as Promise<SummaryMap>) : ({} as SummaryMap)))
       .catch(() => ({}) as SummaryMap);
-    const [loaded, summaries] = await Promise.all([
+    // Data-freshness dates ("Data as of ...") kept in one committed file for the
+    // same reason as summaries: one place to maintain, survives tool regeneration.
+    // A panel may also carry its own lastUpdated (from its generator); the overlay
+    // only fills in when the panel has none. Non-id keys (e.g. "_note") are ignored.
+    type FreshnessMap = Record<string, string>;
+    const freshnessP: Promise<FreshnessMap> = dataFetch('freshness.json')
+      .then((r) => (r.ok ? (r.json() as Promise<FreshnessMap>) : ({} as FreshnessMap)))
+      .catch(() => ({}) as FreshnessMap);
+    const [loaded, summaries, freshness] = await Promise.all([
       Promise.all(ids.map((id) => safe(`info-${id}.json`))),
       summariesP,
+      freshnessP,
     ]);
     panels = Object.fromEntries(
       ids.map((id, i) => {
         const panel = loaded[i];
-        if (panel && !panel.summary && summaries[id]) panel.summary = summaries[id];
+        if (panel) {
+          if (!panel.summary && summaries[id]) panel.summary = summaries[id];
+          if (!panel.lastUpdated && freshness[id]) panel.lastUpdated = freshness[id];
+        }
         return [id, panel];
       }),
     );

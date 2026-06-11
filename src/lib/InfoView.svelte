@@ -2,6 +2,7 @@
   import type { InfoPanel, InfoChart } from './types';
   import { safeHref } from './templates';
   import { formatValue } from './charts/scale';
+  import { formatDataAsOf } from './freshness';
   import StatCard from './StatCard.svelte';
   import Donut from './charts/Donut.svelte';
   import Bars from './charts/Bars.svelte';
@@ -16,6 +17,10 @@
   }: { panel: InfoPanel | null; loading?: boolean } = $props();
 
   let explainerOpen = $state(false);
+
+  // Resident-facing "Data as of {Month YYYY}" freshness label (null when the panel
+  // carries no lastUpdated, so the line is simply omitted).
+  const dataAsOf = $derived(formatDataAsOf(panel?.lastUpdated));
 
   // Accessible plain-data fallback for any chart: a collapsible table with the
   // same numbers the SVG/bars show. Helps screen-reader and no-JS-render users,
@@ -212,10 +217,11 @@
       </div>
     {/if}
 
-    {#if panel.source || panel.links?.length || panel.notes?.length}
+    {#if panel.source || dataAsOf || panel.links?.length || panel.notes?.length}
       <hr />
       <footer>
         {#if panel.source}<p class="source">Source: {panel.source}</p>{/if}
+        {#if dataAsOf}<p class="freshness">Data as of {dataAsOf}</p>{/if}
         {#if panel.links?.length}
           <ul class="links">
             {#each panel.links as link (link.href)}
@@ -471,6 +477,12 @@
   .source {
     margin: 0;
     font-size: 0.8rem;
+    color: var(--pub-muted, #5c5c5c);
+  }
+  .freshness {
+    margin: 0.25rem 0 0;
+    font-size: 0.8rem;
+    font-weight: 600;
     color: var(--pub-muted, #5c5c5c);
   }
   .note {
