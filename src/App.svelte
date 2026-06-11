@@ -125,6 +125,11 @@
   });
 
   const activePanel = $derived(isDashboard(ui.view) ? (panels[ui.view] ?? null) : null);
+  // The active dashboard's one-line description (menu sub-line); used as a panel
+  // subtitle fallback when the panel itself carries none.
+  const activeDescription = $derived(
+    isDashboard(ui.view) ? DASHBOARDS.find((d) => d.id === ui.view)?.description : undefined,
+  );
 </script>
 
 <div class="app">
@@ -190,7 +195,7 @@
     </div>
     {#if isDashboard(ui.view)}
       <div class="infowrap">
-        <InfoView panel={activePanel} loading={infoLoading} />
+        <InfoView panel={activePanel} loading={infoLoading} description={activeDescription} />
       </div>
     {:else if ui.view === 'guide'}
       <div class="infowrap">

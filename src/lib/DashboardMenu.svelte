@@ -103,7 +103,10 @@
             onclick={() => choose(d.id)}
             onkeydown={onMenuKey}
           >
-            {d.label}
+            <span class="item-text">
+              <span class="item-label">{d.label}</span>
+              {#if d.description}<span class="item-desc">{d.description}</span>{/if}
+            </span>
             {#if d.id === ui.view}<span class="check" aria-hidden="true">✓</span>{/if}
           </button>
         {/each}
@@ -176,7 +179,8 @@
     top: calc(100% + 6px);
     left: 50%;
     transform: translateX(-50%);
-    min-width: 232px;
+    min-width: 268px;
+    max-width: 320px;
     max-height: min(70vh, 520px);
     overflow-y: auto;
     background: #fff;
@@ -190,7 +194,7 @@
   }
   .menu button {
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     justify-content: space-between;
     gap: 0.75rem;
     width: 100%;
@@ -203,6 +207,19 @@
     font-size: 0.9rem;
     color: var(--pub-ink, #2c2c2c);
     cursor: pointer;
+  }
+  .item-text {
+    display: flex;
+    flex-direction: column;
+    gap: 0.1rem;
+    min-width: 0;
+  }
+  /* Sub-line stays muted + normal weight even when the item is current/bold. */
+  .item-desc {
+    font-size: 0.72rem;
+    font-weight: 400;
+    line-height: 1.25;
+    color: var(--pub-muted, #6b7280);
   }
   .menu button:hover {
     background: #f5f7fa;

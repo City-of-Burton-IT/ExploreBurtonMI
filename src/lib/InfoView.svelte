@@ -15,7 +15,8 @@
   let {
     panel,
     loading = false,
-  }: { panel: InfoPanel | null; loading?: boolean } = $props();
+    description,
+  }: { panel: InfoPanel | null; loading?: boolean; description?: string } = $props();
 
   let explainerOpen = $state(false);
 
@@ -103,7 +104,11 @@
       {/if}
       <div class="header-text">
         <h2>{panel.title}</h2>
-        {#if panel.subtitle}<p class="subtitle">{panel.subtitle}</p>{/if}
+        {#if panel.subtitle}
+          <p class="subtitle">{panel.subtitle}</p>
+        {:else if description}
+          <p class="subtitle">{description}</p>
+        {/if}
       </div>
     </header>
 
