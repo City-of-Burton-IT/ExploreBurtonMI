@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { AppConfig } from './types';
   import { ui, openAbout, closeAbout } from './store.svelte';
+  import { reportOutdatedMailto } from './feedback';
 
   // `showButton` renders the inline "About" trigger. When false, only the dialog
   // is mounted (opened from elsewhere, e.g. the map © button or the Guide).
@@ -49,6 +50,9 @@
         <!-- Absolute URL so the link resolves from inside the bundled mobile app,
              not just on the web origin. -->
         <a href="https://explore.burtonmi.gov/privacy.html" target="_blank" rel="noopener noreferrer">Privacy policy</a>
+      </p>
+      <p class="feedback">
+        See something out of date? <a href={reportOutdatedMailto()}>Report outdated information</a>.
       </p>
     </div>
   </div>
@@ -135,6 +139,11 @@
     margin: 0.6rem 0 0;
     font-size: 0.85rem;
     font-weight: 600;
+  }
+  .feedback {
+    margin: 0.4rem 0 0;
+    font-size: 0.82rem;
+    color: #666;
   }
   a {
     color: var(--civic-blue-link);

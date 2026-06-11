@@ -3,6 +3,7 @@
   import { safeHref } from './templates';
   import { formatValue } from './charts/scale';
   import { formatDataAsOf } from './freshness';
+  import { reportOutdatedMailto } from './feedback';
   import StatCard from './StatCard.svelte';
   import Donut from './charts/Donut.svelte';
   import Bars from './charts/Bars.svelte';
@@ -217,25 +218,26 @@
       </div>
     {/if}
 
-    {#if panel.source || dataAsOf || panel.links?.length || panel.notes?.length}
-      <hr />
-      <footer>
-        {#if panel.source}<p class="source">Source: {panel.source}</p>{/if}
-        {#if dataAsOf}<p class="freshness">Data as of {dataAsOf}</p>{/if}
-        {#if panel.links?.length}
-          <ul class="links">
-            {#each panel.links as link (link.href)}
-              <li><a href={safeHref(link.href)} target="_blank" rel="noopener noreferrer">{link.text}</a></li>
-            {/each}
-          </ul>
-        {/if}
-        {#if panel.notes?.length}
-          {#each panel.notes as note}
-            <p class="note">{note}</p>
+    <hr />
+    <footer>
+      {#if panel.source}<p class="source">Source: {panel.source}</p>{/if}
+      {#if dataAsOf}<p class="freshness">Data as of {dataAsOf}</p>{/if}
+      {#if panel.links?.length}
+        <ul class="links">
+          {#each panel.links as link (link.href)}
+            <li><a href={safeHref(link.href)} target="_blank" rel="noopener noreferrer">{link.text}</a></li>
           {/each}
-        {/if}
-      </footer>
-    {/if}
+        </ul>
+      {/if}
+      {#if panel.notes?.length}
+        {#each panel.notes as note}
+          <p class="note">{note}</p>
+        {/each}
+      {/if}
+      <p class="report">
+        <a href={reportOutdatedMailto(panel.title)}>Report outdated information</a>
+      </p>
+    </footer>
   {/if}
 </section>
 
@@ -490,6 +492,13 @@
     font-size: 0.72rem;
     line-height: 1.35;
     color: var(--pub-muted, #5c5c5c);
+  }
+  .report {
+    margin: 0.6rem 0 0;
+    font-size: 0.8rem;
+  }
+  .report a {
+    color: var(--civic-blue-link, #386fc5);
   }
   .links {
     list-style: none;
