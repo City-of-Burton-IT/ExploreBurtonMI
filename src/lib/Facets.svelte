@@ -30,8 +30,12 @@
       <ul>
         {#each valuesFor(field) as value (value)}
           {@const count = facetCounts[field]?.[value] ?? 0}
+          {@const disabled = count === 0 && !isSelected(field, value)}
           <li>
-            <label class:disabled={count === 0 && !isSelected(field, value)}>
+            <label
+              class:disabled
+              title={disabled ? 'No matching results with the current filters' : null}
+            >
               <input
                 type="checkbox"
                 checked={isSelected(field, value)}
@@ -86,8 +90,13 @@
     font-size: 0.9rem;
     cursor: pointer;
   }
-  label.disabled {
-    opacity: 0.45;
+  /* Disabled = no matches under the current filters. Use a muted-but-AA-legible
+     color (>= 4.5:1 on white) instead of opacity (which failed contrast), plus a
+     not-allowed cursor and a title to explain why. */
+  label.disabled,
+  label.disabled .count {
+    color: var(--pub-muted, #5c5c5c);
+    cursor: not-allowed;
   }
   .value {
     flex: 1 1 auto;
