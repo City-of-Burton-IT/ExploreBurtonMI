@@ -94,22 +94,26 @@
   {#if open}
     <div class="menu" role="group" aria-label="Dashboards">
       {#each DASHBOARD_GROUPS as group (group.label)}
-        <p class="group-label" aria-hidden="true">{group.label}</p>
-        {#each group.items as d (d.id)}
-          <button
-            data-id={d.id}
-            class:current={d.id === ui.view}
-            aria-current={d.id === ui.view ? 'true' : undefined}
-            onclick={() => choose(d.id)}
-            onkeydown={onMenuKey}
-          >
-            <span class="item-text">
-              <span class="item-label">{d.label}</span>
-              {#if d.description}<span class="item-desc">{d.description}</span>{/if}
-            </span>
-            {#if d.id === ui.view}<span class="check" aria-hidden="true">✓</span>{/if}
-          </button>
-        {/each}
+        <!-- Each category is a column on desktop (mega-menu) and a stacked block on
+             mobile (single-column dropdown). -->
+        <div class="col">
+          <p class="group-label" aria-hidden="true">{group.label}</p>
+          {#each group.items as d (d.id)}
+            <button
+              data-id={d.id}
+              class:current={d.id === ui.view}
+              aria-current={d.id === ui.view ? 'true' : undefined}
+              onclick={() => choose(d.id)}
+              onkeydown={onMenuKey}
+            >
+              <span class="item-text">
+                <span class="item-label">{d.label}</span>
+                {#if d.description}<span class="item-desc">{d.description}</span>{/if}
+              </span>
+              {#if d.id === ui.view}<span class="check" aria-hidden="true">✓</span>{/if}
+            </button>
+          {/each}
+        </div>
       {/each}
     </div>
   {/if}
@@ -191,6 +195,30 @@
     z-index: 1500;
     display: flex;
     flex-direction: column;
+  }
+  .col {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+  }
+  .col > .group-label {
+    margin-top: 0.2rem;
+  }
+  /* Desktop: a multi-column "mega menu" so every category is visible at once;
+     mobile keeps the single-column dropdown (the default above). */
+  @media (min-width: 861px) {
+    .menu {
+      flex-flow: row wrap;
+      align-items: flex-start;
+      width: min(92vw, 780px);
+      max-width: 92vw;
+      max-height: min(80vh, 560px);
+    }
+    .col {
+      flex: 1 1 150px;
+      min-width: 150px;
+      max-width: 210px;
+    }
   }
   .menu button {
     display: flex;
