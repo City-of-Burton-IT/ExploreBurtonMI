@@ -4,6 +4,7 @@
   import { formatValue } from './charts/scale';
   import { formatDataAsOf } from './freshness';
   import { reportOutdatedMailto } from './feedback';
+  import { csvSlug, downloadCsv } from './csv';
   import StatCard from './StatCard.svelte';
   import Donut from './charts/Donut.svelte';
   import Bars from './charts/Bars.svelte';
@@ -65,23 +66,12 @@
     return null;
   }
 
-  // Download a chart's data table as a CSV file (same numbers as the table).
-  function csvSlug(s: string): string {
-    return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'chart';
-  }
-  function downloadCsv(chart: InfoChart): void {
+  // Download a chart's data table as a CSV file (same numbers as the table),
+  // via the shared csv helper also used by InfoTable.
+  function exportChart(chart: InfoChart): void {
     const t = chartTable(chart);
     if (!t) return;
-    const esc = (s: string) => (/[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s);
-    const csv = [t.headers, ...t.rows].map((r) => r.map(esc).join(',')).join('\r\n');
-    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
-    const a = document.createElement('a');
-    a.href = url;
-    a.download = `${csvSlug(chart.title)}.csv`;
-    document.body.appendChild(a);
-    a.click();
-    a.remove();
-    URL.revokeObjectURL(url);
+    downloadCsv(csvSlug(chart.title), t.headers, t.rows);
   }
 </script>
 
@@ -180,7 +170,7 @@
                     {/each}
                   </tbody>
                 </table>
-                <button class="csv-btn" type="button" onclick={() => downloadCsv(chart)}>
+                <button class="csv-btn" type="button" onclick={() => exportChart(chart)}>
                   Download CSV
                 </button>
               </details>
