@@ -1,5 +1,21 @@
 {
-  "_note": "Data-freshness dates per dashboard id (key matches info-<id>.json). Value is an ISO date (YYYY-MM or YYYY-MM-DD) of the data's latest period; the app renders it as 'Data as of {Month YYYY}' beside the source line. A panel may instead carry its own lastUpdated (e.g. set by its generator); this overlay only fills in when the panel has none, and any key that is not a dashboard id (like this _note) is ignored. Entries below reflect each dataset's latest data period -- confirm/extend as source vintages are verified, ideally emitted by the generators in tools/.",
+  "_note": "Data-freshness dates per dashboard id (key matches info-<id>.json). Value is an ISO date (YYYY-MM or YYYY-MM-DD) of the data's latest reference period; the app renders it as 'Data as of {Month YYYY}' beside the source line. A panel may instead carry its own lastUpdated (e.g. set by its generator); this overlay only fills in when the panel has none, and any key that is not a dashboard id (like this _note) is ignored. parks and trails are intentionally undated (static reference geography, not periodically-updated statistics).",
+  "demographics": "2023-12",
+  "housing": "2023-12",
+  "schools": "2023-12",
+  "jobs": "2022-12",
+  "access": "2020-12",
+  "finances": "2026-06",
+  "propertytax": "2025-12",
+  "fiscalhealth": "2025-06",
+  "health": "2025-08",
+  "water": "2023-12",
+  "environment": "2025-12",
+  "seniorcenter": "2025-12",
+  "broadband": "2025-12",
+  "bridges": "2024-12",
+  "roads": "2024-12",
+  "zoning": "2017-12",
   "publicsafety": "2025-12",
   "roadsafety": "2018-12"
 }
