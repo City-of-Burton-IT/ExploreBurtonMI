@@ -27,7 +27,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     items: [
       { id: 'demographics', label: 'Demographics', description: 'Population, age, and household trends from the U.S. Census.' },
       { id: 'jobs', label: 'Jobs & Employers', description: 'Where residents work, top employers, and commuting.' },
-      { id: 'access', label: 'Access & Equity', description: 'Cost of living, income, and transportation access.' },
+      { id: 'access', label: 'Affordability & Access', description: 'Cost of living, income, and transportation access.' },
       { id: 'housing', label: 'Housing & Growth', description: 'Homes, ownership, values, and how housing has grown.' },
       { id: 'zoning', label: 'Zoning', description: 'How land across the city is zoned and used.' },
       { id: 'schools', label: 'Schools', description: 'Public school districts serving Burton and outcomes.' },
@@ -38,7 +38,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     items: [
       { id: 'finances', label: 'City Finances', description: 'How the city raises and spends money each year.' },
       { id: 'propertytax', label: 'Property Taxes', description: 'What makes up your property tax bill and where it goes.' },
-      { id: 'fiscalhealth', label: 'Fiscal Health', description: "The city's debt, pensions, and long-term outlook." },
+      { id: 'fiscalhealth', label: 'Financial Health', description: "The city's debt, pensions, and long-term outlook." },
     ],
   },
   {

@@ -1,4 +1,4 @@
-# Build public/info-access.json: an Access & Equity dashboard for the City of
+# Build public/info-access.json: an Affordability & Access dashboard for the City of
 # Burton: cost-of-living burden (housing + transportation), income, car
 # dependence, and how many everyday destinations are in town.
 #
@@ -155,7 +155,7 @@ def main() -> int:
     ]
 
     panel = {
-        "title": "Access & Equity",
+        "title": "Affordability & Access",
         "subtitle": "Cost of living, mobility, and household income across Burton",
         "stats": stats,
         "charts": charts,

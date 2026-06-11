@@ -32,7 +32,7 @@
     { "source": "precincts.geojson", "label": "Voting precincts", "nameField": "name" },
     { "source": "flood-zones.geojson", "label": "Flood zones (FEMA)", "nameField": "name" },
     { "source": "bridges.geojson", "label": "Bridges (condition)", "nameField": "name" },
-    { "source": "paser-roads.geojson", "label": "Road conditions (PASER)", "nameField": "name" },
+    { "source": "paser-roads.geojson", "label": "Road conditions (pavement rating)", "nameField": "name" },
     { "source": "trails.geojson", "label": "Trails & pathways", "nameField": "name" },
     { "source": "zoning.geojson", "label": "Zoning", "nameField": "name" },
     { "source": "parks.geojson", "label": "Parks", "nameField": "name" },

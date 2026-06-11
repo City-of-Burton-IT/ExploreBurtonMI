@@ -1,9 +1,9 @@
-"""Build public/info-fiscalhealth.json: a City Fiscal Health dashboard.
+"""Build public/info-fiscalhealth.json: a City Financial Health dashboard.
 
 This is the resident-facing "is the city financially sustainable, and what does
 that mean for my household" view. It is deliberately NET-NEW relative to the
 Finances dashboard (which shows the adopted budget mix and raw multi-year dollar
-trends). Fiscal Health re-frames the same audited figures the way a resident
+trends). Financial Health re-frames the same audited figures the way a resident
 actually feels them:
 
   * PER-RESIDENT obligations (long-term debt and unfunded pension divided by
@@ -56,7 +56,7 @@ DEBT_BY_PURPOSE = [
 WATER_SEWER_DEBT_PCT = 91
 
 # Retirement promises already earned, money set aside vs. owed, FY2025 AUDITED
-# (Form 5572 / State PA 202 summary). Fiscal Health is the single home for these
+# (Form 5572 / State PA 202 summary). Financial Health is the single home for these
 # (not repeated on City Finances). Using the audited FY2025 valuation keeps them
 # consistent with the unfunded-pension figure ($21.5M) shown above: pension
 # assets $40.72M vs liabilities $62.20M = $21.48M unfunded.
@@ -221,7 +221,7 @@ def main() -> int:
     )
 
     panel = {
-        "title": "City Fiscal Health",
+        "title": "City Financial Health",
         "subtitle": "How sustainable Burton's finances are: per resident, and ranked against Michigan cities",
         "summary": summary,
         "stats": stats,
