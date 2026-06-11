@@ -256,6 +256,17 @@ def main() -> None:
         "stats": stats,
         "charts": charts,
         "tables": [build_bridges_table(burton)],
+        "methodology": {
+            "body": (
+                "Each bridge carries a federal condition rating from 0 to 9 for its deck, "
+                "superstructure, substructure, and (for culverts) the culvert, from regular "
+                "FHWA National Bridge Inventory inspections. The LOWEST of those component "
+                "ratings sets the overall rating, grouped as Good (7-9), Fair (5-6), or Poor "
+                "(0-4). A 'Poor' rating flags a bridge that needs significant repair or close "
+                "monitoring; it does not mean the bridge is unsafe or closed. Bridges that are "
+                "actually unsafe are load-restricted or closed, not simply rated Poor."
+            ),
+        },
         "source": f"Federal Highway Administration (FHWA) National Bridge Inventory, "
                   f"{args.year}, bridges within the City of Burton.",
         "links": [{"text": "FHWA InfoBridge", "href": "https://infobridge.fhwa.dot.gov/"}],

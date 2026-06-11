@@ -327,6 +327,9 @@ export interface InfoPanel {
   summary?: InfoSummary;
   /** optional interactive "learn how this works" explainer shown after the charts */
   explainer?: InfoExplainer;
+  /** optional "How we measure this" collapsible card (methodology), shown after
+   *  the explainer; reuses the explainer card styling. */
+  methodology?: { title?: string; body: string };
   /** optional interactive property-tax estimator (Property Taxes dashboard) */
   estimator?: InfoEstimator;
   stats: InfoStat[];

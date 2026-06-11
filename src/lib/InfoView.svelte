@@ -20,6 +20,7 @@
   }: { panel: InfoPanel | null; loading?: boolean; description?: string } = $props();
 
   let explainerOpen = $state(false);
+  let methodologyOpen = $state(false);
 
   // Resident-facing "Data as of {Month YYYY}" freshness label (null when the panel
   // carries no lastUpdated, so the line is simply omitted).
@@ -208,6 +209,24 @@
               </details>
             {/each}
             {#if panel.explainer.source}<p class="ex-source">{panel.explainer.source}</p>{/if}
+          </div>
+        {/if}
+      </div>
+    {/if}
+
+    {#if panel.methodology?.body}
+      <div class="explainer">
+        <button
+          class="explainer-toggle"
+          aria-expanded={methodologyOpen}
+          onclick={() => (methodologyOpen = !methodologyOpen)}
+        >
+          <span class="ex-icon" aria-hidden="true">{methodologyOpen ? '−' : '+'}</span>
+          {panel.methodology.title ?? 'How we measure this'}
+        </button>
+        {#if methodologyOpen}
+          <div class="explainer-body">
+            <p class="ex-intro">{panel.methodology.body}</p>
           </div>
         {/if}
       </div>
