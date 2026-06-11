@@ -7,16 +7,23 @@ import type { InfoSeriesItem } from '../types';
  *  `--civic-blue` CSS token in app.css (SVG fills can't read a CSS var directly). */
 export const CIVIC_BLUE = '#2c57a0';
 
-/** Brand-aligned categorical palette (civic spine first, then map category hues). */
+/** Brand-aligned categorical palette, ORDERED for colour-vision-deficiency (CVD)
+ *  legibility: the brand blue leads, then orange (blue<->orange is the most
+ *  CVD-robust pairing), then the brand green; neighbours also differ in LIGHTNESS,
+ *  which survives CVD. The two near-duplicate hues (a second blue, a second
+ *  purple) are LAST, so they're only reached by 7-8 category charts. Charts also
+ *  print the value beside every bar/slice and offer a data table, so colour is
+ *  never the sole signal. Verify visually with Chrome DevTools > Rendering >
+ *  Emulate vision deficiencies (deuteranopia / protanopia / tritanopia). */
 export const DEFAULT_PALETTE: string[] = [
-  CIVIC_BLUE, // civic blue
-  '#4ea735', // civic green
-  '#e08a00', // orange
-  '#6a1b9a', // purple
-  '#00838f', // teal
-  '#c2185b', // pink
-  '#1565c0', // blue
-  '#8e24aa', // violet
+  CIVIC_BLUE, // 1 civic blue   (dark cool, brand)
+  '#e08a00', // 2 orange       (warm) -- blue<->orange is the most CVD-safe pair
+  '#4ea735', // 3 civic green  (brand)
+  '#6a1b9a', // 4 purple       (dark)
+  '#00838f', // 5 teal
+  '#c2185b', // 6 pink/magenta (warm)
+  '#1565c0', // 7 blue         (near civic blue -- last-resort, 7+ categories)
+  '#8e24aa', // 8 violet       (near purple -- last-resort)
 ];
 
 function colorAt(item: InfoSeriesItem, i: number, palette: string[]): string {

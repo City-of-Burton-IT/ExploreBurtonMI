@@ -187,6 +187,15 @@
     color: var(--civic-blue, #2c57a0);
     font-weight: 700;
   }
+  /* Non-colour cues so Burton reads as the subject even under colour-vision
+     deficiency or in greyscale: a taller bar with a darker inset outline, on top
+     of the already-bold label + value. References stay short + muted. */
+  .subject .track {
+    height: 0.78rem;
+  }
+  .subject .fill {
+    box-shadow: inset 0 0 0 1.5px var(--civic-blue-deep, #1e437e);
+  }
   .nodata {
     color: var(--pub-muted, #5c5c5c);
     font-size: 0.9rem;
