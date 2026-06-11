@@ -8,12 +8,37 @@
   const fields = $derived(
     ui.selected ? renderProperties(config.properties, ui.selected.properties) : [],
   );
+
+  // Focus management (mirrors Lightbox.svelte): when the panel opens or switches to
+  // a new place, move focus to its heading; when it closes, restore focus to the
+  // element that opened it. Escape closes the panel.
+  let heading = $state<HTMLHeadingElement>();
+  let lastFocus: HTMLElement | null = null;
+  let prevId: string | null = null;
+
+  $effect(() => {
+    const cur = ui.selected?.id ?? null;
+    if (cur && cur !== prevId) {
+      lastFocus = (document.activeElement as HTMLElement) ?? null;
+      queueMicrotask(() => heading?.focus());
+    } else if (!cur && prevId !== null) {
+      lastFocus?.focus?.();
+      lastFocus = null;
+    }
+    prevId = cur;
+  });
+
+  function onKeydown(e: KeyboardEvent) {
+    if (e.key === 'Escape') clearSelection();
+  }
 </script>
+
+<svelte:window onkeydown={ui.selected ? onKeydown : undefined} />
 
 {#if ui.selected}
   <aside class="detail" aria-label="Place details">
     <button class="close" onclick={clearSelection} aria-label="Close details">&times;</button>
-    <h2>{ui.selected.properties.name}</h2>
+    <h2 bind:this={heading} tabindex="-1">{ui.selected.properties.name}</h2>
     <dl>
       {#each fields as f (f.label)}
         <dt>{f.label}</dt>
@@ -64,6 +89,11 @@
     font-weight: 700;
     font-size: 1.15rem;
     color: var(--civic-blue);
+  }
+  /* The heading is focused programmatically on open (tabindex=-1, not in the Tab
+     order), so suppress the UA outline -- no keyboard user lands here via Tab. */
+  h2:focus {
+    outline: none;
   }
 
   dl {
