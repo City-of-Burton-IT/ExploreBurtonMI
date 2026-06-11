@@ -188,6 +188,8 @@
     .sectionnav button {
       white-space: nowrap;
       width: auto;
+      /* WCAG 2.5.8: comfortable touch target on phones. */
+      min-height: 48px;
     }
     .sectionnav button.active {
       box-shadow: none;
