@@ -341,9 +341,12 @@
               // these markers, so their look is set here from the feature's _color.
               pointToLayer: (feature, latlng) => {
                 const color = (feature?.properties?._color as string) ?? palette[0];
+                // Proportional-symbol layers (e.g. fire call volume) carry a
+                // per-feature `_radius`; others keep the default dot size.
+                const radius = (feature?.properties?._radius as number) ?? 7;
                 return L.circleMarker(latlng, {
                   pane: 'overlayMarkers',
-                  radius: 7,
+                  radius,
                   color: '#ffffff',
                   weight: 1.5,
                   fillColor: color,

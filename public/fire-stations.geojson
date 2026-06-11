@@ -1,0 +1,86 @@
+{
+  "type": "FeatureCollection",
+  "features": [
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -83.671532,
+          42.97453
+        ]
+      },
+      "properties": {
+        "station": "Station 1",
+        "calls": 325,
+        "year": "2025",
+        "_radius": 23.6,
+        "_color": "#c62828",
+        "_popupRows": [
+          [
+            "Calls for service (2025)",
+            "325"
+          ],
+          [
+            "Coverage",
+            "Station 1 response area"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -83.595211,
+          43.009546
+        ]
+      },
+      "properties": {
+        "station": "Station 2",
+        "calls": 335,
+        "year": "2025",
+        "_radius": 24.0,
+        "_color": "#c62828",
+        "_popupRows": [
+          [
+            "Calls for service (2025)",
+            "335"
+          ],
+          [
+            "Coverage",
+            "Station 2 response area"
+          ]
+        ]
+      }
+    },
+    {
+      "type": "Feature",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -83.619939,
+          43.033151
+        ]
+      },
+      "properties": {
+        "station": "Station 3",
+        "calls": 96,
+        "year": "2025",
+        "_radius": 12.8,
+        "_color": "#c62828",
+        "_popupRows": [
+          [
+            "Calls for service (2025)",
+            "96"
+          ],
+          [
+            "Coverage",
+            "Station 3 response area"
+          ]
+        ]
+      }
+    }
+  ]
+}

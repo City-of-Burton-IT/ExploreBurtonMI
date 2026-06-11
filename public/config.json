@@ -36,7 +36,8 @@
     { "source": "trails.geojson", "label": "Trails & pathways", "nameField": "name" },
     { "source": "zoning.geojson", "label": "Zoning", "nameField": "name" },
     { "source": "parks.geojson", "label": "Parks", "nameField": "name" },
-    { "source": "bus-stops.geojson", "label": "Bus stops", "nameField": "name" }
+    { "source": "bus-stops.geojson", "label": "Bus stops", "nameField": "name" },
+    { "source": "fire-stations.geojson", "label": "Fire call volume (by station)", "nameField": "station" }
   ],
   "imageOverlays": [],
   "categoryField": "category",
