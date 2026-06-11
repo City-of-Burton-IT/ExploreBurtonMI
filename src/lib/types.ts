@@ -231,10 +231,18 @@ export interface InfoChart {
   unit?: string;
   /** donut + bars */
   series?: InfoSeriesItem[];
-  /** trend line */
+  /** trend line (single series) */
   points?: { x: string; y: number }[];
+  /** trend: optional event markers, drawn at matching data-point x values */
+  markers?: { x: string; label: string }[];
+  /** trend: optional multiple series (overrides single `points` when present) */
+  lines?: { label: string; points: { x: string; y: number }[]; color?: string }[];
   /** compare: one entry per metric, each holding the per-place values */
   rows?: CompareRow[];
+  /** compare: optional intro shown in the cities-toggle view. When set, the
+   *  cities view is framed collaboratively (this lede + no per-metric rank
+   *  label); when absent, cities mode keeps the neutral "Nth highest" ranking. */
+  citiesLede?: string;
 }
 
 export interface InfoLink {

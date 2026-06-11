@@ -263,12 +263,16 @@ def build_fragment(src: str) -> dict:
 
     if totals:
         y0, y1 = totals[0]["year"], totals[-1]["year"]
-        charts.append({
+        chart = {
             "type": "trend",
             "title": f"Total calls for service by year ({y0}-{y1})",
             "unit": "",
             "points": [{"x": str(p["year"]), "y": p["total"]} for p in totals],
-        })
+        }
+        # Mark the pandemic year on the yearly series (only if 2020 is a real point).
+        if any(p["year"] == 2020 for p in totals):
+            chart["markers"] = [{"x": "2020", "label": "COVID-19"}]
+        charts.append(chart)
 
     # Calls by station area -- latest vs ~a decade ago (was a single-year bars).
     if stations and latest in stations:

@@ -36,20 +36,42 @@
   "charts": [
     {
       "type": "trend",
-      "title": "Uninsured rate, working-age adults (19-64), by year",
+      "title": "Uninsured rate, working-age adults (19-64): Burton vs Michigan, by year",
       "unit": "%",
-      "points": [
+      "lines": [
         {
-          "x": "2013",
-          "y": 15.0
+          "label": "Burton",
+          "points": [
+            {
+              "x": "2013",
+              "y": 15.0
+            },
+            {
+              "x": "2018",
+              "y": 9.1
+            },
+            {
+              "x": "2023",
+              "y": 10.0
+            }
+          ]
         },
         {
-          "x": "2018",
-          "y": 9.1
-        },
-        {
-          "x": "2023",
-          "y": 10.0
+          "label": "Michigan",
+          "points": [
+            {
+              "x": "2013",
+              "y": 16.9
+            },
+            {
+              "x": "2018",
+              "y": 8.7
+            },
+            {
+              "x": "2023",
+              "y": 7.2
+            }
+          ]
         }
       ]
     },
@@ -189,6 +211,52 @@
               "name": "Genesee County",
               "value": 7.3
             }
+          ],
+          "cities": [
+            {
+              "name": "Flint",
+              "value": 11.7
+            },
+            {
+              "name": "Mount Morris",
+              "value": 10.2
+            },
+            {
+              "name": "Montrose",
+              "value": 9.5
+            },
+            {
+              "name": "Burton",
+              "value": 8.1
+            },
+            {
+              "name": "Clio",
+              "value": 7.6
+            },
+            {
+              "name": "Davison",
+              "value": 7.0
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 6.0
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 5.8
+            },
+            {
+              "name": "Fenton",
+              "value": 5.3
+            },
+            {
+              "name": "Flushing",
+              "value": 5.3
+            },
+            {
+              "name": "Linden",
+              "value": 5.1
+            }
           ]
         },
         {
@@ -202,6 +270,52 @@
             {
               "name": "Genesee County",
               "value": 17.0
+            }
+          ],
+          "cities": [
+            {
+              "name": "Flint",
+              "value": 25.3
+            },
+            {
+              "name": "Mount Morris",
+              "value": 24.6
+            },
+            {
+              "name": "Montrose",
+              "value": 23.5
+            },
+            {
+              "name": "Burton",
+              "value": 19.3
+            },
+            {
+              "name": "Clio",
+              "value": 17.8
+            },
+            {
+              "name": "Davison",
+              "value": 16.9
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 13.9
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 13.1
+            },
+            {
+              "name": "Flushing",
+              "value": 13.0
+            },
+            {
+              "name": "Fenton",
+              "value": 12.6
+            },
+            {
+              "name": "Linden",
+              "value": 12.5
             }
           ]
         },
@@ -217,6 +331,52 @@
               "name": "Genesee County",
               "value": 40.6
             }
+          ],
+          "cities": [
+            {
+              "name": "Flint",
+              "value": 50.5
+            },
+            {
+              "name": "Mount Morris",
+              "value": 45.5
+            },
+            {
+              "name": "Montrose",
+              "value": 43.1
+            },
+            {
+              "name": "Burton",
+              "value": 40.8
+            },
+            {
+              "name": "Clio",
+              "value": 39.1
+            },
+            {
+              "name": "Davison",
+              "value": 38.8
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 36.4
+            },
+            {
+              "name": "Flushing",
+              "value": 35.8
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 35.8
+            },
+            {
+              "name": "Fenton",
+              "value": 34.8
+            },
+            {
+              "name": "Linden",
+              "value": 34.4
+            }
           ]
         },
         {
@@ -230,6 +390,52 @@
             {
               "name": "Genesee County",
               "value": 13.2
+            }
+          ],
+          "cities": [
+            {
+              "name": "Flint",
+              "value": 19.3
+            },
+            {
+              "name": "Mount Morris",
+              "value": 14.0
+            },
+            {
+              "name": "Montrose",
+              "value": 13.9
+            },
+            {
+              "name": "Burton",
+              "value": 12.8
+            },
+            {
+              "name": "Davison",
+              "value": 12.3
+            },
+            {
+              "name": "Clio",
+              "value": 12.1
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 11.4
+            },
+            {
+              "name": "Flushing",
+              "value": 11.3
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 11.0
+            },
+            {
+              "name": "Linden",
+              "value": 10.5
+            },
+            {
+              "name": "Fenton",
+              "value": 9.0
             }
           ]
         },
@@ -245,9 +451,56 @@
               "name": "Genesee County",
               "value": 39.0
             }
+          ],
+          "cities": [
+            {
+              "name": "Flint",
+              "value": 46.5
+            },
+            {
+              "name": "Montrose",
+              "value": 38.7
+            },
+            {
+              "name": "Mount Morris",
+              "value": 38.2
+            },
+            {
+              "name": "Burton",
+              "value": 37.9
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 37.3
+            },
+            {
+              "name": "Davison",
+              "value": 37.2
+            },
+            {
+              "name": "Clio",
+              "value": 37.0
+            },
+            {
+              "name": "Flushing",
+              "value": 37.0
+            },
+            {
+              "name": "Linden",
+              "value": 36.0
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 35.3
+            },
+            {
+              "name": "Fenton",
+              "value": 31.4
+            }
           ]
         }
-      ]
+      ],
+      "citiesLede": "Health challenges don't stop at city limits. Seeing how Genesee County communities compare helps the county, Burton, and its neighbors focus resources and tackle these together. Burton is highlighted; these are model-based estimates, so small differences aren't meaningful."
     }
   ],
   "source": "CDC PLACES: Local Data for Better Health, 2025 release (model-based small-area estimates from the Behavioral Risk Factor Surveillance System). Burton place FIPS 2612060; Genesee County FIPS 26049. The 'Uninsured rate ... by year' line is a separate source: U.S. Census ACS 5-year, table B27001 (working-age adults 19-64), non-overlapping vintages.",
@@ -265,7 +518,7 @@
     "Estimates cover Burton's adult population (city total ~29,715).",
     "These are model-based ESTIMATES of how common each condition or behaviour is among Burton adults, not counts of diagnosed residents. They come from CDC's PLACES program, which projects national survey (BRFSS) results down to each community (2025 release).",
     "The 'Uninsured rate, working-age adults (19-64), by year' line is from the U.S. Census ACS (5-year survey) -- a different source and method than the CDC PLACES estimates, shown at non-overlapping years so the points are comparable. It is not the same series as the PLACES 'Without health insurance (18-64)' figure.",
-    "Every figure is shown against Genesee County so it reads as context. Small differences fall within the estimates' margin of error.",
+    "Every figure is shown against Genesee County (and, in the cities view, alongside other county communities) so it reads as context. Small differences fall within the estimates' margin of error.",
     "Need care or help? See the Health & support resources in the Resident Guide."
   ]
 }

@@ -143,3 +143,71 @@ export function trendLayout(
   const polyline = dots.map((d) => `${d.x},${d.y}`).join(' ');
   return { dots, polyline, yMin, yMax };
 }
+
+export interface MultiTrendLine {
+  label: string;
+  color: string;
+  polyline: string;
+  dots: TrendDot[];
+}
+
+export interface MultiTrendLayout {
+  lines: MultiTrendLine[];
+  /** shared x-axis labels (union of all series' x values, in first-seen order) */
+  xLabels: string[];
+  yMin: number;
+  yMax: number;
+}
+
+/** Lay out several trend series in one box with a SHARED x and y scale, so the
+ *  lines are directly comparable. x positions come from the union of x labels
+ *  (evenly spaced by index); y spans the min/max across every line. */
+export function multiTrendLayout(
+  lines: { label: string; points: { x: string; y: number }[]; color?: string }[],
+  width: number,
+  height: number,
+  pad: number,
+  palette: string[] = DEFAULT_PALETTE,
+): MultiTrendLayout {
+  const xLabels: string[] = [];
+  for (const ln of lines) {
+    for (const p of ln.points) {
+      if (!xLabels.includes(p.x)) xLabels.push(p.x);
+    }
+  }
+  const allY = lines.flatMap((ln) => ln.points.map((p) => p.y));
+  if (xLabels.length === 0 || allY.length === 0) {
+    return { lines: [], xLabels: [], yMin: 0, yMax: 0 };
+  }
+
+  const yMin = Math.min(...allY);
+  const yMax = Math.max(...allY);
+  const yspan = yMax - yMin;
+  const n = xLabels.length;
+  const step = n > 1 ? (width - 2 * pad) / (n - 1) : 0;
+  const plotH = height - 2 * pad;
+
+  const xAt = (label: string): number => {
+    const i = xLabels.indexOf(label);
+    return n > 1 ? pad + i * step : pad;
+  };
+  const yAt = (v: number): number =>
+    yspan > 0 ? height - pad - ((v - yMin) / yspan) * plotH : height / 2;
+
+  const out: MultiTrendLine[] = lines.map((ln, li) => {
+    const dots: TrendDot[] = ln.points.map((p) => ({
+      x: xAt(p.x),
+      y: yAt(p.y),
+      label: p.x,
+      value: p.y,
+    }));
+    return {
+      label: ln.label,
+      color: ln.color ?? palette[li % palette.length],
+      polyline: dots.map((d) => `${d.x},${d.y}`).join(' '),
+      dots,
+    };
+  });
+
+  return { lines: out, xLabels, yMin, yMax };
+}

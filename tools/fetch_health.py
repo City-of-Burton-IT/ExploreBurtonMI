@@ -21,6 +21,7 @@ import argparse
 import json
 import os
 import sys
+import urllib.parse
 import urllib.request
 
 PLACE_DS = "vgc8-iyc4"   # PLACES: Place Data (GIS Friendly Format), 2025 release
@@ -96,6 +97,25 @@ CHART_RISK = ["sleep", "lpa", "csmoking", "binge"]
 CHART_NEEDS = ["isolation", "foodinsecu", "housinsecu", "shututility", "lacktrpt"]
 COMPARE = ["access2", "csmoking", "obesity", "diabetes", "bphigh"]
 
+# All 11 incorporated cities in Genesee County, for the "Genesee County cities"
+# view on the compare chart (the #28 toggle, framed collaboratively for health).
+# Place FIPS (full GEOID) verified present in CDC PLACES, 2026-06-10.
+GENESEE_CITY_FIPS = {
+    "Burton": "2612060", "Clio": "2616620", "Davison": "2619880",
+    "Fenton": "2627760", "Flint": "2629000", "Flushing": "2629200",
+    "Grand Blanc": "2633280", "Linden": "2647820", "Montrose": "2655280",
+    "Mount Morris": "2655960", "Swartz Creek": "2677700",
+}
+
+# Collaborative framing for the cities view: a regional picture for working
+# together, NOT a "who's worst" ranking (health burden is sensitive).
+CITIES_LEDE = (
+    "Health challenges don't stop at city limits. Seeing how Genesee County "
+    "communities compare helps the county, Burton, and its neighbors focus "
+    "resources and tackle these together. Burton is highlighted; these are "
+    "model-based estimates, so small differences aren't meaningful."
+)
+
 
 def _get(url: str):
     req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
@@ -122,17 +142,48 @@ def bars(title: str, row: dict, codes: list) -> dict:
     return {"type": "bars", "title": title, "unit": "%", "series": series}
 
 
-def _acs_uninsured_pct(year: int, key: str) -> float | None:
-    """Uninsured rate (%) for Burton working-age adults (19-64) from ACS 5-year
+def fetch_genesee_cities() -> dict:
+    """CDC PLACES place rows for the 11 Genesee County cities, keyed by name.
+
+    One keyless Socrata query (placefips IN ...). A city absent from the result
+    is simply skipped; the ranking tolerates fewer than 11."""
+    ids = "','".join(GENESEE_CITY_FIPS.values())
+    where = urllib.parse.quote(f"placefips in ('{ids}')", safe="")
+    url = f"https://data.cdc.gov/resource/{PLACE_DS}.json?$where={where}&$limit=50"
+    by_fips = {r.get("placefips"): r for r in _get(url)}
+    return {name: by_fips[fips] for name, fips in GENESEE_CITY_FIPS.items() if fips in by_fips}
+
+
+def build_city_rankings(city_rows: dict) -> dict:
+    """For each COMPARE measure, a high-to-low ranked list of {name, value} across
+    the cities (Burton included). Cities missing a measure drop out of its list."""
+    rankings: dict = {}
+    for code in COMPARE:
+        vals = [{"name": n, "value": v}
+                for n, row in city_rows.items() if (v := prev(row, code)) is not None]
+        vals.sort(key=lambda d: d["value"], reverse=True)
+        rankings[code] = vals
+    return rankings
+
+
+# The two series shown on the uninsured trend (Burton vs the state), each a
+# trailing ACS geography clause.
+ACS_GEOS = [
+    ("Burton", f"for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}"),
+    ("Michigan", f"for=state:{STATE_FIPS}"),
+]
+
+
+def _acs_uninsured_pct(year: int, key: str, geo: str) -> float | None:
+    """Working-age (19-64) uninsured rate (%) for one geography from ACS 5-year
     B27001, or None on any fetch failure (so one missing vintage never aborts)."""
     codes = sorted(set(B27001_NOCOV_19_64) | set(B27001_TOTAL_19_64))
     get_vars = ",".join(f"B27001_{c}E" for c in codes)
-    url = (f"https://api.census.gov/data/{year}/acs/acs5"
-           f"?get={get_vars}&for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}&key={key}")
+    url = f"https://api.census.gov/data/{year}/acs/acs5?get={get_vars}&{geo}&key={key}"
     try:
         rows = _get(url)
     except Exception as e:
-        print(f"  ACS {year}: skipped ({e})")
+        print(f"  ACS {year} ({geo}): skipped ({e})")
         return None
     rec = dict(zip(rows[0], rows[1]))
 
@@ -145,36 +196,38 @@ def _acs_uninsured_pct(year: int, key: str) -> float | None:
 
 
 def build_uninsured_trend(key: str | None) -> dict | None:
-    """The ACS uninsured-rate trend chart, or None if unavailable.
+    """Burton-vs-Michigan working-age (19-64) uninsured-rate trend (two lines),
+    or None if unavailable. Both series use the identical B27001 method and
+    non-overlapping vintages so they are directly comparable.
 
-    With a key: fetch each non-overlapping vintage and refresh the committed
-    cache. Without a key: reuse the cache so a CDC-PLACES-only refresh keeps the
-    trend (mirrors the --pd-cache / --trends-cache pattern elsewhere)."""
-    points: list[dict] = []
+    With a key: fetch each series + vintage and refresh the committed cache.
+    Without a key: reuse the cache so a CDC-PLACES-only refresh keeps the trend."""
+    lines: list[dict] = []
     if key:
-        for y in ACS_TREND_YEARS:
-            pct = _acs_uninsured_pct(y, key)
-            if pct is not None:
-                points.append({"x": str(y), "y": pct})
-        if points:
+        for name, geo in ACS_GEOS:
+            pts = [{"x": str(y), "y": p}
+                   for y in ACS_TREND_YEARS if (p := _acs_uninsured_pct(y, key, geo)) is not None]
+            if pts:
+                lines.append({"label": name, "points": pts})
+        if lines:
             with open(ACS_TREND_CACHE, "w", encoding="utf-8", newline="\n") as fh:
-                json.dump(points, fh, ensure_ascii=False, indent=2)
+                json.dump(lines, fh, ensure_ascii=False, indent=2)
                 fh.write("\n")
     elif os.path.exists(ACS_TREND_CACHE):
         print("  ACS key absent -> reusing committed uninsured-trend cache")
         with open(ACS_TREND_CACHE, encoding="utf-8") as fh:
-            points = json.load(fh)
+            lines = json.load(fh)
     else:
         print("  ACS key absent and no cache -> uninsured trend SKIPPED "
               "(set CENSUS_API_KEY to build it)")
         return None
-    if not points:
+    if not lines:
         return None
     return {
         "type": "trend",
-        "title": "Uninsured rate, working-age adults (19-64), by year",
+        "title": "Uninsured rate, working-age adults (19-64): Burton vs Michigan, by year",
         "unit": "%",
-        "points": points,
+        "lines": lines,
     }
 
 
@@ -198,30 +251,49 @@ def main() -> int:
         if v is not None:
             stats.append({"label": LABELS[code], "value": f"{v}%", "hint": hint})
 
+    # Genesee County cities ranking for the compare toggle (collaborative framing).
+    try:
+        city_rankings = build_city_rankings(fetch_genesee_cities())
+    except Exception as exc:  # noqa: BLE001 - the cities view is optional
+        print(f"  Genesee cities fetch failed ({exc}); cities view omitted")
+        city_rankings = {}
+
     compare_rows = []
     for code in COMPARE:
         b, g = prev(burton, code), prev(genesee, code)
         if b is not None and g is not None:
-            compare_rows.append({
+            row = {
                 "label": LABELS[code],
                 "unit": "%",
                 "values": [
                     {"name": "Burton", "value": b},
                     {"name": "Genesee County", "value": g},
                 ],
-            })
+            }
+            ranked = city_rankings.get(code, [])
+            if len(ranked) >= 3:
+                row["cities"] = ranked
+            compare_rows.append(row)
 
     # Optional ACS uninsured-rate trend (leads the panel as the "health over time"
     # line). Built from a DIFFERENT source than the CDC PLACES estimates below.
     uninsured_trend = build_uninsured_trend(args.key)
+
+    compare_chart = {
+        "type": "compare",
+        "title": "How Burton compares to Genesee County",
+        "rows": compare_rows,
+    }
+    # When the cities ranking is present, frame that view collaboratively.
+    if any(r.get("cities") for r in compare_rows):
+        compare_chart["citiesLede"] = CITIES_LEDE
 
     charts = [
         bars("Chronic conditions (estimated adult prevalence)", burton, CHART_CHRONIC),
         bars("Prevention & screening (share of adults)", burton, CHART_PREVENTION),
         bars("Lifestyle & risk factors", burton, CHART_RISK),
         bars("Health-related social needs", burton, CHART_NEEDS),
-        {"type": "compare", "title": "How Burton compares to Genesee County",
-         "rows": compare_rows},
+        compare_chart,
     ]
     if uninsured_trend:
         charts.insert(0, uninsured_trend)
@@ -242,7 +314,8 @@ def main() -> int:
         "among Burton adults, not counts of diagnosed residents. They come from CDC's "
         "PLACES program, which projects national survey (BRFSS) results down to each "
         f"community ({RELEASE}).",
-        "Every figure is shown against Genesee County so it reads as context. Small "
+        "Every figure is shown against Genesee County (and, in the cities view, "
+        "alongside other county communities) so it reads as context. Small "
         "differences fall within the estimates' margin of error.",
         "Need care or help? See the Health & support resources in the Resident Guide.",
     ]

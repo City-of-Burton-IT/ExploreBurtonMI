@@ -3,6 +3,7 @@ import {
   donutSegments,
   barRows,
   trendLayout,
+  multiTrendLayout,
   DEFAULT_PALETTE,
 } from '../src/lib/charts/scale';
 
@@ -112,5 +113,52 @@ describe('trendLayout', () => {
     const out = trendLayout([], 100, 100, 10);
     expect(out.dots).toEqual([]);
     expect(out.polyline).toBe('');
+  });
+});
+
+describe('multiTrendLayout', () => {
+  it('shares one x and y scale across all lines', () => {
+    const out = multiTrendLayout(
+      [
+        { label: 'Burton', points: [{ x: '13', y: 15 }, { x: '18', y: 9 }, { x: '23', y: 10 }] },
+        { label: 'Michigan', points: [{ x: '13', y: 12 }, { x: '18', y: 7 }, { x: '23', y: 8 }] },
+      ],
+      300,
+      100,
+      10,
+    );
+    // shared x domain (union, in order) and y domain (min/max across BOTH lines)
+    expect(out.xLabels).toEqual(['13', '18', '23']);
+    expect(out.yMin).toBe(7);
+    expect(out.yMax).toBe(15);
+    expect(out.lines).toHaveLength(2);
+    // x positions are shared and evenly spaced
+    expect(out.lines[0].dots.map((d) => Math.round(d.x))).toEqual([10, 150, 290]);
+    expect(out.lines[1].dots.map((d) => Math.round(d.x))).toEqual([10, 150, 290]);
+    // Burton's max (15) sits at the top; Michigan's min (7) at the bottom
+    expect(out.lines[0].dots[0].y).toBeCloseTo(10, 5); // 15 = yMax -> top
+    expect(out.lines[1].dots[1].y).toBeCloseTo(90, 5); // 7 = yMin -> bottom
+    // default palette colors assigned per line
+    expect(out.lines[0].color).toBe(DEFAULT_PALETTE[0]);
+    expect(out.lines[1].color).toBe(DEFAULT_PALETTE[1]);
+  });
+
+  it('unions mismatched x labels in first-seen order', () => {
+    const out = multiTrendLayout(
+      [
+        { label: 'A', points: [{ x: '2000', y: 1 }, { x: '2010', y: 2 }] },
+        { label: 'B', points: [{ x: '2010', y: 3 }, { x: '2020', y: 4 }] },
+      ],
+      100,
+      100,
+      10,
+    );
+    expect(out.xLabels).toEqual(['2000', '2010', '2020']);
+  });
+
+  it('returns empty layout for no lines', () => {
+    const out = multiTrendLayout([], 100, 100, 10);
+    expect(out.lines).toEqual([]);
+    expect(out.xLabels).toEqual([]);
   });
 });

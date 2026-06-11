@@ -28,6 +28,20 @@
       return { headers: ['Category', 'Value'], rows: series.map((s) => [s.label, formatValue(s.value, unit)]) };
     }
     if (chart.type === 'trend') {
+      if (chart.lines?.length) {
+        const xs: string[] = [];
+        for (const ln of chart.lines) for (const p of ln.points) if (!xs.includes(p.x)) xs.push(p.x);
+        return {
+          headers: ['Period', ...chart.lines.map((l) => l.label)],
+          rows: xs.map((x) => [
+            x,
+            ...chart.lines!.map((l) => {
+              const pt = l.points.find((p) => p.x === x);
+              return pt ? formatValue(pt.y, unit) : '';
+            }),
+          ]),
+        };
+      }
       const points = chart.points ?? [];
       if (!points.length) return null;
       return { headers: ['Period', 'Value'], rows: points.map((p) => [p.x, formatValue(p.y, unit)]) };
@@ -42,6 +56,25 @@
       };
     }
     return null;
+  }
+
+  // Download a chart's data table as a CSV file (same numbers as the table).
+  function csvSlug(s: string): string {
+    return s.toLowerCase().replace(/[^a-z0-9]+/g, '-').replace(/^-+|-+$/g, '') || 'chart';
+  }
+  function downloadCsv(chart: InfoChart): void {
+    const t = chartTable(chart);
+    if (!t) return;
+    const esc = (s: string) => (/[",\n]/.test(s) ? `"${s.replace(/"/g, '""')}"` : s);
+    const csv = [t.headers, ...t.rows].map((r) => r.map(esc).join(',')).join('\r\n');
+    const url = URL.createObjectURL(new Blob([csv], { type: 'text/csv;charset=utf-8' }));
+    const a = document.createElement('a');
+    a.href = url;
+    a.download = `${csvSlug(chart.title)}.csv`;
+    document.body.appendChild(a);
+    a.click();
+    a.remove();
+    URL.revokeObjectURL(url);
   }
 </script>
 
@@ -110,9 +143,14 @@
             {:else if chart.type === 'bars'}
               <Bars series={chart.series ?? []} unit={chart.unit} />
             {:else if chart.type === 'trend'}
-              <TrendLine points={chart.points ?? []} unit={chart.unit} />
+              <TrendLine
+                points={chart.points ?? []}
+                unit={chart.unit}
+                markers={chart.markers}
+                lines={chart.lines}
+              />
             {:else if chart.type === 'compare'}
-              <CompareBars rows={chart.rows ?? []} />
+              <CompareBars rows={chart.rows ?? []} citiesLede={chart.citiesLede} />
             {/if}
             {#if dt}
               <details class="data-table">
@@ -131,6 +169,9 @@
                     {/each}
                   </tbody>
                 </table>
+                <button class="csv-btn" type="button" onclick={() => downloadCsv(chart)}>
+                  Download CSV
+                </button>
               </details>
             {/if}
           </figure>
@@ -313,6 +354,25 @@
   }
   .data-table td {
     font-variant-numeric: tabular-nums;
+  }
+  .csv-btn {
+    margin-top: 0.6rem;
+    border: 1px solid var(--civic-blue, #2c57a0);
+    background: #fff;
+    color: var(--civic-blue, #2c57a0);
+    border-radius: var(--pub-radius-sm, 8px);
+    padding: 0.3rem 0.7rem;
+    font-family: var(--font-body, sans-serif);
+    font-weight: 700;
+    font-size: 0.76rem;
+    cursor: pointer;
+  }
+  .csv-btn:hover {
+    background: var(--civic-blue-soft, #d7e1f3);
+  }
+  .csv-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
   }
   .sr-only {
     position: absolute;

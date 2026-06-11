@@ -2,7 +2,7 @@
   import type { CompareRow, CompareValue } from '../types';
   import { formatValue, CIVIC_BLUE } from './scale';
 
-  let { rows }: { rows: CompareRow[] } = $props();
+  let { rows, citiesLede }: { rows: CompareRow[]; citiesLede?: string } = $props();
 
   // The first place (Burton) is the subject and is emphasised; the rest are
   // muted reference bars (county, state).
@@ -45,6 +45,10 @@
     </div>
   {/if}
 
+  {#if showCities && citiesLede}
+    <p class="cities-lede">{citiesLede}</p>
+  {/if}
+
   <div class="compare">
     {#each rows as row (row.label)}
       {#if showCities && row.cities}
@@ -53,7 +57,7 @@
         <div class="metric">
           <div class="metric-label">
             {row.label}
-            {#if rank > 0}<span class="rank">Burton: {ordinal(rank)} highest of {row.cities.length}</span>{/if}
+            {#if rank > 0 && !citiesLede}<span class="rank">Burton: {ordinal(rank)} highest of {row.cities.length}</span>{/if}
           </div>
           {#each row.cities as v (v.name)}
             <div class="cmp-row" class:subject={isBurton(v.name)}>
@@ -117,6 +121,16 @@
   .cmp-toggle button:focus-visible {
     outline: none;
     box-shadow: var(--pub-focus-ring);
+  }
+  .cities-lede {
+    margin: 0 0 1rem;
+    padding: 0.7rem 0.85rem;
+    background: var(--civic-green-soft, #d9f1dd);
+    border-left: 3px solid var(--civic-green, #4ea735);
+    border-radius: var(--pub-radius-sm, 8px);
+    font-size: 0.85rem;
+    line-height: 1.5;
+    color: var(--pub-ink, #2c2c2c);
   }
   .compare {
     display: grid;
