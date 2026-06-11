@@ -93,6 +93,12 @@
       "icon": "snow-and-ice"
     },
     {
+      "id": "ops-status",
+      "title": "City Services Status",
+      "type": "ops-status",
+      "icon": "ops-status"
+    },
+    {
       "id": "help",
       "title": "Help & Support",
       "type": "markdown",

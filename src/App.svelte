@@ -17,6 +17,7 @@
   import Guide from './lib/Guide.svelte';
   import DashboardMenu from './lib/DashboardMenu.svelte';
   import InstallPrompt from './lib/InstallPrompt.svelte';
+  import AlertBanner from './lib/AlertBanner.svelte';
 
   let config = $state<AppConfig | null>(null);
   let data = $state<PlaceCollection | null>(null);
@@ -114,6 +115,8 @@
 </script>
 
 <div class="app">
+  <!-- City alerts ride above the whole shell; renders nothing when none are active. -->
+  <AlertBanner />
   <header class="topbar">
     <a class="seal-link" href="https://www.burtonmi.gov" aria-label="City of Burton home page">
       <img class="seal" src="/burton-seal.png" alt="City of Burton seal" width="44" height="44" />

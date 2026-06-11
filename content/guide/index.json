@@ -17,6 +17,7 @@
     { "id": "transit", "title": "Public Transit", "type": "markdown", "file": "transit.md", "icon": "transit" },
     { "id": "roads", "title": "Roads & Construction", "type": "markdown", "file": "roads.md", "icon": "roads" },
     { "id": "snow-and-ice", "title": "Snow & Ice", "type": "markdown", "file": "snow-and-ice.md", "icon": "snow-and-ice" },
+    { "id": "ops-status", "title": "City Services Status", "type": "ops-status", "icon": "ops-status" },
     { "id": "help", "title": "Help & Support", "type": "markdown", "file": "help.md", "icon": "help" },
     { "id": "get-involved", "title": "Get Involved", "type": "markdown", "file": "get-involved.md", "icon": "get-involved" },
     { "id": "worship", "title": "Places of Worship", "type": "markdown", "file": "worship.md", "icon": "worship" },

@@ -5,6 +5,7 @@
   import ContactsList from './ContactsList.svelte';
   import MeetingsList from './MeetingsList.svelte';
   import WasteSchedule from './WasteSchedule.svelte';
+  import OpsStatus from './OpsStatus.svelte';
   import CivicClerkMeetings from './CivicClerkMeetings.svelte';
   import VideoEmbed from './VideoEmbed.svelte';
 
@@ -29,6 +30,8 @@
   <MeetingsList meetings={bundle.meetings} />
 {:else if section.type === 'waste'}
   <WasteSchedule />
+{:else if section.type === 'ops-status'}
+  <OpsStatus />
 {:else if section.type === 'civicclerk'}
   <CivicClerkMeetings />
 {:else if section.type === 'video' && section.src}

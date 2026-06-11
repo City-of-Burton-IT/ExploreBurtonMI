@@ -1,0 +1,5 @@
+{
+  "_note": "City-curated alerts shown in the site-wide banner. Active when start <= today <= end (ISO YYYY-MM-DD). level: emergency (red) | warning (amber) | info (civic blue). 'link' is optional. Each alert's 'id' must be stable and unique; a dismissed alert stays hidden by id, so give a re-issued notice a NEW id (e.g. append the date). Expired/old alerts can stay in the file for history. Ships empty -> the banner shows nothing.",
+  "updated": "2026-06-11",
+  "alerts": []
+}

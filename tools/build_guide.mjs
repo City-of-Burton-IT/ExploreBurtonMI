@@ -46,7 +46,12 @@ for (const s of index.sections) {
     out.contacts = JSON.parse(readFileSync(file, 'utf8'));
   } else if (s.type === 'meetings') {
     out.meetings = JSON.parse(readFileSync(file, 'utf8'));
-  } else if (s.type === 'waste' || s.type === 'civicclerk' || s.type === 'video') {
+  } else if (
+    s.type === 'waste' ||
+    s.type === 'ops-status' ||
+    s.type === 'civicclerk' ||
+    s.type === 'video'
+  ) {
     // Rendered by a component from live/static data or section meta; no body to ship.
   } else {
     throw new Error(`Unknown section type '${s.type}' for '${s.id}'`);

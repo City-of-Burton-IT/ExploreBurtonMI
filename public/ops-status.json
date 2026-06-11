@@ -1,0 +1,34 @@
+{
+  "_note": "City-curated seasonal services status, shown in the Resident Guide's 'City Services Status' section. Only items with active:true are shown; flip active when a service starts/ends, edit detail as it moves, and bump 'updated'. status: in-progress | scheduled | complete | standby (drives colour + icon). 'link' is optional. Ships with all items inactive -> the section shows a friendly 'nothing active right now' message until the city turns one on.",
+  "updated": "2026-06-11",
+  "items": [
+    {
+      "id": "leaf-pickup",
+      "service": "Leaf pickup",
+      "status": "standby",
+      "detail": "Curbside leaf collection runs in the fall. Watch here for the zone schedule when it begins.",
+      "active": false
+    },
+    {
+      "id": "yard-waste",
+      "service": "Yard waste collection",
+      "status": "standby",
+      "detail": "Seasonal yard waste pickup. Status posts here when the season opens.",
+      "active": false
+    },
+    {
+      "id": "snow-plowing",
+      "service": "Snow plowing",
+      "status": "standby",
+      "detail": "No active snow event. Priority routes are cleared first when snow falls.",
+      "active": false
+    },
+    {
+      "id": "hydrant-flushing",
+      "service": "Hydrant flushing",
+      "status": "standby",
+      "detail": "Annual water-system flushing. Notice posts here before crews are in your area.",
+      "active": false
+    }
+  ]
+}

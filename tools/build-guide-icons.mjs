@@ -30,6 +30,7 @@ const MAP = {
   transit: 'bus',
   roads: 'construction',
   'snow-and-ice': 'snowflake',
+  'ops-status': 'clipboard-list',
   help: 'life-buoy',
   'get-involved': 'heart-handshake',
   worship: 'church',
