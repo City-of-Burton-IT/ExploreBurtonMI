@@ -214,7 +214,7 @@ def build_panel(types: dict, yearly: dict) -> dict:
     return {
         "title": "Burton Fire & Rescue",
         "subtitle": f"Fire & Rescue responses, {year}",
-        "logo": "burton-fire-logo.jpg",
+        "logo": "cityofburton_firedeptlogo_nobackground.png",
         "stats": stats,
         "charts": charts,
         "source": f"City of Burton Fire Department incident records "
