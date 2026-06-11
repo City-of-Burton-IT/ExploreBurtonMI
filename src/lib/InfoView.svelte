@@ -18,6 +18,8 @@
   let {
     panel,
     loading = false,
+    error = false,
+    onRetry,
     description,
     group,
     prev,
@@ -25,6 +27,8 @@
   }: {
     panel: InfoPanel | null;
     loading?: boolean;
+    error?: boolean;
+    onRetry?: () => void;
     description?: string;
     group?: string | null;
     prev?: DashboardItem | null;
@@ -92,7 +96,14 @@
   {#if loading}
     <p class="state">Loading&hellip;</p>
   {:else if !panel}
-    <p class="state">This information is temporarily unavailable. Please check back soon.</p>
+    {#if error}
+      <div class="state error-state" role="alert">
+        <p>We couldn't load this dashboard. Check your connection and try again.</p>
+        <button class="retry" type="button" onclick={() => onRetry?.()}>Retry</button>
+      </div>
+    {:else}
+      <p class="state">This information is temporarily unavailable. Please check back soon.</p>
+    {/if}
   {:else}
     <header class:has-logo={panel.logo}>
       {#if panel.logo}
@@ -297,6 +308,25 @@
     color: var(--pub-muted, #5c5c5c);
     font-size: 1rem;
     padding: 2rem 0;
+  }
+  .error-state .retry {
+    margin-top: 0.6rem;
+    border: none;
+    background: var(--civic-blue, #2c57a0);
+    color: #fff;
+    border-radius: 999px;
+    padding: 0.45rem 1.1rem;
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .error-state .retry:hover {
+    background: var(--civic-blue-deep, #1e437e);
+  }
+  .error-state .retry:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
   }
   header {
     margin-bottom: 1rem;

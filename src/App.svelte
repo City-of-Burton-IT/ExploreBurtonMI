@@ -29,6 +29,7 @@
   // Keyed by view id so the nav + activePanel lookup stay in sync with the
   // DASHBOARDS list (one place to add a dashboard).
   let panels = $state<Record<string, InfoPanel | null>>({});
+  let panelErrors = $state<Record<string, boolean>>({});
   let infoLoading = $state(true);
 
   async function start() {
@@ -60,10 +61,15 @@
   }
 
   async function loadInfo() {
-    const safe = (url: string): Promise<InfoPanel | null> =>
+    // Distinguish a network FAILURE (offline/timeout -> retryable) from a panel
+    // that is reachable but genuinely missing (a non-OK response -> no error).
+    const safe = (url: string): Promise<{ panel: InfoPanel | null; error: boolean }> =>
       dataFetch(url)
-        .then((r) => (r.ok ? (r.json() as Promise<InfoPanel>) : null))
-        .catch(() => null);
+        .then(async (r) => {
+          if (!r.ok) return { panel: null, error: false }; // reachable but missing
+          return { panel: (await r.json()) as InfoPanel, error: false };
+        })
+        .catch(() => ({ panel: null, error: true })); // offline/timeout -> retryable
     // Derive from DASHBOARDS (single source of truth) so a new dashboard added
     // there is fetched automatically -- never hardcode this list (it silently
     // dropped newly-added panels before).
@@ -90,7 +96,7 @@
     ]);
     panels = Object.fromEntries(
       ids.map((id, i) => {
-        const panel = loaded[i];
+        const panel = loaded[i].panel;
         if (panel) {
           if (!panel.summary && summaries[id]) panel.summary = summaries[id];
           if (!panel.lastUpdated && freshness[id]) panel.lastUpdated = freshness[id];
@@ -98,7 +104,13 @@
         return [id, panel];
       }),
     );
+    panelErrors = Object.fromEntries(ids.map((id, i) => [id, loaded[i].error]));
     infoLoading = false;
+  }
+
+  function retryInfo() {
+    infoLoading = true;
+    loadInfo();
   }
 
   start().catch((e) => (error = e instanceof Error ? e.message : String(e)));
@@ -148,6 +160,7 @@
   });
 
   const activePanel = $derived(isDashboard(ui.view) ? (panels[ui.view] ?? null) : null);
+  const activePanelError = $derived(isDashboard(ui.view) ? (panelErrors[ui.view] ?? false) : false);
   // The active dashboard's one-line description (menu sub-line); used as a panel
   // subtitle fallback when the panel itself carries none.
   const activeDescription = $derived(
@@ -224,6 +237,8 @@
         <InfoView
           panel={activePanel}
           loading={infoLoading}
+          error={activePanelError}
+          onRetry={retryInfo}
           description={activeDescription}
           group={activeGroup}
           prev={adjacent.prev}
