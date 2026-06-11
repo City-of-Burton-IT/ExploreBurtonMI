@@ -12,12 +12,24 @@
   import CompareBars from './charts/CompareBars.svelte';
   import InfoTable from './InfoTable.svelte';
   import TaxEstimator from './TaxEstimator.svelte';
+  import { setView } from './store.svelte';
+  import type { DashboardItem } from './store.svelte';
 
   let {
     panel,
     loading = false,
     description,
-  }: { panel: InfoPanel | null; loading?: boolean; description?: string } = $props();
+    group,
+    prev,
+    next,
+  }: {
+    panel: InfoPanel | null;
+    loading?: boolean;
+    description?: string;
+    group?: string | null;
+    prev?: DashboardItem | null;
+    next?: DashboardItem | null;
+  } = $props();
 
   let explainerOpen = $state(false);
   let methodologyOpen = $state(false);
@@ -94,6 +106,7 @@
         />
       {/if}
       <div class="header-text">
+        {#if group}<p class="group-crumb">{group}</p>{/if}
         <h2>{panel.title}</h2>
         {#if panel.subtitle}
           <p class="subtitle">{panel.subtitle}</p>
@@ -252,6 +265,23 @@
         <a href={reportOutdatedMailto(panel.title)}>Report outdated information</a>
       </p>
     </footer>
+
+    {#if prev || next}
+      <nav class="dashnav" aria-label="Browse dashboards">
+        {#if prev}
+          <button class="nav-btn prev" type="button" onclick={() => setView(prev.id)}>
+            <span class="dir" aria-hidden="true">‹</span>
+            <span class="lbl"><span class="cue">Previous</span>{prev.label}</span>
+          </button>
+        {:else}<span></span>{/if}
+        {#if next}
+          <button class="nav-btn next" type="button" onclick={() => setView(next.id)}>
+            <span class="lbl"><span class="cue">Next</span>{next.label}</span>
+            <span class="dir" aria-hidden="true">›</span>
+          </button>
+        {/if}
+      </nav>
+    {/if}
   {/if}
 </section>
 
@@ -292,6 +322,14 @@
     margin: 0.15rem 0 0;
     color: #666;
     font-size: 0.95rem;
+  }
+  .group-crumb {
+    margin: 0 0 0.1rem;
+    font-size: 0.72rem;
+    font-weight: 700;
+    letter-spacing: 0.05em;
+    text-transform: uppercase;
+    color: var(--pub-muted, #6b7280);
   }
   .draft {
     background: #fff6e6;
@@ -510,6 +548,56 @@
   .report {
     margin: 0.6rem 0 0;
     font-size: 0.8rem;
+  }
+  .dashnav {
+    display: flex;
+    justify-content: space-between;
+    gap: 0.6rem;
+    margin-top: 1.2rem;
+  }
+  .nav-btn {
+    display: inline-flex;
+    align-items: center;
+    gap: 0.5rem;
+    max-width: 48%;
+    border: 1px solid var(--pub-border, #d8dde4);
+    background: #fff;
+    border-radius: var(--pub-radius, 10px);
+    padding: 0.5rem 0.8rem;
+    cursor: pointer;
+    font-family: var(--font-body, sans-serif);
+    color: var(--civic-blue-deep, #1e437e);
+    text-align: left;
+  }
+  .nav-btn.next {
+    text-align: right;
+  }
+  .nav-btn:hover {
+    border-color: var(--civic-blue, #2c57a0);
+    background: var(--civic-blue-soft, #d7e1f3);
+  }
+  .nav-btn:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+  }
+  .nav-btn .lbl {
+    display: flex;
+    flex-direction: column;
+    min-width: 0;
+    font-weight: 700;
+    font-size: 0.86rem;
+  }
+  .nav-btn .cue {
+    font-size: 0.66rem;
+    font-weight: 600;
+    letter-spacing: 0.04em;
+    text-transform: uppercase;
+    color: var(--pub-muted, #6b7280);
+  }
+  .nav-btn .dir {
+    font-size: 1.2rem;
+    line-height: 1;
+    flex: 0 0 auto;
   }
   .report a {
     color: var(--civic-blue-link, #386fc5);

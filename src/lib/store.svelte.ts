@@ -81,6 +81,22 @@ export function isDashboard(view: AppView): view is InfoView {
   return DASHBOARD_IDS.has(view);
 }
 
+/** The themed-group label containing a dashboard (e.g. "Money & Taxes"), or null. */
+export function dashboardGroupLabel(id: AppView): string | null {
+  for (const g of DASHBOARD_GROUPS) if (g.items.some((d) => d.id === id)) return g.label;
+  return null;
+}
+
+/** The dashboards before/after a given one in the flat display order (for prev/next). */
+export function adjacentDashboards(id: AppView): {
+  prev: DashboardItem | null;
+  next: DashboardItem | null;
+} {
+  const i = DASHBOARDS.findIndex((d) => d.id === id);
+  if (i < 0) return { prev: null, next: null };
+  return { prev: DASHBOARDS[i - 1] ?? null, next: DASHBOARDS[i + 1] ?? null };
+}
+
 /** Map a URL hash (#finances, #guide, #guide/trash) to a top-level view. */
 export function viewFromHash(hash: string): AppView {
   const key = hash.replace(/^#/, '').split('/')[0];

@@ -6,7 +6,7 @@
   import { filterFeatures } from './lib/filter';
   import { buildIndex, searchIds } from './lib/search';
   import type { AppConfig, PlaceCollection, InfoPanel } from './lib/types';
-  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard, DASHBOARDS, select, clearSelection } from './lib/store.svelte';
+  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard, DASHBOARDS, select, clearSelection, dashboardGroupLabel, adjacentDashboards } from './lib/store.svelte';
   import { placeIdFromHash } from './lib/hash';
   import Map from './lib/Map.svelte';
   import Detail from './lib/Detail.svelte';
@@ -153,6 +153,11 @@
   const activeDescription = $derived(
     isDashboard(ui.view) ? DASHBOARDS.find((d) => d.id === ui.view)?.description : undefined,
   );
+  // Context header: the dashboard's group label + prev/next for lateral browsing.
+  const activeGroup = $derived(isDashboard(ui.view) ? dashboardGroupLabel(ui.view) : null);
+  const adjacent = $derived(
+    isDashboard(ui.view) ? adjacentDashboards(ui.view) : { prev: null, next: null },
+  );
 </script>
 
 <div class="app">
@@ -216,7 +221,14 @@
     </div>
     {#if isDashboard(ui.view)}
       <div class="infowrap">
-        <InfoView panel={activePanel} loading={infoLoading} description={activeDescription} />
+        <InfoView
+          panel={activePanel}
+          loading={infoLoading}
+          description={activeDescription}
+          group={activeGroup}
+          prev={adjacent.prev}
+          next={adjacent.next}
+        />
       </div>
     {:else if ui.view === 'guide'}
       <div class="infowrap">
