@@ -33,6 +33,10 @@ on:
         options:
           - completed   # roll out to all internal testers immediately
           - draft       # create the release in the console but do not release it
+      releaseNotes:
+        description: "What's new in this version (one line; shown to internal testers). Leave blank for none."
+        required: false
+        default: ''
 
 jobs:
   release:
@@ -126,6 +130,7 @@ jobs:
         env:
           ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
           STATUS: ${{ inputs.status }}
+          RELEASE_NOTES: ${{ inputs.releaseNotes }}
         run: |
           set -euo pipefail
           PKG=gov.burtonmi.explore
@@ -149,9 +154,21 @@ jobs:
           echo "Uploaded versionCode $VC"
 
           echo "Assigning versionCode $VC to the internal track (status: $STATUS)..."
+          # Build the track body with jq so release-notes text is safely JSON-escaped
+          # (handles quotes/spaces). Play caps notes at 500 chars/language; omit the
+          # field entirely when blank so we don't publish empty notes. language must
+          # be one of the app's listing languages (en-US is the default here).
+          if [ -n "${RELEASE_NOTES:-}" ]; then
+            TRACK_BODY=$(jq -n --arg vc "$VC" --arg status "$STATUS" --arg notes "$RELEASE_NOTES" \
+              '{track:"internal",releases:[{status:$status,versionCodes:[$vc],releaseNotes:[{language:"en-US",text:$notes}]}]}')
+            echo "Release notes (en-US): $RELEASE_NOTES"
+          else
+            TRACK_BODY=$(jq -n --arg vc "$VC" --arg status "$STATUS" \
+              '{track:"internal",releases:[{status:$status,versionCodes:[$vc]}]}')
+            echo "No release notes supplied -- the release will carry none."
+          fi
           resp=$(curl -sS -X PUT -H "$AUTH" -H "Content-Type: application/json" \
-                 -d "{\"track\":\"internal\",\"releases\":[{\"status\":\"$STATUS\",\"versionCodes\":[\"$VC\"]}]}" \
-                 "$API/edits/$EDIT/tracks/internal")
+                 -d "$TRACK_BODY" "$API/edits/$EDIT/tracks/internal")
           echo "$resp" | jq -e '.track == "internal"' >/dev/null || die "Track assignment failed" "$resp"
 
           echo "Committing the edit..."
