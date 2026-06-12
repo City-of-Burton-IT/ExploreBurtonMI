@@ -29,7 +29,8 @@ def mk_record() -> dict:
     # Fill every grouped member referenced by the panel with a fixed count so the
     # series sums are predictable (each member contributes 10).
     for table, groups in (("B19001", fc.INCOME_GROUPS), ("B15003", fc.EDU_GROUPS),
-                          ("B08301", fc.COMMUTE_GROUPS), ("B01001", fc.AGE_BANDS)):
+                          ("B08301", fc.COMMUTE_GROUPS), ("B01001", fc.AGE_BANDS),
+                          ("B03002", fc.RACE_GROUPS)):
         for _, codes in groups:
             for c in codes:
                 rec.setdefault(f"{table}_{c}E", "10")
@@ -69,14 +70,15 @@ def test_charts_present_with_trend():
     assert "Age distribution" in titles
     assert "Educational attainment (age 25+)" not in titles  # moved to Schools
     assert "How residents get to work" in titles
-    assert len(charts) == 5
+    assert "Race & ethnicity" in titles
+    assert len(charts) == 6
 
 
 def test_trend_omitted_when_insufficient_points():
     panel = fc.build_panel(mk_record(), 2023, [])
     titles = [c["title"] for c in panel["charts"]]
     assert "Population" not in titles
-    assert len(panel["charts"]) == 4
+    assert len(panel["charts"]) == 5
     assert "Decennial" not in panel["source"]
 
 
@@ -95,6 +97,22 @@ def test_age_bands():
     # 18-34 band sums 12 member codes (6 male + 6 female) x 10 each = 120
     band_18_34 = next(s for s in charts["Age distribution"]["series"] if s["label"] == "18-34")
     assert band_18_34["value"] == 120
+
+
+def test_race_ethnicity_donut():
+    charts = {c["title"]: c for c in fc.build_panel(mk_record(), 2023, TREND)["charts"]}
+    donut = charts["Race & ethnicity"]
+    labels = [s["label"] for s in donut["series"]]
+    assert labels == [
+        "White", "Black or African American", "Hispanic or Latino",
+        "Two or more races", "Asian", "Other",
+    ]
+    # "Other" sums 3 member codes (AIAN + NHPI + some other race) x 10 each = 30
+    other = next(s for s in donut["series"] if s["label"] == "Other")
+    assert other["value"] == 30
+    # The category-definition note ships with the panel.
+    notes = fc.build_panel(mk_record(), 2023, TREND)["notes"]
+    assert any("Hispanic or Latino includes residents of any race" in n for n in notes)
 
 
 def test_tos_notice_present():

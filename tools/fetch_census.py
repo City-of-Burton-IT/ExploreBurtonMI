@@ -86,6 +86,19 @@ AGE_BANDS = [
              "044", "045", "046", "047", "048", "049"]),
 ]
 
+# Race & ethnicity (B03002, Hispanic or Latino Origin by Race) -- the standard
+# mutually-exclusive partition: "Hispanic or Latino" is any race; every other
+# group is non-Hispanic ("alone" = that race only). Sums to B03002_001E.
+# AIAN / NHPI / some-other-race are each well under 1% in Burton -> "Other".
+RACE_GROUPS = [
+    ("White", ["003"]),
+    ("Black or African American", ["004"]),
+    ("Hispanic or Latino", ["012"]),
+    ("Two or more races", ["009"]),
+    ("Asian", ["006"]),
+    ("Other", ["005", "007", "008"]),
+]
+
 # Single-value ACS variables.
 CORE_VARS = {
     "population": "B01003_001E",
@@ -172,6 +185,7 @@ def fetch(year: int, key: str) -> dict:
         *_grouped_vars("B15003", EDU_GROUPS),
         *_grouped_vars("B08301", COMMUTE_GROUPS),
         *_grouped_vars("B01001", AGE_BANDS),
+        *_grouped_vars("B03002", RACE_GROUPS),
     ]
     record = _fetch_vars(year, key, get_vars, f"for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}")
     name = record.get("NAME", "")
@@ -406,6 +420,11 @@ def build_panel(record: dict, year: int, trend_points: list[dict]) -> dict:
             ],
         },
         {"type": "bars", "title": "Age distribution", "series": _series(record, "B01001", AGE_BANDS)},
+        {
+            "type": "donut",
+            "title": "Race & ethnicity",
+            "series": _series(record, "B03002", RACE_GROUPS),
+        },
         {"type": "bars", "title": "Households by income", "series": income_series},
         {
             "type": "donut",
@@ -444,6 +463,9 @@ def build_panel(record: dict, year: int, trend_points: list[dict]) -> dict:
             }
         ],
         "notes": [
+            "Race & ethnicity follows the Census Bureau's standard categories: "
+            "Hispanic or Latino includes residents of any race; every other group counts "
+            "non-Hispanic residents of that race alone.",
             "Population trend: the 2000-2020 points are decennial census counts; the most "
             "recent figure is an ACS 5-year estimate, so it is not directly comparable to them.",
             "This product uses the Census Bureau Data API but is not endorsed or certified "

@@ -161,6 +161,36 @@
       ]
     },
     {
+      "type": "donut",
+      "title": "Race & ethnicity",
+      "series": [
+        {
+          "label": "White",
+          "value": 23473
+        },
+        {
+          "label": "Black or African American",
+          "value": 2814
+        },
+        {
+          "label": "Hispanic or Latino",
+          "value": 1333
+        },
+        {
+          "label": "Two or more races",
+          "value": 1578
+        },
+        {
+          "label": "Asian",
+          "value": 185
+        },
+        {
+          "label": "Other",
+          "value": 146
+        }
+      ]
+    },
+    {
       "type": "bars",
       "title": "Households by income",
       "series": [
@@ -713,6 +743,7 @@
     }
   ],
   "notes": [
+    "Race & ethnicity follows the Census Bureau's standard categories: Hispanic or Latino includes residents of any race; every other group counts non-Hispanic residents of that race alone.",
     "Population trend: the 2000-2020 points are decennial census counts; the most recent figure is an ACS 5-year estimate, so it is not directly comparable to them.",
     "Homeownership rate is the owner-occupied share of occupied homes from the 2000, 2010, and 2020 decennial censuses (directly comparable counts).",
     "Trend lines use ACS 5-year estimates spaced about four years apart; each point is a smoothed 5-year average, and dollar figures are not inflation-adjusted.",
