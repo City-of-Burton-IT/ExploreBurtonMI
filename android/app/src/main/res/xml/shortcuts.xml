@@ -1,0 +1,45 @@
+<?xml version="1.0" encoding="utf-8"?>
+<!-- Static launcher long-press shortcuts (#56). Each is an explicit VIEW intent
+     into MainActivity carrying an explore.burtonmi.gov URL; the hash is applied by
+     the deep-link handler (src/lib/deepLinks.ts, via App.getLaunchUrl on cold
+     start). "#near" is a pseudo-route that triggers geolocation. -->
+<shortcuts xmlns:android="http://schemas.android.com/apk/res/android">
+    <shortcut
+        android:shortcutId="nearme"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_nearme"
+        android:shortcutShortLabel="@string/shortcut_nearme_short"
+        android:shortcutLongLabel="@string/shortcut_nearme_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="gov.burtonmi.explore"
+            android:targetClass="gov.burtonmi.explore.MainActivity"
+            android:data="https://explore.burtonmi.gov/#near" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="dashboards"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_dashboards"
+        android:shortcutShortLabel="@string/shortcut_dashboards_short"
+        android:shortcutLongLabel="@string/shortcut_dashboards_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="gov.burtonmi.explore"
+            android:targetClass="gov.burtonmi.explore.MainActivity"
+            android:data="https://explore.burtonmi.gov/#demographics" />
+    </shortcut>
+
+    <shortcut
+        android:shortcutId="guide"
+        android:enabled="true"
+        android:icon="@drawable/shortcut_guide"
+        android:shortcutShortLabel="@string/shortcut_guide_short"
+        android:shortcutLongLabel="@string/shortcut_guide_long">
+        <intent
+            android:action="android.intent.action.VIEW"
+            android:targetPackage="gov.burtonmi.explore"
+            android:targetClass="gov.burtonmi.explore.MainActivity"
+            android:data="https://explore.burtonmi.gov/#guide" />
+    </shortcut>
+</shortcuts>

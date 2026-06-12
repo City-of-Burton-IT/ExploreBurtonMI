@@ -4,4 +4,12 @@
     <string name="title_activity_main">Explore Burton</string>
     <string name="package_name">gov.burtonmi.explore</string>
     <string name="custom_url_scheme">gov.burtonmi.explore</string>
+
+    <!-- Launcher long-press shortcuts (#56). -->
+    <string name="shortcut_nearme_short">Near me</string>
+    <string name="shortcut_nearme_long">Find places near me</string>
+    <string name="shortcut_dashboards_short">Dashboards</string>
+    <string name="shortcut_dashboards_long">Community dashboards</string>
+    <string name="shortcut_guide_short">Resident Guide</string>
+    <string name="shortcut_guide_long">Open the Resident Guide</string>
 </resources>

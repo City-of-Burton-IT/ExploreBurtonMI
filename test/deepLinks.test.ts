@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { routeFromUrl } from '../src/lib/deepLinks';
+import { routeFromUrl, NEAR_ME_ROUTE } from '../src/lib/deepLinks';
 
 describe('routeFromUrl (Android App Link -> in-app hash route)', () => {
   it('maps a dashboard fragment to its route', () => {
@@ -21,6 +21,10 @@ describe('routeFromUrl (Android App Link -> in-app hash route)', () => {
   it('returns empty (the map) for the bare site root', () => {
     expect(routeFromUrl('https://explore.burtonmi.gov/')).toBe('');
     expect(routeFromUrl('https://explore.burtonmi.gov')).toBe('');
+  });
+
+  it('maps the "Near me" launcher-shortcut pseudo-route', () => {
+    expect(routeFromUrl(`https://explore.burtonmi.gov/#${NEAR_ME_ROUTE}`)).toBe(NEAR_ME_ROUTE);
   });
 
   it('ignores a different host', () => {

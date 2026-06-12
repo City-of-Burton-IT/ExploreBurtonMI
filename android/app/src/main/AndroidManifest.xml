@@ -30,6 +30,11 @@
                 <category android:name="android.intent.category.BROWSABLE" />
                 <data android:scheme="https" android:host="explore.burtonmi.gov" />
             </intent-filter>
+
+            <!-- Static launcher shortcuts (#56): res/xml/shortcuts.xml. -->
+            <meta-data
+                android:name="android.app.shortcuts"
+                android:resource="@xml/shortcuts" />
         </activity>
 
         <provider
