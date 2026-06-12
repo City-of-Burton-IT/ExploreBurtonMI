@@ -24,6 +24,11 @@ if (Capacitor.isNativePlatform()) {
   import('./lib/nativeBack')
     .then(({ initNativeBack }) => initNativeBack())
     .catch(() => {})
+
+  // App Links: route a shared explore.burtonmi.gov link to the matching view.
+  import('./lib/deepLinks')
+    .then(({ initDeepLinks }) => initDeepLinks())
+    .catch(() => {})
 }
 
 // COMING-SOON SOFT LAUNCH (web only)

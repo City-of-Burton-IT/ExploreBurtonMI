@@ -18,6 +18,18 @@
                 <action android:name="android.intent.action.MAIN" />
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
+
+            <!-- App Links (#55): open shared explore.burtonmi.gov links inside the app.
+                 android:autoVerify makes Android fetch /.well-known/assetlinks.json and
+                 confirm it lists this app's signing-cert SHA-256 before auto-opening
+                 (no "open with" chooser). The hash route is applied by the appUrlOpen
+                 listener in src/lib/deepLinks.ts. -->
+            <intent-filter android:autoVerify="true">
+                <action android:name="android.intent.action.VIEW" />
+                <category android:name="android.intent.category.DEFAULT" />
+                <category android:name="android.intent.category.BROWSABLE" />
+                <data android:scheme="https" android:host="explore.burtonmi.gov" />
+            </intent-filter>
         </activity>
 
         <provider
