@@ -10,6 +10,12 @@
   import type { AppConfig, PlaceCollection, PlaceFeature } from './types';
   import { ui, select, setUserLocation } from './store.svelte';
   import { dataFetch } from './remote';
+  import { clusterSummary, CLUSTER_PREVIEW_MAX } from './cluster';
+
+  /** A map layer (our circle markers) carrying its source place feature, so a
+   *  cluster preview can read the names inside. Typed as the common Layer base so
+   *  it fits both the circleMarkers we create and getAllChildMarkers()'s Marker[]. */
+  type PlaceMarker = L.Layer & { feature?: PlaceFeature };
 
   let {
     config,
@@ -115,6 +121,67 @@
     return s.replace(/[&<>"']/g, (c) =>
       ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string,
     );
+  }
+
+  // --- Cluster preview (#map): peek at the places inside a cluster bubble --------
+  // markercluster's cluster events carry the hovered/clicked cluster on `.layer`.
+  type ClusterEvent = L.LeafletEvent & { layer: L.MarkerCluster };
+
+  function clusterNames(c: L.MarkerCluster): string[] {
+    return (c.getAllChildMarkers() as PlaceMarker[])
+      .map((m) => m.feature?.properties?.name)
+      .filter((n): n is string => typeof n === 'string');
+  }
+
+  function bindClusterPreview(group: L.MarkerClusterGroup): void {
+    // Desktop hover: a quick tooltip with a few names + "+N more".
+    group.on('clustermouseover', (e) => {
+      const c = (e as ClusterEvent).layer;
+      const { shown, more } = clusterSummary(clusterNames(c), 6);
+      const list = shown.map((n) => `<li>${escapeHtml(n)}</li>`).join('');
+      const extra = more ? `<p class="cp-more">+${more} more — tap to see</p>` : '';
+      c.bindTooltip(
+        `<div class="cluster-peek"><p class="cp-head">${c.getChildCount()} places here</p><ul>${list}</ul>${extra}</div>`,
+        { direction: 'top', offset: [0, -6], className: 'cluster-tip' },
+      ).openTooltip();
+    });
+    group.on('clustermouseout', (e) => (e as ClusterEvent).layer.closeTooltip());
+
+    // Tap / click: a small bubble opens a popup listing its places (tap one to open
+    // it); a big bubble zooms to drill in (the hover tooltip covers the glance there,
+    // and a 100-name popup wouldn't be useful).
+    group.on('clusterclick', (e) => {
+      if (!map) return;
+      const c = (e as ClusterEvent).layer;
+      if (c.getChildCount() > CLUSTER_PREVIEW_MAX) {
+        map.fitBounds(c.getBounds(), { padding: [40, 40] });
+      } else {
+        openClusterPreview(c);
+      }
+    });
+  }
+
+  function openClusterPreview(c: L.MarkerCluster): void {
+    const feats = (c.getAllChildMarkers() as PlaceMarker[])
+      .map((m) => m.feature)
+      .filter((f): f is PlaceFeature => !!f)
+      .sort((a, b) => String(a.properties.name).localeCompare(String(b.properties.name)));
+    const el = L.DomUtil.create('div', 'cluster-preview');
+    const head = L.DomUtil.create('p', 'cp-head', el);
+    head.textContent = `${feats.length} places here`;
+    const ul = L.DomUtil.create('ul', '', el);
+    for (const f of feats) {
+      const li = L.DomUtil.create('li', '', ul);
+      const btn = L.DomUtil.create('button', '', li) as HTMLButtonElement;
+      btn.type = 'button';
+      btn.textContent = String(f.properties.name); // textContent => no XSS
+      L.DomEvent.on(btn, 'click', (ev) => {
+        L.DomEvent.stop(ev);
+        map?.closePopup();
+        select(f); // opens the detail sheet + reveals it on the map
+      });
+    }
+    c.bindPopup(el, { className: 'cluster-popup', maxHeight: 260 }).openPopup();
   }
 
   function colorFor(feature: PlaceFeature): string {
@@ -418,7 +485,9 @@
       }
     }
 
-    cluster = L.markerClusterGroup({ showCoverageOnHover: false });
+    // zoomToBoundsOnClick is off so we own the cluster tap: a small bubble shows a
+    // preview of what's inside (below); a big one drills down by zooming.
+    cluster = L.markerClusterGroup({ showCoverageOnHover: false, zoomToBoundsOnClick: false });
     for (const feature of data.features) {
       // Off-map entries (real location outside the city) are listed but never
       // plotted on the locked city map.
@@ -428,10 +497,12 @@
       const marker = L.circleMarker([lat, lng], baseStyle(feature));
       marker.bindTooltip(escapeHtml(label));
       marker.on('click', () => select(feature));
+      (marker as PlaceMarker).feature = feature;
       markers.set(feature.id, marker);
       featureById.set(feature.id, feature);
     }
     map.addLayer(cluster);
+    bindClusterPreview(cluster);
     markerEpoch += 1;
 
     // "Near me": a custom control that uses the browser's geolocation to center the
@@ -578,5 +649,64 @@
     box-shadow: 0 4px 14px rgba(0, 0, 0, 0.3);
     z-index: 1200;
     pointer-events: none;
+  }
+
+  /* Cluster preview (#map): hover tooltip + tap popup listing the places in a
+     bubble. Rendered in Leaflet's own tooltip/popup containers, so :global. */
+  :global(.cluster-tip .cluster-peek) {
+    font-family: var(--font-body);
+    max-width: 16rem;
+  }
+  :global(.cluster-peek .cp-head),
+  :global(.cluster-preview .cp-head) {
+    margin: 0 0 0.3rem;
+    font-weight: 700;
+    font-size: 0.82rem;
+    color: var(--civic-blue-deep, #1e437e);
+  }
+  :global(.cluster-peek ul),
+  :global(.cluster-preview ul) {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+  }
+  :global(.cluster-peek li) {
+    font-size: 0.82rem;
+    line-height: 1.35;
+  }
+  :global(.cluster-peek .cp-more) {
+    margin: 0.25rem 0 0;
+    font-size: 0.76rem;
+    color: var(--pub-muted, #5c5c5c);
+  }
+  /* Tap popup: a scrollable list of tappable place names. */
+  :global(.cluster-preview) {
+    min-width: 11rem;
+  }
+  :global(.cluster-preview li) {
+    border-top: 1px solid var(--pub-border-soft, #f0f0f0);
+  }
+  :global(.cluster-preview li:first-child) {
+    border-top: none;
+  }
+  :global(.cluster-preview li button) {
+    display: block;
+    width: 100%;
+    text-align: left;
+    border: none;
+    background: none;
+    padding: 0.4rem 0.2rem;
+    font-family: var(--font-body);
+    font-size: 0.88rem;
+    color: var(--civic-blue-link, #386fc5);
+    cursor: pointer;
+  }
+  :global(.cluster-preview li button:hover) {
+    color: var(--civic-blue);
+    background: var(--pub-surface-2, #f5f7fa);
+  }
+  :global(.cluster-preview li button:focus-visible) {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
   }
 </style>
