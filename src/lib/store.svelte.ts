@@ -241,14 +241,18 @@ function applyResolvedTheme(): void {
       : false;
   const resolved = resolveTheme(ui.theme, prefersDark);
   document.documentElement.dataset.theme = resolved;
-  // Native edge-to-edge (#30): the WebView draws under a transparent status bar, so
-  // keep its icons legible against the themed top bar -- light theme (white bar) =>
-  // dark icons (Style.Light); dark theme => light icons (Style.Dark).
+  // Native edge-to-edge (#30): Capacitor 8's CORE SystemBars plugin owns the
+  // window layout + safe-area insets. The legacy @capacitor/status-bar plugin's
+  // setOverlaysWebView set DEPRECATED fullscreen window flags that corrupted the
+  // bottom (navigation-bar) inset -- content ended up hidden under the nav
+  // buttons. SystemBars.setStyle covers BOTH bars' icon contrast: our dark theme
+  // wants light icons (Style "DARK" = light content), light theme the reverse.
   if (Capacitor.isNativePlatform()) {
-    import('@capacitor/status-bar')
-      .then(({ StatusBar, Style }) => {
-        StatusBar.setOverlaysWebView({ overlay: true }).catch(() => {});
-        StatusBar.setStyle({ style: resolved === 'dark' ? Style.Dark : Style.Light }).catch(() => {});
+    import('@capacitor/core')
+      .then(({ SystemBars, SystemBarsStyle }) => {
+        SystemBars.setStyle({
+          style: resolved === 'dark' ? SystemBarsStyle.Dark : SystemBarsStyle.Light,
+        }).catch(() => {});
       })
       .catch(() => {});
   }

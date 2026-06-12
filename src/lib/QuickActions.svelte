@@ -3,11 +3,12 @@
   import { ui, setGuideSection, requestNearMe, openReport } from './store.svelte';
   import { QUICK_ACTION_GUIDE_SECTIONS as TARGET } from './quickActions';
 
-  // A compact home row of one-tap actions, shown ONLY in the native app on the
-  // map view (a single conditional component -- no fork; the web build never
-  // renders it). Each action routes into an existing view/widget, so a fresh
-  // launch reaches the waste lookup, meetings, or contacts in one tap.
-  const show = Capacitor.isNativePlatform();
+  // A compact home row of one-tap actions on the map view, for PHONES: the
+  // native app and mobile browsers alike (#68 follow-up -- the Near-me/Report
+  // map buttons are desktop-only now, so this row is the phone path to those
+  // actions). Native always shows it; on the web a max-width rule hides it on
+  // desktop, where the map buttons exist instead.
+  const native = Capacitor.isNativePlatform();
 
   // Lucide (https://lucide.dev, ISC) inner SVG markup -- inline, no icon dep
   // (same approach as AlertBanner / GuideIcon / OfflineBadge).
@@ -34,8 +35,8 @@
   ];
 </script>
 
-{#if show && ui.view === 'map'}
-  <nav class="quick-actions" aria-label="Quick actions">
+{#if ui.view === 'map'}
+  <nav class="quick-actions" class:web={!native} aria-label="Quick actions">
     {#each actions as a (a.label)}
       <button type="button" onclick={a.run}>
         <svg
@@ -63,6 +64,13 @@
     background: var(--pub-surface);
     border-bottom: 1px solid var(--pub-border, #e3e3e3);
     overflow-x: auto;
+  }
+  /* On the web this row is the PHONE path to Near me / Report (#68 follow-up);
+     desktop keeps the labeled map buttons instead. Native always shows it. */
+  @media (min-width: 861px) {
+    .quick-actions.web {
+      display: none;
+    }
   }
   button {
     flex: 1 1 0;

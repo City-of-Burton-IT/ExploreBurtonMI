@@ -548,9 +548,10 @@
     bindClusterPreview(cluster);
     markerEpoch += 1;
 
-    // "Near me": a custom control that uses the browser's geolocation to center the
-    // map on the user, drop a "you are here" marker, and feed ui.userLocation (which
-    // sorts the list by distance). Pure client-side; degrades gracefully if denied.
+    // "Near me" + "Report an issue" map controls are DESKTOP-ONLY (#68 follow-up):
+    // phones (mobile web + the native app) get the same actions in the quick-actions
+    // row under the header instead, so the map stays uncluttered. Native never
+    // creates them; mobile web hides them via the max-width rule on .near-me-btn.
     const NearMeControl = L.Control.extend({
       options: { position: 'topleft' as L.ControlPosition },
       onAdd() {
@@ -567,7 +568,7 @@
         return btn;
       },
     });
-    map.addControl(new NearMeControl());
+    if (!Capacitor.isNativePlatform()) map.addControl(new NearMeControl());
 
     // "Report an issue" (#14): opens the report form; the form sends the user
     // back here in pin mode, and the next map tap places the pin.
@@ -587,7 +588,7 @@
         return btn;
       },
     });
-    map.addControl(new ReportControl());
+    if (!Capacitor.isNativePlatform()) map.addControl(new ReportControl());
 
     map.on('click', (e: L.LeafletMouseEvent) => {
       if (ui.report.pinMode) setReportPin(e.latlng.lat, e.latlng.lng);
@@ -791,6 +792,12 @@
   :global(.near-me-btn:focus-visible) {
     outline: none;
     box-shadow: var(--pub-focus-ring);
+  }
+  /* Phones get these actions in the quick-actions row instead (#68 follow-up). */
+  @media (max-width: 860px) {
+    :global(.near-me-btn) {
+      display: none;
+    }
   }
   /* Layers-box minimize toggle (#14 follow-up): explicit, works on every platform. */
   :global(.leaflet-control-layers) {

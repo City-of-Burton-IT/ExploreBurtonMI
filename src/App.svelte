@@ -230,7 +230,8 @@
       <pre>{error}</pre>
     </div>
   {:else if config && data && result}
-    <!-- Native-only one-tap home row (renders nothing on the web build). -->
+    <!-- One-tap home row under the header: native app + mobile browsers
+         (desktop hides it via its own max-width rule -- map buttons instead). -->
     <QuickActions />
     <div class="workspace" data-view={ui.mobileView} class:hidden={ui.view !== 'map'}>
       <aside class="sidebar">
