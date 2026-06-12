@@ -4,7 +4,11 @@ import './app.css'
 import App from './App.svelte'
 import ComingSoon from './lib/ComingSoon.svelte'
 import { COMING_SOON_ENABLED, shouldGate } from './lib/comingSoon'
-import { captureInstallPrompt, markInstalled, type BeforeInstallPromptEvent } from './lib/store.svelte'
+import { captureInstallPrompt, markInstalled, initTheme, type BeforeInstallPromptEvent } from './lib/store.svelte'
+
+// Apply the saved theme (#61) before mounting so there's no flash of the wrong
+// theme. Runs for the holding page and the app alike.
+initTheme()
 
 // Native (Capacitor) only: the status-bar colour + light icons are set in the Android
 // theme (styles.xml) so the WebView sits cleanly below the status bar. Reinforce the

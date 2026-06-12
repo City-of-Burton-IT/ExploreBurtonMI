@@ -36,7 +36,7 @@
 
 <style>
   .intro {
-    color: #555;
+    color: var(--pub-muted);
     font-size: 0.92rem;
   }
   h3 {
@@ -71,7 +71,7 @@
     flex: 1 1 auto;
   }
   .time {
-    color: #666;
+    color: var(--pub-muted);
     white-space: nowrap;
   }
   .badge {
@@ -98,14 +98,14 @@
     justify-content: space-between;
     gap: 1rem;
     padding: 0.4rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--pub-border-soft);
     font-size: 0.92rem;
   }
   .bname {
     font-weight: 600;
   }
   .bsched {
-    color: #666;
+    color: var(--pub-muted);
     white-space: nowrap;
   }
 </style>

@@ -62,7 +62,7 @@
       #f6f8fc;
   }
   .card {
-    background: #fff;
+    background: var(--pub-surface);
     border-radius: var(--pub-radius-lg, 16px);
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.12);
     border-top: 6px solid var(--civic-green);

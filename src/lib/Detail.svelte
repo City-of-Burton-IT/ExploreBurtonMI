@@ -118,7 +118,7 @@
     max-width: calc(100% - 1.5rem);
     max-height: calc(100% - 1.5rem);
     overflow-y: auto;
-    background: #fff;
+    background: var(--pub-surface);
     border-radius: var(--pub-radius);
     box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
     padding: 1rem 1.1rem 1.1rem;
@@ -134,7 +134,7 @@
     font-size: 1.5rem;
     line-height: 1;
     cursor: pointer;
-    color: #666;
+    color: var(--pub-muted);
   }
   .close:hover {
     color: var(--civic-blue);
@@ -149,7 +149,7 @@
     border: none;
     background: none;
     cursor: pointer;
-    color: #666;
+    color: var(--pub-muted);
     padding: 0.1rem;
   }
   .share:hover {
@@ -165,7 +165,7 @@
     border: none;
     background: none;
     cursor: pointer;
-    color: #666;
+    color: var(--pub-muted);
     padding: 0.1rem;
   }
   .save:hover {

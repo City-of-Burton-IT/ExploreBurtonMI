@@ -310,7 +310,7 @@
   }
   .subtitle {
     margin: 0.15rem 0 0;
-    color: #666;
+    color: var(--pub-muted);
     font-size: 0.95rem;
   }
   .group-crumb {
@@ -347,7 +347,7 @@
     margin: 0.4rem 0 0;
     font-size: 0.92rem;
     line-height: 1.5;
-    color: #333;
+    color: var(--pub-ink);
   }
   .summary p:first-of-type {
     margin-top: 0;
@@ -408,7 +408,7 @@
   .csv-btn {
     margin-top: 0.6rem;
     border: 1px solid var(--civic-blue, #2c57a0);
-    background: #fff;
+    background: var(--pub-surface);
     color: var(--civic-blue, #2c57a0);
     border-radius: var(--pub-radius-sm, 8px);
     padding: 0.3rem 0.7rem;
@@ -493,7 +493,7 @@
     border-radius: var(--pub-radius-sm, 6px);
     padding: 0.55rem 0.85rem;
     margin-bottom: 0.55rem;
-    background: #fafbfd;
+    background: var(--pub-surface-2);
   }
   .ex-card summary {
     font-family: var(--font-head, sans-serif);
@@ -506,7 +506,7 @@
     margin: 0.5rem 0 0.1rem;
     font-size: 0.9rem;
     line-height: 1.5;
-    color: #333;
+    color: var(--pub-ink);
   }
   .ex-source {
     margin: 0.6rem 0 0;
@@ -551,7 +551,7 @@
     gap: 0.5rem;
     max-width: 48%;
     border: 1px solid var(--pub-border, #d8dde4);
-    background: #fff;
+    background: var(--pub-surface);
     border-radius: var(--pub-radius, 10px);
     padding: 0.5rem 0.8rem;
     cursor: pointer;

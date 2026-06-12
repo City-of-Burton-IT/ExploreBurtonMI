@@ -76,7 +76,7 @@
     padding: 0.5rem 0.9rem;
     font-size: 0.8rem;
     color: var(--pub-muted, #5c5c5c);
-    border-top: 1px solid #e5e5e5;
+    border-top: 1px solid var(--pub-border-soft);
     display: flex;
     align-items: center;
     justify-content: space-between;
@@ -119,7 +119,7 @@
   .row {
     display: flex;
     align-items: stretch;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--pub-border-soft);
   }
   .row.active {
     background: var(--civic-blue-soft);
@@ -137,7 +137,7 @@
     cursor: pointer;
   }
   .row:hover {
-    background: #f5f7fa;
+    background: var(--pub-surface-2);
   }
   .star {
     flex: none;
@@ -165,7 +165,7 @@
   }
   .sub {
     font-size: 0.82rem;
-    color: #666;
+    color: var(--pub-muted);
   }
 
   /* Phones/tablets: roomier rows for touch */

@@ -541,7 +541,7 @@
     height: 34px;
     border: 2px solid rgba(0, 0, 0, 0.2);
     border-radius: 4px;
-    background: #fff;
+    background: var(--pub-surface);
     color: var(--civic-blue, #2c57a0);
     font-size: 1.2rem;
     line-height: 1;

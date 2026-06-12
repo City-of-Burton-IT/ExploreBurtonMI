@@ -56,7 +56,7 @@
     display: flex;
     gap: 0.4rem;
     padding: 0.5rem 0.6rem;
-    background: #fff;
+    background: var(--pub-surface);
     border-bottom: 1px solid var(--pub-border, #e3e3e3);
     overflow-x: auto;
   }

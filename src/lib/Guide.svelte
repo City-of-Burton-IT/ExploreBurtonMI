@@ -78,7 +78,7 @@
     height: 100%;
     display: flex;
     min-height: 0;
-    background: #fff;
+    background: var(--pub-surface);
   }
   .state {
     padding: 2rem;
@@ -120,7 +120,7 @@
     min-width: 0;
   }
   .sectionnav button:hover {
-    background: #f5f7fa;
+    background: var(--pub-surface-2);
   }
   .sectionnav button.active {
     background: var(--civic-blue-soft, #d7e1f3);

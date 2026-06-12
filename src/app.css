@@ -37,6 +37,11 @@
   --pub-ink: #2c2c2c;
   --pub-muted: #5c5c5c; /* muted/caption text -- 6.4:1 on white (WCAG AA); replaces #777/#888/#999 */
   --pub-border: #e3e3e3;
+  /* Surface tokens (so the dark-mode layer in #61 can recolor every panel). */
+  --pub-bg: #eef1f5; /* page backdrop behind panels */
+  --pub-surface: #ffffff; /* cards, panels, modals, header, sidebar */
+  --pub-surface-2: #f5f7fa; /* hover / subtle fill */
+  --pub-border-soft: #f0f0f0; /* lighter inner dividers */
   --pub-radius: 12px;
   --pub-radius-sm: 8px;
   --pub-focus-ring: 0 0 0 0.2rem rgba(44, 87, 160, 0.25);
@@ -62,8 +67,39 @@
   -webkit-font-smoothing: antialiased;
 }
 
+/* Dark theme (#61): opt-in via the About > Appearance toggle, which sets
+   data-theme="dark" on <html>. Light is the default (no attribute / "light"), so
+   shipping this never forces dark on anyone. Overrides only the token layer;
+   civic blue is lightened for legibility on dark surfaces. */
+:root[data-theme='dark'] {
+  --civic-blue: #5b8fd6;
+  --civic-blue-link: #82adea;
+  --civic-blue-deep: #a9caf2;
+  --civic-blue-soft: #233247;
+  --civic-green: #5cb646;
+  --civic-green-deep: #7fd089;
+  --civic-green-soft: #1e3326;
+  --pub-ink: #e7ebf0;
+  --pub-muted: #aab4c0;
+  --pub-border: #38424f;
+  --pub-border-soft: #2a323d;
+  --pub-bg: #0e1217;
+  --pub-surface: #1a212b;
+  --pub-surface-2: #232c38;
+  --pub-focus-ring: 0 0 0 0.2rem rgba(130, 173, 234, 0.45);
+  --pub-warn: #e0a23b;
+  --pub-error: #f0796e;
+  --pub-success: #6fcf86;
+  color-scheme: dark;
+}
+
 * {
   box-sizing: border-box;
+}
+
+html,
+body {
+  background: var(--pub-bg);
 }
 
 /* Respect users who ask for less motion: near-instant transitions/animations and
@@ -117,7 +153,7 @@ body,
 /* ---------- Header: white, seal, blue wordmark, dashed-green motif ---------- */
 .topbar {
   flex: 0 0 auto;
-  background: #fff;
+  background: var(--pub-surface);
   color: var(--pub-ink);
   padding: 0.5rem 1rem;
   /* Pad below a notch / status bar when the WebView runs edge-to-edge (iOS, and
@@ -164,7 +200,7 @@ body,
 .topbar .tagline {
   margin: 0;
   font-size: 0.85rem;
-  color: #5c5c5c;
+  color: var(--pub-muted);
 }
 
 .topbar .spacer {
@@ -183,7 +219,7 @@ body,
 }
 .viewnav > button {
   border: 1px solid var(--civic-blue);
-  background: #fff;
+  background: var(--pub-surface);
   color: var(--civic-blue);
   font-family: var(--font-body);
   font-weight: 700;
@@ -248,7 +284,7 @@ body,
   max-width: 78vw;
   max-height: 60%;
   overflow: auto;
-  background: #fff;
+  background: var(--pub-surface);
   border: 1px solid var(--pub-border, #d8dde4);
   border-radius: 8px;
   box-shadow: 0 4px 16px rgba(0, 0, 0, 0.22);
@@ -268,7 +304,7 @@ body,
   font-size: 1.2rem;
   line-height: 1;
   cursor: pointer;
-  color: #555;
+  color: var(--pub-muted);
   border-radius: 4px;
 }
 .zlp-close:hover {
@@ -284,7 +320,7 @@ body,
 .infowrap {
   flex: 1 1 auto;
   min-height: 0;
-  background: #fff;
+  background: var(--pub-surface);
 }
 
 .sidebar {
@@ -293,7 +329,7 @@ body,
   flex-direction: column;
   min-height: 0;
   border-right: 1px solid var(--pub-border);
-  background: #fff;
+  background: var(--pub-surface);
   overflow: hidden;
 }
 
@@ -344,7 +380,7 @@ body,
   place-items: center;
 }
 .map-credit:hover {
-  background: #fff;
+  background: var(--pub-surface);
 }
 .map-credit:focus-visible {
   outline: none;
@@ -381,7 +417,7 @@ body,
   }
   .view-toggle button {
     border: none;
-    background: #fff;
+    background: var(--pub-surface);
     color: var(--civic-blue);
     font-family: var(--font-body);
     font-weight: 700;
@@ -448,7 +484,7 @@ body,
   height: 100%;
   padding: 2rem;
   text-align: center;
-  color: #555;
+  color: var(--pub-muted);
 }
 
 .status.error {

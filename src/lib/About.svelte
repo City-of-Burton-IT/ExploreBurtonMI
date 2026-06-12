@@ -1,7 +1,11 @@
 <script lang="ts">
   import type { AppConfig } from './types';
-  import { ui, openAbout, closeAbout } from './store.svelte';
+  import { ui, openAbout, closeAbout, setTheme } from './store.svelte';
   import { reportOutdatedMailto } from './feedback';
+  import { THEME_PREFS, type ThemePref } from './theme';
+
+  const themeLabel = (p: ThemePref): string =>
+    p === 'system' ? 'System' : p === 'light' ? 'Light' : 'Dark';
 
   // `showButton` renders the inline "About" trigger. When false, only the dialog
   // is mounted (opened from elsewhere, e.g. the map © button or the Guide).
@@ -28,6 +32,18 @@
       <button class="close" onclick={closeAbout} aria-label="Close">&times;</button>
       <h2>About {config.project.name}</h2>
       <p>{config.project.tagline}</p>
+      <div class="theme-row">
+        <span class="theme-label">Appearance</span>
+        <div class="theme-seg" role="group" aria-label="Appearance / theme">
+          {#each THEME_PREFS as p (p)}
+            <button
+              class="seg"
+              class:on={ui.theme === p}
+              aria-pressed={ui.theme === p}
+              onclick={() => setTheme(p)}>{themeLabel(p)}</button>
+          {/each}
+        </div>
+      </div>
       <p class="note">
         Listings combine OpenStreetMap and Overture Maps business data with curated
         City of Burton facility records; government facility locations have been
@@ -90,7 +106,7 @@
   }
   .modal {
     position: relative;
-    background: #fff;
+    background: var(--pub-surface);
     color: var(--pub-ink);
     border-radius: var(--pub-radius-lg);
     max-width: 480px;
@@ -108,7 +124,7 @@
     font-size: 1.6rem;
     line-height: 1;
     cursor: pointer;
-    color: #666;
+    color: var(--pub-muted);
   }
   .close:hover {
     color: var(--civic-blue);
@@ -118,6 +134,50 @@
     font-family: var(--font-head);
     font-weight: 700;
     color: var(--civic-blue);
+  }
+  .theme-row {
+    display: flex;
+    align-items: center;
+    justify-content: space-between;
+    gap: 0.75rem;
+    margin: 0.4rem 0 0.9rem;
+    flex-wrap: wrap;
+  }
+  .theme-label {
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--pub-ink);
+  }
+  .theme-seg {
+    display: inline-flex;
+    border: 1px solid var(--pub-border);
+    border-radius: 999px;
+    overflow: hidden;
+  }
+  .seg {
+    border: none;
+    background: none;
+    color: var(--pub-muted, #5c5c5c);
+    font-family: var(--font-body);
+    font-size: 0.82rem;
+    font-weight: 600;
+    padding: 0.35rem 0.85rem;
+    cursor: pointer;
+    transition: background var(--motion-duration), color var(--motion-duration);
+  }
+  .seg + .seg {
+    border-left: 1px solid var(--pub-border);
+  }
+  .seg:hover {
+    color: var(--civic-blue);
+  }
+  .seg.on {
+    background: var(--civic-blue);
+    color: #fff;
+  }
+  .seg:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
   }
   .note {
     background: var(--civic-green-soft);
@@ -133,7 +193,7 @@
   }
   .attrib {
     font-size: 0.82rem;
-    color: #666;
+    color: var(--pub-muted);
   }
   .privacy {
     margin: 0.6rem 0 0;
@@ -143,7 +203,7 @@
   .feedback {
     margin: 0.4rem 0 0;
     font-size: 0.82rem;
-    color: #666;
+    color: var(--pub-muted);
   }
   a {
     color: var(--civic-blue-link);

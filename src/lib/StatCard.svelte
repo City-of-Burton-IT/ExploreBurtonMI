@@ -62,7 +62,7 @@
     display: flex;
     flex-direction: column;
     gap: 0.15rem;
-    background: #fff;
+    background: var(--pub-surface);
     border: 1px solid #e5e9ee;
     border-radius: var(--pub-radius, 10px);
     padding: 0.9rem 1rem;

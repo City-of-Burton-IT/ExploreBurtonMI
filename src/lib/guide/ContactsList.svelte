@@ -86,6 +86,6 @@
     margin: 0.4rem 0 0;
     padding-left: 1.1rem;
     font-size: 0.82rem;
-    color: #555;
+    color: var(--pub-muted);
   }
 </style>

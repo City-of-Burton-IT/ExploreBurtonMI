@@ -102,7 +102,7 @@
   }
   .cmp-toggle button {
     border: none;
-    background: #fff;
+    background: var(--pub-surface);
     color: var(--civic-blue, #2c57a0);
     font-family: var(--font-body, sans-serif);
     font-weight: 700;
@@ -157,7 +157,7 @@
     margin: 0.18rem 0;
   }
   .place {
-    color: #666;
+    color: var(--pub-muted);
     overflow: hidden;
     text-overflow: ellipsis;
     white-space: nowrap;
@@ -180,7 +180,7 @@
   }
   .num {
     white-space: nowrap;
-    color: #555;
+    color: var(--pub-muted);
     font-variant-numeric: tabular-nums;
   }
   .subject .num {

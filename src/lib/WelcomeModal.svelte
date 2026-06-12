@@ -109,7 +109,7 @@
     max-width: 460px;
     max-height: calc(100% - 2rem);
     overflow-y: auto;
-    background: #fff;
+    background: var(--pub-surface);
     border-radius: var(--pub-radius-lg, 16px);
     box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.3);
     padding: 1.6rem 1.6rem 1.4rem;
@@ -155,7 +155,7 @@
     gap: 0.15rem;
     text-align: left;
     border: 1px solid var(--pub-border, #d8dde4);
-    background: #fff;
+    background: var(--pub-surface);
     border-radius: var(--pub-radius, 12px);
     padding: 0.7rem 0.9rem;
     cursor: pointer;

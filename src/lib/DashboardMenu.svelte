@@ -129,7 +129,7 @@
     align-items: center;
     gap: 0.35rem;
     border: 1px solid var(--civic-blue);
-    background: #fff;
+    background: var(--pub-surface);
     color: var(--civic-blue);
     font-family: var(--font-body);
     font-weight: 700;
@@ -187,7 +187,7 @@
     max-width: 320px;
     max-height: min(70vh, 520px);
     overflow-y: auto;
-    background: #fff;
+    background: var(--pub-surface);
     border: 1px solid var(--pub-border, #e3e3e3);
     border-radius: var(--pub-radius, 12px);
     box-shadow: 0 8px 24px rgba(0, 0, 0, 0.18);
@@ -255,7 +255,7 @@
     color: var(--pub-muted, #6b7280);
   }
   .menu button:hover {
-    background: #f5f7fa;
+    background: var(--pub-surface-2);
   }
   .menu button.current {
     color: var(--civic-blue-deep, #1e437e);

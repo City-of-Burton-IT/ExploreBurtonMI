@@ -82,7 +82,7 @@
   .opendata {
     height: 100%;
     overflow-y: auto;
-    background: #fff;
+    background: var(--pub-surface);
     padding: 1.2rem 1.4rem 2rem;
   }
   .intro {
@@ -123,7 +123,7 @@
     justify-content: space-between;
     gap: 1rem;
     padding: 0.6rem 0;
-    border-bottom: 1px solid #f0f0f0;
+    border-bottom: 1px solid var(--pub-border-soft);
   }
   .meta {
     display: flex;

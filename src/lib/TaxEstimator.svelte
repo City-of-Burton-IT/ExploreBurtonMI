@@ -105,7 +105,7 @@
     gap: 0.25rem;
     font-size: 0.8rem;
     font-weight: 600;
-    color: #333;
+    color: var(--pub-ink);
   }
   input,
   select {
@@ -113,7 +113,7 @@
     padding: 0.45rem 0.55rem;
     border: 1px solid #b9c6db;
     border-radius: var(--pub-radius-sm, 6px);
-    background: #fff;
+    background: var(--pub-surface);
     font-family: inherit;
   }
   .inputwrap {
@@ -124,7 +124,7 @@
   .prefix {
     position: absolute;
     left: 0.55rem;
-    color: #666;
+    color: var(--pub-muted);
     font-size: 0.95rem;
     pointer-events: none;
   }
@@ -156,11 +156,11 @@
   .per {
     font-size: 0.9rem;
     font-weight: 600;
-    color: #666;
+    color: var(--pub-muted);
   }
   .cap {
     font-size: 0.78rem;
-    color: #666;
+    color: var(--pub-muted);
     margin-top: 0.2rem;
   }
   .split {
@@ -171,10 +171,10 @@
     flex-direction: column;
     gap: 0.3rem;
     font-size: 0.9rem;
-    color: #333;
+    color: var(--pub-ink);
   }
   .split b {
-    color: #111;
+    color: var(--pub-ink);
   }
   .dot {
     display: inline-block;
@@ -188,7 +188,7 @@
     grid-column: 1 / -1;
     margin: 0.4rem 0 0;
     font-size: 0.9rem;
-    color: #222;
+    color: var(--pub-ink);
   }
   .fineprint {
     margin: 0.8rem 0 0;

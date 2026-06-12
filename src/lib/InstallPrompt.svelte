@@ -74,7 +74,7 @@
     align-items: center;
     gap: 0.7rem;
     width: min(92vw, 460px);
-    background: #fff;
+    background: var(--pub-surface);
     border: 1px solid var(--pub-border, #e3e3e3);
     border-radius: var(--pub-radius, 12px);
     box-shadow: 0 8px 28px rgba(0, 0, 0, 0.22);

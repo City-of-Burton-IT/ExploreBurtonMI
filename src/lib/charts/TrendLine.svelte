@@ -210,7 +210,7 @@
   }
   .xlabel {
     font-size: 10px;
-    fill: #666;
+    fill: var(--pub-muted);
     text-anchor: middle;
     font-family: var(--font-body, sans-serif);
   }

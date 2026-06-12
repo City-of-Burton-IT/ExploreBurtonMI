@@ -94,7 +94,7 @@
     white-space: nowrap;
   }
   .val {
-    color: #555;
+    color: var(--pub-muted);
     font-weight: 600;
     white-space: nowrap;
   }

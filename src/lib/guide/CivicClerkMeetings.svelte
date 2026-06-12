@@ -154,7 +154,7 @@
   }
   .when {
     flex: 0 0 11rem;
-    color: #555;
+    color: var(--pub-muted);
     font-size: 0.85rem;
     font-variant-numeric: tabular-nums;
   }

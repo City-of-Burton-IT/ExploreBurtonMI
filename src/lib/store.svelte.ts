@@ -6,6 +6,7 @@ import type { PlaceFeature, AppView, InfoView } from './types';
 import type { Selections } from './filter';
 import { placeIdFromHash, placeHash } from './hash';
 import { SAVED_KEY, loadSaved, serializeSaved, toggleSaved } from './savedPlaces';
+import { THEME_KEY, loadThemePref, resolveTheme, type ThemePref } from './theme';
 
 export interface DashboardItem {
   id: InfoView;
@@ -128,6 +129,15 @@ function initialSaved(): Set<string> {
   }
 }
 
+function initialTheme(): ThemePref {
+  if (typeof localStorage === 'undefined') return 'light';
+  try {
+    return loadThemePref(localStorage.getItem(THEME_KEY));
+  } catch {
+    return 'light';
+  }
+}
+
 export const ui = $state<{
   selected: PlaceFeature | null;
   selections: Selections;
@@ -153,6 +163,8 @@ export const ui = $state<{
   savedIds: Set<string>;
   /** when true, the map + list show only saved places */
   savedOnly: boolean;
+  /** theme preference (#61): system follows the OS, light/dark are explicit */
+  theme: ThemePref;
 }>({
   selected: null,
   selections: {},
@@ -167,7 +179,44 @@ export const ui = $state<{
   nearMeNonce: 0,
   savedIds: initialSaved(),
   savedOnly: false,
+  theme: initialTheme(),
 });
+
+// --- Theme (#61) -----------------------------------------------------------
+/** Apply the current preference to <html data-theme>, resolving "system" against
+ *  the OS. Light is the absence of the dark token layer. */
+function applyResolvedTheme(): void {
+  if (typeof document === 'undefined') return;
+  const prefersDark =
+    typeof window !== 'undefined' && window.matchMedia
+      ? window.matchMedia('(prefers-color-scheme: dark)').matches
+      : false;
+  document.documentElement.dataset.theme = resolveTheme(ui.theme, prefersDark);
+}
+
+/** Set + persist the theme preference and apply it. */
+export function setTheme(pref: ThemePref): void {
+  ui.theme = pref;
+  try {
+    localStorage.setItem(THEME_KEY, pref);
+  } catch {
+    /* storage unavailable -> session-only */
+  }
+  applyResolvedTheme();
+}
+
+/** Apply the saved theme on startup and keep "system" in sync with the OS. Call
+ *  once, as early as possible (main.ts), to avoid a flash of the wrong theme. */
+export function initTheme(): void {
+  applyResolvedTheme();
+  if (typeof window !== 'undefined' && window.matchMedia) {
+    window
+      .matchMedia('(prefers-color-scheme: dark)')
+      .addEventListener('change', () => {
+        if (ui.theme === 'system') applyResolvedTheme();
+      });
+  }
+}
 
 // --- Saved / favorite places (#62) -----------------------------------------
 /** Whether a place id is currently saved. */

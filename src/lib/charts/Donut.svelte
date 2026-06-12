@@ -162,7 +162,7 @@
     white-space: nowrap;
   }
   .val {
-    color: #555;
+    color: var(--pub-muted);
     white-space: nowrap;
   }
   .nodata {

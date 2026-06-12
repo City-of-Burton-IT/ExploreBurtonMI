@@ -150,7 +150,7 @@
     gap: 0.5rem 1rem;
     margin: 1.1rem 0 0;
     font-size: 0.8rem;
-    color: #555;
+    color: var(--pub-muted);
   }
   .legend-item {
     display: inline-flex;
