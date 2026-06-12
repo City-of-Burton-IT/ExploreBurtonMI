@@ -138,7 +138,7 @@
     border-radius: 999px;
     white-space: nowrap;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    transition: background var(--motion-duration), color var(--motion-duration);
   }
   .trigger:hover {
     background: var(--civic-blue-soft);
@@ -173,7 +173,7 @@
   }
   .caret {
     font-size: 0.7rem;
-    transition: transform 0.15s;
+    transition: transform var(--motion-duration);
   }
   .caret.up {
     transform: rotate(180deg);

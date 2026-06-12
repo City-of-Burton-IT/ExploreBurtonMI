@@ -70,7 +70,7 @@
     margin: 0 0 0.7rem;
     cursor: pointer;
     border-radius: 6px;
-    transition: opacity 0.15s;
+    transition: opacity var(--motion-duration);
   }
   .bars li:focus-visible {
     outline: none;
@@ -111,7 +111,7 @@
     height: 100%;
     border-radius: 999px;
     min-width: 2px;
-    transition: filter 0.15s;
+    transition: filter var(--motion-duration);
   }
   .active .fill {
     filter: brightness(1.08) saturate(1.1);

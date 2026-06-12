@@ -74,8 +74,8 @@
     border: 1px solid #adb5bd;
     border-radius: var(--pub-radius);
     transition:
-      border-color 0.15s,
-      background 0.15s;
+      border-color var(--motion-duration),
+      background var(--motion-duration);
   }
   input:focus {
     outline: none;

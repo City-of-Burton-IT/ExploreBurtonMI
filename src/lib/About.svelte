@@ -69,7 +69,7 @@
     font-family: var(--font-body);
     font-weight: 700;
     font-size: 0.9rem;
-    transition: background 0.15s;
+    transition: background var(--motion-duration);
   }
   .about-btn:hover {
     background: var(--civic-blue-deep);

@@ -106,7 +106,7 @@
   }
   .seg {
     cursor: pointer;
-    transition: stroke-width 0.12s, opacity 0.15s;
+    transition: stroke-width 0.12s, opacity var(--motion-duration);
   }
   .seg.dim {
     opacity: 0.45;

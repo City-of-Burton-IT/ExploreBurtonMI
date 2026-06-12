@@ -139,7 +139,7 @@
     font-weight: 700;
     font-size: 0.95rem;
     cursor: pointer;
-    transition: background 0.15s;
+    transition: background var(--motion-duration);
   }
   button:hover {
     background: var(--civic-blue-deep);

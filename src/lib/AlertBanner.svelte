@@ -162,10 +162,10 @@
   }
   /* Level colours: red / amber / civic blue. Each meets WCAG AA with white text. */
   .level--emergency {
-    background: #b3261e;
+    background: var(--pub-error);
   }
   .level--warning {
-    background: #9a5b00;
+    background: var(--pub-warn);
   }
   .level--info {
     background: var(--civic-blue, #2c57a0);

@@ -109,7 +109,7 @@
     font-size: 0.78rem;
     padding: 0.34rem 0.8rem;
     cursor: pointer;
-    transition: background 0.15s, color 0.15s;
+    transition: background var(--motion-duration), color var(--motion-duration);
   }
   .cmp-toggle button + button {
     border-left: 1px solid var(--civic-blue, #2c57a0);

@@ -82,7 +82,7 @@
     background: rgba(255, 255, 255, 0.18);
     display: grid;
     place-items: center;
-    transition: background 0.15s, transform 0.15s;
+    transition: background var(--motion-duration), transform var(--motion-duration);
   }
   .play::before {
     content: '';
