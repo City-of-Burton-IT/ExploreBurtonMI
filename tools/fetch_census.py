@@ -139,6 +139,30 @@ DECENNIAL = [
 TREND_YEARS = [2013, 2018, 2023]
 BACH_CODES = ["022", "023", "024", "025"]  # bachelor's, master's, professional, doctorate
 
+# Race & ethnicity over time (#16 B): decennial Hispanic-origin-by-race tables.
+# Variable codes verified against each dataset's groups JSON (2000 sf1 P004,
+# 2010 sf1 P5, 2020 pl P2). Categories are directly comparable across vintages
+# AND with ACS B03002: Hispanic = any race; White/Black/Two+ = non-Hispanic.
+RACE_TREND_SOURCES = [
+    ("2000", "2000/dec/sf1", {
+        "total": "P004001", "White": "P004005", "Black or African American": "P004006",
+        "Hispanic or Latino": "P004002", "Two or more races": "P004011",
+    }),
+    ("2010", "2010/dec/sf1", {
+        "total": "P005001", "White": "P005003", "Black or African American": "P005004",
+        "Hispanic or Latino": "P005010", "Two or more races": "P005009",
+    }),
+    ("2020", "2020/dec/pl", {
+        "total": "P2_001N", "White": "P2_005N", "Black or African American": "P2_006N",
+        "Hispanic or Latino": "P2_002N", "Two or more races": "P2_011N",
+    }),
+]
+# The matching ACS B03002 codes for the most-recent (estimate) point.
+RACE_TREND_ACS = {
+    "White": "003", "Black or African American": "004",
+    "Hispanic or Latino": "012", "Two or more races": "009",
+}
+
 # Homeownership-rate trend from the decennial tenure tables. Variable names verified
 # against each dataset's group JSON (they differ by vintage):
 #   2000 sf1 H4:  H004001 total occupied, H004002 owner occupied
@@ -364,6 +388,35 @@ def build_homeownership_trend(key: str) -> list[dict]:
     return points if len(points) >= 2 else []
 
 
+def build_race_trend(record: dict, year: int, key: str) -> list[dict]:
+    """Race/ethnicity shares across 2000/2010/2020 censuses + the ACS estimate.
+
+    Returns multi-line trend series (percent of total population); [] unless at
+    least two lines resolve with two or more points each.
+    """
+    labels = list(RACE_TREND_ACS)
+    lines: dict[str, list[dict]] = {lbl: [] for lbl in labels}
+    for x, dataset, var_map in RACE_TREND_SOURCES:
+        try:
+            rec = _fetch_decennial(dataset, list(var_map.values()), key)
+            total = int(rec[var_map["total"]])
+            if total <= 0:
+                continue
+            for lbl in labels:
+                lines[lbl].append({"x": x, "y": round(int(rec[var_map[lbl]]) / total * 100, 1)})
+        except Exception as exc:  # noqa: BLE001 - one missing census shouldn't fail the refresh
+            print(f"  race trend fetch failed for {x} ({exc}); omitting that point")
+    # Most-recent point from the already-fetched ACS B03002 record. The total is
+    # the partition sum (equals B03002_001E; the group fetch omits the total var).
+    acs_total = sum(_int(record, f"B03002_{c}E") for _, codes in RACE_GROUPS for c in codes)
+    if acs_total:
+        x = f"{year} (est.)"
+        for lbl, code in RACE_TREND_ACS.items():
+            lines[lbl].append({"x": x, "y": round(_int(record, f"B03002_{code}E") / acs_total * 100, 1)})
+    out = [{"label": lbl, "points": pts} for lbl, pts in lines.items() if len(pts) >= 2]
+    return out if len(out) >= 2 else []
+
+
 def _chunks(seq: list, n: int):
     for i in range(0, len(seq), n):
         yield seq[i:i + n]
@@ -558,6 +611,21 @@ def main() -> int:
             len(panel["notes"]) - 1,
             "Homeownership rate is the owner-occupied share of occupied homes from the "
             "2000, 2010, and 2020 decennial censuses (directly comparable counts).",
+        )
+    # Race & ethnicity composition over time (#16 B): decennial + ACS endpoint.
+    race_lines = build_race_trend(record, args.year, args.key)
+    if race_lines:
+        panel["charts"].append({
+            "type": "trend",
+            "title": "Race & ethnicity over time",
+            "unit": "%",
+            "lines": race_lines,
+        })
+        panel["notes"].insert(
+            len(panel["notes"]) - 1,
+            "Race & ethnicity over time: the 2000-2020 points are decennial census counts; "
+            "the most recent point is an ACS 5-year estimate. Each line is that group's "
+            "share of the total population.",
         )
     # Multi-year ACS trend lines (education, income, poverty, remote work).
     trends = build_acs_trends(args.key)

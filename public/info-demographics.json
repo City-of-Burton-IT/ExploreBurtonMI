@@ -289,6 +289,97 @@
     },
     {
       "type": "trend",
+      "title": "Race & ethnicity over time",
+      "unit": "%",
+      "lines": [
+        {
+          "label": "White",
+          "points": [
+            {
+              "x": "2000",
+              "y": 90.9
+            },
+            {
+              "x": "2010",
+              "y": 86.2
+            },
+            {
+              "x": "2020",
+              "y": 78.5
+            },
+            {
+              "x": "2023 (est.)",
+              "y": 79.5
+            }
+          ]
+        },
+        {
+          "label": "Black or African American",
+          "points": [
+            {
+              "x": "2000",
+              "y": 3.5
+            },
+            {
+              "x": "2010",
+              "y": 7.2
+            },
+            {
+              "x": "2020",
+              "y": 9.7
+            },
+            {
+              "x": "2023 (est.)",
+              "y": 9.5
+            }
+          ]
+        },
+        {
+          "label": "Hispanic or Latino",
+          "points": [
+            {
+              "x": "2000",
+              "y": 2.3
+            },
+            {
+              "x": "2010",
+              "y": 3.1
+            },
+            {
+              "x": "2020",
+              "y": 5.0
+            },
+            {
+              "x": "2023 (est.)",
+              "y": 4.5
+            }
+          ]
+        },
+        {
+          "label": "Two or more races",
+          "points": [
+            {
+              "x": "2000",
+              "y": 1.8
+            },
+            {
+              "x": "2010",
+              "y": 2.2
+            },
+            {
+              "x": "2020",
+              "y": 5.5
+            },
+            {
+              "x": "2023 (est.)",
+              "y": 5.3
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "trend",
       "title": "Median household income ($)",
       "unit": "$",
       "points": [
@@ -746,6 +837,7 @@
     "Race & ethnicity follows the Census Bureau's standard categories: Hispanic or Latino includes residents of any race; every other group counts non-Hispanic residents of that race alone.",
     "Population trend: the 2000-2020 points are decennial census counts; the most recent figure is an ACS 5-year estimate, so it is not directly comparable to them.",
     "Homeownership rate is the owner-occupied share of occupied homes from the 2000, 2010, and 2020 decennial censuses (directly comparable counts).",
+    "Race & ethnicity over time: the 2000-2020 points are decennial census counts; the most recent point is an ACS 5-year estimate. Each line is that group's share of the total population.",
     "Trend lines use ACS 5-year estimates spaced about four years apart; each point is a smoothed 5-year average, and dollar figures are not inflation-adjusted.",
     "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
   ]
