@@ -1,6 +1,6 @@
 <script lang="ts">
   import { Capacitor } from '@capacitor/core';
-  import { ui, setGuideSection, requestNearMe } from './store.svelte';
+  import { ui, setGuideSection, requestNearMe, openReport } from './store.svelte';
   import { QUICK_ACTION_GUIDE_SECTIONS as TARGET } from './quickActions';
 
   // A compact home row of one-tap actions, shown ONLY in the native app on the
@@ -19,6 +19,8 @@
       '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
     contact:
       '<path d="M22 16.92v3a2 2 0 0 1-2.18 2 19.79 19.79 0 0 1-8.63-3.07 19.5 19.5 0 0 1-6-6 19.79 19.79 0 0 1-3.07-8.67A2 2 0 0 1 4.11 2h3a2 2 0 0 1 2 1.72 12.84 12.84 0 0 0 .7 2.81 2 2 0 0 1-.45 2.11L8.09 9.91a16 16 0 0 0 6 6l1.27-1.27a2 2 0 0 1 2.11-.45 12.84 12.84 0 0 0 2.81.7A2 2 0 0 1 22 16.92z"/>',
+    report:
+      '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 20h16a2 2 0 0 0 1.73-2Z"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
   };
 
   // Guide section ids are the single source of truth in content/guide/index.json.
@@ -27,6 +29,8 @@
     { label: 'Waste pickup', icon: ICONS.waste, run: () => setGuideSection(TARGET.waste) },
     { label: 'Meetings', icon: ICONS.meetings, run: () => setGuideSection(TARGET.meetings) },
     { label: 'Contact', icon: ICONS.contact, run: () => setGuideSection(TARGET.contact) },
+    // One-tap path into the #14 issue-report form (pothole/blight/sign/...).
+    { label: 'Report', icon: ICONS.report, run: openReport },
   ];
 </script>
 

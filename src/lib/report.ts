@@ -5,8 +5,12 @@
 
 import { submitSuggestion, type SubmitResult } from './suggest';
 
+// NOTE: three places must stay in sync when this list changes (#67): this
+// whitelist, the flow's Validate_and_route createArray(...), and the Category
+// choice column on the SharePoint list.
 export const REPORT_CATEGORIES = [
   'Pothole',
+  'Blight',
   'Sign',
   'Drainage',
   'Streetlight',

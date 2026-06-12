@@ -29,6 +29,12 @@ describe('validateReport', () => {
     expect(validateReport(valid())).toEqual([]);
   });
 
+  it('accepts every published category, including Blight (#67)', () => {
+    for (const c of ['Pothole', 'Blight', 'Sign', 'Drainage', 'Streetlight', 'Other'] as const) {
+      expect(validateReport(valid({ category: c }))).toEqual([]);
+    }
+  });
+
   it('requires a category and a pin', () => {
     expect(validateReport(valid({ category: '' }))).not.toEqual([]);
     expect(validateReport(valid({ lat: null, lng: null }))).not.toEqual([]);
