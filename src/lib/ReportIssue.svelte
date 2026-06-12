@@ -266,7 +266,9 @@
     border-radius: var(--pub-radius-lg, 16px);
     box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.3);
     padding: 1.6rem 1.6rem 1.4rem;
-    padding-bottom: calc(1.4rem + env(safe-area-inset-bottom, 0px));
+    padding-bottom: calc(
+      1.4rem + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))
+    );
   }
   .close {
     position: absolute;

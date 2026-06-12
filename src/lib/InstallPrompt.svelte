@@ -67,7 +67,7 @@
   .install {
     position: fixed;
     left: 50%;
-    bottom: max(0.9rem, env(safe-area-inset-bottom, 0));
+    bottom: max(0.9rem, var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0)));
     transform: translateX(-50%);
     z-index: 2000;
     display: flex;

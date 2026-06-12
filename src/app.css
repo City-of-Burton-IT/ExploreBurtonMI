@@ -138,8 +138,11 @@ body,
   height: 100vh;
   /* Edge-to-edge (#30): inset the whole column below the status bar / notch so the
      top-most element (alert banner or header) is never obscured. 0 on the web /
-     non-notched. box-sizing:border-box (set globally) keeps the 100vh correct. */
-  padding-top: env(safe-area-inset-top, 0px);
+     non-notched. box-sizing:border-box (set globally) keeps the 100vh correct.
+     var()-first chain: Capacitor 8 injects --safe-area-inset-* (SystemBars
+     insetsHandling "css") because Android WebViews below Chromium 140 report
+     env(safe-area-inset-*) as 0 in edge-to-edge. */
+  padding-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
 }
 
 /* Scroll-reveal (the use:reveal action). Children start hidden + slightly shifted,
