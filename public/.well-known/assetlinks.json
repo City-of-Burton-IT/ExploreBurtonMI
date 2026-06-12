@@ -5,8 +5,8 @@
       "namespace": "android_app",
       "package_name": "gov.burtonmi.explore",
       "sha256_cert_fingerprints": [
-        "REPLACE_WITH_PLAY_APP_SIGNING_CERT_SHA256",
-        "REPLACE_WITH_UPLOAD_KEY_CERT_SHA256"
+        "EB:B4:D1:A5:32:13:91:77:EA:87:4B:CF:A4:9E:D4:5F:6A:30:81:93:07:9A:97:7A:59:B9:53:38:F1:1D:34:6E",
+        "56:ED:08:1B:02:5A:91:21:4B:99:6B:D9:78:31:9F:3A:F2:68:FE:78:B1:11:DE:87:C2:26:60:1C:31:2C:21:CB"
       ]
     }
   }
