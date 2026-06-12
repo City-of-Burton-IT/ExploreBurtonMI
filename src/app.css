@@ -31,6 +31,12 @@
   --civic-blue-link: #386fc5;
   --civic-blue-deep: #1e437e;
   --civic-blue-soft: #d7e1f3;
+  /* Solid accent-button background (always paired with white text). Split from
+     --civic-blue so the dark theme can keep white text >=4.5:1 (AA) on buttons
+     while --civic-blue itself lightens for text/icons. Light values == the old
+     civic-blue / -deep, so light rendering is unchanged. */
+  --civic-accent-bg: #2c57a0;
+  --civic-accent-bg-hover: #1e437e;
   --civic-green: #4ea735;
   --civic-green-deep: #1d7f2b;
   --civic-green-soft: #d9f1dd;
@@ -38,7 +44,7 @@
   --pub-muted: #5c5c5c; /* muted/caption text -- 6.4:1 on white (WCAG AA); replaces #777/#888/#999 */
   --pub-border: #e3e3e3;
   /* Surface tokens (so the dark-mode layer in #61 can recolor every panel). */
-  --pub-bg: #eef1f5; /* page backdrop behind panels */
+  --pub-bg: #ffffff; /* page backdrop behind panels (white in light = unchanged) */
   --pub-surface: #ffffff; /* cards, panels, modals, header, sidebar */
   --pub-surface-2: #f5f7fa; /* hover / subtle fill */
   --pub-border-soft: #f0f0f0; /* lighter inner dividers */
@@ -76,6 +82,10 @@
   --civic-blue-link: #82adea;
   --civic-blue-deep: #a9caf2;
   --civic-blue-soft: #233247;
+  /* Accent button bg stays dark enough for white text to clear AA 4.5:1 on dark
+     (white on #3666b8 ~= 5.6:1; on #28518f ~= 7.8:1), brighter than the surface. */
+  --civic-accent-bg: #3666b8;
+  --civic-accent-bg-hover: #28518f;
   --civic-green: #5cb646;
   --civic-green-deep: #7fd089;
   --civic-green-soft: #1e3326;
@@ -234,7 +244,7 @@ body,
   background: var(--civic-blue-soft);
 }
 .viewnav > button.active {
-  background: var(--civic-blue);
+  background: var(--civic-accent-bg);
   color: #fff;
 }
 .viewnav > button:focus-visible {
@@ -430,7 +440,7 @@ body,
     border-left: 1px solid var(--civic-blue);
   }
   .view-toggle button.active {
-    background: var(--civic-blue);
+    background: var(--civic-accent-bg);
     color: #fff;
   }
 

@@ -182,7 +182,7 @@
     margin-top: 1.1rem;
     width: 100%;
     border: none;
-    background: var(--civic-blue, #2c57a0);
+    background: var(--civic-accent-bg);
     color: #fff;
     border-radius: 999px;
     padding: 0.6rem 1rem;
@@ -192,7 +192,7 @@
     cursor: pointer;
   }
   .primary:hover {
-    background: var(--civic-blue-deep, #1e437e);
+    background: var(--civic-accent-bg-hover);
   }
   .primary:focus-visible {
     outline: none;

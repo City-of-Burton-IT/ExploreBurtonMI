@@ -144,7 +144,7 @@
     background: var(--civic-blue-soft);
   }
   .trigger.active {
-    background: var(--civic-blue);
+    background: var(--civic-accent-bg);
     color: #fff;
   }
   .trigger:focus-visible {

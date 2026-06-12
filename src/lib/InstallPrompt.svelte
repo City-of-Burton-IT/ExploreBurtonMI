@@ -97,7 +97,7 @@
   .go {
     flex: 0 0 auto;
     border: none;
-    background: var(--civic-blue, #2c57a0);
+    background: var(--civic-accent-bg);
     color: #fff;
     font-family: var(--font-body);
     font-weight: 700;
@@ -107,7 +107,7 @@
     cursor: pointer;
   }
   .go:hover {
-    background: var(--civic-blue-deep, #1e437e);
+    background: var(--civic-accent-bg-hover);
   }
   .go:focus-visible,
   .x:focus-visible {

@@ -131,7 +131,7 @@
   }
   button {
     border: none;
-    background: var(--civic-blue);
+    background: var(--civic-accent-bg);
     color: #fff;
     border-radius: var(--pub-radius-sm);
     padding: 0 1.1rem;
@@ -142,7 +142,7 @@
     transition: background var(--motion-duration);
   }
   button:hover {
-    background: var(--civic-blue-deep);
+    background: var(--civic-accent-bg-hover);
   }
   button:focus-visible {
     outline: none;

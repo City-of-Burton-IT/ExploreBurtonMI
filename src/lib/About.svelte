@@ -77,7 +77,7 @@
 <style>
   .about-btn {
     border: none;
-    background: var(--civic-blue);
+    background: var(--civic-accent-bg);
     color: #fff;
     border-radius: var(--pub-radius);
     padding: 0.4rem 0.95rem;
@@ -88,7 +88,7 @@
     transition: background var(--motion-duration);
   }
   .about-btn:hover {
-    background: var(--civic-blue-deep);
+    background: var(--civic-accent-bg-hover);
   }
   .about-btn:focus-visible {
     outline: none;
@@ -172,7 +172,7 @@
     color: var(--civic-blue);
   }
   .seg.on {
-    background: var(--civic-blue);
+    background: var(--civic-accent-bg);
     color: #fff;
   }
   .seg:focus-visible {

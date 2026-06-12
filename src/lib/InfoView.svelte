@@ -272,7 +272,7 @@
   .error-state .retry {
     margin-top: 0.6rem;
     border: none;
-    background: var(--civic-blue, #2c57a0);
+    background: var(--civic-accent-bg);
     color: #fff;
     border-radius: 999px;
     padding: 0.45rem 1.1rem;
@@ -282,7 +282,7 @@
     cursor: pointer;
   }
   .error-state .retry:hover {
-    background: var(--civic-blue-deep, #1e437e);
+    background: var(--civic-accent-bg-hover);
   }
   .error-state .retry:focus-visible {
     outline: none;
@@ -456,7 +456,7 @@
     display: inline-flex;
     align-items: center;
     gap: 0.5rem;
-    background: var(--civic-blue, #2c57a0);
+    background: var(--civic-accent-bg);
     color: #fff;
     border: none;
     border-radius: var(--pub-radius-sm, 6px);

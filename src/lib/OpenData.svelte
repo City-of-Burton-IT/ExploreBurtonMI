@@ -156,7 +156,7 @@
     transition: background var(--motion-duration), color var(--motion-duration);
   }
   .dl:hover {
-    background: var(--civic-blue);
+    background: var(--civic-accent-bg);
     color: #fff;
   }
   .dl:focus-visible {

@@ -168,6 +168,6 @@
     background: var(--pub-warn);
   }
   .level--info {
-    background: var(--civic-blue, #2c57a0);
+    background: var(--civic-accent-bg);
   }
 </style>

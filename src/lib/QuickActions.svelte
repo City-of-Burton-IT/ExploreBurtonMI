@@ -79,7 +79,7 @@
     cursor: pointer;
   }
   button:active {
-    background: var(--civic-blue, #2c57a0);
+    background: var(--civic-accent-bg);
     color: #fff;
   }
   button:focus-visible {

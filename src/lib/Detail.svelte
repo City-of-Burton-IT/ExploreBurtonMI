@@ -184,7 +184,7 @@
   .toast {
     margin-top: 0.8rem;
     padding: 0.45rem 0.7rem;
-    background: var(--civic-blue, #2c57a0);
+    background: var(--civic-accent-bg);
     color: #fff;
     border-radius: var(--pub-radius-sm, 8px);
     font-size: 0.82rem;
