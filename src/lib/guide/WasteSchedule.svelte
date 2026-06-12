@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { dataFetch } from '../remote';
+  import OfflineBadge from '../OfflineBadge.svelte';
 
   type Entry = { street: string; day: string };
 
@@ -38,6 +39,7 @@
 </script>
 
 <div class="waste">
+  <OfflineBadge label="Offline -- showing your saved pickup schedule" />
   <p class="intro">
     Garbage, recycling, and yard waste are all collected on the <strong>same day</strong> &mdash; out by
     <strong>6:00 a.m.</strong> Type your street below to find your pickup day. When a holiday falls on or

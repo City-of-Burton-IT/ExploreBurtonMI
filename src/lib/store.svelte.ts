@@ -134,6 +134,8 @@ export const ui = $state<{
   userLocation: { lat: number; lng: number } | null;
   /** true once the browser signals the PWA can be installed (Android/desktop) */
   canInstall: boolean;
+  /** false when the device is offline (drives the "showing saved info" badge) */
+  online: boolean;
 }>({
   selected: null,
   selections: {},
@@ -144,7 +146,23 @@ export const ui = $state<{
   guideSection: initialGuideSection(),
   userLocation: null,
   canInstall: false,
+  online: typeof navigator === 'undefined' ? true : navigator.onLine,
 });
+
+/** Watch the browser's online/offline events so the offline badge stays current.
+ *  Call once (App onMount); returns a teardown fn. No-op without a window. */
+export function initOnlineWatch(): () => void {
+  if (typeof window === 'undefined') return () => {};
+  const on = () => (ui.online = true);
+  const off = () => (ui.online = false);
+  window.addEventListener('online', on);
+  window.addEventListener('offline', off);
+  ui.online = navigator.onLine; // resync in case it changed before mount
+  return () => {
+    window.removeEventListener('online', on);
+    window.removeEventListener('offline', off);
+  };
+}
 
 /** Record (or clear) the user's location after a "Near me" request. */
 export function setUserLocation(loc: { lat: number; lng: number } | null): void {

@@ -6,7 +6,7 @@
   import { filterFeatures } from './lib/filter';
   import { buildIndex, searchIds } from './lib/search';
   import type { AppConfig, PlaceCollection, InfoPanel } from './lib/types';
-  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard, DASHBOARDS, select, clearSelection, dashboardGroupLabel, adjacentDashboards } from './lib/store.svelte';
+  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard, DASHBOARDS, select, clearSelection, dashboardGroupLabel, adjacentDashboards, initOnlineWatch } from './lib/store.svelte';
   import { placeIdFromHash } from './lib/hash';
   import Map from './lib/Map.svelte';
   import Detail from './lib/Detail.svelte';
@@ -118,7 +118,11 @@
 
   onMount(() => {
     window.addEventListener('hashchange', onHashChange);
-    return () => window.removeEventListener('hashchange', onHashChange);
+    const stopOnlineWatch = initOnlineWatch();
+    return () => {
+      window.removeEventListener('hashchange', onHashChange);
+      stopOnlineWatch();
+    };
   });
 
   const index = $derived(

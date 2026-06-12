@@ -1,5 +1,6 @@
 <script lang="ts">
   import { onMount } from 'svelte';
+  import OfflineBadge from '../OfflineBadge.svelte';
 
   type Ev = {
     id: number;
@@ -65,6 +66,7 @@
 </script>
 
 <div class="cc">
+  <OfflineBadge label="Offline -- meeting list may be out of date" />
   <p class="intro">
     Live agendas, minutes, and meeting videos from the City's official
     <a href={PORTAL} target="_blank" rel="noopener noreferrer">CivicClerk portal</a>. Select a meeting

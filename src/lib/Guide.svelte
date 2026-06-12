@@ -7,6 +7,7 @@
   import GuideSection from './guide/GuideSection.svelte';
   import GuideIcon from './guide/GuideIcon.svelte';
   import Lightbox from './Lightbox.svelte';
+  import OfflineBadge from './OfflineBadge.svelte';
 
   let bundle = $state<GuideBundle | null>(null);
   let loading = $state(true);
@@ -53,6 +54,7 @@
     </nav>
 
     <div class="guide-body">
+      <OfflineBadge />
       {#if activeSection}
         <h2>
           {#if activeSection.icon}<GuideIcon name={activeSection.icon} size={24} />{/if}
