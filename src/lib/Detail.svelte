@@ -2,7 +2,7 @@
   import type { AppConfig } from './types';
   import { renderProperties } from './templates';
   import { ui, clearSelection, isSaved, toggleSavedPlace } from './store.svelte';
-  import { placeHash } from './hash';
+  import { placeShareUrl } from './hash';
 
   const saved = $derived(ui.selected ? isSaved(ui.selected.id) : false);
 
@@ -20,7 +20,7 @@
   async function share() {
     const sel = ui.selected;
     if (!sel) return;
-    const url = `${location.origin}${location.pathname}#${placeHash(sel.id)}`;
+    const url = placeShareUrl(sel.id);
     const title = String(sel.properties.name);
     if (navigator.share) {
       try {

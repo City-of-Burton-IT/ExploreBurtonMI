@@ -13,3 +13,13 @@ export function placeIdFromHash(hash: string): string | null {
 export function placeHash(id: string): string {
   return `map/place/${encodeURIComponent(id)}`;
 }
+
+/** The canonical public site origin (trailing slash). Shareable links MUST use this,
+ *  never the dev-server localhost or the native capacitor:// origin (#53). Mirrors
+ *  REMOTE_BASE in remote.ts -- kept here so this module stays DOM/Capacitor-free. */
+export const SITE_BASE = 'https://explore.burtonmi.gov/';
+
+/** The canonical, shareable URL for a place permalink (always the live site). */
+export function placeShareUrl(id: string): string {
+  return `${SITE_BASE}#${placeHash(id)}`;
+}
