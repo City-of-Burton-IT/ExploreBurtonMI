@@ -552,7 +552,10 @@
         btn.type = 'button';
         btn.title = 'Center the map on my location';
         btn.setAttribute('aria-label', 'Center the map on my location');
-        btn.textContent = '◎'; // ◎
+        const icon = document.createElement('span');
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = '◎';
+        btn.append(icon, ' Near me');
         L.DomEvent.disableClickPropagation(btn);
         L.DomEvent.on(btn, 'click', () => locateMe());
         return btn;
@@ -569,7 +572,10 @@
         btn.type = 'button';
         btn.title = 'Report an issue (pothole, sign, drainage, streetlight)';
         btn.setAttribute('aria-label', 'Report an issue');
-        btn.textContent = '⚠';
+        const icon = document.createElement('span');
+        icon.setAttribute('aria-hidden', 'true');
+        icon.textContent = '⚠';
+        btn.append(icon, ' Report an issue');
         L.DomEvent.disableClickPropagation(btn);
         L.DomEvent.on(btn, 'click', () => openReport());
         return btn;
@@ -698,16 +704,23 @@
     width: 100%;
     height: 100%;
   }
-  /* "Near me" control button -- matches Leaflet's own control look. */
+  /* Labeled map-action buttons ("Near me", "Report an issue") -- icon + text so
+     their purpose is obvious on every platform (#68). */
   :global(.near-me-btn) {
-    width: 34px;
-    height: 34px;
+    display: inline-flex;
+    align-items: center;
+    gap: 0.35rem;
+    min-height: 34px;
     border: 2px solid rgba(0, 0, 0, 0.2);
     border-radius: 4px;
     background: var(--pub-surface);
     color: var(--civic-blue, #2c57a0);
-    font-size: 1.2rem;
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.82rem;
+    font-weight: 700;
     line-height: 1;
+    white-space: nowrap;
+    padding: 0 0.55rem;
     cursor: pointer;
     box-shadow: 0 1px 4px rgba(0, 0, 0, 0.2);
   }

@@ -216,7 +216,7 @@
         </div>
         <DashboardMenu />
         <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}>Resident Guide</button>
-        <button class:active={ui.view === 'opendata'} onclick={() => setView('opendata')}>Open Data</button>
+        <!-- Open Data moved into the dashboards menu (#68); #opendata links still work. -->
       </nav>
       <!-- Trigger lives at the end of the Guide; this keeps the dialog mounted so
            the map © button (and the Guide's About button) can open it. -->

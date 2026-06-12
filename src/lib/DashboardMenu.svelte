@@ -1,13 +1,19 @@
 <script lang="ts">
   import { tick } from 'svelte';
   import { ui, setView, DASHBOARDS, DASHBOARD_GROUPS } from './store.svelte';
-  import type { InfoView } from './types';
+  import type { AppView } from './types';
 
   let open = $state(false);
   let root = $state<HTMLDivElement>();
   let trigger = $state<HTMLButtonElement>();
 
-  const active = $derived(DASHBOARDS.find((d) => d.id === ui.view) ?? null);
+  // Open Data lives in this menu too (#68) -- it is a data page, not a dashboard,
+  // so it gets its own trailing "Data" group rather than a DASHBOARD_GROUPS entry.
+  const active = $derived(
+    ui.view === 'opendata'
+      ? { label: 'Open Data' }
+      : (DASHBOARDS.find((d) => d.id === ui.view) ?? null),
+  );
 
   // A disclosure (not a role=menu): the items are ordinary buttons, so Tab works
   // natively; arrow keys + Home/End are an enhancement, and focus moves into the
@@ -28,7 +34,7 @@
     if (returnFocus) trigger?.focus();
   }
 
-  function choose(id: InfoView) {
+  function choose(id: AppView) {
     setView(id);
     closeMenu();
   }
@@ -115,6 +121,22 @@
           {/each}
         </div>
       {/each}
+      <div class="col">
+        <p class="group-label" aria-hidden="true">Data</p>
+        <button
+          data-id="opendata"
+          class:current={ui.view === 'opendata'}
+          aria-current={ui.view === 'opendata' ? 'true' : undefined}
+          onclick={() => choose('opendata')}
+          onkeydown={onMenuKey}
+        >
+          <span class="item-text">
+            <span class="item-label">Open Data</span>
+            <span class="item-desc">Download every dataset behind this site</span>
+          </span>
+          {#if ui.view === 'opendata'}<span class="check" aria-hidden="true">✓</span>{/if}
+        </button>
+      </div>
     </div>
   {/if}
 </div>
