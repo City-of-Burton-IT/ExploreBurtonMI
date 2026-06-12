@@ -1,10 +1,10 @@
 <script lang="ts">
   import type { InfoPanel, InfoChart } from './types';
   import { safeHref } from './templates';
-  import { formatValue } from './charts/scale';
   import { formatDataAsOf } from './freshness';
   import { reportOutdatedMailto } from './feedback';
   import { csvSlug, downloadCsv } from './csv';
+  import { chartToTable } from './panelCsv';
   import StatCard from './StatCard.svelte';
   import Donut from './charts/Donut.svelte';
   import Bars from './charts/Bars.svelte';
@@ -42,51 +42,11 @@
   // carries no lastUpdated, so the line is simply omitted).
   const dataAsOf = $derived(formatDataAsOf(panel?.lastUpdated));
 
-  // Accessible plain-data fallback for any chart: a collapsible table with the
-  // same numbers the SVG/bars show. Helps screen-reader and no-JS-render users,
-  // and lets anyone read exact values. One generic builder covers every type.
-  function chartTable(chart: InfoChart): { headers: string[]; rows: string[][] } | null {
-    const unit = chart.unit ?? '';
-    if (chart.type === 'bars' || chart.type === 'donut') {
-      const series = chart.series ?? [];
-      if (!series.length) return null;
-      return { headers: ['Category', 'Value'], rows: series.map((s) => [s.label, formatValue(s.value, unit)]) };
-    }
-    if (chart.type === 'trend') {
-      if (chart.lines?.length) {
-        const xs: string[] = [];
-        for (const ln of chart.lines) for (const p of ln.points) if (!xs.includes(p.x)) xs.push(p.x);
-        return {
-          headers: ['Period', ...chart.lines.map((l) => l.label)],
-          rows: xs.map((x) => [
-            x,
-            ...chart.lines!.map((l) => {
-              const pt = l.points.find((p) => p.x === x);
-              return pt ? formatValue(pt.y, unit) : '';
-            }),
-          ]),
-        };
-      }
-      const points = chart.points ?? [];
-      if (!points.length) return null;
-      return { headers: ['Period', 'Value'], rows: points.map((p) => [p.x, formatValue(p.y, unit)]) };
-    }
-    if (chart.type === 'compare') {
-      const rows = chart.rows ?? [];
-      if (!rows.length) return null;
-      const places = rows[0].values.map((v) => v.name);
-      return {
-        headers: ['Metric', ...places],
-        rows: rows.map((r) => [r.label, ...r.values.map((v) => formatValue(v.value, r.unit ?? ''))]),
-      };
-    }
-    return null;
-  }
-
   // Download a chart's data table as a CSV file (same numbers as the table),
-  // via the shared csv helper also used by InfoTable.
+  // via the shared csv helper also used by InfoTable. chartToTable (the accessible
+  // plain-data builder for any chart type) is shared with the Open Data page.
   function exportChart(chart: InfoChart): void {
-    const t = chartTable(chart);
+    const t = chartToTable(chart);
     if (!t) return;
     downloadCsv(csvSlug(chart.title), t.headers, t.rows);
   }
@@ -161,7 +121,7 @@
     {#if panel.charts?.length}
       <div class="charts">
         {#each panel.charts as chart (chart.title)}
-          {@const dt = chartTable(chart)}
+          {@const dt = chartToTable(chart)}
           <figure class="chart">
             <figcaption>{chart.title}</figcaption>
             {#if chart.type === 'donut'}

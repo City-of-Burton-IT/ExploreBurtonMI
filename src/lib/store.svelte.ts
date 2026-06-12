@@ -98,10 +98,10 @@ export function adjacentDashboards(id: AppView): {
   return { prev: DASHBOARDS[i - 1] ?? null, next: DASHBOARDS[i + 1] ?? null };
 }
 
-/** Map a URL hash (#finances, #guide, #guide/trash) to a top-level view. */
+/** Map a URL hash (#finances, #guide, #guide/trash, #opendata) to a top-level view. */
 export function viewFromHash(hash: string): AppView {
   const key = hash.replace(/^#/, '').split('/')[0];
-  if (key === 'guide' || DASHBOARD_IDS.has(key)) return key as AppView;
+  if (key === 'guide' || key === 'opendata' || DASHBOARD_IDS.has(key)) return key as AppView;
   return 'map';
 }
 

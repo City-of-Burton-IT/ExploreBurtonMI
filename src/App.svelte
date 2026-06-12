@@ -16,6 +16,7 @@
   import About from './lib/About.svelte';
   import InfoView from './lib/InfoView.svelte';
   import Guide from './lib/Guide.svelte';
+  import OpenData from './lib/OpenData.svelte';
   import DashboardMenu from './lib/DashboardMenu.svelte';
   import InstallPrompt from './lib/InstallPrompt.svelte';
   import AlertBanner from './lib/AlertBanner.svelte';
@@ -213,6 +214,7 @@
         </div>
         <DashboardMenu />
         <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}>Resident Guide</button>
+        <button class:active={ui.view === 'opendata'} onclick={() => setView('opendata')}>Open Data</button>
       </nav>
       <!-- Trigger lives at the end of the Guide; this keeps the dialog mounted so
            the map © button (and the Guide's About button) can open it. -->
@@ -261,6 +263,10 @@
     {:else if ui.view === 'guide'}
       <div class="infowrap">
         <Guide />
+      </div>
+    {:else if ui.view === 'opendata'}
+      <div class="infowrap">
+        <OpenData {panels} loading={infoLoading} />
       </div>
     {/if}
   {:else}
