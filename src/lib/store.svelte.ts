@@ -5,6 +5,7 @@
 import type { PlaceFeature, AppView, InfoView } from './types';
 import type { Selections } from './filter';
 import { placeIdFromHash, placeHash } from './hash';
+import { SAVED_KEY, loadSaved, serializeSaved, toggleSaved } from './savedPlaces';
 
 export interface DashboardItem {
   id: InfoView;
@@ -118,6 +119,15 @@ function initialGuideSection(): string | null {
   return typeof window === 'undefined' ? null : guideSectionFromHash(window.location.hash);
 }
 
+function initialSaved(): Set<string> {
+  if (typeof localStorage === 'undefined') return new Set();
+  try {
+    return loadSaved(localStorage.getItem(SAVED_KEY));
+  } catch {
+    return new Set();
+  }
+}
+
 export const ui = $state<{
   selected: PlaceFeature | null;
   selections: Selections;
@@ -139,6 +149,10 @@ export const ui = $state<{
   /** bumped to ask the Map to run "Near me" (e.g. from the native quick-actions
    *  row). The Map watches it and triggers geolocation. */
   nearMeNonce: number;
+  /** ids of saved/favorite places (per-device, localStorage; #62) */
+  savedIds: Set<string>;
+  /** when true, the map + list show only saved places */
+  savedOnly: boolean;
 }>({
   selected: null,
   selections: {},
@@ -151,7 +165,32 @@ export const ui = $state<{
   canInstall: false,
   online: typeof navigator === 'undefined' ? true : navigator.onLine,
   nearMeNonce: 0,
+  savedIds: initialSaved(),
+  savedOnly: false,
 });
+
+// --- Saved / favorite places (#62) -----------------------------------------
+/** Whether a place id is currently saved. */
+export function isSaved(id: string): boolean {
+  return ui.savedIds.has(id);
+}
+
+/** Toggle a place's saved state and persist the set to localStorage. */
+export function toggleSavedPlace(id: string): void {
+  ui.savedIds = toggleSaved(ui.savedIds, id);
+  try {
+    localStorage.setItem(SAVED_KEY, serializeSaved(ui.savedIds));
+  } catch {
+    /* storage unavailable (private mode) -> keep it for this session only */
+  }
+  // Leaving the saved-only view empty would look broken; drop back to all places.
+  if (ui.savedOnly && ui.savedIds.size === 0) ui.savedOnly = false;
+}
+
+/** Show only saved places (true) or all places (false). */
+export function setSavedOnly(on: boolean): void {
+  ui.savedOnly = on;
+}
 
 /** Ask the map to locate the user ("Near me") from anywhere -- e.g. the native
  *  quick-actions row. Switches to the map; the Map component does the geolocation. */

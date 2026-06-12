@@ -138,7 +138,13 @@
         )
       : null,
   );
-  const filteredIds = $derived(new Set(result?.filteredIds ?? []));
+  // The facet/search-filtered ids, optionally narrowed to saved places (#62) --
+  // drives both the map markers and the list.
+  const filteredIds = $derived.by(() => {
+    const base = new Set(result?.filteredIds ?? []);
+    if (!ui.savedOnly) return base;
+    return new Set([...base].filter((id) => ui.savedIds.has(id)));
+  });
 
   // Great-circle distance (m) between two [lat,lng] points, for "Near me" sorting.
   function haversine(aLat: number, aLng: number, bLat: number, bLng: number): number {

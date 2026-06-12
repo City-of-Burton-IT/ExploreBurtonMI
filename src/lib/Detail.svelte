@@ -1,8 +1,10 @@
 <script lang="ts">
   import type { AppConfig } from './types';
   import { renderProperties } from './templates';
-  import { ui, clearSelection } from './store.svelte';
+  import { ui, clearSelection, isSaved, toggleSavedPlace } from './store.svelte';
   import { placeHash } from './hash';
+
+  const saved = $derived(ui.selected ? isSaved(ui.selected.id) : false);
 
   let { config }: { config: AppConfig } = $props();
 
@@ -68,6 +70,20 @@
 
 {#if ui.selected}
   <aside class="detail" aria-label="Place details">
+    <button
+      class="save"
+      class:saved
+      onclick={() => ui.selected && toggleSavedPlace(ui.selected.id)}
+      aria-pressed={saved}
+      aria-label={saved ? 'Remove from saved places' : 'Save this place'}
+      title={saved ? 'Saved -- tap to remove' : 'Save this place'}
+    >
+      <svg viewBox="0 0 24 24" width="17" height="17" fill={saved ? 'currentColor' : 'none'}
+        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
+        aria-hidden="true"
+        ><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg
+      >
+    </button>
     <button class="share" onclick={share} aria-label="Share this place" title="Share this place">
       <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor"
         stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
@@ -139,7 +155,27 @@
   .share:hover {
     color: var(--civic-blue);
   }
+  .save {
+    position: absolute;
+    top: 0.55rem;
+    right: 4.1rem;
+    display: inline-flex;
+    align-items: center;
+    justify-content: center;
+    border: none;
+    background: none;
+    cursor: pointer;
+    color: #666;
+    padding: 0.1rem;
+  }
+  .save:hover {
+    color: var(--civic-blue);
+  }
+  .save.saved {
+    color: var(--civic-blue);
+  }
   .share:focus-visible,
+  .save:focus-visible,
   .close:focus-visible {
     outline: none;
     box-shadow: var(--pub-focus-ring);
@@ -156,7 +192,7 @@
   }
 
   h2 {
-    margin: 0 3rem 0.75rem 0;
+    margin: 0 5rem 0.75rem 0;
     font-family: var(--font-head);
     font-weight: 700;
     font-size: 1.15rem;
