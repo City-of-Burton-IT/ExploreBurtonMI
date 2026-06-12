@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { ui, setView, DASHBOARDS } from './store.svelte';
+  import { ui, setView, DASHBOARDS, registerOverlay } from './store.svelte';
 
   // First-visit orientation as a one-time modal (not an inline strip): a new
   // resident sees what the site offers, then closes it. Dismissal persists per
@@ -23,6 +23,12 @@
       lastFocus = (document.activeElement as HTMLElement) ?? null;
       queueMicrotask(() => closeBtn?.focus());
     }
+  });
+
+  // While open, let the Android hardware back button dismiss the welcome modal
+  // (same as Escape) before it changes the view or exits the app.
+  $effect(() => {
+    if (open) return registerOverlay(dismiss);
   });
 
   function dismiss() {

@@ -214,6 +214,34 @@ export function setMobileView(view: 'map' | 'list'): void {
   ui.mobileView = view;
 }
 
+// --- Overlay registry (for the native hardware back button) ----------------
+// Modals that own their open-state locally (Lightbox, WelcomeModal) register a
+// close handler here while open so the Android back button can dismiss the
+// top-most one before changing view. Store-driven overlays (About, Detail) are
+// read directly from `ui` instead -- see lib/nativeBack.ts. Read imperatively on
+// a back press, so no reactivity is needed here.
+const overlayClosers: Array<() => void> = [];
+
+/** Register a close handler while a local-state overlay is open; returns an
+ *  unregister fn (call it on close / component teardown). */
+export function registerOverlay(close: () => void): () => void {
+  overlayClosers.push(close);
+  return () => {
+    const i = overlayClosers.lastIndexOf(close);
+    if (i >= 0) overlayClosers.splice(i, 1);
+  };
+}
+
+/** True when a locally-owned overlay (lightbox/welcome) is open. */
+export function hasOverlay(): boolean {
+  return overlayClosers.length > 0;
+}
+
+/** Close the most-recently-registered open overlay. */
+export function closeTopOverlay(): void {
+  overlayClosers[overlayClosers.length - 1]?.();
+}
+
 export function openAbout(): void {
   ui.aboutOpen = true;
 }

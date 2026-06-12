@@ -1,4 +1,6 @@
 <script lang="ts">
+  import { registerOverlay } from './store.svelte';
+
   // Reusable image lightbox. Call `show(src, caption)` via a bound instance.
   let open = $state(false);
   let src = $state('');
@@ -22,6 +24,11 @@
   function onKeydown(e: KeyboardEvent) {
     if (e.key === 'Escape') close();
   }
+
+  // While open, let the Android hardware back button close the lightbox first.
+  $effect(() => {
+    if (open) return registerOverlay(close);
+  });
 </script>
 
 <svelte:window onkeydown={open ? onKeydown : undefined} />

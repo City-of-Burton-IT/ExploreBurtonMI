@@ -18,6 +18,12 @@ if (Capacitor.isNativePlatform()) {
       StatusBar.setStyle({ style: Style.Light }).catch(() => {})
     })
     .catch(() => {})
+
+  // Hardware back button: close an open sheet/dialog, else return to the map,
+  // else exit (the WebView default is to exit from any screen).
+  import('./lib/nativeBack')
+    .then(({ initNativeBack }) => initNativeBack())
+    .catch(() => {})
 }
 
 // COMING-SOON SOFT LAUNCH (web only)
