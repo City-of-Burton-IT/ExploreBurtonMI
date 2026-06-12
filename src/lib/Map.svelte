@@ -26,6 +26,7 @@
   let mapEl: HTMLDivElement;
   let map: L.Map | undefined;
   let cluster: L.MarkerClusterGroup | undefined;
+  let layerControlEl: HTMLElement | undefined;
   const markers = new Map<string, L.CircleMarker>();
   // Bumped once the markers are built, so the "center on selected" effect re-runs
   // after a deep-link selection that was applied before the markers existed.
@@ -347,10 +348,46 @@
       if (ompane) ompane.style.zIndex = '650';
       const palette = ['#1565c0', '#2e7d32', '#e65100', '#6a1b9a', '#00838f', '#b3261e', '#9e9d24'];
       // Left expanded so the available overlays are always visible (the collapsed
-      // toggle hid that there were layers to turn on at all).
+      // toggle hid that there were layers to turn on at all) -- but with an explicit
+      // minimize toggle (below) so the box can get out of the way on any platform.
       const layerControl = L.control
         .layers(undefined, undefined, { collapsed: false, position: 'topright' })
         .addTo(map);
+
+      // Minimize/restore toggle for the layers box. Unlike Leaflet's collapsed
+      // mode (hover/tap driven), this is an explicit click toggle that works the
+      // same in desktop browsers, mobile web, and the Android app. State persists
+      // per device.
+      layerControlEl = layerControl.getContainer();
+      if (layerControlEl) {
+        const lc = layerControlEl;
+        const toggle = L.DomUtil.create('button', 'layers-min-toggle', lc);
+        toggle.type = 'button';
+        const setMin = (min: boolean) => {
+          lc.classList.toggle('layers-minimized', min);
+          toggle.textContent = min ? 'Layers' : '–';
+          toggle.title = min ? 'Show map layers' : 'Minimize the layers box';
+          toggle.setAttribute('aria-label', toggle.title);
+          toggle.setAttribute('aria-expanded', String(!min));
+        };
+        L.DomEvent.disableClickPropagation(toggle);
+        L.DomEvent.on(toggle, 'click', () => {
+          const min = !lc.classList.contains('layers-minimized');
+          setMin(min);
+          try {
+            localStorage.setItem('eb-layers-min', min ? '1' : '0');
+          } catch {
+            /* private mode -- session-only */
+          }
+        });
+        let initialMin = false;
+        try {
+          initialMin = localStorage.getItem('eb-layers-min') === '1';
+        } catch {
+          /* ignore */
+        }
+        setMin(initialMin);
+      }
 
       // Georeferenced image overlays (e.g. the zoning map) -- stretched to their
       // geographic bounds, semi-transparent so the basemap shows through.
@@ -562,6 +599,27 @@
     cluster.addLayers(toAdd);
   });
 
+  // Pin-drop mode (#14): clear everything that would swallow the tap or clutter
+  // the choice -- the business cluster, point overlays, hover tooltips, and the
+  // layers box -- and make polygon/line overlays click-through (visible but not
+  // capturing). All restored when pin mode ends.
+  $effect(() => {
+    if (!map) return;
+    const on = ui.report.pinMode;
+    if (cluster) {
+      if (on) map.removeLayer(cluster);
+      else if (!map.hasLayer(cluster)) map.addLayer(cluster);
+    }
+    for (const name of ['overlayMarkers', 'tooltipPane']) {
+      const pane = map.getPane(name);
+      if (pane) pane.style.display = on ? 'none' : '';
+    }
+    const dl = map.getPane('dataLayers');
+    if (dl) dl.style.pointerEvents = on ? 'none' : '';
+    if (layerControlEl) layerControlEl.style.display = on ? 'none' : '';
+    if (on) map.closePopup();
+  });
+
   // The map sits in a display:none workspace while an info view is shown, so its
   // container is 0x0 and Leaflet would otherwise reset the view on return. Capture
   // the live center/zoom BEFORE the DOM hides it ($effect.pre runs pre-DOM-update),
@@ -659,6 +717,47 @@
   :global(.near-me-btn:focus-visible) {
     outline: none;
     box-shadow: var(--pub-focus-ring);
+  }
+  /* Layers-box minimize toggle (#14 follow-up): explicit, works on every platform. */
+  :global(.leaflet-control-layers) {
+    position: relative;
+  }
+  :global(.layers-min-toggle) {
+    position: absolute;
+    top: 2px;
+    right: 4px;
+    border: none;
+    background: none;
+    padding: 0 0.3rem;
+    font-size: 1.05rem;
+    line-height: 1.2;
+    color: var(--pub-muted, #5c5c5c);
+    cursor: pointer;
+  }
+  :global(.layers-min-toggle:hover) {
+    color: var(--civic-blue, #2c57a0);
+  }
+  :global(.layers-min-toggle:focus-visible) {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+    border-radius: 4px;
+  }
+  /* Minimized: the whole box shrinks to a "Layers" pill (44px touch target). */
+  :global(.leaflet-control-layers.layers-minimized .leaflet-control-layers-list) {
+    display: none;
+  }
+  :global(.leaflet-control-layers.layers-minimized) {
+    min-width: 0;
+  }
+  :global(.leaflet-control-layers.layers-minimized .layers-min-toggle) {
+    position: static;
+    display: block;
+    min-height: 32px;
+    min-width: 44px;
+    padding: 0.2rem 0.6rem;
+    font-size: 0.85rem;
+    font-weight: 600;
+    color: var(--civic-blue, #2c57a0);
   }
   /* Transient location status/error toast, centered over the map. */
   .locate-msg {
