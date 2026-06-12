@@ -16,9 +16,9 @@
         <!-- Real edge-to-edge (#30): the WebView draws under transparent system bars;
              the web layer insets content via env(safe-area-inset-*) (viewport-fit=cover).
              Status/nav bar colours are transparent (and are ignored anyway under API 35
-             edge-to-edge enforcement). windowLightStatusBar=true gives DARK icons -- the
+             edge-to-edge enforcement). windowLightStatusBar=true gives DARK icons, the
              correct default for the white (light-theme) top bar; the Capacitor StatusBar
-             plugin flips it per theme at runtime (dark theme -> light icons). -->
+             plugin flips it per theme at runtime (dark theme to light icons). -->
         <item name="android:statusBarColor">@android:color/transparent</item>
         <item name="android:navigationBarColor">@android:color/transparent</item>
         <item name="android:windowLightStatusBar">true</item>
