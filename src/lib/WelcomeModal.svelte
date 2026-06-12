@@ -1,15 +1,16 @@
 <script lang="ts">
   import { ui, setView, DASHBOARDS, registerOverlay } from './store.svelte';
+  import { WELCOME_STORAGE_KEY, welcomeDismissed } from './welcome';
 
   // First-visit orientation as a one-time modal (not an inline strip): a new
   // resident sees what the site offers, then closes it. Dismissal persists per
-  // device. Focus management mirrors Lightbox.svelte (focus in on open, Escape /
-  // backdrop close, restore focus on close).
-  const STORAGE_KEY = 'eb-welcome-dismissed';
-
+  // device. On a native first launch the WebView storage is empty -> this also
+  // serves as the app's first-run onboarding (#59), no duplicate component.
+  // Focus management mirrors Lightbox.svelte (focus in on open, Escape / backdrop
+  // close, restore focus on close).
   let dismissed = $state(true);
   try {
-    dismissed = localStorage.getItem(STORAGE_KEY) === '1';
+    dismissed = welcomeDismissed(localStorage.getItem(WELCOME_STORAGE_KEY));
   } catch {
     dismissed = false; // storage unavailable -> still show once
   }
@@ -34,7 +35,7 @@
   function dismiss() {
     dismissed = true;
     try {
-      localStorage.setItem(STORAGE_KEY, '1');
+      localStorage.setItem(WELCOME_STORAGE_KEY, '1');
     } catch {
       /* private mode -> just hide for this session */
     }
