@@ -10,19 +10,11 @@ import { captureInstallPrompt, markInstalled, initTheme, type BeforeInstallPromp
 // theme. Runs for the holding page and the app alike.
 initTheme()
 
-// Native (Capacitor) only: the status-bar colour + light icons are set in the Android
-// theme (styles.xml) so the WebView sits cleanly below the status bar. Reinforce the
-// colour/style at runtime, but DON'T toggle overlaysWebView -- at targetSDK 34 (non
-// edge-to-edge) the OS already insets the WebView, and forcing overlay there caused a
-// black bar + top-toolbar glitch. No-op on the web/PWA build.
+// Native (Capacitor) only. The status bar is now handled by the theme layer
+// (applyResolvedTheme in store.svelte.ts, called from initTheme above): real
+// edge-to-edge (#30) draws the WebView under a transparent status bar with
+// theme-aware icon colour. No-op on the web/PWA build.
 if (Capacitor.isNativePlatform()) {
-  import('@capacitor/status-bar')
-    .then(({ StatusBar, Style }) => {
-      StatusBar.setBackgroundColor({ color: '#2c57a0' }).catch(() => {})
-      StatusBar.setStyle({ style: Style.Light }).catch(() => {})
-    })
-    .catch(() => {})
-
   // Hardware back button: close an open sheet/dialog, else return to the map,
   // else exit (the WebView default is to exit from any screen).
   import('./lib/nativeBack')

@@ -7,27 +7,25 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
-        <!-- Opt out of Android 15's forced edge-to-edge (we target API 35); keeps the
-             system insetting content below the status/nav bars as before. No effect on
-             API < 35. Temporary until we target API 36 + handle insets properly. -->
-        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 
     <style name="AppTheme.NoActionBar" parent="Theme.AppCompat.DayNight.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
         <item name="android:background">@null</item>
-        <!-- Civic-blue status bar with light (white) icons, set in the theme so it is
-             reliable (applies before JS, regardless of edge-to-edge or day/night). -->
-        <item name="android:statusBarColor">#2c57a0</item>
-        <item name="android:windowLightStatusBar">false</item>
-        <!-- Android 15 edge-to-edge opt-out (see AppTheme). This is the runtime theme. -->
-        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
+        <!-- Real edge-to-edge (#30): the WebView draws under transparent system bars;
+             the web layer insets content via env(safe-area-inset-*) (viewport-fit=cover).
+             Status/nav bar colours are transparent (and are ignored anyway under API 35
+             edge-to-edge enforcement). windowLightStatusBar=true gives DARK icons -- the
+             correct default for the white (light-theme) top bar; the Capacitor StatusBar
+             plugin flips it per theme at runtime (dark theme -> light icons). -->
+        <item name="android:statusBarColor">@android:color/transparent</item>
+        <item name="android:navigationBarColor">@android:color/transparent</item>
+        <item name="android:windowLightStatusBar">true</item>
     </style>
 
 
     <style name="AppTheme.NoActionBarLaunch" parent="Theme.SplashScreen">
         <item name="android:background">@drawable/splash</item>
-        <item name="android:windowOptOutEdgeToEdgeEnforcement">true</item>
     </style>
 </resources>

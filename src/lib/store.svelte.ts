@@ -2,6 +2,7 @@
 // Keeps cross-component state (selection + facet selections) in one place so
 // Map, List, and Facets stay in sync without prop-drilling.
 
+import { Capacitor } from '@capacitor/core';
 import type { PlaceFeature, AppView, InfoView } from './types';
 import type { Selections } from './filter';
 import { placeIdFromHash, placeHash } from './hash';
@@ -191,7 +192,19 @@ function applyResolvedTheme(): void {
     typeof window !== 'undefined' && window.matchMedia
       ? window.matchMedia('(prefers-color-scheme: dark)').matches
       : false;
-  document.documentElement.dataset.theme = resolveTheme(ui.theme, prefersDark);
+  const resolved = resolveTheme(ui.theme, prefersDark);
+  document.documentElement.dataset.theme = resolved;
+  // Native edge-to-edge (#30): the WebView draws under a transparent status bar, so
+  // keep its icons legible against the themed top bar -- light theme (white bar) =>
+  // dark icons (Style.Light); dark theme => light icons (Style.Dark).
+  if (Capacitor.isNativePlatform()) {
+    import('@capacitor/status-bar')
+      .then(({ StatusBar, Style }) => {
+        StatusBar.setOverlaysWebView({ overlay: true }).catch(() => {});
+        StatusBar.setStyle({ style: resolved === 'dark' ? Style.Dark : Style.Light }).catch(() => {});
+      })
+      .catch(() => {});
+  }
 }
 
 /** Set + persist the theme preference and apply it. */

@@ -115,6 +115,9 @@
     margin: 0;
     padding: 0;
     overflow-y: auto;
+    /* Edge-to-edge (#30): let the last row scroll clear of the gesture/nav bar on
+       the native list view. 0 on the web / non-notched. */
+    padding-bottom: env(safe-area-inset-bottom, 0px);
   }
   .row {
     display: flex;

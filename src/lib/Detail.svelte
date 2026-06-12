@@ -234,7 +234,8 @@
       max-height: 65%;
       border-radius: var(--pub-radius-lg) var(--pub-radius-lg) 0 0;
       box-shadow: 0 -0.5rem 2rem rgba(0, 0, 0, 0.2);
-      padding: 1.1rem 1.2rem 1.4rem;
+      /* Edge-to-edge (#30): clear the gesture / nav bar at the screen bottom. */
+      padding: 1.1rem 1.2rem calc(1.4rem + env(safe-area-inset-bottom, 0px));
     }
     .close {
       font-size: 1.9rem;
