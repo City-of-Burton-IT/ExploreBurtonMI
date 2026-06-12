@@ -81,6 +81,31 @@
     }
   }
 
+  // "Near me": locate the user via the right path for the platform. Shared by the
+  // map's own control button and the native quick-actions row (via ui.nearMeNonce).
+  function locateMe(): void {
+    if (!map) return;
+    flashLocateMsg('Locating…');
+    // No setView: we recenter ourselves only when the user is inside the city
+    // bounds (the map is locked to Burton, so centering on a far-away user would
+    // just clamp to the edge and leave their marker unreachable off-map).
+    if (Capacitor.isNativePlatform()) {
+      // In the native app the WebView's navigator.geolocation needs the Android
+      // runtime permission, which Leaflet's map.locate() can't request. Use the
+      // Capacitor Geolocation plugin to prompt + read the position, then feed it
+      // through the same handler the web path uses.
+      locateNative();
+    } else {
+      map.locate({ enableHighAccuracy: true });
+    }
+  }
+
+  // The native quick-actions "Near me" bumps ui.nearMeNonce; run a locate when it
+  // changes (skip the initial 0 so we don't auto-locate on load).
+  $effect(() => {
+    if (ui.nearMeNonce > 0) locateMe();
+  });
+
   const DEFAULT_COLOR = '#555555';
 
   // Leaflet bindTooltip/bindPopup render string content as HTML. Feature names come
@@ -413,22 +438,7 @@
         btn.setAttribute('aria-label', 'Center the map on my location');
         btn.textContent = '◎'; // ◎
         L.DomEvent.disableClickPropagation(btn);
-        L.DomEvent.on(btn, 'click', () => {
-          if (!map) return;
-          flashLocateMsg('Locating…');
-          // No setView: we recenter ourselves only when the user is inside the city
-          // bounds (the map is locked to Burton, so centering on a far-away user would
-          // just clamp to the edge and leave their marker unreachable off-map).
-          if (Capacitor.isNativePlatform()) {
-            // In the native app the WebView's navigator.geolocation needs the Android
-            // runtime permission, which Leaflet's map.locate() can't request. Use the
-            // Capacitor Geolocation plugin to prompt + read the position, then feed it
-            // through the same handler the web path uses.
-            locateNative();
-          } else {
-            map.locate({ enableHighAccuracy: true });
-          }
-        });
+        L.DomEvent.on(btn, 'click', () => locateMe());
         return btn;
       },
     });

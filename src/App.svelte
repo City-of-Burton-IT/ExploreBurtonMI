@@ -20,6 +20,7 @@
   import InstallPrompt from './lib/InstallPrompt.svelte';
   import AlertBanner from './lib/AlertBanner.svelte';
   import WelcomeModal from './lib/WelcomeModal.svelte';
+  import QuickActions from './lib/QuickActions.svelte';
 
   let config = $state<AppConfig | null>(null);
   let data = $state<PlaceCollection | null>(null);
@@ -219,6 +220,8 @@
       <pre>{error}</pre>
     </div>
   {:else if config && data && result}
+    <!-- Native-only one-tap home row (renders nothing on the web build). -->
+    <QuickActions />
     <div class="workspace" data-view={ui.mobileView} class:hidden={ui.view !== 'map'}>
       <aside class="sidebar">
         <Search />

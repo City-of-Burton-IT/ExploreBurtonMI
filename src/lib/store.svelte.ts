@@ -136,6 +136,9 @@ export const ui = $state<{
   canInstall: boolean;
   /** false when the device is offline (drives the "showing saved info" badge) */
   online: boolean;
+  /** bumped to ask the Map to run "Near me" (e.g. from the native quick-actions
+   *  row). The Map watches it and triggers geolocation. */
+  nearMeNonce: number;
 }>({
   selected: null,
   selections: {},
@@ -147,7 +150,15 @@ export const ui = $state<{
   userLocation: null,
   canInstall: false,
   online: typeof navigator === 'undefined' ? true : navigator.onLine,
+  nearMeNonce: 0,
 });
+
+/** Ask the map to locate the user ("Near me") from anywhere -- e.g. the native
+ *  quick-actions row. Switches to the map; the Map component does the geolocation. */
+export function requestNearMe(): void {
+  setView('map');
+  ui.nearMeNonce += 1;
+}
 
 /** Watch the browser's online/offline events so the offline badge stays current.
  *  Call once (App onMount); returns a teardown fn. No-op without a window. */
