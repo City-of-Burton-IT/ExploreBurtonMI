@@ -21,6 +21,7 @@
   import InstallPrompt from './lib/InstallPrompt.svelte';
   import AlertBanner from './lib/AlertBanner.svelte';
   import WelcomeModal from './lib/WelcomeModal.svelte';
+  import SuggestEdit from './lib/SuggestEdit.svelte';
   import QuickActions from './lib/QuickActions.svelte';
 
   let config = $state<AppConfig | null>(null);
@@ -276,4 +277,8 @@
   <InstallPrompt />
   <!-- First-visit orientation modal; shows once, then localStorage keeps it closed. -->
   <WelcomeModal />
+  {#if config}
+    <!-- "Suggest an edit" / "Add a business" request form (#3); IT-moderated. -->
+    <SuggestEdit {config} />
+  {/if}
 </div>

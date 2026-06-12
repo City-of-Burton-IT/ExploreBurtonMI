@@ -1,7 +1,7 @@
 <script lang="ts">
   import type { AppConfig } from './types';
   import { renderProperties } from './templates';
-  import { ui, clearSelection, isSaved, toggleSavedPlace } from './store.svelte';
+  import { ui, clearSelection, isSaved, toggleSavedPlace, openSuggest } from './store.svelte';
   import { placeShareUrl } from './hash';
 
   const saved = $derived(ui.selected ? isSaved(ui.selected.id) : false);
@@ -103,6 +103,11 @@
         {/if}
       {/each}
     </dl>
+    {#if config.submit?.url}
+      <button class="suggest" onclick={() => ui.selected && openSuggest(ui.selected)}>
+        Something wrong? Suggest an edit
+      </button>
+    {/if}
     {#if toast}
       <div class="toast" role="status" aria-live="polite">{toast}</div>
     {/if}
@@ -181,6 +186,26 @@
     box-shadow: var(--pub-focus-ring);
     border-radius: var(--pub-radius-sm, 8px);
   }
+  .suggest {
+    margin-top: 0.9rem;
+    border: none;
+    background: none;
+    padding: 0;
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.82rem;
+    color: var(--civic-blue-link);
+    text-decoration: underline;
+    cursor: pointer;
+  }
+  .suggest:hover {
+    color: var(--civic-blue-deep, #1e437e);
+  }
+  .suggest:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+    border-radius: var(--pub-radius-sm, 8px);
+  }
+
   .toast {
     margin-top: 0.8rem;
     padding: 0.45rem 0.7rem;

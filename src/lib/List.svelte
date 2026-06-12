@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { AppConfig, PlaceFeature } from './types';
-  import { ui, select, toggleSavedPlace, setSavedOnly } from './store.svelte';
+  import { ui, select, toggleSavedPlace, setSavedOnly, openSuggest } from './store.svelte';
 
   // Lucide "star" inner markup (filled when saved). Inline, no icon dep.
   const STAR = '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />';
@@ -36,6 +36,14 @@
       </button>
     {/if}
   </div>
+  {#if features.length === 0 && config.submit?.url && !ui.savedOnly}
+    <div class="empty">
+      <p>No matches here.</p>
+      <button class="add-link" onclick={() => openSuggest(null)}>
+        Business not listed? Ask us to add it
+      </button>
+    </div>
+  {/if}
   <ul>
     {#each features as feature (feature.id)}
       {@const sv = ui.savedIds.has(feature.id)}
@@ -110,6 +118,34 @@
     outline: none;
     box-shadow: var(--pub-focus-ring);
   }
+  .empty {
+    padding: 0.9rem;
+    font-size: 0.85rem;
+    color: var(--pub-muted, #5c5c5c);
+  }
+  .empty p {
+    margin: 0 0 0.35rem;
+  }
+  .add-link {
+    border: none;
+    background: none;
+    padding: 0;
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.85rem;
+    color: var(--civic-blue-link);
+    text-decoration: underline;
+    cursor: pointer;
+    text-align: left;
+  }
+  .add-link:hover {
+    color: var(--civic-blue-deep, #1e437e);
+  }
+  .add-link:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+    border-radius: var(--pub-radius-sm, 8px);
+  }
+
   ul {
     list-style: none;
     margin: 0;

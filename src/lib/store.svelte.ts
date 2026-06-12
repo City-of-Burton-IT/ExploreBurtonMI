@@ -166,6 +166,9 @@ export const ui = $state<{
   savedOnly: boolean;
   /** theme preference (#61): system follows the OS, light/dark are explicit */
   theme: ThemePref;
+  /** "Suggest an edit" modal (#3): open state + the place being edited
+   *  (null place while open = "add my business") */
+  suggest: { open: boolean; place: PlaceFeature | null };
 }>({
   selected: null,
   selections: {},
@@ -181,7 +184,20 @@ export const ui = $state<{
   savedIds: initialSaved(),
   savedOnly: false,
   theme: initialTheme(),
+  suggest: { open: false, place: null },
 });
+
+// --- Suggest an edit (#3) ---------------------------------------------------
+/** Open the "Suggest an edit" form -- for a specific place, or null = add-new. */
+export function openSuggest(place: PlaceFeature | null): void {
+  ui.suggest.place = place;
+  ui.suggest.open = true;
+}
+
+export function closeSuggest(): void {
+  ui.suggest.open = false;
+  ui.suggest.place = null;
+}
 
 // --- Theme (#61) -----------------------------------------------------------
 /** Apply the current preference to <html data-theme>, resolving "system" against

@@ -113,6 +113,17 @@ export interface AppConfig {
   list: string[];
   /** fuzzy-search configuration */
   search: SearchConfig;
+  /** listing change-request intake (#3); absent = the "Suggest an edit" UI is hidden */
+  submit?: SubmitConfig;
+}
+
+export interface SubmitConfig {
+  /**
+   * Power Automate HTTP-trigger URL the form posts to. The URL (incl. its SAS
+   * signature) is public by design -- a static app cannot hide it, same exposure
+   * as an anonymous form link. The SharePoint moderation queue is the gate.
+   */
+  url: string;
 }
 
 export interface SearchConfig {
