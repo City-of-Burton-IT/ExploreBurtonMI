@@ -174,7 +174,11 @@
       maxZoom,
       minZoom,
       maxBounds: L.latLngBounds(maxBounds[0], maxBounds[1]),
-      maxBoundsViscosity: 0.8,
+      // Softer than a hard lock (1.0): the map resists drifting far from Burton but
+      // still lets a zoomed-in resident pan to centre on the city's edges (north,
+      // etc.) without being yanked straight back. Paired with a roomier maxBounds
+      // pad once the boundary loads (below).
+      maxBoundsViscosity: 0.5,
       // Credits live in the About dialog instead of an on-map overlay.
       attributionControl: false,
       zoomAnimation: !reduceMotion,
@@ -247,7 +251,11 @@
           }).addTo(map);
           if (lockView) {
             const bounds = outline.getBounds();
-            map.setMaxBounds(bounds.pad(0.05));
+            // Pad generously (was 0.05): at higher zoom the viewport must extend past
+            // the city outline to centre on an edge (e.g. north Burton); too tight a
+            // bound yanked the user's pan straight back. 0.3 gives that room while
+            // still keeping the map anchored to the Burton area.
+            map.setMaxBounds(bounds.pad(0.3));
             map.fitBounds(bounds);
           }
         })
