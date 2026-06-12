@@ -1,0 +1,104 @@
+"""Tests for the pure transforms in sync_listing_requests.py (no network)."""
+from sync_listing_requests import (
+    apply_rows,
+    parse_coordinates,
+    row_to_candidate,
+    row_to_override,
+)
+
+
+def fields(**over):
+    base = {
+        "id": "7",
+        "ChangeType": "Fix listing",
+        "Title": "Test Cafe",
+        "ListingId": "osm:node/1",
+        "NewPhone": "(810) 555-0100",
+    }
+    base.update(over)
+    return base
+
+
+def ovr(f):
+    """row_to_override that asserts a result (keeps type checkers happy)."""
+    result = row_to_override(f)
+    assert result is not None
+    return result
+
+
+def test_parse_coordinates_lat_lng_to_lng_lat():
+    assert parse_coordinates("43.002, -83.632") == [-83.632, 43.002]
+
+
+def test_parse_coordinates_rejects_garbage_and_out_of_range():
+    assert parse_coordinates(None) is None
+    assert parse_coordinates("") is None
+    assert parse_coordinates("not,numbers") is None
+    assert parse_coordinates("999, -83.6") is None
+
+
+def test_fix_listing_maps_new_fields_to_properties():
+    listing_id, entry = ovr(fields(NewName="Cafe X", NewHours="Mon-Fri 8-5"))
+    assert listing_id == "osm:node/1"
+    assert entry["name"] == "Cafe X"
+    assert entry["phone"] == "(810) 555-0100"
+    assert entry["hours"] == "Mon-Fri 8-5"
+    assert "_why" in entry
+
+
+def test_why_carries_row_number_but_never_contact_pii():
+    _, entry = ovr(fields(ContactName="Pat Owner", ContactPhoneEmail="pat@x.com"))
+    blob = str(entry)
+    assert "row 7" in entry["_why"]
+    assert "Pat Owner" not in blob
+    assert "pat@x.com" not in blob
+
+
+def test_closed_becomes_hidden():
+    _, entry = ovr(fields(ChangeType="Permanently closed"))
+    assert entry["hidden"] is True
+
+
+def test_moved_with_pin_sets_coordinates():
+    _, entry = ovr(
+        fields(ChangeType="Moved", NewAddress="1 Main St", NewCoordinates="43.0,-83.6")
+    )
+    assert entry["coordinates"] == [-83.6, 43.0]
+    assert entry["address"] == "1 Main St"
+    assert "_todo" not in entry
+
+
+def test_moved_without_pin_flags_for_geocode():
+    _, entry = ovr(fields(ChangeType="Moved", NewAddress="1 Main St", NewPhone=""))
+    assert "NEEDS COORDINATES" in entry["_todo"]
+
+
+def test_add_new_and_missing_listing_id_are_not_auto_applied():
+    assert row_to_override(fields(ChangeType="Add my business")) is None
+    assert row_to_override(fields(ListingId="")) is None
+
+
+def test_no_usable_fields_returns_none():
+    assert row_to_override(fields(NewPhone="")) is None
+
+
+def test_candidate_geocodes_by_address_when_no_pin():
+    cand = row_to_candidate(fields(ChangeType="Add my business", NewAddress="1 Main St"))
+    assert cand["id"] == "burton:test-cafe"
+    assert cand["geometry"] is None
+    assert cand["properties"]["address"] == "1 Main St"
+    assert "_review" in cand
+
+
+def test_apply_rows_merges_into_existing_override():
+    overrides = {"osm:node/1": {"website": "https://old.example"}}
+    report = apply_rows([{"fields": fields()}], overrides)
+    assert report["applied"] == ["row 7 -> osm:node/1"]
+    assert overrides["osm:node/1"]["phone"] == "(810) 555-0100"
+    assert overrides["osm:node/1"]["website"] == "https://old.example"
+
+
+def test_apply_rows_routes_add_new_to_candidates():
+    report = apply_rows([{"fields": fields(ChangeType="Add my business")}], {})
+    assert len(report["candidates"]) == 1
+    assert report["applied"] == []
