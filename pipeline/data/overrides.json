@@ -982,5 +982,13 @@
   "overture:b4782880-2b1a-42e7-bb84-828df9908b1d": {
     "hidden": true,
     "_why": "Western Union desk inside Kroger #406; folded into the Kroger grocery pin (osm:node/7178265742)."
+  },
+  "overture:6a44a22d-bbfb-4cdc-bd0c-5a7bde8a593a": {
+    "hidden": true,
+    "_why": "'Crossway cafe' is bad Overture data -- not a real cafe; website harmonysbc.com is Harmony (Southern) Baptist Church at 5106 E Bristol Rd. Reported by the city; hidden."
+  },
+  "overture:61708a8c-c264-4070-a170-2a3f1bbca3a6": {
+    "coordinates": [-83.609209, 42.97477],
+    "_why": "Move Harmony Baptist Church onto the verified church-building pin (was the 'Crossway cafe' Overture point, now hidden); coords confirmed by the city."
   }
 }

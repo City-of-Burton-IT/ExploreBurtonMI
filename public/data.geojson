@@ -9226,8 +9226,8 @@
       "geometry": {
         "type": "Point",
         "coordinates": [
-          -83.609433,
-          42.97516
+          -83.609209,
+          42.97477
         ]
       },
       "properties": {
@@ -9856,23 +9856,6 @@
         "category": "Professional & Personal Services",
         "address": "4178 Saginaw St, Burton, MI 48529",
         "phone": "+18104076950"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:6a44a22d-bbfb-4cdc-bd0c-5a7bde8a593a",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.609209,
-          42.97477
-        ]
-      },
-      "properties": {
-        "name": "Crossway cafe",
-        "category": "Dining",
-        "address": "5106 E Bristol Rd, Burton, MI 48519-1504",
-        "website": "http://www.harmonysbc.com/"
       }
     },
     {
