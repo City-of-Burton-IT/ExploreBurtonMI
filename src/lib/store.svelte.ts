@@ -169,6 +169,9 @@ export const ui = $state<{
   /** "Suggest an edit" modal (#3): open state + the place being edited
    *  (null place while open = "add my business") */
   suggest: { open: boolean; place: PlaceFeature | null };
+  /** "Report an issue" (#14): modal state + the pin the resident dropped.
+   *  pinMode = the map is waiting for a tap to place the pin. */
+  report: { open: boolean; pinMode: boolean; lat: number | null; lng: number | null };
 }>({
   selected: null,
   selections: {},
@@ -185,6 +188,7 @@ export const ui = $state<{
   savedOnly: false,
   theme: initialTheme(),
   suggest: { open: false, place: null },
+  report: { open: false, pinMode: false, lat: null, lng: null },
 });
 
 // --- Suggest an edit (#3) ---------------------------------------------------
@@ -197,6 +201,33 @@ export function openSuggest(place: PlaceFeature | null): void {
 export function closeSuggest(): void {
   ui.suggest.open = false;
   ui.suggest.place = null;
+}
+
+// --- Report an issue (#14) --------------------------------------------------
+export function openReport(): void {
+  ui.report.open = true;
+  ui.report.pinMode = false;
+}
+
+export function closeReport(): void {
+  ui.report.open = false;
+  ui.report.pinMode = false;
+  ui.report.lat = null;
+  ui.report.lng = null;
+}
+
+/** Hide the modal and let the next map tap place the pin. */
+export function startReportPin(): void {
+  ui.report.open = false;
+  ui.report.pinMode = true;
+}
+
+/** Map tap while in pin mode: record the spot and bring the form back. */
+export function setReportPin(lat: number, lng: number): void {
+  ui.report.lat = lat;
+  ui.report.lng = lng;
+  ui.report.pinMode = false;
+  ui.report.open = true;
 }
 
 // --- Theme (#61) -----------------------------------------------------------

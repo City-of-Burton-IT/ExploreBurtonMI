@@ -8,7 +8,7 @@
   import { Capacitor } from '@capacitor/core';
   import { Geolocation } from '@capacitor/geolocation';
   import type { AppConfig, PlaceCollection, PlaceFeature } from './types';
-  import { ui, select, setUserLocation } from './store.svelte';
+  import { ui, select, setUserLocation, openReport, setReportPin } from './store.svelte';
   import { dataFetch } from './remote';
   import { clusterSummary, CLUSTER_PREVIEW_MAX } from './cluster';
 
@@ -523,6 +523,27 @@
     });
     map.addControl(new NearMeControl());
 
+    // "Report an issue" (#14): opens the report form; the form sends the user
+    // back here in pin mode, and the next map tap places the pin.
+    const ReportControl = L.Control.extend({
+      options: { position: 'topleft' as L.ControlPosition },
+      onAdd() {
+        const btn = L.DomUtil.create('button', 'near-me-btn');
+        btn.type = 'button';
+        btn.title = 'Report an issue (pothole, sign, drainage, streetlight)';
+        btn.setAttribute('aria-label', 'Report an issue');
+        btn.textContent = '⚠';
+        L.DomEvent.disableClickPropagation(btn);
+        L.DomEvent.on(btn, 'click', () => openReport());
+        return btn;
+      },
+    });
+    map.addControl(new ReportControl());
+
+    map.on('click', (e: L.LeafletMouseEvent) => {
+      if (ui.report.pinMode) setReportPin(e.latlng.lat, e.latlng.lng);
+    });
+
     map.on('locationfound', (e: L.LocationEvent) => applyUserLocation(e.latlng.lat, e.latlng.lng));
     map.on('locationerror', () => {
       flashLocateMsg('Couldn’t get your location — check that location access is allowed for this site.');
@@ -607,6 +628,11 @@
 <div class="map" bind:this={mapEl} aria-label="Map of Burton"></div>
 {#if locateMsg}
   <div class="locate-msg" role="status" aria-live="polite">{locateMsg}</div>
+{/if}
+{#if ui.report.pinMode}
+  <div class="locate-msg" role="status" aria-live="polite">
+    Tap the map where the issue is
+  </div>
 {/if}
 
 <style>

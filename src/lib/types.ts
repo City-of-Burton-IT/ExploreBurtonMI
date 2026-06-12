@@ -115,6 +115,8 @@ export interface AppConfig {
   search: SearchConfig;
   /** listing change-request intake (#3); absent = the "Suggest an edit" UI is hidden */
   submit?: SubmitConfig;
+  /** issue-report intake (#14); absent = the "Report an issue" UI is hidden */
+  report?: SubmitConfig;
 }
 
 export interface SubmitConfig {

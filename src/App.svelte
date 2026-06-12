@@ -22,6 +22,7 @@
   import AlertBanner from './lib/AlertBanner.svelte';
   import WelcomeModal from './lib/WelcomeModal.svelte';
   import SuggestEdit from './lib/SuggestEdit.svelte';
+  import ReportIssue from './lib/ReportIssue.svelte';
   import QuickActions from './lib/QuickActions.svelte';
 
   let config = $state<AppConfig | null>(null);
@@ -280,5 +281,7 @@
   {#if config}
     <!-- "Suggest an edit" / "Add a business" request form (#3); IT-moderated. -->
     <SuggestEdit {config} />
+    <!-- "Report an issue" form (#14); private DPW queue, never published. -->
+    <ReportIssue {config} />
   {/if}
 </div>
