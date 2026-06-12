@@ -44,7 +44,7 @@ export default defineConfig({
             // Committed data (data/boundary/overlays/info-*/guide/waste-schedule JSON):
             // prefer fresh so a pipeline re-run shows up, fall back to cache offline.
             urlPattern: ({ url }) =>
-              /\/(data|boundary|precincts|school-districts|transit-routes|flood-zones|info-[^/]+|guide|waste-schedule|alerts|ops-status|freshness)\.(geo)?json$/.test(
+              /\/(data|boundary|precincts|school-districts|transit-routes|flood-zones|info-[^/]+|guide|waste-schedule|alerts|ops-status|freshness|road-closures)\.(geo)?json$/.test(
                 url.pathname,
               ),
             handler: 'NetworkFirst',

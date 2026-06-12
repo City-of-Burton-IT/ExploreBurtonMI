@@ -1,0 +1,5 @@
+{
+  "_comment": "City-curated road closures (#32). The app shows only closures active today (start <= today <= end, inclusive). status: full|partial. geometry optional: LineString ([lng,lat] pairs) for a closed segment or Point for an intersection; omit it and the closure still appears in the banner. Update 'updated' when editing.",
+  "updated": "2026-06-12",
+  "closures": []
+}

@@ -11,6 +11,8 @@
   import { ui, select, setUserLocation, openReport, setReportPin } from './store.svelte';
   import { dataFetch } from './remote';
   import { clusterSummary, CLUSTER_PREVIEW_MAX } from './cluster';
+  import { activeClosures, closuresGeoJSON, localTodayISO, type RoadClosure } from './closures';
+  import ClosureBanner from './ClosureBanner.svelte';
 
   /** A map layer (our circle markers) carrying its source place feature, so a
    *  cluster preview can read the names inside. Typed as the common Layer base so
@@ -27,6 +29,10 @@
   let map: L.Map | undefined;
   let cluster: L.MarkerClusterGroup | undefined;
   let layerControlEl: HTMLElement | undefined;
+  // Road closures (#32): city-curated JSON, filtered to today's active set.
+  let allClosures = $state<RoadClosure[]>([]);
+  const activeClosureList = $derived(activeClosures(allClosures, localTodayISO()));
+  let closureLayer: L.GeoJSON | undefined;
   const markers = new Map<string, L.CircleMarker>();
   // Bumped once the markers are built, so the "center on selected" effect re-runs
   // after a deep-link selection that was applied before the markers existed.
@@ -591,6 +597,15 @@
     map.on('locationerror', () => {
       flashLocateMsg('Couldn’t get your location — check that location access is allowed for this site.');
     });
+
+    // Road closures (#32): load the city-curated list; the $effect above draws
+    // whatever is active today. A missing/invalid file just means no closures.
+    dataFetch('road-closures.json')
+      .then((r) => (r.ok ? r.json() : null))
+      .then((file) => {
+        if (file && Array.isArray(file.closures)) allClosures = file.closures;
+      })
+      .catch(() => {});
   });
 
   // Sync which markers are on the map with the filtered set.
@@ -603,6 +618,46 @@
       if (ids.has(id)) toAdd.push(marker);
     }
     cluster.addLayers(toAdd);
+  });
+
+  // Road closures (#32): draw the active set as an always-on safety layer.
+  // Re-runs if the JSON loads late or the active set changes; nothing renders
+  // when no closure is active (the common case).
+  $effect(() => {
+    if (!map) return;
+    const fc = closuresGeoJSON(activeClosureList);
+    closureLayer?.remove();
+    closureLayer = undefined;
+    if (fc.features.length === 0) return;
+    closureLayer = L.geoJSON(fc as GeoJSON.FeatureCollection, {
+      pane: 'overlayMarkers',
+      style: (f) =>
+        f?.geometry.type === 'Point'
+          ? {}
+          : { color: String(f?.properties._color), weight: 6, opacity: 0.9 },
+      pointToLayer: (f, latlng) =>
+        L.circleMarker(latlng, {
+          pane: 'overlayMarkers',
+          radius: 9,
+          color: '#ffffff',
+          weight: 2,
+          fillColor: String(f.properties._color),
+          fillOpacity: 0.95,
+        }),
+      onEachFeature: (f, lyr) => {
+        const p = (f.properties ?? {}) as Record<string, string>;
+        const rows: [string, string][] = [];
+        if (p.segment) rows.push(['Segment', p.segment]);
+        if (p.reason) rows.push(['Reason', p.reason]);
+        rows.push(['Dates', `${p.start} to ${p.end}`]);
+        rows.push(['Closure', p.status === 'partial' ? 'Partial (lanes affected)' : 'Full']);
+        if (p.detour) rows.push(['Detour', p.detour]);
+        lyr.bindPopup(
+          `<strong>${escapeHtml(p.road)} -- closed</strong>` +
+            rows.map(([k, v]) => `<div>${escapeHtml(k)}: ${escapeHtml(v)}</div>`).join(''),
+        );
+      },
+    }).addTo(map);
   });
 
   // Pin-drop mode (#14): clear everything that would swallow the tap or clutter
@@ -690,6 +745,7 @@
 </script>
 
 <div class="map" bind:this={mapEl} aria-label="Map of Burton"></div>
+<ClosureBanner active={activeClosureList} />
 {#if locateMsg}
   <div class="locate-msg" role="status" aria-live="polite">{locateMsg}</div>
 {/if}
