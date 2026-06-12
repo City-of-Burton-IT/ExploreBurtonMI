@@ -26,6 +26,10 @@
 
   const activeId = $derived(ui.guideSection ?? bundle?.sections[0]?.id ?? null);
   const activeSection = $derived(bundle?.sections.find((s) => s.id === activeId) ?? null);
+
+  // Sections whose widget renders its own (more specific) offline badge -- skip the
+  // generic guide-level one there so it isn't doubled when offline.
+  const SELF_BADGED = new Set(['waste', 'civicclerk']);
 </script>
 
 <section class="guide" aria-label="Resident Guide">
@@ -54,7 +58,9 @@
     </nav>
 
     <div class="guide-body">
-      <OfflineBadge />
+      {#if !SELF_BADGED.has(activeSection?.type ?? '')}
+        <OfflineBadge />
+      {/if}
       {#if activeSection}
         <h2>
           {#if activeSection.icon}<GuideIcon name={activeSection.icon} size={24} />{/if}
