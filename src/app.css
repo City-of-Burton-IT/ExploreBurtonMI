@@ -136,13 +136,16 @@ body,
   display: flex;
   flex-direction: column;
   height: 100vh;
-  /* Edge-to-edge (#30): inset the whole column below the status bar / notch so the
-     top-most element (alert banner or header) is never obscured. 0 on the web /
-     non-notched. box-sizing:border-box (set globally) keeps the 100vh correct.
+  /* Edge-to-edge (#30): inset the whole column below the status bar / notch AND
+     above the navigation/gesture bar -- the app deliberately does NOT draw under
+     the bottom bar (decided 2026-06-12: the under-bar bleed is cosmetic-only on
+     gesture nav and caused a per-element whack-a-mole). Both paddings are 0 on
+     the web. box-sizing:border-box (set globally) keeps the 100vh correct.
      var()-first chain: Capacitor 8 injects --safe-area-inset-* (SystemBars
      insetsHandling "css") because Android WebViews below Chromium 140 report
      env(safe-area-inset-*) as 0 in edge-to-edge. */
   padding-top: var(--safe-area-inset-top, env(safe-area-inset-top, 0px));
+  padding-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
 }
 
 /* Scroll-reveal (the use:reveal action). Children start hidden + slightly shifted,
@@ -293,8 +296,7 @@ body,
    clear of the (always-open) layer control in the top-right corner. */
 .zoning-legend-panel {
   position: absolute;
-  /* Edge-to-edge (#30): same custom-element lift as .map-credit. */
-  bottom: calc(26px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+  bottom: 26px;
   right: 10px;
   z-index: 1000;
   width: 300px;
@@ -381,10 +383,8 @@ body,
 .map-credit {
   position: absolute;
   right: 8px;
-  /* Edge-to-edge (#30): keep the About entry point above the gesture/nav bar --
-     this is a custom button, NOT a Leaflet control, so the .leaflet-bottom lift
-     does not cover it. 8px on the web. */
-  bottom: calc(8px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+  /* The app shell is padded above the nav bar (#30), so plain offsets are safe here. */
+  bottom: 8px;
   z-index: 1000;
   width: 26px;
   height: 26px;

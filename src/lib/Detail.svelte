@@ -259,9 +259,8 @@
       max-height: 65%;
       border-radius: var(--pub-radius-lg) var(--pub-radius-lg) 0 0;
       box-shadow: 0 -0.5rem 2rem rgba(0, 0, 0, 0.2);
-      /* Edge-to-edge (#30): clear the gesture / nav bar at the screen bottom. */
-      padding: 1.1rem 1.2rem
-        calc(1.4rem + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+      /* The app shell ends above the nav bar (#30), so no safe-area math needed. */
+      padding: 1.1rem 1.2rem 1.4rem;
     }
     .close {
       font-size: 1.9rem;

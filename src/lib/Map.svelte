@@ -761,11 +761,6 @@
     width: 100%;
     height: 100%;
   }
-  /* Edge-to-edge (#30): lift Leaflet's bottom controls (attribution, any future
-     bottom-anchored control) above the gesture/nav bar. 0 on the web. */
-  .map :global(.leaflet-bottom) {
-    margin-bottom: var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px));
-  }
   /* Labeled map-action buttons ("Near me", "Report an issue") -- icon + text so
      their purpose is obvious on every platform (#68). */
   :global(.near-me-btn) {
@@ -840,11 +835,10 @@
     font-weight: 600;
     color: var(--civic-blue, #2c57a0);
   }
-  /* Transient location status/error toast, centered over the map. Lifted clear
-     of the gesture/nav bar on edge-to-edge devices (#30). */
+  /* Transient location status/error toast, centered over the map. */
   .locate-msg {
     position: absolute;
-    bottom: calc(1.25rem + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+    bottom: 1.25rem;
     left: 50%;
     transform: translateX(-50%);
     max-width: 90%;
