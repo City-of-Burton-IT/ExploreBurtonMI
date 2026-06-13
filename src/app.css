@@ -293,7 +293,8 @@ body,
    clear of the (always-open) layer control in the top-right corner. */
 .zoning-legend-panel {
   position: absolute;
-  bottom: 26px;
+  /* Edge-to-edge (#30): same custom-element lift as .map-credit. */
+  bottom: calc(26px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
   right: 10px;
   z-index: 1000;
   width: 300px;
@@ -380,7 +381,10 @@ body,
 .map-credit {
   position: absolute;
   right: 8px;
-  bottom: 8px;
+  /* Edge-to-edge (#30): keep the About entry point above the gesture/nav bar --
+     this is a custom button, NOT a Leaflet control, so the .leaflet-bottom lift
+     does not cover it. 8px on the web. */
+  bottom: calc(8px + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
   z-index: 1000;
   width: 26px;
   height: 26px;
