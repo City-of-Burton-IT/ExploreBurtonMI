@@ -12,4 +12,9 @@
     <string name="shortcut_dashboards_long">Community dashboards</string>
     <string name="shortcut_guide_short">Resident Guide</string>
     <string name="shortcut_guide_long">Open the Resident Guide</string>
+
+    <!-- Home-screen widget (#65). -->
+    <string name="widget_title">Explore Burton</string>
+    <string name="widget_loading">Loading…</string>
+    <string name="widget_description">City alerts and the next council meeting.</string>
 </resources>
