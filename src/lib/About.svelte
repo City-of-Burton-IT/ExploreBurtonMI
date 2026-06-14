@@ -3,6 +3,7 @@
   import { ui, openAbout, closeAbout, setTheme } from './store.svelte';
   import { reportOutdatedMailto } from './feedback';
   import { THEME_PREFS, type ThemePref } from './theme';
+  import NotificationSettings from './NotificationSettings.svelte';
 
   const themeLabel = (p: ThemePref): string =>
     p === 'system' ? 'System' : p === 'light' ? 'Light' : 'Dark';
@@ -44,6 +45,7 @@
           {/each}
         </div>
       </div>
+      <NotificationSettings />
       <p class="note">
         Listings combine OpenStreetMap and Overture Maps business data with curated
         City of Burton facility records; government facility locations have been
