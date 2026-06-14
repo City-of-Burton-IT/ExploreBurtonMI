@@ -44,8 +44,8 @@
 
 <div class="ops">
   <p class="intro">
-    Current status of the city's seasonal services &mdash; leaf pickup, yard waste, snow plowing,
-    hydrant flushing, and the like. Out-of-season services are hidden until they start.
+    Current status of the city's seasonal services like leaf pickup, yard waste, snow plowing,
+    and hydrant flushing. Out-of-season services are hidden until they start.
   </p>
 
   {#if loading}

@@ -5,7 +5,7 @@
   // "saved" rather than current. Shown on the Resident Guide and the live
   // widgets (meetings, waste lookup). Applies on web + native alike -- offline
   // is offline. `ui.online` is kept current by initOnlineWatch() (App onMount).
-  let { label = 'Offline -- showing saved info' }: { label?: string } = $props();
+  let { label = 'Offline: showing saved info' }: { label?: string } = $props();
 
   // Lucide wifi-off (https://lucide.dev, ISC), inner SVG markup -- same inline
   // approach as AlertBanner / GuideIcon (no icon dependency).

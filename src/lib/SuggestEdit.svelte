@@ -124,7 +124,7 @@
       <button class="close" onclick={closeSuggest} aria-label="Close">&times;</button>
 
       {#if phase === 'done'}
-        <h2 id="suggest-title">Thanks -- we got it</h2>
+        <h2 id="suggest-title">Thanks, we got it</h2>
         <p class="lead">
           City of Burton IT reviews every request, usually within a few business days. If we need
           to confirm anything we'll use the contact you provided. Approved changes appear on the
@@ -198,7 +198,7 @@
           <fieldset>
             <legend>Contact for verification</legend>
             <p class="privacy">
-              Used only to confirm the request -- never published. See our
+              Used only to confirm the request, never published. See our
               <a href="https://explore.burtonmi.gov/privacy.html" target="_blank" rel="noopener noreferrer"
                 >privacy policy</a
               >.

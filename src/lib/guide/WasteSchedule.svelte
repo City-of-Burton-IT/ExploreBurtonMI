@@ -39,9 +39,9 @@
 </script>
 
 <div class="waste">
-  <OfflineBadge label="Offline -- showing your saved pickup schedule" />
+  <OfflineBadge label="Offline: showing your saved pickup schedule" />
   <p class="intro">
-    Garbage, recycling, and yard waste are all collected on the <strong>same day</strong> &mdash; out by
+    Garbage, recycling, and yard waste are all collected on the <strong>same day</strong>, out by
     <strong>6:00 a.m.</strong> Type your street below to find your pickup day. When a holiday falls on or
     before your day, collection that week is delayed one day.
   </p>
@@ -74,7 +74,7 @@
       {/each}
     </ul>
     {#if matches.length > shown.length}
-      <p class="hint">Showing the first {shown.length} of {matches.length} matches &mdash; keep typing to narrow it down.</p>
+      <p class="hint">Showing the first {shown.length} of {matches.length} matches. Keep typing to narrow it down.</p>
     {/if}
   {/if}
 

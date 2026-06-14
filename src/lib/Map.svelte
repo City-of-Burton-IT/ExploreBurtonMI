@@ -654,7 +654,7 @@
         rows.push(['Closure', p.status === 'partial' ? 'Partial (lanes affected)' : 'Full']);
         if (p.detour) rows.push(['Detour', p.detour]);
         lyr.bindPopup(
-          `<strong>${escapeHtml(p.road)} -- closed</strong>` +
+          `<strong>${escapeHtml(p.road)}: closed</strong>` +
             rows.map(([k, v]) => `<div>${escapeHtml(k)}: ${escapeHtml(v)}</div>`).join(''),
         );
       },

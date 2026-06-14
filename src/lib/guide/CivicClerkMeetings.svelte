@@ -66,7 +66,7 @@
 </script>
 
 <div class="cc">
-  <OfflineBadge label="Offline -- meeting list may be out of date" />
+  <OfflineBadge label="Offline: meeting list may be out of date" />
   <p class="intro">
     Live agendas, minutes, and meeting videos from the City's official
     <a href={PORTAL} target="_blank" rel="noopener noreferrer">CivicClerk portal</a>. Select a meeting
@@ -115,8 +115,8 @@
     {/if}
 
     <p class="note">
-      Source: City of Burton CivicClerk portal. Showing the next and most recent meetings &mdash;
-      <a href={PORTAL} target="_blank" rel="noopener noreferrer">see all meetings &amp; documents</a>.
+      Source: City of Burton CivicClerk portal. Showing the next and most recent meetings.
+      <a href={PORTAL} target="_blank" rel="noopener noreferrer">See all meetings &amp; documents</a>.
     </p>
   {/if}
 </div>

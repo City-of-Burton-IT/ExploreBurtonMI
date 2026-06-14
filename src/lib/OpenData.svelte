@@ -32,7 +32,7 @@
     <h2>Open Data</h2>
     <p>
       Every dashboard on this site is built from public data. Download any dataset below as a
-      CSV (spreadsheet) file -- the same numbers shown on the dashboard, with its source and
+      CSV (spreadsheet) file: the same numbers shown on the dashboard, with its source and
       the date it was last refreshed. No account needed.
     </p>
   </header>

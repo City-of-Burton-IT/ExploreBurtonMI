@@ -76,7 +76,7 @@
       onclick={() => ui.selected && toggleSavedPlace(ui.selected.id)}
       aria-pressed={saved}
       aria-label={saved ? 'Remove from saved places' : 'Save this place'}
-      title={saved ? 'Saved -- tap to remove' : 'Save this place'}
+      title={saved ? 'Saved, tap to remove' : 'Save this place'}
     >
       <svg viewBox="0 0 24 24" width="17" height="17" fill={saved ? 'currentColor' : 'none'}
         stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"

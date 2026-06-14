@@ -85,13 +85,13 @@
       const dataUrl = canvas.toDataURL('image/jpeg', 0.8);
       const b64 = dataUrl.slice(dataUrl.indexOf(',') + 1);
       if (b64.length > PHOTO_BASE64_MAX) {
-        photoError = 'That photo is too large even after resizing -- try another.';
+        photoError = 'That photo is too large even after resizing. Try another.';
         return;
       }
       photoBase64 = b64;
       photoName = (file.name || 'photo').replace(/\.[^.]*$/, '') + '.jpg';
     } catch {
-      photoError = 'Could not read that photo -- you can submit without one.';
+      photoError = 'Could not read that photo. You can submit without one.';
     }
   }
 
@@ -148,7 +148,7 @@
       {#if phase === 'done'}
         <h2 id="report-title">Report sent</h2>
         <p class="lead">
-          Thanks -- your report goes to the City of Burton public-works queue for triage.
+          Thanks. Your report goes to the City of Burton public-works queue for triage.
           This is a report line, not an emergency line: for anything dangerous right now,
           call 911 or the DPW at (810) 742-9230.
         </p>
@@ -190,7 +190,7 @@
           </label>
 
           <label>
-            Photo <span class="opt">(optional -- resized on your device before upload)</span>
+            Photo <span class="opt">(optional, resized on your device before upload)</span>
             <input type="file" accept="image/*" capture="environment" onchange={onPhotoChange} />
           </label>
           {#if photoName}
@@ -203,7 +203,7 @@
           <fieldset>
             <legend>Contact (optional)</legend>
             <p class="privacy">
-              Only if you want a follow-up -- used by city staff only, never published. See our
+              Only if you want a follow-up. Used by city staff only, never published. See our
               <a href="https://explore.burtonmi.gov/privacy.html" target="_blank" rel="noopener noreferrer"
                 >privacy policy</a
               >.

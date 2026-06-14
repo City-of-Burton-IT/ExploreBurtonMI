@@ -27,7 +27,7 @@
         class:on={ui.savedOnly}
         onclick={() => setSavedOnly(!ui.savedOnly)}
         aria-pressed={ui.savedOnly}
-        title={ui.savedOnly ? 'Showing saved only -- tap to show all' : 'Show only saved places'}
+        title={ui.savedOnly ? 'Showing saved only, tap to show all' : 'Show only saved places'}
       >
         <svg viewBox="0 0 24 24" width="13" height="13" fill={ui.savedOnly ? 'currentColor' : 'none'}
           stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
