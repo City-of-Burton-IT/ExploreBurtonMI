@@ -1,44 +1,44 @@
 <script lang="ts">
   import {
     PUSH_TOPICS,
+    isPushSupported,
     isPushAvailable,
     loadPrefs,
     ensurePermission,
     setTopic,
   } from './push';
 
-  // Opt-in push toggles (#64), shown in About. The whole section stays HIDDEN
-  // until push is actually wired (native app + Firebase configured) -- so during
-  // the "scaffold, Firebase later" phase residents see nothing misleading.
+  // Opt-in push toggles (#64), shown in Settings. Visible in the native app (incl.
+  // during internal testing, before Firebase is wired) so the preferences can be
+  // set + tested; a choice made now is remembered and applied once push goes live.
+  // Hidden on the web, where topic push isn't a capability.
 
-  let available = $state(false);
-  let enabled = $state<Set<string>>(new Set());
+  const supported = isPushSupported();
+  let wired = $state(false); // true once the Firebase messaging plugin is present
+  let enabled = $state<Set<string>>(loadPrefs());
   let denied = $state(false);
   let busy = $state('');
 
   $effect(() => {
-    isPushAvailable().then((a) => {
-      available = a;
-      if (a) enabled = loadPrefs();
-    });
+    isPushAvailable().then((a) => (wired = a));
   });
 
   async function toggle(id: string) {
     const turningOn = !enabled.has(id);
     busy = id;
     try {
-      // Turning a topic on requires the OS notification permission first.
-      if (turningOn) {
+      // Turning a topic on requires the OS notification permission -- but only when
+      // push is actually wired. Before Firebase, just record the preference.
+      if (turningOn && wired) {
         const res = await ensurePermission();
-        if (!res.granted) {
+        if (res.available && !res.granted) {
           denied = true;
           return;
         }
         denied = false;
       }
       if (await setTopic(id, turningOn)) {
-        // reassign for reactivity
-        const next = new Set(enabled);
+        const next = new Set(enabled); // reassign for reactivity
         if (turningOn) next.add(id);
         else next.delete(id);
         enabled = next;
@@ -49,12 +49,12 @@
   }
 </script>
 
-{#if available}
+{#if supported}
   <div class="push" role="group" aria-label="Notifications">
     <span class="push-label">Notifications</span>
     <p class="push-intro">
       Choose what the City can notify you about. You can change this any time, and in your
-      device settings.
+      device settings.{#if !wired} Notifications turn on in an upcoming update; your choices are saved until then.{/if}
     </p>
     {#each PUSH_TOPICS as t (t.id)}
       <label class="topic">
