@@ -172,30 +172,44 @@ function errMsg(e: unknown): string {
   }
 }
 
-/** Runtime push diagnostics, surfaced in Settings so we can see ON THE DEVICE why
- *  push is or isn't available -- instead of guessing from build logs. Each step is
- *  wrapped so a throw is captured as text rather than swallowed. */
-export async function pushDiagnostics(): Promise<PushDiag> {
-  const diag: PushDiag = {
+/** Sync push facts -- safe to render IMMEDIATELY, can never hang. */
+export function pushSyncInfo(): { platform: string; isNative: boolean; pluginDefined: boolean } {
+  return {
     platform: Capacitor.getPlatform(),
     isNative: Capacitor.isNativePlatform(),
     pluginDefined: FirebaseMessaging != null,
-    available: null,
-    permission: null,
-    error: null,
   };
+}
+
+/** Race a promise against a timeout so a hanging native bridge call surfaces as
+ *  'TIMEOUT' rather than blackholing the whole readout. */
+function withTimeout<T>(p: Promise<T>, ms: number): Promise<T | 'TIMEOUT'> {
+  return Promise.race([
+    p,
+    new Promise<'TIMEOUT'>((resolve) => setTimeout(() => resolve('TIMEOUT'), ms)),
+  ]);
+}
+
+/** Async push probes, each time-boxed (3s). Surfaced in Settings so we can see ON
+ *  THE DEVICE why push is/ isn't available -- including WHICH call hangs -- instead
+ *  of guessing from build logs. */
+export async function pushDiagnostics(): Promise<PushDiag> {
+  const diag: PushDiag = { ...pushSyncInfo(), available: null, permission: null, error: null };
   try {
-    diag.available = await isPushAvailable();
+    const m = await withTimeout(loadMessaging(), 3000);
+    if (m === 'TIMEOUT') diag.error = 'loadMessaging: timeout';
+    else diag.available = m !== null;
   } catch (e) {
     diag.error = `available: ${errMsg(e)}`;
   }
   if (diag.isNative && diag.pluginDefined) {
     try {
-      // checkPermissions reports the current OS permission WITHOUT prompting, and
-      // surfaces a "not implemented on android" error if the NATIVE plugin class is
-      // missing from the build (vs the JS wrapper merely being present).
-      const res = (await FirebaseMessaging.checkPermissions()) as { receive?: string };
-      diag.permission = res?.receive ?? JSON.stringify(res);
+      // checkPermissions reports the OS permission WITHOUT prompting; a "not
+      // implemented" error means the native plugin class is missing, a timeout means
+      // the native bridge call hung.
+      const r = await withTimeout(FirebaseMessaging.checkPermissions(), 3000);
+      if (r === 'TIMEOUT') diag.error = `${diag.error ? diag.error + ' | ' : ''}checkPermissions: timeout`;
+      else diag.permission = (r as { receive?: string })?.receive ?? JSON.stringify(r);
     } catch (e) {
       diag.error = `${diag.error ? diag.error + ' | ' : ''}checkPermissions: ${errMsg(e)}`;
     }

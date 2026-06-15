@@ -4,7 +4,7 @@
   import { ui, closeSettings, registerOverlay, setTheme } from './store.svelte';
   import { THEME_PREFS, type ThemePref } from './theme';
   import NotificationSettings from './NotificationSettings.svelte';
-  import { pushDiagnostics, type PushDiag } from './push';
+  import { pushDiagnostics, pushSyncInfo, type PushDiag } from './push';
 
   // Settings dialog (cog in the menu bar): the single home for resident
   // preferences -- Appearance (#61) + Notifications (#64). Credits/privacy stay in
@@ -20,6 +20,7 @@
   // App version + push diagnostics, loaded when the dialog opens. Shown in a small
   // footer so we can read the actual build + why push is/ isn't live ON the device.
   let appVersion = $state('');
+  const pushSync = pushSyncInfo(); // sync facts, render immediately (never hangs)
   let diag = $state<PushDiag | null>(null);
 
   $effect(() => {
@@ -88,17 +89,15 @@
 
       <div class="diag">
         <div class="diag-line"><strong>Version</strong> {appVersion || '...'}</div>
-        {#if diag}
-          <div class="diag-line">
-            <strong>Push</strong>
-            platform={diag.platform}; native={diag.isNative ? 'yes' : 'no'};
-            plugin={diag.pluginDefined ? 'yes' : 'no'};
-            available={diag.available === null ? '?' : diag.available ? 'yes' : 'no'};
-            permission={diag.permission ?? '-'}
-          </div>
-          {#if diag.error}
-            <div class="diag-line diag-err">error: {diag.error}</div>
-          {/if}
+        <div class="diag-line">
+          <strong>Push</strong>
+          platform={pushSync.platform}; native={pushSync.isNative ? 'yes' : 'no'};
+          plugin={pushSync.pluginDefined ? 'yes' : 'no'};
+          available={diag ? (diag.available === null ? '?' : diag.available ? 'yes' : 'no') : '...'};
+          permission={diag ? (diag.permission ?? '-') : '...'}
+        </div>
+        {#if diag?.error}
+          <div class="diag-line diag-err">error: {diag.error}</div>
         {/if}
       </div>
     </div>
