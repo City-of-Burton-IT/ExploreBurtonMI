@@ -78,6 +78,19 @@ jobs:
       - name: Restore the upload keystore
         run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE_B64 }}" | base64 -d > android/upload-keystore.jks
 
+      # Firebase/FCM client config (#64). Gitignored (carries a restricted client
+      # API key); injected here from a secret. If the secret is unset the build
+      # still succeeds -- the google-services Gradle plugin is skipped and push
+      # stays inert (push.ts no-ops).
+      - name: Restore the Firebase config
+        run: |
+          if [ -n "${{ secrets.GOOGLE_SERVICES_JSON_B64 }}" ]; then
+            echo "${{ secrets.GOOGLE_SERVICES_JSON_B64 }}" | base64 -d > android/app/google-services.json
+            echo "google-services.json written"
+          else
+            echo "GOOGLE_SERVICES_JSON_B64 not set -- building without push (inert)"
+          fi
+
       - name: Build release AAB
         env:
           ANDROID_VERSION_CODE: ${{ github.run_number }}

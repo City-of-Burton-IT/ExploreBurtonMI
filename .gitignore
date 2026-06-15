@@ -42,3 +42,8 @@ __pycache__/
 # Internal working docs (kept local; not published to this public repo)
 planning/
 docs/
+
+# Firebase Android client config (#64). Injected from a CI secret
+# (GOOGLE_SERVICES_JSON_B64) like the keystore -- kept out of this PUBLIC repo per
+# security.md (it carries a restricted client API key). Lives locally for dev/test.
+android/app/google-services.json

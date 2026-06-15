@@ -44,6 +44,17 @@ jobs:
       - name: Restore the shared debug keystore
         run: echo "${{ secrets.ANDROID_DEBUG_KEYSTORE_B64 }}" | base64 -d > android/debug-shared.keystore
 
+      # Firebase/FCM client config (#64) -- gitignored; injected from a secret so
+      # debug sideload builds can test push too. Absent secret -> push stays inert.
+      - name: Restore the Firebase config
+        run: |
+          if [ -n "${{ secrets.GOOGLE_SERVICES_JSON_B64 }}" ]; then
+            echo "${{ secrets.GOOGLE_SERVICES_JSON_B64 }}" | base64 -d > android/app/google-services.json
+            echo "google-services.json written"
+          else
+            echo "GOOGLE_SERVICES_JSON_B64 not set -- building without push (inert)"
+          fi
+
       - name: Build debug APK
         run: |
           cd android
