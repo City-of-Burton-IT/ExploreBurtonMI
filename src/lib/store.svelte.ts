@@ -100,10 +100,13 @@ export function adjacentDashboards(id: AppView): {
   return { prev: DASHBOARDS[i - 1] ?? null, next: DASHBOARDS[i + 1] ?? null };
 }
 
-/** Map a URL hash (#finances, #guide, #guide/trash, #opendata) to a top-level view. */
+/** Map a URL hash (#finances, #guide, #guide/trash, #opendata, #status?t=..) to a
+ *  top-level view. Splits on both `/` and `?` so a query suffix (e.g. the #status
+ *  token) never hides the route key. */
 export function viewFromHash(hash: string): AppView {
-  const key = hash.replace(/^#/, '').split('/')[0];
-  if (key === 'guide' || key === 'opendata' || DASHBOARD_IDS.has(key)) return key as AppView;
+  const key = hash.replace(/^#/, '').split(/[/?]/)[0];
+  if (key === 'guide' || key === 'opendata' || key === 'status' || DASHBOARD_IDS.has(key))
+    return key as AppView;
   return 'map';
 }
 

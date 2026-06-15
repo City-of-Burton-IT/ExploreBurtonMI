@@ -201,7 +201,7 @@ export type InfoView =
   | 'access'
   | 'seniorcenter'
   | 'publicsafety';
-export type AppView = 'map' | InfoView | 'guide' | 'opendata';
+export type AppView = 'map' | InfoView | 'guide' | 'opendata' | 'status';
 
 export interface InfoStat {
   label: string;

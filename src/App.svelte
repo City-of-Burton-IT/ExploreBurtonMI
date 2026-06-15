@@ -18,6 +18,7 @@
   import InfoView from './lib/InfoView.svelte';
   import Guide from './lib/Guide.svelte';
   import OpenData from './lib/OpenData.svelte';
+  import StatusPage from './lib/StatusPage.svelte';
   import DashboardMenu from './lib/DashboardMenu.svelte';
   import InstallPrompt from './lib/InstallPrompt.svelte';
   import AlertBanner from './lib/AlertBanner.svelte';
@@ -285,6 +286,10 @@
     {:else if ui.view === 'opendata'}
       <div class="infowrap">
         <OpenData {panels} loading={infoLoading} />
+      </div>
+    {:else if ui.view === 'status'}
+      <div class="infowrap">
+        <StatusPage statusUrl={config.status?.url ?? ''} />
       </div>
     {/if}
   {:else}
