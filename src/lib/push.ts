@@ -1,19 +1,14 @@
-// Push notifications (#64) -- CLIENT SCAFFOLD, inert until Firebase is wired.
+// Push notifications (#64) -- opt-in, topic-based FCM (Firebase IS wired).
 //
 // Decisions (2026-06-12): opt-in only; topic-based (NO per-device token leaves
 // the app, no per-resident record); topics = alerts / service / meetings;
 // Android-first. Send path + approval gate live server-side (Power Automate ->
 // FCM HTTP v1), see the spec.
 //
-// "Inert until Firebase later" -- per the build decision, this ships now but does
-// nothing real until these LATER steps are done (documented in the spec):
-//   1. create the Firebase project, add android/app/google-services.json
-//   2. npm i @capacitor-firebase/messaging firebase
-//   3. npx cap sync android  (registers the native plugin)
-// Until then the dynamic import below resolves to null and every call no-ops, so
-// the web build, the web bundle, and the current APK are all unaffected. The
-// plugin module name is held in a variable so the bundler does NOT try to resolve
-// or bundle it before it exists (type-erased on purpose).
+// Firebase is wired (google-services.json + @capacitor-firebase/messaging + cap
+// sync are done). loadMessaging() below uses a PLAIN dynamic import so Vite emits a
+// real chunk that RESOLVES at runtime on device; web never reaches it (the
+// isPushSupported gate), so the web initial bundle stays lean.
 
 import { Capacitor } from '@capacitor/core';
 
@@ -93,12 +88,15 @@ interface FirebaseMessagingLike {
  *  variable so the bundler leaves it as a runtime import. */
 async function loadMessaging(): Promise<FirebaseMessagingLike | null> {
   if (!isPushSupported()) return null;
-  const moduleName = '@capacitor-firebase/messaging';
   try {
-    const mod = await import(/* @vite-ignore */ moduleName);
-    return (mod.FirebaseMessaging ?? null) as FirebaseMessagingLike | null;
+    // PLAIN literal specifier (no @vite-ignore, no variable indirection) so Vite
+    // RESOLVES it and emits a real chunk. The earlier type-erased form shipped only
+    // the module string with an empty preload list, so the runtime import of a bare
+    // specifier always threw -> push stayed inert on EVERY build (#64 regression).
+    const mod = await import('@capacitor-firebase/messaging');
+    return (mod.FirebaseMessaging ?? null) as unknown as FirebaseMessagingLike | null;
   } catch {
-    return null; // plugin not installed yet -> inert
+    return null; // not a native build with the plugin -> inert
   }
 }
 
