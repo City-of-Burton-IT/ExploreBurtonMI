@@ -28,7 +28,7 @@
   "boundary": { "source": "boundary.geojson", "color": "#ffd400", "weight": 3, "lockView": true, "dimOutside": true, "dimColor": "#0b1f2e", "dimOpacity": 0.55 },
   "submit": { "url": "https://prod-10.usgovtexas.logic.azure.us/workflows/e6802163489d461fae2ad6191c1bd4df/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=f6Hfg1hxpcSfLky3RYcQAlDX66vHNajfiqvy8ZCM-1I" },
   "report": { "url": "https://prod-29.usgovtexas.logic.azure.us/workflows/aa5184707a0a4859bb621fc61a90e564/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=FPU4xzCVEVRYS30ZqMolos6ES1LJLbwZVQifpXs2vrs" },
-  "status": { "url": "REPLACE_AFTER_READ_FLOW_CREATED" },
+  "status": { "url": "https://prod-24.usgovtexas.logic.azure.us/workflows/a20c103c1d1a4e8a98962857fb786faa/triggers/manual/paths/invoke?api-version=2016-06-01&sp=%2Ftriggers%2Fmanual%2Frun&sv=1.0&sig=u_OPZPsGf8OO0qUXTPt4fYbAtXYikDUEXzxOnXWE1l8" },
   "dataLayers": [
     { "source": "school-districts.geojson", "label": "School districts", "nameField": "name" },
     { "source": "transit-routes.geojson", "label": "Bus routes", "nameField": "name" },
