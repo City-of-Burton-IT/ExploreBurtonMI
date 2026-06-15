@@ -67,8 +67,10 @@ jobs:
           TITLE: ${{ github.event.client_payload.title || inputs.title }}
           BODY_TEXT: ${{ github.event.client_payload.body || inputs.body }}
           URL: ${{ github.event.client_payload.url || inputs.url }}
-          # The Firebase project that owns FCM (separate from the Play GCP project).
-          FCM_PROJECT: explore-burton
+          # The Firebase project that owns FCM. Firebase was added to the existing
+          # Play GCP project, so the service account already has access here (no
+          # cross-project IAM needed -- just the FCM role + API on this project).
+          FCM_PROJECT: exploreburton
         run: |
           set -euo pipefail
 
