@@ -37,6 +37,15 @@
                 android:resource="@xml/shortcuts" />
         </activity>
 
+        <!-- Push notification icon + accent color (#64). FCM uses these for the
+             status-bar icon (alpha-tinted) when a message has no icon of its own. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_icon"
+            android:resource="@drawable/ic_stat_notify" />
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_color"
+            android:resource="@color/notification_color" />
+
         <!-- Home-screen widget (#65): city alert + next council meeting. -->
         <receiver
             android:name=".ExploreWidgetProvider"

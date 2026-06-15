@@ -1,0 +1,6 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <!-- Notification accent (#64): the FCM-tinted status-bar icon + collapsed-row
+         accent use Burton civic blue. -->
+    <color name="notification_color">#2C57A0</color>
+</resources>
