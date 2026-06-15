@@ -117,6 +117,8 @@ export interface AppConfig {
   submit?: SubmitConfig;
   /** issue-report intake (#14); absent = the "Report an issue" UI is hidden */
   report?: SubmitConfig;
+  /** read-only status-lookup endpoint (#status); absent = the tracking link/page is inert */
+  status?: { url: string };
 }
 
 export interface SubmitConfig {
