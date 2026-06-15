@@ -1,7 +1,10 @@
 <script lang="ts">
+  import { Capacitor } from '@capacitor/core';
+  import { App } from '@capacitor/app';
   import { ui, closeSettings, registerOverlay, setTheme } from './store.svelte';
   import { THEME_PREFS, type ThemePref } from './theme';
   import NotificationSettings from './NotificationSettings.svelte';
+  import { pushDiagnostics, type PushDiag } from './push';
 
   // Settings dialog (cog in the menu bar): the single home for resident
   // preferences -- Appearance (#61) + Notifications (#64). Credits/privacy stay in
@@ -13,6 +16,25 @@
 
   let closeBtn = $state<HTMLButtonElement>();
   let lastFocus: HTMLElement | null = null;
+
+  // App version + push diagnostics, loaded when the dialog opens. Shown in a small
+  // footer so we can read the actual build + why push is/ isn't live ON the device.
+  let appVersion = $state('');
+  let diag = $state<PushDiag | null>(null);
+
+  $effect(() => {
+    if (!ui.settingsOpen) return;
+    if (Capacitor.isNativePlatform()) {
+      App.getInfo()
+        .then((i) => (appVersion = `${i.version} (${i.build})`))
+        .catch(() => (appVersion = 'unknown'));
+    } else {
+      appVersion = 'web';
+    }
+    pushDiagnostics()
+      .then((d) => (diag = d))
+      .catch((e) => (diag = { platform: '?', isNative: false, pluginDefined: false, available: null, permission: null, error: String(e) }));
+  });
 
   $effect(() => {
     if (ui.settingsOpen) {
@@ -61,6 +83,24 @@
       <hr />
 
       <NotificationSettings />
+
+      <hr />
+
+      <div class="diag">
+        <div class="diag-line"><strong>Version</strong> {appVersion || '...'}</div>
+        {#if diag}
+          <div class="diag-line">
+            <strong>Push</strong>
+            platform={diag.platform}; native={diag.isNative ? 'yes' : 'no'};
+            plugin={diag.pluginDefined ? 'yes' : 'no'};
+            available={diag.available === null ? '?' : diag.available ? 'yes' : 'no'};
+            permission={diag.permission ?? '-'}
+          </div>
+          {#if diag.error}
+            <div class="diag-line diag-err">error: {diag.error}</div>
+          {/if}
+        {/if}
+      </div>
     </div>
   </div>
 {/if}
@@ -161,5 +201,17 @@
     border: none;
     border-top: 2px dashed var(--civic-green);
     margin: 1rem 0;
+  }
+  .diag {
+    font-family: ui-monospace, SFMono-Regular, Menlo, Consolas, monospace;
+    font-size: 0.72rem;
+    color: var(--pub-muted, #5c5c5c);
+    word-break: break-word;
+  }
+  .diag-line {
+    margin: 0.15rem 0;
+  }
+  .diag-err {
+    color: var(--pub-error);
   }
 </style>

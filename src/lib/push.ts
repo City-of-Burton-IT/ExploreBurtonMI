@@ -153,3 +153,52 @@ export async function syncSubscriptions(): Promise<void> {
     }
   }
 }
+
+export interface PushDiag {
+  platform: string;
+  isNative: boolean;
+  pluginDefined: boolean;
+  available: boolean | null;
+  permission: string | null;
+  error: string | null;
+}
+
+function errMsg(e: unknown): string {
+  if (e instanceof Error) return e.message || e.name;
+  try {
+    return JSON.stringify(e);
+  } catch {
+    return String(e);
+  }
+}
+
+/** Runtime push diagnostics, surfaced in Settings so we can see ON THE DEVICE why
+ *  push is or isn't available -- instead of guessing from build logs. Each step is
+ *  wrapped so a throw is captured as text rather than swallowed. */
+export async function pushDiagnostics(): Promise<PushDiag> {
+  const diag: PushDiag = {
+    platform: Capacitor.getPlatform(),
+    isNative: Capacitor.isNativePlatform(),
+    pluginDefined: FirebaseMessaging != null,
+    available: null,
+    permission: null,
+    error: null,
+  };
+  try {
+    diag.available = await isPushAvailable();
+  } catch (e) {
+    diag.error = `available: ${errMsg(e)}`;
+  }
+  if (diag.isNative && diag.pluginDefined) {
+    try {
+      // checkPermissions reports the current OS permission WITHOUT prompting, and
+      // surfaces a "not implemented on android" error if the NATIVE plugin class is
+      // missing from the build (vs the JS wrapper merely being present).
+      const res = (await FirebaseMessaging.checkPermissions()) as { receive?: string };
+      diag.permission = res?.receive ?? JSON.stringify(res);
+    } catch (e) {
+      diag.error = `${diag.error ? diag.error + ' | ' : ''}checkPermissions: ${errMsg(e)}`;
+    }
+  }
+  return diag;
+}
