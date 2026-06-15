@@ -167,6 +167,60 @@ def apply_rows(rows: list[dict], overrides: dict) -> dict:
     return report
 
 
+# --- file writers (shared by the on-demand + payload paths) ------------------
+
+def _write_overrides(overrides: dict) -> None:
+    with open(OVERRIDES_PATH, "w", encoding="utf-8") as f:
+        json.dump(overrides, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+
+
+def _merge_candidates(new_cands: list[dict]) -> None:
+    """Merge add-new candidates into pending-additions.json, dedup by id. The
+    payload path applies one row at a time, so it must MERGE (not overwrite like
+    the batch on-demand run) to preserve candidates awaiting manual vetting."""
+    existing: dict = {"candidates": []}
+    if os.path.exists(CANDIDATES_PATH):
+        try:
+            with open(CANDIDATES_PATH, encoding="utf-8") as f:
+                existing = json.load(f)
+        except (OSError, ValueError):
+            existing = {"candidates": []}
+    by_id = {c.get("id"): c for c in existing.get("candidates", [])}
+    for c in new_cands:
+        by_id[c.get("id")] = c
+    with open(CANDIDATES_PATH, "w", encoding="utf-8") as f:
+        json.dump({"candidates": list(by_id.values())}, f, indent=2, ensure_ascii=False)
+        f.write("\n")
+
+
+def run_from_payload(payload: dict) -> int:
+    """Apply ONE approved row delivered via a repository_dispatch client_payload
+    (the approval-triggered Action path, #66). Reuses the same pure transforms as
+    the on-demand run; NO Graph token -- the flow pushed the fields in the payload
+    and marks the SharePoint row Applied itself after the dispatch returns."""
+    if "id" not in payload:
+        payload["id"] = payload.get("ID", "dispatch")
+    with open(OVERRIDES_PATH, encoding="utf-8") as f:
+        overrides = json.load(f)
+    report = apply_rows([payload], overrides)
+    for line in report["applied"]:
+        print(f"  apply   {line}")
+    for cand in report["candidates"]:
+        print(f"  vet     add-new candidate {cand['id']}")
+    for line in report["skipped"]:
+        print(f"  skipped {line}")
+    if report["applied"]:
+        _write_overrides(overrides)
+        print(f"Wrote {OVERRIDES_PATH}")
+    if report["candidates"]:
+        _merge_candidates(report["candidates"])
+        print(f"Merged {len(report['candidates'])} candidate(s) into {CANDIDATES_PATH}")
+    if not report["applied"] and not report["candidates"]:
+        print("No change applied (no usable fields / no listing id).")
+    return 0
+
+
 # --- Graph I/O ---------------------------------------------------------------
 
 def _load_env(path: str) -> dict:
@@ -254,6 +308,13 @@ def mark_applied(token: str, item_id: str) -> None:
 
 
 def main() -> int:
+    if "--payload-file" in sys.argv:
+        # Approval-triggered Action path (#66): apply one row from a dispatch payload.
+        path = sys.argv[sys.argv.index("--payload-file") + 1]
+        with open(path, encoding="utf-8") as f:
+            payload = json.load(f)
+        return run_from_payload(payload)
+
     dry = "--dry-run" in sys.argv
     token = get_graph_token()
     rows = fetch_approved(token)

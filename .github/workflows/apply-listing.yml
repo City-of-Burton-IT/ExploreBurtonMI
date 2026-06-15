@@ -1,0 +1,73 @@
+name: Apply approved listing request
+
+# Phase 2 of the #3 listing-request apply path (#66). A Power Automate flow on the
+# "Explore Burton Listing Requests" SharePoint list (item modified, Status=Approved)
+# fires a repository_dispatch carrying the row fields; this workflow applies the
+# approved change to the committed data, regenerates the public data, commits, and
+# kicks off the Pages deploy. The flow marks the SharePoint row Applied itself after
+# the dispatch (no Graph credential needed cloud-side).
+#
+# Add-new ("Add my business") rows are written to tools/pending-additions.json as
+# CANDIDATES only -- never auto-published into facilities.geojson; IT vets + pastes
+# them by hand. The SharePoint Approved status is the human gate.
+on:
+  repository_dispatch:
+    types: [apply-listing]
+
+# Serialize applies so two near-simultaneous approvals can't race on git push.
+concurrency:
+  group: apply-listing
+  cancel-in-progress: false
+
+permissions:
+  contents: write   # commit the applied data change + push
+  actions: write    # dispatch the Pages deploy workflow (a GITHUB_TOKEN push does
+                    # not itself trigger other workflows)
+
+jobs:
+  apply:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v5
+
+      - uses: actions/setup-python@v5
+        with:
+          python-version: '3.12'
+
+      - name: Install pipeline deps
+        run: pip install -r pipeline/requirements.txt
+
+      - name: Write the dispatch payload to a file
+        env:
+          # The row fields the flow sent. toJSON serializes the object safely; the
+          # value goes via env (not inline) to avoid any script-injection surface.
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        run: printf '%s' "$PAYLOAD" > payload.json
+
+      - name: Apply the approved row
+        run: python tools/sync_listing_requests.py --payload-file payload.json
+
+      - name: Regenerate public data (no --refresh: uses committed sources)
+        run: python pipeline/run.py
+
+      - name: Commit + push if anything changed
+        id: commit
+        run: |
+          rm -f payload.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          git add pipeline/data/overrides.json tools/pending-additions.json public/
+          if git diff --cached --quiet; then
+            echo "No data change to publish (e.g. an add-new candidate with no usable fields)."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "data: apply approved listing request (#3 auto-apply via #66)"
+          git push
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Trigger the Pages deploy
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: gh workflow run "Deploy to GitHub Pages" --ref main
