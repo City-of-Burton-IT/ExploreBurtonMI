@@ -45,7 +45,7 @@ export function isPushSupported(): boolean {
  *  messaging plugin is installed = Firebase is configured). The settings UI
  *  gates on this so residents never see toggles that don't do anything yet. */
 export async function isPushAvailable(): Promise<boolean> {
-  return (await loadMessaging()) !== null;
+  return loadMessaging() !== null; // sync check -- never await the plugin proxy
 }
 
 /** Parse the stored opt-in set (a JSON array of topic ids), dropping anything
@@ -90,10 +90,18 @@ interface FirebaseMessagingLike {
   unsubscribeFromTopic(opts: { topic: string }): Promise<void>;
 }
 
-/** The messaging plugin on native, or null on web. The plugin is statically
- *  imported (see the import note above), so on native it is always present -- no
- *  lazy chunk to fail to load. Kept async so callers don't change. */
-async function loadMessaging(): Promise<FirebaseMessagingLike | null> {
+/** The messaging plugin on native, or null on web.
+ *
+ *  SYNCHRONOUS BY DESIGN -- this MUST NOT be async and the returned proxy MUST NOT
+ *  be awaited or flowed through a Promise. The Capacitor plugin object is a Proxy
+ *  that turns ANY property access into a native method call, including `.then`. If
+ *  the proxy is returned from an async fn, awaited, or passed to Promise.resolve/
+ *  race, the Promise machinery probes `.then`, treats the proxy as a thenable, and
+ *  calls `proxy.then(resolve, reject)` -- a bogus native call that NEVER resolves,
+ *  so the await hangs forever (this is what made push appear permanently inert: the
+ *  native plugin worked, but `await loadMessaging()` hung). Return it directly; only
+ *  await the real method results (requestPermissions/subscribeToTopic/...). (#64) */
+function loadMessaging(): FirebaseMessagingLike | null {
   if (!isPushSupported()) return null;
   return FirebaseMessaging as unknown as FirebaseMessagingLike;
 }
@@ -109,7 +117,7 @@ export interface PushEnableResult {
 /** Request the OS notification permission once, so the per-topic toggles can act.
  *  No-ops (available:false) until the plugin is installed. */
 export async function ensurePermission(): Promise<PushEnableResult> {
-  const messaging = await loadMessaging();
+  const messaging = loadMessaging();
   if (!messaging) return { ok: false, granted: false, available: false };
   try {
     const { receive } = await messaging.requestPermissions();
@@ -125,7 +133,7 @@ export async function ensurePermission(): Promise<PushEnableResult> {
 export async function setTopic(topic: string, on: boolean): Promise<boolean> {
   if (!TOPIC_IDS.has(topic)) return false;
   const prefs = loadPrefs();
-  const messaging = await loadMessaging();
+  const messaging = loadMessaging();
   if (messaging) {
     try {
       if (on) await messaging.subscribeToTopic({ topic });
@@ -143,7 +151,7 @@ export async function setTopic(topic: string, on: boolean): Promise<boolean> {
 /** Re-apply every stored opt-in to FCM (call after permission is granted / on
  *  launch). No-ops until the plugin exists. */
 export async function syncSubscriptions(): Promise<void> {
-  const messaging = await loadMessaging();
+  const messaging = loadMessaging();
   if (!messaging) return;
   for (const topic of loadPrefs()) {
     try {
@@ -196,9 +204,7 @@ function withTimeout<T>(p: Promise<T>, ms: number): Promise<T | 'TIMEOUT'> {
 export async function pushDiagnostics(): Promise<PushDiag> {
   const diag: PushDiag = { ...pushSyncInfo(), available: null, permission: null, error: null };
   try {
-    const m = await withTimeout(loadMessaging(), 3000);
-    if (m === 'TIMEOUT') diag.error = 'loadMessaging: timeout';
-    else diag.available = m !== null;
+    diag.available = loadMessaging() !== null; // sync -- never await the proxy
   } catch (e) {
     diag.error = `available: ${errMsg(e)}`;
   }
