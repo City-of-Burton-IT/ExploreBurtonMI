@@ -993,10 +993,5 @@
       42.97477
     ],
     "_why": "Move Harmony Baptist Church onto the verified church-building pin (was the 'Crossway cafe' Overture point, now hidden); coords confirmed by the city."
-  },
-  "burton:test-apply-66": {
-    "phone": "810-555-0166",
-    "hours": "TEST -- remove",
-    "_why": "Business-submitted change (queue row test66, Fix listing), approved by IT 2026-06-15; submitter contact verified on file (not published)."
   }
 }
