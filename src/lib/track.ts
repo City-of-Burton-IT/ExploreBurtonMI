@@ -1,3 +1,5 @@
+import { SITE_BASE } from './hash';
+
 export type TrackKind = 'report' | 'listing';
 
 /** 128-bit URL-safe opaque token (16 random bytes, base64url). */
@@ -22,6 +24,13 @@ const LISTING: Record<string, string> = {
   Rejected: 'Not accepted',
   'Needs-info': 'Needs more info',
 };
+
+/** Canonical, shareable tracking link for a submission. Always the live site
+ *  (never the dev-server localhost or the native capacitor:// origin), mirroring
+ *  placeShareUrl (#53). The token is base64url so already URL-safe; encode anyway. */
+export function trackUrl(token: string, kind: TrackKind): string {
+  return `${SITE_BASE}#status?t=${encodeURIComponent(token)}&k=${kind}`;
+}
 
 /** Map a raw SharePoint Status to a resident-facing stage; unknown -> "In review". */
 export function stageFor(kind: TrackKind, raw: string | null | undefined): string {

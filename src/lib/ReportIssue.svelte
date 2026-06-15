@@ -10,6 +10,7 @@
     validateReport,
     submitReport,
   } from './report';
+  import { newToken, trackUrl } from './track';
 
   // "Report an issue" (#14): pin + optional photo/notes -> the private DPW
   // triage queue. Never published; this is a report, not an emergency line.
@@ -32,6 +33,10 @@
   let phase = $state<'form' | 'submitting' | 'done'>('form');
   let problems = $state<string[]>([]);
   let submitError = $state('');
+  // Resident tracking link set on a successful submit (#status); token generated
+  // client-side and sent with the payload so the flow can store + email it.
+  let trackLink = $state('');
+  let copied = $state(false);
 
   // Reset only when the modal opens FRESH. "Fresh" = it was fully closed (not
   // just hidden for pin mode, which must keep the in-progress fields).
@@ -53,6 +58,8 @@
     phase = 'form';
     problems = [];
     submitError = '';
+    trackLink = '';
+    copied = false;
   }
 
   function fullClose() {
@@ -117,12 +124,27 @@
     if (!config.report?.url) return;
     phase = 'submitting';
     submitError = '';
-    const result = await submitReport(config.report.url, buildReportPayload(input));
+    const token = newToken();
+    const result = await submitReport(config.report.url, {
+      ...buildReportPayload(input),
+      trackToken: token,
+    });
     if (result.ok) {
+      trackLink = trackUrl(token, 'report');
       phase = 'done';
     } else {
       phase = 'form';
       submitError = result.error ?? 'Something went wrong. Please try again.';
+    }
+  }
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(trackLink);
+      copied = true;
+      setTimeout(() => (copied = false), 2500);
+    } catch {
+      /* clipboard blocked -> the link text is already on screen to copy by hand */
     }
   }
 
@@ -152,6 +174,18 @@
           This is a report line, not an emergency line: for anything dangerous right now,
           call 911 or the DPW at (810) 742-9230.
         </p>
+        {#if trackLink}
+          <div class="track">
+            <p class="track-label">Track your report:</p>
+            <p class="track-link"><a href={trackLink}>{trackLink}</a></p>
+            <button class="copy" type="button" onclick={copyLink}>
+              {copied ? 'Copied' : 'Copy link'}
+            </button>
+            <p class="track-note">
+              Save this link to check the status later. If you gave an email, we also sent it to you.
+            </p>
+          </div>
+        {/if}
         <button class="primary" onclick={fullClose}>Done</button>
       {:else}
         <h2 id="report-title">Report an issue</h2>
@@ -418,6 +452,51 @@
   }
   p.problems {
     padding-left: 0.8rem;
+  }
+  .track {
+    margin: 0 0 1rem;
+    padding: 0.8rem 0.9rem;
+    background: var(--civic-accent-bg-soft, #eef3fb);
+    border: 1px solid var(--pub-border, #d8dde4);
+    border-radius: var(--pub-radius, 12px);
+  }
+  .track-label {
+    margin: 0 0 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--civic-blue-deep, #1e437e);
+  }
+  .track-link {
+    margin: 0 0 0.5rem;
+    font-size: 0.82rem;
+    word-break: break-all;
+  }
+  .track-link a {
+    color: var(--civic-blue-link);
+  }
+  .copy {
+    border: 1px solid var(--civic-blue);
+    background: var(--pub-surface);
+    color: var(--civic-blue);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .copy:hover {
+    background: var(--civic-accent-bg);
+    color: #fff;
+  }
+  .copy:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+  }
+  .track-note {
+    margin: 0.5rem 0 0;
+    font-size: 0.78rem;
+    color: var(--pub-muted, #5c5c5c);
   }
   .primary {
     margin-top: 0.3rem;

@@ -1,5 +1,5 @@
 import { describe, it, expect } from 'vitest';
-import { newToken, stageFor, fetchStatus } from '../src/lib/track';
+import { newToken, stageFor, fetchStatus, trackUrl } from '../src/lib/track';
 
 describe('newToken', () => {
   it('is url-safe and high-entropy (>= 22 chars, [A-Za-z0-9_-])', () => {
@@ -28,6 +28,17 @@ describe('stageFor', () => {
   it('falls back to "In review" for unknown/empty', () => {
     expect(stageFor('report', 'Whatever')).toBe('In review');
     expect(stageFor('listing', '')).toBe('In review');
+  });
+});
+
+describe('trackUrl', () => {
+  it('builds a canonical live-site status link with token + kind', () => {
+    expect(trackUrl('abc-DEF_123', 'listing')).toBe(
+      'https://explore.burtonmi.gov/#status?t=abc-DEF_123&k=listing',
+    );
+    expect(trackUrl('xyz', 'report')).toBe(
+      'https://explore.burtonmi.gov/#status?t=xyz&k=report',
+    );
   });
 });
 

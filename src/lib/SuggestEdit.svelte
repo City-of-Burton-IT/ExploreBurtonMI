@@ -9,6 +9,7 @@
     validateSuggestion,
     submitSuggestion,
   } from './suggest';
+  import { newToken, trackUrl } from './track';
 
   // "Suggest an edit" / "Add my business" (#3). A resident files a listing
   // change request; it lands in the IT moderation queue (SharePoint) via the
@@ -37,6 +38,11 @@
   let phase = $state<'form' | 'submitting' | 'done'>('form');
   let problems = $state<string[]>([]);
   let submitError = $state('');
+  // The resident's tracking link, set on a successful submit (#status). The token
+  // is generated client-side and sent with the payload so the intake flow can
+  // store it on the row and email the same link.
+  let trackLink = $state('');
+  let copied = $state(false);
 
   // (Re)initialize whenever the modal opens for a new context.
   let prevOpen = false;
@@ -49,6 +55,8 @@
       phase = 'form';
       problems = [];
       submitError = '';
+      trackLink = '';
+      copied = false;
       queueMicrotask(() => firstField?.focus());
     }
     prevOpen = open;
@@ -95,12 +103,27 @@
     if (!config.submit?.url) return;
     phase = 'submitting';
     submitError = '';
-    const result = await submitSuggestion(config.submit.url, buildPayload(input));
+    const token = newToken();
+    const result = await submitSuggestion(config.submit.url, {
+      ...buildPayload(input),
+      trackToken: token,
+    });
     if (result.ok) {
+      trackLink = trackUrl(token, 'listing');
       phase = 'done';
     } else {
       phase = 'form';
       submitError = result.error ?? 'Something went wrong. Please try again.';
+    }
+  }
+
+  async function copyLink() {
+    try {
+      await navigator.clipboard.writeText(trackLink);
+      copied = true;
+      setTimeout(() => (copied = false), 2500);
+    } catch {
+      /* clipboard blocked -> the link text is already on screen to copy by hand */
     }
   }
 
@@ -130,6 +153,18 @@
           to confirm anything we'll use the contact you provided. Approved changes appear on the
           map after the next data update.
         </p>
+        {#if trackLink}
+          <div class="track">
+            <p class="track-label">Track your request:</p>
+            <p class="track-link"><a href={trackLink}>{trackLink}</a></p>
+            <button class="copy" type="button" onclick={copyLink}>
+              {copied ? 'Copied' : 'Copy link'}
+            </button>
+            <p class="track-note">
+              Save this link to check the status later. If you gave an email, we also sent it to you.
+            </p>
+          </div>
+        {/if}
         <button class="primary" onclick={closeSuggest}>Done</button>
       {:else}
         <h2 id="suggest-title">{place ? 'Suggest an edit' : 'Add a business'}</h2>
@@ -389,6 +424,51 @@
   }
   p.problems {
     padding-left: 0.8rem;
+  }
+  .track {
+    margin: 0 0 1rem;
+    padding: 0.8rem 0.9rem;
+    background: var(--civic-accent-bg-soft, #eef3fb);
+    border: 1px solid var(--pub-border, #d8dde4);
+    border-radius: var(--pub-radius, 12px);
+  }
+  .track-label {
+    margin: 0 0 0.3rem;
+    font-size: 0.85rem;
+    font-weight: 700;
+    color: var(--civic-blue-deep, #1e437e);
+  }
+  .track-link {
+    margin: 0 0 0.5rem;
+    font-size: 0.82rem;
+    word-break: break-all;
+  }
+  .track-link a {
+    color: var(--civic-blue-link);
+  }
+  .copy {
+    border: 1px solid var(--civic-blue);
+    background: var(--pub-surface);
+    color: var(--civic-blue);
+    border-radius: 999px;
+    padding: 0.35rem 0.9rem;
+    font: inherit;
+    font-size: 0.82rem;
+    font-weight: 600;
+    cursor: pointer;
+  }
+  .copy:hover {
+    background: var(--civic-accent-bg);
+    color: #fff;
+  }
+  .copy:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+  }
+  .track-note {
+    margin: 0.5rem 0 0;
+    font-size: 0.78rem;
+    color: var(--pub-muted, #5c5c5c);
   }
   .primary {
     margin-top: 0.3rem;
