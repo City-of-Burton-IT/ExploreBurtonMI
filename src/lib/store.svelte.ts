@@ -174,6 +174,9 @@ export const ui = $state<{
   /** "Report an issue" (#14): modal state + the pin the resident dropped.
    *  pinMode = the map is waiting for a tap to place the pin. */
   report: { open: boolean; pinMode: boolean; lat: number | null; lng: number | null };
+  /** Foreground push (#64): an in-app banner shown when an FCM message arrives
+   *  while the app is open (Android does not raise a tray notification then). */
+  pushBanner: { title: string; body: string; url: string | null } | null;
 }>({
   selected: null,
   selections: {},
@@ -192,7 +195,18 @@ export const ui = $state<{
   theme: initialTheme(),
   suggest: { open: false, place: null },
   report: { open: false, pinMode: false, lat: null, lng: null },
+  pushBanner: null,
 });
+
+// --- Foreground push banner (#64) -------------------------------------------
+/** Show the in-app push banner (called when an FCM message arrives in foreground). */
+export function showPushBanner(p: { title: string; body: string; url: string | null }): void {
+  ui.pushBanner = p;
+}
+/** Dismiss the in-app push banner. */
+export function dismissPushBanner(): void {
+  ui.pushBanner = null;
+}
 
 // --- Suggest an edit (#3) ---------------------------------------------------
 /** Open the "Suggest an edit" form -- for a specific place, or null = add-new. */

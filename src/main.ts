@@ -25,6 +25,13 @@ if (Capacitor.isNativePlatform()) {
   import('./lib/deepLinks')
     .then(({ initDeepLinks }) => initDeepLinks())
     .catch(() => {})
+
+  // Push runtime (#64): create the notification channel + wire the foreground
+  // banner and tap-to-deep-link listeners. Subscriptions/permission stay opt-in
+  // via Settings; this only sets up handling for messages that arrive.
+  import('./lib/push')
+    .then(({ initPushRuntime }) => initPushRuntime())
+    .catch(() => {})
 }
 
 // COMING-SOON SOFT LAUNCH (web only)

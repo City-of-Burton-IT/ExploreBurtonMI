@@ -21,6 +21,7 @@
   import DashboardMenu from './lib/DashboardMenu.svelte';
   import InstallPrompt from './lib/InstallPrompt.svelte';
   import AlertBanner from './lib/AlertBanner.svelte';
+  import PushBanner from './lib/PushBanner.svelte';
   import WelcomeModal from './lib/WelcomeModal.svelte';
   import SuggestEdit from './lib/SuggestEdit.svelte';
   import ReportIssue from './lib/ReportIssue.svelte';
@@ -291,6 +292,8 @@
   {/if}
 
   <InstallPrompt />
+  <!-- Foreground push popup (#64): shows when an FCM message arrives while open. -->
+  <PushBanner />
   <!-- First-visit orientation modal; shows once, then localStorage keeps it closed. -->
   <WelcomeModal />
   {#if config}

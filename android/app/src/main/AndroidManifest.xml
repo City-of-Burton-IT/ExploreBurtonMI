@@ -45,6 +45,12 @@
         <meta-data
             android:name="com.google.firebase.messaging.default_notification_color"
             android:resource="@color/notification_color" />
+        <!-- Default channel id (#64): the channel created by initPushRuntime() in
+             src/lib/push.ts. Silences the "Missing Default Notification Channel"
+             warning and gives notifications a named, high-importance home. -->
+        <meta-data
+            android:name="com.google.firebase.messaging.default_notification_channel_id"
+            android:value="city_updates" />
 
         <!-- Home-screen widget (#65): city alert + next council meeting. -->
         <receiver

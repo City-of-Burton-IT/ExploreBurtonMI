@@ -18,6 +18,8 @@ import { Capacitor } from '@capacitor/core';
 // the web platform -- and the isPushSupported() gate stops us ever calling it there,
 // so the web bundle stays lean.
 import { FirebaseMessaging } from '@capacitor-firebase/messaging';
+import { showPushBanner } from './store.svelte';
+import { applyRoute } from './deepLinks';
 
 export interface PushTopic {
   id: string;
@@ -160,6 +162,55 @@ export async function syncSubscriptions(): Promise<void> {
       /* one failed topic shouldn't stop the rest */
     }
   }
+}
+
+const CHANNEL_ID = 'city_updates';
+
+/** Wire the push RUNTIME on native: create the default Android notification channel
+ *  and register the foreground + tap listeners. Call ONCE at startup (main.ts);
+ *  no-op on web. Only real plugin METHODS are awaited here -- never the proxy. */
+export async function initPushRuntime(): Promise<void> {
+  if (!isPushSupported()) return;
+  // Default channel: a named, high-importance home for notifications (also silences
+  // the "Missing Default Notification Channel" warning). Referenced by the manifest
+  // meta-data `default_notification_channel_id`. Idempotent.
+  try {
+    await FirebaseMessaging.createChannel({
+      id: CHANNEL_ID,
+      name: 'City updates',
+      description: 'Emergency alerts, service disruptions, and meeting reminders.',
+      importance: 4, // HIGH -> heads-up
+      visibility: 1, // shown on the lock screen
+    });
+  } catch {
+    /* createChannel is Android-only / older API -> ignore */
+  }
+  // Foreground: Android does NOT raise a tray notification while the app is open,
+  // so surface an in-app banner instead.
+  try {
+    await FirebaseMessaging.addListener('notificationReceived', (event) => {
+      const n = event?.notification;
+      if (!n) return;
+      const url = n.data && typeof (n.data as Record<string, unknown>).url === 'string'
+        ? ((n.data as Record<string, unknown>).url as string)
+        : null;
+      showPushBanner({ title: n.title ?? 'City of Burton', body: n.body ?? '', url });
+    });
+  } catch {
+    /* listener unsupported -> no foreground banner */
+  }
+  // Tap (a tray notification OR the in-app banner): route to the message's url.
+  try {
+    await FirebaseMessaging.addListener('notificationActionPerformed', (event) => {
+      const data = event?.notification?.data as Record<string, unknown> | undefined;
+      if (data && typeof data.url === 'string') applyRoute(data.url);
+    });
+  } catch {
+    /* listener unsupported */
+  }
+  // Re-apply saved topic subscriptions (covers a reinstall, or a permission grant
+  // that landed after setTopic first ran).
+  syncSubscriptions();
 }
 
 export interface PushDiag {

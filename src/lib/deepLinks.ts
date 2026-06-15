@@ -30,8 +30,8 @@ export function routeFromUrl(url: string): string | null {
   }
 }
 
-/** Apply a deep-link / shortcut URL to the app state. */
-function applyRoute(url: string): void {
+/** Apply a deep-link / shortcut / push-tap URL to the app state. */
+export function applyRoute(url: string): void {
   const route = routeFromUrl(url);
   if (route === null) return; // not our site -> let the OS handle it
   if (route === NEAR_ME_ROUTE) {
