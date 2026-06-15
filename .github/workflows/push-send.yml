@@ -1,0 +1,107 @@
+name: Send push notification
+
+# Send path for #64 (Part D). Sends ONE FCM topic message to subscribed devices.
+# Keyless: reuses the same Workload Identity Federation trust as the Play release
+# (GitHub OIDC -> impersonate the GCP service account, NO downloadable key), just
+# with the firebase.messaging scope instead of androidpublisher.
+#
+# Triggered two ways:
+#   - repository_dispatch (event_type: send-push) -- how Power Automate fires it
+#     after the Mayor -> IT approval gate, carrying client_payload.{topic,title,body,url}
+#   - workflow_dispatch -- manual send from the Actions tab, for testing
+#
+# DORMANT until two one-time setup items exist (see planning/specs/2026-06-15-push-send-path.md):
+#   1. GCP: the WIF service account granted FCM-send on the `explore-burton` project
+#      + the Firebase Cloud Messaging API enabled there.
+#   2. A fine-grained PAT (Contents: read/write on this repo) in the Power Automate
+#      HTTP connection, so PA can POST the repository_dispatch.
+# Until then a manual run still authenticates but the send returns an FCM error,
+# which the step surfaces -- it never silently "succeeds".
+
+on:
+  repository_dispatch:
+    types: [send-push]
+  workflow_dispatch:
+    inputs:
+      topic:
+        description: 'Subscriber topic'
+        required: true
+        default: 'alerts'
+        type: choice
+        options: [alerts, service, meetings]
+      title:
+        description: 'Notification title'
+        required: true
+      body:
+        description: 'Notification message'
+        required: true
+      url:
+        description: 'Deep link opened on tap'
+        required: false
+        default: 'https://explore.burtonmi.gov/'
+
+jobs:
+  send:
+    runs-on: ubuntu-latest
+    permissions:
+      contents: read
+      id-token: write   # mint the GitHub OIDC token for WIF
+    steps:
+      # Verifies WIF -> impersonation -> the firebase.messaging scope BEFORE the send,
+      # so a misconfiguration fails loudly at auth, not mid-send.
+      - name: Authenticate to Google Cloud (keyless, WIF)
+        id: auth
+        uses: google-github-actions/auth@v3
+        with:
+          project_id: ${{ secrets.GCP_PROJECT_ID }}
+          workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}
+          service_account: ${{ secrets.GCP_SERVICE_ACCOUNT }}
+          token_format: access_token
+          access_token_scopes: https://www.googleapis.com/auth/firebase.messaging
+
+      - name: Send to FCM topic
+        env:
+          ACCESS_TOKEN: ${{ steps.auth.outputs.access_token }}
+          # Inputs/payload via env (NOT inline ${{ }} in run) to avoid script injection.
+          TOPIC: ${{ github.event.client_payload.topic || inputs.topic }}
+          TITLE: ${{ github.event.client_payload.title || inputs.title }}
+          BODY_TEXT: ${{ github.event.client_payload.body || inputs.body }}
+          URL: ${{ github.event.client_payload.url || inputs.url }}
+          # The Firebase project that owns FCM (separate from the Play GCP project).
+          FCM_PROJECT: explore-burton
+        run: |
+          set -euo pipefail
+
+          # Validate the topic against the allow-list (defense in depth; the flow
+          # also validates).
+          case "$TOPIC" in
+            alerts|service|meetings) ;;
+            *) echo "::error::Invalid topic '$TOPIC' (allowed: alerts, service, meetings)"; exit 1 ;;
+          esac
+          if [ -z "${TITLE:-}" ] || [ -z "${BODY_TEXT:-}" ]; then
+            echo "::error::title and body are required"; exit 1
+          fi
+          URL="${URL:-https://explore.burtonmi.gov/}"
+
+          # Build the message with jq so all text is safely JSON-escaped.
+          PAYLOAD=$(jq -n \
+            --arg topic "$TOPIC" --arg title "$TITLE" --arg body "$BODY_TEXT" --arg url "$URL" \
+            '{message:{topic:$topic,
+                       notification:{title:$title,body:$body},
+                       data:{url:$url},
+                       android:{notification:{default_sound:true}}}}')
+
+          API="https://fcm.googleapis.com/v1/projects/$FCM_PROJECT/messages:send"
+          resp=$(curl -sS -X POST "$API" \
+                 -H "Authorization: Bearer $ACCESS_TOKEN" \
+                 -H "Content-Type: application/json" \
+                 -d "$PAYLOAD")
+
+          # A success returns {"name":"projects/.../messages/<id>"}; anything else is an error.
+          if echo "$resp" | jq -e '.name' >/dev/null 2>&1; then
+            echo "Sent to topic '$TOPIC': $(echo "$resp" | jq -r '.name')"
+          else
+            echo "::error::FCM send failed"
+            echo "Response: $resp"
+            exit 1
+          fi
