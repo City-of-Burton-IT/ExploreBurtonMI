@@ -111,8 +111,12 @@ public class ExploreWidgetProvider extends AppWidgetProvider {
             if (value == null || value.length() == 0) return "No upcoming meetings";
             JSONObject ev = value.optJSONObject(0);
             String start = ev.optString("startDateTime", "");
+            // eventName is the board/body (e.g. "City Council", "Planning Commission").
+            String board = ev.optString("eventName", "").trim();
             String when = formatMeeting(start);
-            return when.isEmpty() ? "Next meeting scheduled" : "Next meeting: " + when;
+            if (when.isEmpty()) return board.isEmpty() ? "Next meeting scheduled" : "Next: " + board;
+            if (board.isEmpty()) return "Next meeting: " + when;
+            return "Next: " + board + "\n" + when;
         } catch (Throwable t) {
             return "Meetings unavailable";
         }

@@ -134,6 +134,20 @@
       upload. This form is not an emergency line &mdash; call 911 for emergencies.
     </p>
 
+    <h2>Push notifications (Android app)</h2>
+    <p>
+      The Android app lets you <strong>opt in</strong> to push notifications for City
+      alerts, service disruptions, and meeting reminders (Settings &rarr; Notifications).
+      This is off until you turn it on and grant Android&rsquo;s notification permission.
+      Notifications are delivered by <strong>Google Firebase Cloud Messaging</strong> using
+      <strong>topic subscriptions</strong>: your device joins a topic (for example,
+      &ldquo;alerts&rdquo;) anonymously. The City does <strong>not</strong> receive or store
+      a device token, and there is <strong>no per-resident record</strong> of who is
+      subscribed &mdash; the City only sends a message to a topic, and Google delivers it to
+      whichever devices are subscribed. You can turn any category off in the app or in your
+      device settings at any time. Push is not used for advertising.
+    </p>
+
     <h2>Aggregate website analytics</h2>
     <p>
       To understand overall usage (for example, which pages are popular), the website
