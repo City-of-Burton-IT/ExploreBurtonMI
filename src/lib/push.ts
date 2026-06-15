@@ -11,6 +11,13 @@
 // isPushSupported gate), so the web initial bundle stays lean.
 
 import { Capacitor } from '@capacitor/core';
+// STATIC import so registerPlugin lands in the main entry (already loaded), NOT a
+// lazy chunk. A lazy dynamic-import chunk did not load inside the Capacitor WebView,
+// so the plugin never registered and push stayed inert on device (#64). The heavy
+// firebase SDK is behind this plugin's own `web:` lazy factory, which only runs on
+// the web platform -- and the isPushSupported() gate stops us ever calling it there,
+// so the web bundle stays lean.
+import { FirebaseMessaging } from '@capacitor-firebase/messaging';
 
 export interface PushTopic {
   id: string;
@@ -83,21 +90,12 @@ interface FirebaseMessagingLike {
   unsubscribeFromTopic(opts: { topic: string }): Promise<void>;
 }
 
-/** Load the messaging plugin at runtime, or null if it isn't installed yet
- *  (the "Firebase later" state) or we're on the web. The module name is a
- *  variable so the bundler leaves it as a runtime import. */
+/** The messaging plugin on native, or null on web. The plugin is statically
+ *  imported (see the import note above), so on native it is always present -- no
+ *  lazy chunk to fail to load. Kept async so callers don't change. */
 async function loadMessaging(): Promise<FirebaseMessagingLike | null> {
   if (!isPushSupported()) return null;
-  try {
-    // PLAIN literal specifier (no @vite-ignore, no variable indirection) so Vite
-    // RESOLVES it and emits a real chunk. The earlier type-erased form shipped only
-    // the module string with an empty preload list, so the runtime import of a bare
-    // specifier always threw -> push stayed inert on EVERY build (#64 regression).
-    const mod = await import('@capacitor-firebase/messaging');
-    return (mod.FirebaseMessaging ?? null) as unknown as FirebaseMessagingLike | null;
-  } catch {
-    return null; // not a native build with the plugin -> inert
-  }
+  return FirebaseMessaging as unknown as FirebaseMessagingLike;
 }
 
 export interface PushEnableResult {
