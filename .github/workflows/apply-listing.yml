@@ -47,7 +47,7 @@ jobs:
       - name: Apply the approved row
         run: python tools/sync_listing_requests.py --payload-file payload.json
 
-      - name: Regenerate public data (no --refresh: uses committed sources)
+      - name: Regenerate public data (committed sources, no refresh)
         run: python pipeline/run.py
 
       - name: Commit + push if anything changed
