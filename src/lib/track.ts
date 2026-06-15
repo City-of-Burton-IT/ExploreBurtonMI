@@ -28,3 +28,41 @@ export function stageFor(kind: TrackKind, raw: string | null | undefined): strin
   const table = kind === 'report' ? REPORT : LISTING;
   return (raw && table[raw]) || 'In review';
 }
+
+export interface StatusResult {
+  found: boolean;
+  stage?: string;
+  updatedAt?: string;
+  recap?: string;
+  publicNote?: string;
+}
+
+/** POST the token as text/plain (no-preflight CORS, same as the intake forms) to the
+ *  read flow; return a sanitized, stage-mapped result. Never throws. The fetch arg is
+ *  injectable for tests; defaults to global fetch. */
+export async function fetchStatus(
+  url: string,
+  token: string,
+  kind: TrackKind,
+  fetchImpl: typeof fetch = fetch,
+): Promise<StatusResult> {
+  try {
+    const resp = await fetchImpl(url, {
+      method: 'POST',
+      headers: { 'Content-Type': 'text/plain;charset=UTF-8' },
+      body: JSON.stringify({ token, kind }),
+    });
+    if (!resp.ok) return { found: false };
+    const d = await resp.json();
+    if (!d || !d.found) return { found: false };
+    return {
+      found: true,
+      stage: stageFor((d.kind as TrackKind) || kind, d.status),
+      updatedAt: d.updatedAt,
+      recap: d.recap,
+      publicNote: d.publicNote || undefined,
+    };
+  } catch {
+    return { found: false };
+  }
+}
