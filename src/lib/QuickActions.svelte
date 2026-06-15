@@ -16,6 +16,8 @@
     near: '<circle cx="12" cy="12" r="10"/><line x1="22" x2="18" y1="12" y2="12"/><line x1="6" x2="2" y1="12" y2="12"/><line x1="12" x2="12" y1="6" y2="2"/><line x1="12" x2="12" y1="22" y2="18"/>',
     bell:
       '<path d="M6 8a6 6 0 0 1 12 0c0 7 3 9 3 9H3s3-2 3-9"/><path d="M10.3 21a1.94 1.94 0 0 0 3.4 0"/>',
+    waste:
+      '<path d="M3 6h18"/><path d="M19 6v14c0 1-1 2-2 2H7c-1 0-2-1-2-2V6"/><path d="M8 6V4c0-1 1-2 2-2h4c1 0 2 1 2 2v2"/><line x1="10" x2="10" y1="11" y2="17"/><line x1="14" x2="14" y1="11" y2="17"/>',
     meetings:
       '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
     contact:
@@ -25,14 +27,28 @@
   };
 
   // Guide section ids are the single source of truth in content/guide/index.json.
-  const actions: { label: string; icon: string; run: () => void }[] = [
-    { label: 'Near me', icon: ICONS.near, run: requestNearMe },
-    { label: 'Notifications', icon: ICONS.bell, run: openSettings },
-    { label: 'Meetings', icon: ICONS.meetings, run: () => setGuideSection(TARGET.meetings) },
-    { label: 'Contact', icon: ICONS.contact, run: () => setGuideSection(TARGET.contact) },
-    // One-tap path into the #14 issue-report form (pothole/blight/sign/...).
-    { label: 'Report', icon: ICONS.report, run: openReport },
-  ];
+  // The row differs by platform: push works only in the app, so "Notifications"
+  // is native-only; the web instead keeps "Waste pickup" (and Settings is still
+  // reachable via the menu-bar cog). The app drops "Meetings" to keep the row short.
+  type Action = { label: string; icon: string; run: () => void };
+  const nearMe: Action = { label: 'Near me', icon: ICONS.near, run: requestNearMe };
+  const contact: Action = { label: 'Contact', icon: ICONS.contact, run: () => setGuideSection(TARGET.contact) };
+  const report: Action = { label: 'Report', icon: ICONS.report, run: openReport };
+
+  const actions: Action[] = native
+    ? [
+        nearMe,
+        { label: 'Notifications', icon: ICONS.bell, run: openSettings },
+        contact,
+        report,
+      ]
+    : [
+        nearMe,
+        { label: 'Waste pickup', icon: ICONS.waste, run: () => setGuideSection(TARGET.waste) },
+        { label: 'Meetings', icon: ICONS.meetings, run: () => setGuideSection(TARGET.meetings) },
+        contact,
+        report,
+      ];
 </script>
 
 {#if ui.view === 'map'}
