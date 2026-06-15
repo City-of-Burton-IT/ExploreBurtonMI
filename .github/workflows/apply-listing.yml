@@ -56,7 +56,9 @@ jobs:
           rm -f payload.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
-          git add pipeline/data/overrides.json tools/pending-additions.json public/
+          git add pipeline/data/overrides.json public/
+          # Only an add-new row creates the candidates file; stage it when present.
+          if [ -f tools/pending-additions.json ]; then git add tools/pending-additions.json; fi
           if git diff --cached --quiet; then
             echo "No data change to publish (e.g. an add-new candidate with no usable fields)."
             echo "changed=false" >> "$GITHUB_OUTPUT"
