@@ -6,7 +6,7 @@
   import { filterFeatures } from './lib/filter';
   import { buildIndex, searchIds } from './lib/search';
   import type { AppConfig, PlaceCollection, InfoPanel } from './lib/types';
-  import { ui, setMobileView, setView, syncViewFromHash, openAbout, isDashboard, DASHBOARDS, select, clearSelection, dashboardGroupLabel, adjacentDashboards, initOnlineWatch } from './lib/store.svelte';
+  import { ui, setMobileView, setView, syncViewFromHash, openAbout, openSettings, isDashboard, DASHBOARDS, select, clearSelection, dashboardGroupLabel, adjacentDashboards, initOnlineWatch } from './lib/store.svelte';
   import { placeIdFromHash } from './lib/hash';
   import Map from './lib/Map.svelte';
   import Detail from './lib/Detail.svelte';
@@ -14,6 +14,7 @@
   import List from './lib/List.svelte';
   import Search from './lib/Search.svelte';
   import About from './lib/About.svelte';
+  import Settings from './lib/Settings.svelte';
   import InfoView from './lib/InfoView.svelte';
   import Guide from './lib/Guide.svelte';
   import OpenData from './lib/OpenData.svelte';
@@ -217,10 +218,23 @@
         <DashboardMenu />
         <button class:active={ui.view === 'guide'} onclick={() => setView('guide')}>Resident Guide</button>
         <!-- Open Data moved into the dashboards menu (#68); #opendata links still work. -->
+        <!-- Settings cog: appearance + notifications (#64/#61). Icon-only, far right. -->
+        <button
+          class="cog"
+          class:active={ui.settingsOpen}
+          onclick={openSettings}
+          aria-label="Settings"
+          title="Settings"
+        >
+          <svg viewBox="0 0 24 24" width="18" height="18" fill="none" stroke="currentColor"
+            stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
+            ><circle cx="12" cy="12" r="3" /><path d="M19.4 15a1.65 1.65 0 0 0 .33 1.82l.06.06a2 2 0 1 1-2.83 2.83l-.06-.06a1.65 1.65 0 0 0-1.82-.33 1.65 1.65 0 0 0-1 1.51V21a2 2 0 0 1-4 0v-.09A1.65 1.65 0 0 0 9 19.4a1.65 1.65 0 0 0-1.82.33l-.06.06a2 2 0 1 1-2.83-2.83l.06-.06a1.65 1.65 0 0 0 .33-1.82 1.65 1.65 0 0 0-1.51-1H3a2 2 0 0 1 0-4h.09A1.65 1.65 0 0 0 4.6 9a1.65 1.65 0 0 0-.33-1.82l-.06-.06a2 2 0 1 1 2.83-2.83l.06.06a1.65 1.65 0 0 0 1.82.33H9a1.65 1.65 0 0 0 1-1.51V3a2 2 0 0 1 4 0v.09a1.65 1.65 0 0 0 1 1.51 1.65 1.65 0 0 0 1.82-.33l.06-.06a2 2 0 1 1 2.83 2.83l-.06.06a1.65 1.65 0 0 0-.33 1.82V9a1.65 1.65 0 0 0 1.51 1H21a2 2 0 0 1 0 4h-.09a1.65 1.65 0 0 0-1.51 1z" /></svg>
+        </button>
       </nav>
       <!-- Trigger lives at the end of the Guide; this keeps the dialog mounted so
            the map © button (and the Guide's About button) can open it. -->
       <About {config} showButton={false} />
+      <Settings />
     {/if}
   </header>
 

@@ -267,6 +267,13 @@ body,
   box-shadow: var(--pub-focus-ring);
   position: relative;
 }
+/* Settings cog: icon-only, square-ish pill matching the others' height (#64/#61). */
+.viewnav > button.cog {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  padding: 0.4rem 0.5rem;
+}
 /* Narrow screens: keep the section pills on ONE line, inline with the seal --
    don't wrap to a second row. Smaller pills so seal + Map/Dashboards/Guide + the
    Map/List toggle all fit across one header row. */

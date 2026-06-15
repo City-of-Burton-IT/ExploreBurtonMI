@@ -147,6 +147,8 @@ export const ui = $state<{
   mobileView: 'map' | 'list';
   /** whether the About dialog is open */
   aboutOpen: boolean;
+  /** whether the Settings dialog (cog: appearance + notifications) is open */
+  settingsOpen: boolean;
   /** top-level section: the map, an info panel, or the guide */
   view: AppView;
   /** active Resident Guide section id (null = the guide's first section) */
@@ -178,6 +180,7 @@ export const ui = $state<{
   query: '',
   mobileView: 'map',
   aboutOpen: false,
+  settingsOpen: false,
   view: initialView(),
   guideSection: initialGuideSection(),
   userLocation: null,
@@ -429,6 +432,14 @@ export function openAbout(): void {
 
 export function closeAbout(): void {
   ui.aboutOpen = false;
+}
+
+export function openSettings(): void {
+  ui.settingsOpen = true;
+}
+
+export function closeSettings(): void {
+  ui.settingsOpen = false;
 }
 
 export function select(feature: PlaceFeature | null): void {
