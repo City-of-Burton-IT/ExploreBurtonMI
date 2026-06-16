@@ -119,6 +119,9 @@ export interface AppConfig {
   report?: SubmitConfig;
   /** read-only status-lookup endpoint (#status); absent = the tracking link/page is inert */
   status?: { url: string };
+  /** read-only live alert-banner endpoint (unified messaging); absent = banner uses
+   *  only the committed alerts.json */
+  alerts?: { url: string };
 }
 
 export interface SubmitConfig {

@@ -2,7 +2,12 @@
   import { onMount } from 'svelte';
   import { dataFetch } from './remote';
   import { safeHref } from './templates';
-  import { activeAlerts, type AlertsBundle, type CityAlert, type AlertLevel } from './alerts';
+  import { activeAlerts, loadAlerts, type CityAlert, type AlertLevel } from './alerts';
+
+  // The live banner endpoint (config.alerts.url). Undefined until config loads (this
+  // component mounts above the config gate); the loader falls back to the committed
+  // alerts.json when it's absent, and the $effect re-runs once it arrives.
+  let { alertsUrl }: { alertsUrl?: string } = $props();
 
   // Lucide (https://lucide.dev, ISC/MIT) inner SVG markup, rendered in a 24x24
   // currentColor stroke icon (same approach as the Resident Guide's GuideIcon).
@@ -38,20 +43,20 @@
     }
   }
 
-  onMount(async () => {
+  onMount(() => {
     dismissed = loadDismissed();
     const d = new Date();
     // Local calendar date (not UTC) so "today" matches the resident's clock.
     today = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
-    try {
-      const r = await dataFetch('alerts.json');
-      if (r.ok) {
-        const b = (await r.json()) as AlertsBundle;
-        alerts = b.alerts ?? [];
-      }
-    } catch {
-      alerts = [];
-    }
+  });
+
+  // Load alerts live-first (the read flow), falling back to the committed alerts.json.
+  // Re-runs when alertsUrl resolves from config. dataFetch keeps the native hybrid
+  // (live site -> bundled) for the alerts.json fallback.
+  $effect(() => {
+    loadAlerts(alertsUrl, dataFetch).then((a) => {
+      alerts = a;
+    });
   });
 
   const shown = $derived(today ? activeAlerts(alerts, today, dismissed) : []);

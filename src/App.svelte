@@ -191,8 +191,9 @@
 </script>
 
 <div class="app">
-  <!-- City alerts ride above the whole shell; renders nothing when none are active. -->
-  <AlertBanner />
+  <!-- City alerts ride above the whole shell; renders nothing when none are active.
+       Reads live from the banner endpoint (config.alerts.url) with alerts.json fallback. -->
+  <AlertBanner alertsUrl={config?.alerts?.url} />
   <header class="topbar">
     <a class="seal-link" href="https://www.burtonmi.gov" aria-label="City of Burton home page">
       <img class="seal" src="/burton-seal.png" alt="City of Burton seal" width="44" height="44" />
