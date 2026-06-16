@@ -8,12 +8,14 @@ import { submitSuggestion, type SubmitResult } from './suggest';
 // NOTE: three places must stay in sync when this list changes (#67): this
 // whitelist, the flow's Validate_and_route createArray(...), and the Category
 // choice column on the SharePoint list.
+// The city does NOT handle streetlights (utility-owned); it DOES take missed
+// trash-pickup complaints -- hence "Trash pickup" in place of "Streetlight".
 export const REPORT_CATEGORIES = [
   'Pothole',
   'Blight',
   'Sign',
   'Drainage',
-  'Streetlight',
+  'Trash pickup',
   'Other',
 ] as const;
 export type ReportCategory = (typeof REPORT_CATEGORIES)[number];
@@ -28,6 +30,8 @@ export interface ReportInput {
   category: ReportCategory | '';
   lat: number | null;
   lng: number | null;
+  /** typed street address -- an alternative to dropping a pin (#14 location field) */
+  address?: string;
   description?: string;
   /** raw base64 (no data: prefix); produced by the photo resizer */
   photoBase64?: string;
@@ -52,11 +56,17 @@ export function validateReport(input: ReportInput): string[] {
   const problems: string[] = [];
   if (!REPORT_CATEGORIES.includes(input.category as ReportCategory))
     problems.push('Pick what kind of issue this is.');
-  if (input.lat == null || input.lng == null) {
-    problems.push('Tap the map to mark where the issue is.');
-  } else if (!inCity(input.lat, input.lng)) {
+  // Location is satisfied by EITHER a dropped pin (must be in the city) OR a typed
+  // address. A pin, when present, is still bounds-checked.
+  const hasPin = input.lat != null && input.lng != null;
+  const hasAddress = (input.address ?? '').trim() !== '';
+  if (!hasPin && !hasAddress) {
+    problems.push('Tell us where it is: drop a pin on the map or enter an address.');
+  } else if (hasPin && !inCity(input.lat as number, input.lng as number)) {
     problems.push('The pin is outside the City of Burton -- this form only reaches Burton DPW.');
   }
+  if ((input.address ?? '').length > 255)
+    problems.push('The address is too long (max 255 characters).');
   if ((input.description ?? '').length > 2000)
     problems.push('The description is too long (max 2000 characters).');
   if ((input.photoBase64 ?? '').length > PHOTO_BASE64_MAX)
@@ -75,7 +85,7 @@ export function buildReportPayload(input: ReportInput): Record<string, string> {
     lng: input.lng == null ? '' : String(input.lng),
     hp: (input.hp ?? '').trim(),
   };
-  for (const k of ['description', 'photoBase64', 'photoName', 'contactName', 'contactInfo'] as const) {
+  for (const k of ['address', 'description', 'photoBase64', 'photoName', 'contactName', 'contactInfo'] as const) {
     const t = (input[k] ?? '').trim();
     if (t !== '') out[k] = t;
   }

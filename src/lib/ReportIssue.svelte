@@ -22,6 +22,7 @@
   const hasPin = $derived(ui.report.lat != null && ui.report.lng != null);
 
   let category = $state<ReportCategory | ''>('Pothole');
+  let address = $state('');
   let description = $state('');
   let photoBase64 = $state('');
   let photoName = $state('');
@@ -48,6 +49,7 @@
   });
   function reset() {
     category = 'Pothole';
+    address = '';
     description = '';
     photoBase64 = '';
     photoName = '';
@@ -107,6 +109,7 @@
       category,
       lat: ui.report.lat,
       lng: ui.report.lng,
+      address,
       description,
       photoBase64,
       photoName,
@@ -190,8 +193,9 @@
       {:else}
         <h2 id="report-title">Report an issue</h2>
         <p class="lead">
-          Spotted a pothole, damaged sign, drainage problem, or streetlight out? Mark the
-          spot and tell us about it. Reports go to city staff and are not published.
+          Spotted a pothole, damaged sign, drainage problem, or missed trash pickup? Mark the
+          spot or enter an address and tell us about it. Reports go to city staff and are not
+          published.
         </p>
 
         <form onsubmit={submit}>
@@ -208,6 +212,17 @@
               </button>
             {/if}
           </div>
+
+          <label>
+            Address <span class="opt">(or drop a pin above)</span>
+            <input
+              type="text"
+              bind:value={address}
+              maxlength="255"
+              placeholder="e.g. 3025 S Center Rd"
+              autocomplete="street-address"
+            />
+          </label>
 
           <label>
             What kind of issue?

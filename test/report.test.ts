@@ -29,15 +29,20 @@ describe('validateReport', () => {
     expect(validateReport(valid())).toEqual([]);
   });
 
-  it('accepts every published category, including Blight (#67)', () => {
-    for (const c of ['Pothole', 'Blight', 'Sign', 'Drainage', 'Streetlight', 'Other'] as const) {
+  it('accepts every published category, including Trash pickup', () => {
+    for (const c of ['Pothole', 'Blight', 'Sign', 'Drainage', 'Trash pickup', 'Other'] as const) {
       expect(validateReport(valid({ category: c }))).toEqual([]);
     }
   });
 
-  it('requires a category and a pin', () => {
+  it('requires a category and a location (pin or address)', () => {
     expect(validateReport(valid({ category: '' }))).not.toEqual([]);
+    // neither a pin nor an address -> a location problem
     expect(validateReport(valid({ lat: null, lng: null }))).not.toEqual([]);
+  });
+
+  it('accepts a typed address with no pin', () => {
+    expect(validateReport(valid({ lat: null, lng: null, address: '3025 S Center Rd' }))).toEqual([]);
   });
 
   it('rejects a pin outside the city with a specific message', () => {
@@ -66,6 +71,11 @@ describe('buildReportPayload', () => {
     const p = buildReportPayload(valid({ description: ' ', contactName: '' }));
     expect('description' in p).toBe(false);
     expect('contactName' in p).toBe(false);
+  });
+
+  it('includes the typed address when present', () => {
+    const p = buildReportPayload(valid({ address: '3025 S Center Rd, Burton' }));
+    expect(p.address).toBe('3025 S Center Rd, Burton');
   });
 });
 
