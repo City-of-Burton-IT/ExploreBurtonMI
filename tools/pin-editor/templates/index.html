@@ -1,0 +1,103 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Burton Pin Editor</title>
+  <meta name="csrf-token" content="{{ csrf_token }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='vendor/leaflet/leaflet.css') }}" />
+  <link rel="stylesheet" href="{{ url_for('static', filename='editor.css') }}" />
+  <script>
+    // Attach the CSRF token to every mutating fetch (load before any app script).
+    (function () {
+      const meta = document.querySelector('meta[name="csrf-token"]');
+      const token = meta ? meta.content : '';
+      const orig = window.fetch;
+      window.fetch = function (url, opts = {}) {
+        const m = (opts.method || 'GET').toUpperCase();
+        if (['POST', 'PUT', 'PATCH', 'DELETE'].includes(m)) {
+          opts.headers = { ...(opts.headers || {}), 'X-CSRF-Token': token };
+        }
+        return orig(url, opts);
+      };
+    })();
+  </script>
+</head>
+<body>
+  <header id="topbar">
+    <span class="brand">Burton Pin Editor</span>
+    <input id="search" type="search" placeholder="Search pins by name..." autocomplete="off" />
+    <div class="modes">
+      <button id="mode-select" class="mode active" type="button">Select</button>
+      <button id="mode-add" class="mode" type="button">+ Add pin</button>
+    </div>
+    <span class="spacer"></span>
+    <span id="count" class="count"></span>
+    <button id="reload" class="ghost" type="button" title="Reload from disk">Reload</button>
+  </header>
+
+  <main>
+    <div id="map"></div>
+
+    <aside id="sidebar">
+      <!-- Selected-pin editor (hidden until a pin is clicked / added) -->
+      <section id="panel" hidden>
+        <div class="panel-head">
+          <h2 id="panel-title">Edit pin</h2>
+          <button id="panel-close" class="ghost" type="button" aria-label="Close">x</button>
+        </div>
+        <p id="panel-id" class="muted"></p>
+        <label>Name <input id="f-name" type="text" /></label>
+        <label>Category
+          <select id="f-category"></select>
+        </label>
+        <label>Address <input id="f-address" type="text" /></label>
+        <label>Phone <input id="f-phone" type="text" /></label>
+        <label>Website <input id="f-website" type="text" /></label>
+        <label>Hours <input id="f-hours" type="text" /></label>
+        <p id="panel-hint" class="hint"></p>
+        <div class="panel-actions">
+          <button id="apply-fields" class="primary" type="button">Apply</button>
+          <button id="delete-pin" class="danger" type="button">Delete</button>
+        </div>
+      </section>
+
+      <!-- Pending changes tray -->
+      <section id="tray-wrap">
+        <div class="tray-head">
+          <h2>Pending changes <span id="tray-count" class="pill">0</span></h2>
+          <button id="discard-all" class="ghost" type="button" hidden>Discard all</button>
+        </div>
+        <ul id="tray" class="tray"></ul>
+        <div class="tray-actions">
+          <button id="save" class="primary" type="button" disabled>Save &amp; regenerate</button>
+        </div>
+      </section>
+
+      <section id="legend">
+        <h3>Legend</h3>
+        <div><span class="dot curated"></span> Curated (city facility / hand-added)</div>
+        <div><span class="dot discovered"></span> Auto-discovered (OSM / Overture)</div>
+        <div><span class="dot edited"></span> Edited this session</div>
+      </section>
+    </aside>
+  </main>
+
+  <!-- Save / publish result modal -->
+  <div id="modal" class="modal" hidden>
+    <div class="modal-box">
+      <h2 id="modal-title">Saved</h2>
+      <pre id="modal-body" class="modal-body"></pre>
+      <div class="modal-actions">
+        <button id="publish" class="primary" type="button" hidden>Publish (commit &amp; push)</button>
+        <button id="modal-close" class="ghost" type="button">Close</button>
+      </div>
+    </div>
+  </div>
+
+  <div id="toast" class="toast" hidden></div>
+
+  <script src="{{ url_for('static', filename='vendor/leaflet/leaflet.js') }}"></script>
+  <script src="{{ url_for('static', filename='editor.js') }}"></script>
+</body>
+</html>
