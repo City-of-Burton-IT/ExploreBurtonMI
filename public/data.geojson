@@ -403,6 +403,23 @@
     },
     {
       "type": "Feature",
+      "id": "osm:node/12078958475",
+      "geometry": {
+        "type": "Point",
+        "coordinates": [
+          -83.630714,
+          42.966486
+        ]
+      },
+      "properties": {
+        "name": "U.S. Post Office",
+        "category": "Government",
+        "address": "4065 Manor Dr, Burton, MI 48519",
+        "website": "https://tools.usps.com/find-location.htm"
+      }
+    },
+    {
+      "type": "Feature",
       "id": "osm:node/12138646603",
       "geometry": {
         "type": "Point",
@@ -1491,22 +1508,6 @@
         "address": "2400 Clarice Avenue, Burton, MI 48519",
         "phone": "(810) 591-0850",
         "website": "https://www.athertonschools.org/District/1154-Contacts.html"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "osm:way/1304318386",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.630803,
-          42.966533
-        ]
-      },
-      "properties": {
-        "name": "Southeast Post Office",
-        "category": "Government",
-        "website": "https://tools.usps.com/locations/details/1437957"
       }
     },
     {
