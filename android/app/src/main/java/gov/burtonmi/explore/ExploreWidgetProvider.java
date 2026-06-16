@@ -34,13 +34,32 @@ public class ExploreWidgetProvider extends AppWidgetProvider {
     private static final String ORIGIN = "https://explore.burtonmi.gov";
     private static final String ALERTS_URL = ORIGIN + "/alerts.json";
     private static final String CIVICCLERK = "https://burtonmi.api.civicclerk.com/v1/Events";
+    // Tapping the refresh icon broadcasts this back to the provider for an immediate
+    // re-fetch (Android's updatePeriodMillis is deferred during Doze, so the periodic
+    // refresh alone can leave the widget hours stale).
+    private static final String ACTION_REFRESH = "gov.burtonmi.explore.WIDGET_REFRESH";
 
     @Override
     public void onUpdate(Context context, AppWidgetManager mgr, int[] ids) {
-        // goAsync() keeps the broadcast alive (~10s) while a background thread does
+        refreshAll(context, false);
+    }
+
+    @Override
+    public void onReceive(Context context, Intent intent) {
+        super.onReceive(context, intent); // keeps the normal onUpdate/onDeleted dispatch
+        if (ACTION_REFRESH.equals(intent.getAction())) {
+            refreshAll(context, true);
+        }
+    }
+
+    /** Re-fetch alert + meeting on a background thread and re-render every live widget.
+     *  fromButton -> show an immediate "Updating..." while the network runs. */
+    private void refreshAll(Context context, boolean fromButton) {
+        final Context appContext = context.getApplicationContext();
+        if (fromButton) showUpdating(appContext);
+        // goAsync() keeps the broadcast alive (~10s) while the background thread does
         // the network; without it the process could be killed mid-fetch.
         final PendingResult pending = goAsync();
-        final Context appContext = context.getApplicationContext();
         new Thread(() -> {
             try {
                 String alert = fetchActiveAlert();
@@ -56,14 +75,37 @@ public class ExploreWidgetProvider extends AppWidgetProvider {
         }).start();
     }
 
+    /** Immediate, network-free feedback on the meeting line when the user taps refresh. */
+    private void showUpdating(Context ctx) {
+        try {
+            AppWidgetManager m = AppWidgetManager.getInstance(ctx);
+            int[] live = m.getAppWidgetIds(new ComponentName(ctx, ExploreWidgetProvider.class));
+            for (int id : live) {
+                RemoteViews v = new RemoteViews(ctx.getPackageName(), R.layout.widget_explore);
+                v.setTextViewText(R.id.widget_meeting, ctx.getString(R.string.widget_updating));
+                m.partiallyUpdateAppWidget(id, v);
+            }
+        } catch (Throwable ignored) {
+        }
+    }
+
     private void render(Context ctx, AppWidgetManager mgr, int id, String alert, String meeting) {
         RemoteViews views = new RemoteViews(ctx.getPackageName(), R.layout.widget_explore);
         views.setTextViewText(R.id.widget_alert, alert);
         views.setTextViewText(R.id.widget_meeting, meeting);
-        // Whole card -> open the app; meeting line -> open the meetings guide section.
+        // Whole card -> open the app; meeting line -> open the meetings guide section;
+        // refresh icon -> re-fetch now.
         views.setOnClickPendingIntent(R.id.widget_root, openAppIntent(ctx, ORIGIN + "/"));
         views.setOnClickPendingIntent(R.id.widget_meeting, openAppIntent(ctx, ORIGIN + "/#guide/meetings"));
+        views.setOnClickPendingIntent(R.id.widget_refresh, refreshIntent(ctx));
         mgr.updateAppWidget(id, views);
+    }
+
+    /** Broadcast back to this provider to trigger an immediate refresh. */
+    private PendingIntent refreshIntent(Context ctx) {
+        Intent intent = new Intent(ctx, ExploreWidgetProvider.class).setAction(ACTION_REFRESH);
+        int flags = PendingIntent.FLAG_UPDATE_CURRENT | PendingIntent.FLAG_IMMUTABLE;
+        return PendingIntent.getBroadcast(ctx, 1, intent, flags);
     }
 
     private PendingIntent openAppIntent(Context ctx, String url) {

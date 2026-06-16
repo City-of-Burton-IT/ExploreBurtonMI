@@ -17,4 +17,6 @@
     <string name="widget_title">Explore Burton</string>
     <string name="widget_loading">Loading…</string>
     <string name="widget_description">City alerts and the next council meeting.</string>
+    <string name="widget_refresh">Refresh</string>
+    <string name="widget_updating">Updating…</string>
 </resources>
