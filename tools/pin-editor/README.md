@@ -42,6 +42,25 @@ Double-click **`run.cmd`** (or `.venv\Scripts\python.exe app.py`). It opens
 - **Publish** commits the data files and pushes the current branch (the GitHub Pages deploy
   picks it up). It never force-pushes.
 
+## Excel export / import (delegating edits)
+
+For bulk edits, or to hand the work to someone else, use the **Export** and **Import**
+buttons in the top bar.
+
+- **Export** downloads `burton-pins.xlsx` -- one row per pin, with a category dropdown and
+  a `delete` yes/no column. The `id` and `source` columns are the keys; leave them alone.
+- Edit in Excel (or Excel Online -- share the file, they edit, send it back). To **add** a
+  pin, add a row, leave `id` blank, and fill `name`, `category`, `lat`, `lng`. To **remove**
+  a pin, set its `delete` column to `yes`.
+- **Import** the edited file. The tool diffs it against the current pins and drops the
+  changes into the **Pending changes** tray for review (same as manual edits) -- nothing is
+  written until you Save. A row simply *missing* from the sheet is left alone (only the
+  `delete` column removes a pin), so a partial sheet can never wipe data. Invalid categories
+  or new rows missing name/coords are reported as warnings and skipped.
+
+This keeps the tool single-user (you run it locally and do the import) while letting a
+colleague do fieldwork in a spreadsheet.
+
 ## Notes
 
 - Regeneration uses **cached** OSM/Overture data (no network). On a fresh clone where the cache

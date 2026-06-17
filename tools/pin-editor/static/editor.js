@@ -111,40 +111,57 @@ function recordMove(id, coords) {
   bboxHint(coords);
 }
 
+// Merge partial field changes into an existing pin, recompute the minimal edit op vs
+// the original, and update the tray/marker. Shared by the panel and Excel import.
+function recordFieldEdit(id, partial) {
+  const f = state.byId[id];
+  if (!f) return;
+  const orig = state.orig[id].props || {};
+  f.properties = { ...f.properties, ...partial };
+  const changed = {};
+  FIELDS.forEach((k) => {
+    const nv = f.properties[k] || '';
+    if (nv !== (orig[k] || '')) changed[k] = nv;
+  });
+  dropOps(id, 'edit');
+  if (Object.keys(changed).length) state.pending.push({ op: 'edit', id, fields: changed });
+  if (state.markers[id]) state.markers[id].options.title = f.properties.name || id;
+  afterChange(id);
+}
+
 function applyFields() {
   const id = state.selectedId;
   if (!id) return;
   const vals = {};
   FIELDS.forEach((k) => { vals[k] = $('f-' + k).value.trim(); });
   if (!vals.name || !vals.category) { toast('Name and category are required', 'err'); return; }
-  const f = state.byId[id];
 
   if (isAdd(id)) {
+    const f = state.byId[id];
     const a = state.pending.find((e) => e.op === 'add' && e.id === id);
     a.name = vals.name; a.category = vals.category; a.fields = {};
     OPT_FIELDS.forEach((k) => { if (vals[k]) a.fields[k] = vals[k]; });
     f.properties = { ...f.properties, ...vals };
+    state.markers[id].options.title = vals.name;
+    afterChange(id);
   } else {
-    const orig = state.orig[id].props || {};
-    const changed = {};
-    FIELDS.forEach((k) => { if ((vals[k] || '') !== (orig[k] || '')) changed[k] = vals[k]; });
-    dropOps(id, 'edit');
-    if (Object.keys(changed).length) state.pending.push({ op: 'edit', id, fields: changed });
-    f.properties = { ...orig, ...changed };
+    recordFieldEdit(id, vals);
   }
-  state.markers[id].options.title = vals.name;
-  afterChange(id);
   toast('Applied to pending changes', 'ok');
+}
+
+function recordDelete(id) {
+  if (isAdd(id)) { removeAdd(id); return; }
+  dropOps(id);                          // clear any move/edit on this pin
+  state.pending.push({ op: 'delete', id });
+  afterChange(id);
 }
 
 function deletePin() {
   const id = state.selectedId;
   if (!id) return;
-  if (isAdd(id)) { removeAdd(id); return; }
-  dropOps(id);                          // clear any move/edit on this pin
-  state.pending.push({ op: 'delete', id });
+  recordDelete(id);
   closePanel();
-  afterChange(id);
 }
 
 function removeAdd(id) {
@@ -351,23 +368,68 @@ function setMode(mode) {
   if (map) map.getContainer().style.cursor = mode === 'add' ? 'crosshair' : '';
 }
 
-function onMapClick(e) {
-  if (state.mode !== 'add') return;
+// Create a new (curated) pin with a temp `new:` id + pending add op. Shared by the
+// map's add mode and Excel import. Returns the temp id.
+function addPin(coords, data) {
   const id = 'new:' + (++state.addSeq);
-  const coords = [e.latlng.lng, e.latlng.lat];
-  const f = {
-    type: 'Feature', id,
-    geometry: { type: 'Point', coordinates: coords },
-    properties: { name: '', category: state.categories[0] },
+  const props = {
+    name: (data && data.name) || '',
+    category: (data && data.category) || state.categories[0],
+    ...((data && data.fields) || {}),
   };
+  const f = { type: 'Feature', id, geometry: { type: 'Point', coordinates: coords }, properties: props };
   state.byId[id] = f;
   state.orig[id] = { coords: coords.slice(), props: {} };
-  state.pending.push({ op: 'add', id, name: '', category: state.categories[0], coordinates: coords, fields: {} });
+  const add = { op: 'add', id, name: props.name, category: props.category, coordinates: coords, fields: {} };
+  ['address', 'phone', 'website', 'hours'].forEach((k) => { if (props[k]) add.fields[k] = props[k]; });
+  state.pending.push(add);
   addMarker(f);
+  return id;
+}
+
+function onMapClick(e) {
+  if (state.mode !== 'add') return;
+  const id = addPin([e.latlng.lng, e.latlng.lat], { category: state.categories[0] });
   setMode('select');
   selectPin(id);
   renderTray(); updateSaveBtn();
   toast('New pin placed -- enter name + category, then Apply', 'ok');
+}
+
+/* ---- Excel export / import ------------------------------------------- */
+
+function exportXlsx() { window.location.href = '/api/export.xlsx'; }
+
+// Feed server-diffed edit ops into the pending tray (reusing the manual recorders).
+function ingestEdits(edits) {
+  let n = 0;
+  edits.forEach((e) => {
+    if (e.op === 'add') { addPin(e.coordinates, { name: e.name, category: e.category, fields: e.fields }); n++; }
+    else if (!state.byId[e.id]) { /* unknown id -- skip */ }
+    else if (e.op === 'move') { recordMove(e.id, e.coordinates); n++; }
+    else if (e.op === 'edit') { recordFieldEdit(e.id, e.fields); n++; }
+    else if (e.op === 'delete') { recordDelete(e.id); n++; }
+  });
+  renderTray(); updateSaveBtn();
+  return n;
+}
+
+async function importFile(file) {
+  const fd = new FormData();
+  fd.append('file', file);
+  toast('Reading the workbook...', 'ok');
+  const r = await fetch('/api/import', { method: 'POST', body: fd });   // wrapper adds CSRF; no Content-Type so boundary is kept
+  const data = await r.json();
+  if (!data.ok) { toast('Import failed: ' + (data.error || ''), 'err'); return; }
+  const n = ingestEdits(data.edits || []);
+  if (data.warnings && data.warnings.length) {
+    showModal(`Imported ${n} change(s), ${data.warnings.length} warning(s)`,
+      `${n} change(s) added to Pending -- review and Save.\n\nWarnings:\n` + data.warnings.join('\n'), false);
+  } else if (n) {
+    toast(`Imported ${n} change(s) into Pending -- review, then Save`, 'ok');
+  } else {
+    toast('No changes found in that workbook', 'ok');
+  }
 }
 
 function search(q) {
@@ -407,6 +469,13 @@ function wireUI() {
   $('mode-select').addEventListener('click', () => setMode('select'));
   $('mode-add').addEventListener('click', () => setMode('add'));
   $('reload').addEventListener('click', () => reload());
+  $('export').addEventListener('click', exportXlsx);
+  $('import').addEventListener('click', () => $('import-file').click());
+  $('import-file').addEventListener('change', (e) => {
+    const f = e.target.files[0];
+    if (f) importFile(f);
+    e.target.value = '';                 // allow re-importing the same filename
+  });
   $('apply-fields').addEventListener('click', applyFields);
   $('delete-pin').addEventListener('click', deletePin);
   $('panel-close').addEventListener('click', closePanel);
