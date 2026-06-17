@@ -203,7 +203,8 @@ export type InfoView =
   | 'roadsafety'
   | 'access'
   | 'seniorcenter'
-  | 'publicsafety';
+  | 'publicsafety'
+  | 'capital';
 export type AppView = 'map' | InfoView | 'guide' | 'opendata' | 'status';
 
 export interface InfoStat {

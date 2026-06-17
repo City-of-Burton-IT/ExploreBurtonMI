@@ -306,6 +306,11 @@ def main() -> int:
         json.dump(panel, fh, indent=2, ensure_ascii=False)
         fh.write("\n")
 
+    # Re-apply the capital-projects link (a fresh fetch overwrote info-roads.json)
+    # and rebuild the funded-roads overlay from the fresh geometry.
+    import capital_roads_link
+    capital_roads_link.link_all()
+
     print(f"Wrote {OUT_GEOJSON} ({len(feats)} segments)")
     print(f"Wrote {OUT_INFO}")
     print(f"  Burton rated miles={rated_mi} (total {total_mi}); Burton %={b_pct}")

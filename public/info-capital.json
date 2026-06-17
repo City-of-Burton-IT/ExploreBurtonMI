@@ -1,0 +1,401 @@
+{
+  "title": "Capital Projects",
+  "subtitle": "Adopted capital plan, City of Burton, FY2026-27",
+  "summary": {
+    "heading": "What this means for you",
+    "body": [
+      "Capital projects are the big one-time investments the City makes: rebuilding roads, replacing major equipment, and improving public buildings, as opposed to day-to-day operating costs. This is the adopted plan of what is funded, not money already spent.",
+      "For FY2026-27, the largest share is road work: the City has budgeted major reconstruction on Genesee Rd, Court St, Covert Rd and others, funded mainly by state gas-tax (Act 51) dollars rather than your city property taxes. Equipment and facility investments make up the rest.",
+      "This is a big road-building year: street capital is up to about $10.5M, from roughly $3.3M two years ago (see the trend below). At this year's total, capital investment works out to about $469 per resident."
+    ]
+  },
+  "stats": [
+    {
+      "label": "Total capital investment",
+      "value": "$13.8M",
+      "hint": "adopted plan, not money already spent"
+    },
+    {
+      "label": "Per resident",
+      "value": "$469",
+      "hint": "across ~29,529 residents"
+    },
+    {
+      "label": "Funded projects",
+      "value": "27",
+      "hint": "across all categories"
+    },
+    {
+      "label": "Largest category",
+      "value": "Major Streets",
+      "hint": "$9.8M"
+    }
+  ],
+  "charts": [
+    {
+      "type": "donut",
+      "title": "Capital investment by category",
+      "unit": "$",
+      "series": [
+        {
+          "label": "Major Streets",
+          "value": 9797313,
+          "color": "#2c57a0"
+        },
+        {
+          "label": "Facilities & Equipment",
+          "value": 3031515,
+          "color": "#e08a00"
+        },
+        {
+          "label": "Local Streets",
+          "value": 750000,
+          "color": "#5c6bc0"
+        },
+        {
+          "label": "Public Safety",
+          "value": 260000,
+          "color": "#c0392b"
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "How capital projects are funded",
+      "unit": "$",
+      "series": [
+        {
+          "label": "Act 51",
+          "value": 10297313,
+          "color": "#2c57a0"
+        },
+        {
+          "label": "Other",
+          "value": 2673515,
+          "color": "#8d6e63"
+        },
+        {
+          "label": "General Fund",
+          "value": 518000,
+          "color": "#00897b"
+        },
+        {
+          "label": "Grant",
+          "value": 350000,
+          "color": "#e08a00"
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Largest projects",
+      "unit": "$",
+      "series": [
+        {
+          "label": "Genesee Rd reconstruction (Atherton to Court)",
+          "value": 3200000
+        },
+        {
+          "label": "Industrial Parks road project",
+          "value": 2000000
+        },
+        {
+          "label": "Court St (Genesee to city limits)",
+          "value": 1200000
+        },
+        {
+          "label": "Covert Rd (Davison to city limits)",
+          "value": 1147837
+        },
+        {
+          "label": "Four 10-yard dump trucks with plow",
+          "value": 1120000
+        },
+        {
+          "label": "Genesee Rd sidewalk project",
+          "value": 647326
+        },
+        {
+          "label": "Iron Belle Trail (Maple to Hemphill)",
+          "value": 630000
+        },
+        {
+          "label": "Burton Estates paving",
+          "value": 500000
+        },
+        {
+          "label": "Sewer televising truck",
+          "value": 500000
+        },
+        {
+          "label": "One-ton utility truck with bucket",
+          "value": 500000
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Road & street capital by fiscal year",
+      "unit": "$",
+      "points": [
+        {
+          "x": "FY2024-25",
+          "y": 3254866
+        },
+        {
+          "x": "FY2025-26",
+          "y": 2508831
+        },
+        {
+          "x": "FY2026-27",
+          "y": 10547313
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "title": "Funded capital projects",
+      "columns": [
+        "Project",
+        "Category",
+        "Funding",
+        "Amount"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "Genesee Rd reconstruction (Atherton to Court)",
+            "Major Streets",
+            "Act 51",
+            "$3.2M"
+          ]
+        },
+        {
+          "cells": [
+            "Industrial Parks road project",
+            "Major Streets",
+            "Act 51",
+            "$2.0M"
+          ]
+        },
+        {
+          "cells": [
+            "Court St (Genesee to city limits)",
+            "Major Streets",
+            "Act 51",
+            "$1.2M"
+          ]
+        },
+        {
+          "cells": [
+            "Covert Rd (Davison to city limits)",
+            "Major Streets",
+            "Act 51",
+            "$1.1M"
+          ]
+        },
+        {
+          "cells": [
+            "Four 10-yard dump trucks with plow",
+            "Facilities & Equipment",
+            "Other",
+            "$1.1M"
+          ]
+        },
+        {
+          "cells": [
+            "Genesee Rd sidewalk project",
+            "Major Streets",
+            "Act 51",
+            "$647k"
+          ]
+        },
+        {
+          "cells": [
+            "Iron Belle Trail (Maple to Hemphill)",
+            "Major Streets",
+            "Act 51",
+            "$630k"
+          ]
+        },
+        {
+          "cells": [
+            "Burton Estates paving",
+            "Local Streets",
+            "Act 51",
+            "$500k"
+          ]
+        },
+        {
+          "cells": [
+            "Sewer televising truck",
+            "Facilities & Equipment",
+            "Other",
+            "$500k"
+          ]
+        },
+        {
+          "cells": [
+            "One-ton utility truck with bucket",
+            "Facilities & Equipment",
+            "Other",
+            "$500k"
+          ]
+        },
+        {
+          "cells": [
+            "DPW building to store equipment",
+            "Facilities & Equipment",
+            "Other",
+            "$400k"
+          ]
+        },
+        {
+          "cells": [
+            "Maple Ave (Dort to Center)",
+            "Major Streets",
+            "Act 51",
+            "$260k"
+          ]
+        },
+        {
+          "cells": [
+            "Fire capital projects",
+            "Public Safety",
+            "General Fund",
+            "$260k"
+          ]
+        },
+        {
+          "cells": [
+            "Homestead-Buder paving (CDBG)",
+            "Local Streets",
+            "Grant",
+            "$250k"
+          ]
+        },
+        {
+          "cells": [
+            "Hemphill Rd (city limits to Saginaw)",
+            "Major Streets",
+            "Act 51",
+            "$212k"
+          ]
+        },
+        {
+          "cells": [
+            "DPW security improvements",
+            "Facilities & Equipment",
+            "Other",
+            "$154k"
+          ]
+        },
+        {
+          "cells": [
+            "Genesee Rd (Davison to Potter)",
+            "Major Streets",
+            "Act 51",
+            "$150k"
+          ]
+        },
+        {
+          "cells": [
+            "Two patrol vehicles (Tahoe)",
+            "Facilities & Equipment",
+            "General Fund",
+            "$140k"
+          ]
+        },
+        {
+          "cells": [
+            "Bristol Rd (Saginaw to Dort)",
+            "Major Streets",
+            "Act 51",
+            "$120k"
+          ]
+        },
+        {
+          "cells": [
+            "N Grand Traverse (Bristol to Hemphill)",
+            "Major Streets",
+            "Act 51",
+            "$100k"
+          ]
+        },
+        {
+          "cells": [
+            "Senior Center improvements (ARPA)",
+            "Facilities & Equipment",
+            "Grant",
+            "$100k"
+          ]
+        },
+        {
+          "cells": [
+            "Non-motorized project",
+            "Major Streets",
+            "Act 51",
+            "$75k"
+          ]
+        },
+        {
+          "cells": [
+            "Clerk's office security upgrades",
+            "Facilities & Equipment",
+            "General Fund",
+            "$50k"
+          ]
+        },
+        {
+          "cells": [
+            "IT office equipment",
+            "Facilities & Equipment",
+            "General Fund",
+            "$40k"
+          ]
+        },
+        {
+          "cells": [
+            "Genesee Rd (Court to Davison)",
+            "Major Streets",
+            "Act 51",
+            "$35k"
+          ]
+        },
+        {
+          "cells": [
+            "Assessor vehicle (Equinox)",
+            "Facilities & Equipment",
+            "General Fund",
+            "$28k"
+          ]
+        },
+        {
+          "cells": [
+            "Belsay Rd (Lapeer to I-69)",
+            "Major Streets",
+            "Act 51",
+            "$20k"
+          ]
+        }
+      ]
+    }
+  ],
+  "source": "City of Burton adopted FY2026-27 budget (capital sections) and Capital Asset Requests.",
+  "links": [
+    {
+      "text": "City Finances dashboard",
+      "href": "#finances"
+    },
+    {
+      "text": "Roads & Pavement dashboard",
+      "href": "#roads"
+    }
+  ],
+  "notes": [
+    "This is the adopted capital PLAN, not actual expenditures, and is subject to change during the year.",
+    "Street projects are funded by Act 51 (state gas and weight tax) and accumulated road-fund balance, plus about $375,000 in federal/state construction aid and a $145,000 General Fund transfer in FY2026-27, not city property taxes; the CDBG paving is a federal grant. Operating costs are shown on the City Finances dashboard; this dashboard is capital only.",
+    "Equipment and vehicle items are capital assets; some are prior-year approvals carried over (shown as In progress) that need no new funding this year."
+  ]
+}

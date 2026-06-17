@@ -43,6 +43,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
       { id: 'finances', label: 'City Finances', description: 'How the city raises and spends money each year.' },
       { id: 'propertytax', label: 'Property Taxes', description: 'What makes up your property tax bill and where it goes.' },
       { id: 'fiscalhealth', label: 'Financial Health', description: "The city's debt, pensions, and long-term outlook." },
+      { id: 'capital', label: 'Capital Projects', description: 'Big one-time investments the city has funded: roads, equipment, and facilities.' },
     ],
   },
   {
