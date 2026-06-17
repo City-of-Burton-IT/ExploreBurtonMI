@@ -8,7 +8,15 @@ import json
 import re
 import subprocess
 import sys
+from io import BytesIO
 from pathlib import Path
+
+import openpyxl
+from openpyxl.styles import Font, PatternFill
+from openpyxl.utils import get_column_letter
+from openpyxl.worksheet.datavalidation import DataValidation
+
+import excel
 
 # tools/pin-editor/store.py -> repo root is two levels up.
 REPO_ROOT = Path(__file__).resolve().parents[2]
@@ -88,6 +96,73 @@ def load_boundary() -> dict:
 def save_sources(facilities: dict, overrides: dict) -> None:
     _write_json(FACILITIES, facilities, compact_geometry=True)
     _write_json(OVERRIDES, overrides)
+
+
+def build_pins_workbook(rows: list) -> BytesIO:
+    """Build the editable pins .xlsx: a Pins sheet (frozen bold header, shaded read-only
+    id/source columns, a category dropdown and a delete yes/no dropdown) plus a hidden
+    Lists sheet backing the category dropdown. Returns a BytesIO ready to send."""
+    cols = excel.COLUMNS
+    wb = openpyxl.Workbook()
+    ws = wb.active
+    assert ws is not None
+    ws.title = "Pins"
+
+    lists = wb.create_sheet("Lists")
+    for r, cat in enumerate(CATEGORIES, start=1):
+        lists.cell(row=r, column=1, value=cat)
+    lists.sheet_state = "hidden"
+
+    ws.append(cols)
+    for c in range(1, len(cols) + 1):
+        ws.cell(row=1, column=c).font = Font(bold=True)
+    ws.freeze_panes = "A2"
+
+    def _cell(v):  # openpyxl only accepts scalars; stringify anything else
+        return v if v is None or isinstance(v, (str, int, float)) else str(v)
+    for row in rows:
+        ws.append([_cell(row.get(c, "")) for c in cols])
+
+    last = len(rows) + 1 + 300                         # spare rows for new pins
+    cat_col = get_column_letter(cols.index("category") + 1)
+    del_col = get_column_letter(cols.index("delete") + 1)
+    dv_cat = DataValidation(type="list", formula1=f"Lists!$A$1:$A${len(CATEGORIES)}", allow_blank=True)
+    dv_del = DataValidation(type="list", formula1='"yes,no"', allow_blank=True)
+    ws.add_data_validation(dv_cat)
+    ws.add_data_validation(dv_del)
+    dv_cat.add(f"{cat_col}2:{cat_col}{last}")
+    dv_del.add(f"{del_col}2:{del_col}{last}")
+
+    shade = PatternFill("solid", fgColor="EEEEEE")
+    for name in ("id", "source"):
+        ci = cols.index(name) + 1
+        for r in range(1, len(rows) + 2):
+            ws.cell(row=r, column=ci).fill = shade
+
+    widths = {"id": 24, "source": 11, "name": 28, "category": 26, "address": 32,
+              "phone": 16, "website": 32, "hours": 22, "lat": 11, "lng": 11, "delete": 8}
+    for ci, c in enumerate(cols, start=1):
+        ws.column_dimensions[get_column_letter(ci)].width = widths.get(c, 14)
+
+    bio = BytesIO()
+    wb.save(bio)
+    bio.seek(0)
+    return bio
+
+
+def read_pins_rows(fileobj) -> list:
+    """Read an uploaded pins .xlsx into a list of row dicts keyed by header name."""
+    wb = openpyxl.load_workbook(fileobj, data_only=True, read_only=True)
+    ws = wb["Pins"] if "Pins" in wb.sheetnames else wb.active
+    assert ws is not None
+    rows, header = [], None
+    for r in ws.iter_rows(values_only=True):
+        if header is None:
+            header = ["" if h is None else str(h).strip() for h in r]
+            continue
+        d = {h: (r[i] if i < len(r) else None) for i, h in enumerate(header) if h}
+        rows.append(d)
+    return rows
 
 
 def _pipeline_python() -> str:

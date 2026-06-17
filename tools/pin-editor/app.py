@@ -9,8 +9,9 @@ import hmac
 import os
 import secrets
 
-from flask import Flask, abort, jsonify, render_template, request, session
+from flask import Flask, abort, jsonify, render_template, request, send_file, session
 
+import excel
 import store
 from edits import apply_edits
 
@@ -71,6 +72,30 @@ def api_regenerate():
     result = store.run_pipeline()
     _last["regenerate"] = result
     return jsonify(result)
+
+
+@app.get("/api/export.xlsx")
+def api_export():
+    rows = excel.features_to_rows(store.load_data().get("features", []))
+    bio = store.build_pins_workbook(rows)
+    return send_file(
+        bio, as_attachment=True, download_name="burton-pins.xlsx",
+        mimetype="application/vnd.openxmlformats-officedocument.spreadsheetml.sheet",
+    )
+
+
+@app.post("/api/import")
+def api_import():
+    f = request.files.get("file")
+    if not f:
+        return jsonify({"ok": False, "error": "No file uploaded."}), 400
+    try:
+        rows = store.read_pins_rows(f)
+    except Exception as e:  # malformed / non-xlsx upload
+        return jsonify({"ok": False, "error": "Could not read that workbook: " + str(e)}), 400
+    feats = store.load_data().get("features", [])
+    edits, warnings = excel.rows_to_edits(rows, feats, store.CATEGORIES, store.CITY_BBOX)
+    return jsonify({"ok": True, "edits": edits, "warnings": warnings})
 
 
 @app.get("/api/boundary")

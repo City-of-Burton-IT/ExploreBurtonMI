@@ -50,6 +50,21 @@ def test_compact_geometry_leaves_null_geometry(tmp_path):
     assert json.loads(text) == fc
 
 
+def test_workbook_round_trip():
+    from io import BytesIO
+    rows = [{
+        "id": "burton:x", "source": "curated", "name": "X Hall", "category": "Government",
+        "address": "1 Main", "phone": "p", "website": "w", "hours": "h",
+        "lat": 42.99, "lng": -83.62, "delete": "",
+    }]
+    bio = store.build_pins_workbook(rows)
+    back = store.read_pins_rows(BytesIO(bio.getvalue()))
+    assert back[0]["id"] == "burton:x"
+    assert back[0]["name"] == "X Hall"
+    assert back[0]["category"] == "Government"
+    assert back[0]["lat"] == 42.99 and back[0]["lng"] == -83.62
+
+
 def test_write_json_new_file_defaults_lf(tmp_path):
     p = tmp_path / "new.json"
     store._write_json(p, {"a": 1})
