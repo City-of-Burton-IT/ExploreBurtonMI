@@ -47,3 +47,6 @@ docs/
 # (GOOGLE_SERVICES_JSON_B64) like the keystore -- kept out of this PUBLIC repo per
 # security.md (it carries a restricted client API key). Lives locally for dev/test.
 android/app/google-services.json
+
+# #71 address-points source (regenerated internally from BS&A; output is public/address-points.json)
+pipeline/data/address-points-source.csv

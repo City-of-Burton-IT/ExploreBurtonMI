@@ -11,6 +11,7 @@
     submitReport,
   } from './report';
   import { newToken, trackUrl } from './track';
+  import { loadAddressPoints, nearestAddress } from './reverseGeocode';
 
   // "Report an issue" (#14): pin + optional photo/notes -> the private DPW
   // triage queue. Never published; this is a report, not an emergency line.
@@ -23,6 +24,12 @@
 
   let category = $state<ReportCategory | ''>('Pothole');
   let address = $state('');
+  // #71: whether the current `address` was auto-filled from the dropped pin
+  // (vs typed by the resident). Used so re-dropping the pin updates an
+  // auto-filled address but never clobbers one the resident typed.
+  let addressAutoFilled = $state(false);
+  let addressLookupBusy = $state(false);
+  let lastLookupKey = '';
   let description = $state('');
   let photoBase64 = $state('');
   let photoName = $state('');
@@ -50,6 +57,9 @@
   function reset() {
     category = 'Pothole';
     address = '';
+    addressAutoFilled = false;
+    addressLookupBusy = false;
+    lastLookupKey = '';
     description = '';
     photoBase64 = '';
     photoName = '';
@@ -71,6 +81,34 @@
   // Android hardware back: leave pin mode or close the modal.
   $effect(() => {
     if (open) return registerOverlay(fullClose);
+  });
+
+  // #71: reverse-geocode the dropped pin to the nearest known address, fully
+  // on-device (the resident's coords never leave the device pre-submission).
+  // Fills the Address field unless the resident typed one themselves; silent
+  // no-op when offline, when no city address is within range, or when the
+  // committed table isn't configured -- the manual field always works.
+  $effect(() => {
+    const lat = ui.report.lat;
+    const lng = ui.report.lng;
+    const source = config.addressPoints?.source;
+    if (lat == null || lng == null || !source) return;
+    // Preserve an address the resident typed (non-empty + not auto-filled).
+    if (address.trim() !== '' && !addressAutoFilled) return;
+    const key = `${lat},${lng}`;
+    if (key === lastLookupKey) return;
+    lastLookupKey = key;
+    addressLookupBusy = true;
+    loadAddressPoints(source).then((points) => {
+      addressLookupBusy = false;
+      // The pin may have moved again while the table loaded -- ignore stale hits.
+      if (ui.report.lat !== lat || ui.report.lng !== lng) return;
+      const hit = nearestAddress(lat, lng, points);
+      if (hit) {
+        address = hit.address;
+        addressAutoFilled = true;
+      }
+    });
   });
 
   // Resize the chosen photo to <=1600px JPEG on-device; only the resized copy
@@ -218,11 +256,17 @@
             <input
               type="text"
               bind:value={address}
+              oninput={() => (addressAutoFilled = false)}
               maxlength="255"
               placeholder="e.g. 3025 S Center Rd"
               autocomplete="street-address"
             />
           </label>
+          {#if addressLookupBusy}
+            <p class="lookup-hint">Looking up the nearest address...</p>
+          {:else if addressAutoFilled}
+            <p class="lookup-hint">Nearest address filled in from your pin -- edit it if it's not quite right.</p>
+          {/if}
 
           <label>
             What kind of issue?
@@ -395,6 +439,12 @@
     color: var(--pub-ink, #2c2c2c);
   }
   .opt {
+    font-weight: 400;
+    color: var(--pub-muted, #5c5c5c);
+  }
+  .lookup-hint {
+    margin: -0.45rem 0 0;
+    font-size: 0.78rem;
     font-weight: 400;
     color: var(--pub-muted, #5c5c5c);
   }

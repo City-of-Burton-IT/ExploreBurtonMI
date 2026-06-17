@@ -122,6 +122,9 @@ export interface AppConfig {
   /** read-only live alert-banner endpoint (unified messaging); absent = banner uses
    *  only the committed alerts.json */
   alerts?: { url: string };
+  /** committed city-owned address lookup table for on-device reverse-geocode of a
+   *  dropped report pin (#71); absent = pin-drop never auto-fills an address */
+  addressPoints?: { source: string };
 }
 
 export interface SubmitConfig {
