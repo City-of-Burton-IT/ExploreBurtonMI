@@ -103,6 +103,8 @@
       addressLookupBusy = false;
       // The pin may have moved again while the table loaded -- ignore stale hits.
       if (ui.report.lat !== lat || ui.report.lng !== lng) return;
+      // The resident may have typed an address during the load -- don't clobber it.
+      if (address.trim() !== '' && !addressAutoFilled) return;
       const hit = nearestAddress(lat, lng, points);
       if (hit) {
         address = hit.address;
@@ -265,7 +267,7 @@
           {#if addressLookupBusy}
             <p class="lookup-hint">Looking up the nearest address...</p>
           {:else if addressAutoFilled}
-            <p class="lookup-hint">Nearest address filled in from your pin -- edit it if it's not quite right.</p>
+            <p class="lookup-hint">Nearest address filled in from your pin. Edit it if it's not quite right.</p>
           {/if}
 
           <label>
