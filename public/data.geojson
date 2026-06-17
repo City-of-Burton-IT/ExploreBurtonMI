@@ -7696,22 +7696,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:4944e711-57e0-4d46-93c9-98d19aa932ca",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.675667,
-          42.973953
-        ]
-      },
-      "properties": {
-        "name": "ATM SPEEDWAY #8753",
-        "category": "Financial",
-        "address": "1466 E BRIST OL RD, Burton, MI 48529"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:496f27ff-c2bb-4ba1-8d58-49a4f1ca0575",
       "geometry": {
         "type": "Point",
@@ -8405,24 +8389,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:55649b98-6b45-4c64-baf6-8a0248eec809",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.632553,
-          42.9666
-        ]
-      },
-      "properties": {
-        "name": "City of Burton Parks and Recreation",
-        "category": "Arts & Entertainment",
-        "address": "4303 S Center Rd, Burton, MI 48519-1449",
-        "phone": "+18107431500",
-        "website": "https://www.burtonmi.gov/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:55c1921c-3140-4e07-a704-6f25fc7b2023",
       "geometry": {
         "type": "Point",
@@ -8724,24 +8690,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:5b07a3f1-b5c3-4271-8fa2-e79c2a65b36f",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.673234,
-          42.979746
-        ]
-      },
-      "properties": {
-        "name": "Genesee County Health Department",
-        "category": "Health & Medical",
-        "address": "G3373 S Saginaw St, Burton, MI 48529",
-        "phone": "(810) 742-2255",
-        "website": "http://www.gchd.us"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:5b087f50-cbc1-4728-b5c0-ab13e5dbb8d9",
       "geometry": {
         "type": "Point",
@@ -8810,22 +8758,6 @@
         "address": "1474 N Center Rd, BURTON, MI 48509",
         "phone": "8007425877",
         "website": "https://locations.ups.com/us/en/mi/burton/access-point-location-181258.html"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:5cb878fe-71c7-4068-b514-abe05e7828ee",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.634468,
-          43.018402
-        ]
-      },
-      "properties": {
-        "name": "ATM SPEEDWAY #2222",
-        "category": "Financial",
-        "address": "1001 S CENT ER, Burton, MI 48509"
       }
     },
     {
@@ -10567,24 +10499,6 @@
         "address": "1477 Walli Strasse Dr, Burton, MI 48509",
         "phone": "8107428500",
         "website": "https://www.element.com/locations/the-americas/burton"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:725974fc-ce88-427d-8660-677ca26adb86",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.680939,
-          42.970363
-        ]
-      },
-      "properties": {
-        "name": "Mid-States Bolt & Screw Company - Burton, MI",
-        "category": "Retail & Shopping",
-        "address": "1755 Mayflower Rd, Niles, MI 49120-8753",
-        "phone": "+18107440123",
-        "website": "http://www.midstatesbolt.com/"
       }
     },
     {
@@ -14001,24 +13915,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:9f2a4d91-b5c2-4aca-879a-3dc76d49c153",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.595531,
-          43.009959
-        ]
-      },
-      "properties": {
-        "name": "Burton Fire Dept Station 2",
-        "category": "Professional & Personal Services",
-        "address": "1300-1352 S Belsay Rd, Burton, MI 48509",
-        "phone": "(810) 742-2158",
-        "website": "http://burtonfire.org/default.aspx"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:9fd0061c-972c-42c7-b010-5c49c6d84190",
       "geometry": {
         "type": "Point",
@@ -15920,22 +15816,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:bb2e291e-47a8-41d3-953a-dcb64aadb684",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63372,
-          42.974377
-        ]
-      },
-      "properties": {
-        "name": "ATM SPEEDWAY #2206",
-        "category": "Financial",
-        "address": "3514 E BRISTOL RD, Burton, MI 48529"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:bb7dccc9-e4b7-49e6-a67d-e6e5de6b6d29",
       "geometry": {
         "type": "Point",
@@ -16643,24 +16523,6 @@
         "address": "3386 Lippincott Blvd, Burton, MI 48519",
         "phone": "+16784359604",
         "website": "https://bitcoindepot.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:c7307f04-1841-485b-b5c6-164bccbcca15",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63051,
-          42.993791
-        ]
-      },
-      "properties": {
-        "name": "Huntington Bank ATM (Drive-Up)",
-        "category": "Financial",
-        "address": "2333 S Center Rd, Burton, MI 48519",
-        "phone": "8004802265",
-        "website": "https://www.huntington.com/branchlocator"
       }
     },
     {
@@ -19143,22 +19005,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:ef449853-97eb-4ff7-97eb-893450eb56f6",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.633224,
-          42.995346
-        ]
-      },
-      "properties": {
-        "name": "ATM ELGA Credit Union",
-        "category": "Financial",
-        "address": "2303 S. Center Rd., Burton, MI 48519"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:ef86f637-8b87-44f2-9a73-7e7a311d10ae",
       "geometry": {
         "type": "Point",
@@ -20131,24 +19977,6 @@
         "category": "Professional & Personal Services",
         "address": "2503 Fox Ln, Flint, MI 48507",
         "phone": "+18107154501"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:fdf37f79-80fe-4114-862f-811550a4a692",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.614529,
-          43.010545
-        ]
-      },
-      "properties": {
-        "name": "Byte Federal Bitcoin ATM (Lapeer Road Market)",
-        "category": "Financial",
-        "address": "5006 Lapeer Rd, Burton, MI 48509",
-        "phone": "7866862983",
-        "website": "https://www.bytefederal.com/bitcoin-atm-near-me/michigan/burton/3031?src=map&y_source=1_MTA4ODE2NTg1Mi00ODMtbG9jYXRpb24ud2Vic2l0ZQ%3D%3D"
       }
     },
     {
