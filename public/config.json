@@ -37,6 +37,7 @@
     { "source": "flood-zones.geojson", "label": "Flood zones (FEMA)", "nameField": "name" },
     { "source": "bridges.geojson", "label": "Bridges (condition)", "nameField": "name" },
     { "source": "paser-roads.geojson", "label": "Road conditions (pavement rating)", "nameField": "name" },
+    { "source": "capital-roads.geojson", "label": "Funded road projects (FY2026-27)", "nameField": "name" },
     { "source": "trails.geojson", "label": "Trails & pathways", "nameField": "name" },
     { "source": "zoning.geojson", "label": "Zoning", "nameField": "name" },
     { "source": "parks.geojson", "label": "Parks", "nameField": "name" },
