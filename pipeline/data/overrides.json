@@ -993,5 +993,45 @@
       42.97477
     ],
     "_why": "Move Harmony Baptist Church onto the verified church-building pin (was the 'Crossway cafe' Overture point, now hidden); coords confirmed by the city."
+  },
+  "overture:5b07a3f1-b5c3-4271-8fa2-e79c2a65b36f": {
+    "hidden": true,
+    "_why": "Duplicate of curated burton Genesee County Health Department (same site, 12 m); curated entry kept."
+  },
+  "overture:9f2a4d91-b5c2-4aca-879a-3dc76d49c153": {
+    "hidden": true,
+    "_why": "Duplicate of curated burton Burton Fire Station 2 / Headquarters (1320 S Belsay); curated entry kept."
+  },
+  "overture:55649b98-6b45-4c64-baf6-8a0248eec809": {
+    "hidden": true,
+    "_why": "Duplicate of curated burton Parks & Recreation Office (4303 S Center Rd); curated entry kept."
+  },
+  "overture:725974fc-ce88-427d-8660-677ca26adb86": {
+    "hidden": true,
+    "_why": "Duplicate of overture Mid-States Bolt&Screw (4126 Somers Dr, same pin); this record carries the Niles HQ mailing address, not the Burton site. Hidden."
+  },
+  "overture:5cb878fe-71c7-4068-b514-abe05e7828ee": {
+    "hidden": true,
+    "_why": "Co-located ATM POI for the Speedway at 1001 S Center Rd (store listed); garbled address. Hidden as a duplicate."
+  },
+  "overture:4944e711-57e0-4d46-93c9-98d19aa932ca": {
+    "hidden": true,
+    "_why": "Co-located ATM POI for the Speedway at 1466 E Bristol Rd (store listed); garbled address. Hidden as a duplicate."
+  },
+  "overture:bb2e291e-47a8-41d3-953a-dcb64aadb684": {
+    "hidden": true,
+    "_why": "Co-located ATM POI for the Speedway at 3514 E Bristol Rd (store listed). Hidden as a duplicate."
+  },
+  "overture:ef449853-97eb-4ff7-97eb-893450eb56f6": {
+    "hidden": true,
+    "_why": "Co-located ATM POI for Elga Credit Union at 2305 S Center Rd (branch listed). Hidden as a duplicate."
+  },
+  "overture:c7307f04-1841-485b-b5c6-164bccbcca15": {
+    "hidden": true,
+    "_why": "Co-located drive-up ATM for Huntington Bank at 2333 S Center Rd (branch listed). Hidden as a duplicate."
+  },
+  "overture:fdf37f79-80fe-4114-862f-811550a4a692": {
+    "hidden": true,
+    "_why": "Co-located Bitcoin ATM inside Lapeer Road Market (5006 Lapeer Rd, store listed). Hidden as a duplicate."
   }
 }
