@@ -50,3 +50,6 @@ android/app/google-services.json
 
 # #71 address-points source (regenerated internally from BS&A; output is public/address-points.json)
 pipeline/data/address-points-source.csv
+
+# graphify knowledge graph (regenerated locally by post-commit hook)
+graphify-out/
