@@ -13,6 +13,7 @@
   import { escapeHtml } from './map/html';
   import { bindClusterPreview, type PlaceMarker } from './map/clusterPreview';
   import { createGeolocation, type MapGeolocation } from './map/geolocation';
+  import { addConfigOverlays } from './map/dataLayers';
   import ClosureBanner from './ClosureBanner.svelte';
 
   let {
@@ -57,31 +58,6 @@
     const raw = feature.properties[config.categoryField];
     const cat = (Array.isArray(raw) ? raw[0] : raw) as string | undefined;
     return (cat && config.categories[cat]?.color) || DEFAULT_COLOR;
-  }
-
-  /** Build a CSS clip-path polygon (in element-relative %) from a boundary GeoJSON
-   *  so an image overlay can be clipped to the city shape. Percentages scale with
-   *  the element, so the clip tracks Leaflet's zoom/pan automatically. */
-  function boundaryClipPath(
-    geojson: { type: string; geometry?: { type: string; coordinates: number[][][] }; coordinates?: number[][][] },
-    bounds: [[number, number], [number, number]],
-  ): string {
-    // eslint-disable-next-line @typescript-eslint/no-explicit-any
-    const geom: any = (geojson as any).type === 'Feature' ? (geojson as any).geometry : geojson;
-    const ring: number[][] | null =
-      geom?.type === 'Polygon'
-        ? geom.coordinates[0]
-        : geom?.type === 'MultiPolygon'
-          ? geom.coordinates[0][0]
-          : null;
-    if (!ring) return '';
-    const [[south, west], [north, east]] = bounds;
-    const pts = ring.map(([lng, lat]: number[]) => {
-      const x = ((lng - west) / (east - west)) * 100;
-      const y = ((north - lat) / (north - south)) * 100;
-      return `${x.toFixed(2)}% ${y.toFixed(2)}%`;
-    });
-    return `polygon(${pts.join(', ')})`;
   }
 
   function baseStyle(feature: PlaceFeature): L.CircleMarkerOptions {
@@ -198,197 +174,10 @@
         .catch((err) => console.warn('Boundary outline not loaded:', err));
     }
 
-    // Toggleable GeoJSON overlays (e.g. school districts) exposed via a layer
-    // control, OFF by default. Drawn in a dedicated pane below the markers (so they
-    // never block a marker click) and below the dim mask (so out-of-city portions
-    // read as dimmed like everything else).
-    if (config.dataLayers?.length || config.imageOverlays?.length) {
-      map.createPane('dataLayers');
-      const pane = map.getPane('dataLayers');
-      if (pane) pane.style.zIndex = '350';
-      // Point overlays (e.g. bridge markers) go ABOVE the business marker cluster
-      // (markerPane z-600) so they stay tappable -- in the dataLayers pane (z-350)
-      // a cluster sits on top and swallows the tap (most visible on the zoomed-out
-      // mobile fit, where clusters blanket the map). Polygon/line overlays stay in
-      // dataLayers (below the markers, so they never block a business-marker click).
-      map.createPane('overlayMarkers');
-      const ompane = map.getPane('overlayMarkers');
-      if (ompane) ompane.style.zIndex = '650';
-      const palette = ['#1565c0', '#2e7d32', '#e65100', '#6a1b9a', '#00838f', '#b3261e', '#9e9d24'];
-      // Left expanded so the available overlays are always visible (the collapsed
-      // toggle hid that there were layers to turn on at all) -- but with an explicit
-      // minimize toggle (below) so the box can get out of the way on any platform.
-      const layerControl = L.control
-        .layers(undefined, undefined, { collapsed: false, position: 'topright' })
-        .addTo(map);
-
-      // Minimize/restore toggle for the layers box. Unlike Leaflet's collapsed
-      // mode (hover/tap driven), this is an explicit click toggle that works the
-      // same in desktop browsers, mobile web, and the Android app. State persists
-      // per device.
-      layerControlEl = layerControl.getContainer();
-      if (layerControlEl) {
-        const lc = layerControlEl;
-        const toggle = L.DomUtil.create('button', 'layers-min-toggle', lc);
-        toggle.type = 'button';
-        const setMin = (min: boolean) => {
-          lc.classList.toggle('layers-minimized', min);
-          toggle.textContent = min ? 'Layers' : '–';
-          toggle.title = min ? 'Show map layers' : 'Minimize the layers box';
-          toggle.setAttribute('aria-label', toggle.title);
-          toggle.setAttribute('aria-expanded', String(!min));
-        };
-        L.DomEvent.disableClickPropagation(toggle);
-        L.DomEvent.on(toggle, 'click', () => {
-          const min = !lc.classList.contains('layers-minimized');
-          setMin(min);
-          try {
-            localStorage.setItem('eb-layers-min', min ? '1' : '0');
-          } catch {
-            /* private mode -- session-only */
-          }
-        });
-        let initialMin = false;
-        try {
-          initialMin = localStorage.getItem('eb-layers-min') === '1';
-        } catch {
-          /* ignore */
-        }
-        setMin(initialMin);
-      }
-
-      // Georeferenced image overlays (e.g. the zoning map) -- stretched to their
-      // geographic bounds, semi-transparent so the basemap shows through.
-      for (const ov of config.imageOverlays ?? []) {
-        const img = L.imageOverlay(ov.source, ov.bounds, {
-          pane: 'dataLayers',
-          opacity: ov.opacity ?? 0.6,
-          interactive: false,
-        });
-
-        // Clip the image to the city boundary (removes the out-of-city parts,
-        // including the map sheet's baked-in legend over neighbouring areas).
-        if (ov.clipToBoundary && config.boundary) {
-          let clip = '';
-          const applyClip = () => {
-            const el = img.getElement() as HTMLElement | null;
-            if (el && clip) el.style.clipPath = clip;
-          };
-          dataFetch(config.boundary.source)
-            .then((r) => (r.ok ? r.json() : Promise.reject(new Error('boundary'))))
-            .then((gj) => {
-              clip = boundaryClipPath(gj, ov.bounds);
-              applyClip();
-            })
-            .catch((err) => console.warn('Zoning clip not applied:', err));
-          img.on('add', applyClip);
-        }
-
-        // Legend image shown in a side panel while this overlay is enabled.
-        if (ov.legend) {
-          const panel = L.DomUtil.create('div', 'zoning-legend-panel');
-          panel.style.display = 'none';
-          const close = L.DomUtil.create('button', 'zlp-close', panel);
-          close.type = 'button';
-          close.setAttribute('aria-label', 'Hide legend');
-          close.textContent = '×';
-          const legendImg = L.DomUtil.create('img', '', panel) as HTMLImageElement;
-          legendImg.src = ov.legend;
-          legendImg.alt = 'Zoning districts color key';
-          mapEl.appendChild(panel);
-          L.DomEvent.disableClickPropagation(panel);
-          L.DomEvent.disableScrollPropagation(panel);
-          close.addEventListener('click', () => {
-            panel.style.display = 'none';
-          });
-          img.on('add', () => {
-            panel.style.display = 'block';
-          });
-          img.on('remove', () => {
-            panel.style.display = 'none';
-          });
-        }
-
-        layerControl.addOverlay(img, ov.label);
-      }
-
-      for (const layer of config.dataLayers ?? []) {
-        const nameField = layer.nameField ?? 'name';
-        dataFetch(layer.source)
-          .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${layer.source} HTTP ${r.status}`))))
-          .then((geojson) => {
-            if (!map) return;
-            // Use a feature's own color (e.g. GTFS route colors) when present;
-            // otherwise assign distinct palette colors by index (e.g. districts).
-            (geojson.features ?? []).forEach(
-              (f: { properties: Record<string, unknown> }, i: number) => {
-                f.properties._color = f.properties._color ?? palette[i % palette.length];
-              },
-            );
-            const gj = L.geoJSON(geojson, {
-              pane: 'dataLayers',
-              style: (f) => {
-                // Leaflet applies `style` to EVERY layer with setStyle -- including
-                // the circle markers from pointToLayer -- after pointToLayer runs.
-                // Returning {} for points is a no-op setStyle (merges nothing), so
-                // their marker styling stays intact; polygon/line layers are unaffected.
-                if (f?.geometry?.type === 'Point') return {};
-                const color = (f?.properties?._color as string) ?? palette[0];
-                // Per-feature style overrides (e.g. flood zones use a heavier fill so
-                // the areas read as filled, not just outlined).
-                const weight = (f?.properties?._weight as number) ?? 3;
-                const fillOpacity = (f?.properties?._fillOpacity as number) ?? 0.12;
-                // Planned/proposed lines (e.g. trails not yet built) carry a dash
-                // pattern so they never read as existing; solid otherwise.
-                const dashArray = (f?.properties?._dashArray as string | null) ?? undefined;
-                return { color, weight, opacity: 0.9, fillColor: color, fillOpacity, dashArray };
-              },
-              // Point features (e.g. bridges) become colored circle markers. Leaflet
-              // only calls pointToLayer for Point/MultiPoint geometry, so polygon/line
-              // layers are unaffected; the `style` callback above does NOT apply to
-              // these markers, so their look is set here from the feature's _color.
-              pointToLayer: (feature, latlng) => {
-                const color = (feature?.properties?._color as string) ?? palette[0];
-                // Proportional-symbol layers (e.g. fire call volume) carry a
-                // per-feature `_radius`; others keep the default dot size.
-                const radius = (feature?.properties?._radius as number) ?? 7;
-                return L.circleMarker(latlng, {
-                  pane: 'overlayMarkers',
-                  radius,
-                  color: '#ffffff',
-                  weight: 1.5,
-                  fillColor: color,
-                  fillOpacity: 0.95,
-                });
-              },
-              onEachFeature: (feature, lyr) => {
-                // Multi-field point popup: a name heading + escaped [label, value]
-                // rows baked by the data tool. Each value is escaped here (the JS
-                // XSS guard), so the GeoJSON never carries raw HTML.
-                const rows = feature.properties?._popupRows as [string, string][] | undefined;
-                if (Array.isArray(rows) && rows.length) {
-                  const name = feature.properties?.[nameField];
-                  const head = name ? `<strong>${escapeHtml(String(name))}</strong>` : '';
-                  const body = rows
-                    .map(([k, v]) => `<div>${escapeHtml(String(k))}: ${escapeHtml(String(v))}</div>`)
-                    .join('');
-                  lyr.bindPopup(`${head}${body}`);
-                  return;
-                }
-                const label = feature.properties?.[nameField];
-                if (!label) return;
-                // Show the area name in a click/tap popup at the tap point. A popup
-                // behaves identically on mouse and touch; the previous sticky
-                // tooltip was positioned via mousemove, which touch devices never
-                // fire, so on phones the label was unreliable/misplaced.
-                lyr.bindPopup(escapeHtml(String(label)));
-              },
-            });
-            layerControl.addOverlay(gj, layer.label);
-          })
-          .catch((err) => console.warn(`Data layer ${layer.source} not loaded:`, err));
-      }
-    }
+    // Toggleable GeoJSON + image overlays (e.g. school districts, the zoning map)
+    // exposed via a layer control, OFF by default; sources load lazily on first
+    // toggle. The control's container is kept so pin-drop mode can hide it.
+    layerControlEl = addConfigOverlays(map, mapEl, config);
 
     // zoomToBoundsOnClick is off so we own the cluster tap: a small bubble shows a
     // preview of what's inside (below); a big one drills down by zooming.
