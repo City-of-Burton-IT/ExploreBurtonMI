@@ -44,6 +44,12 @@ jobs:
           PAYLOAD: ${{ toJSON(github.event.client_payload) }}
         run: printf '%s' "$PAYLOAD" > payload.json
 
+      # Gate the auto-apply path on the tests covering exactly the code it runs
+      # (pipeline merge/validate/emit + the sync script). A regression here would
+      # otherwise surface as bad public data, not a failed check.
+      - name: Run pipeline + sync tests
+        run: pytest pipeline/test tools/test_sync_listing_requests.py -q
+
       - name: Apply the approved row
         run: python tools/sync_listing_requests.py --payload-file payload.json
 
