@@ -1,26 +1,17 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { dataFetch } from '../remote';
+  import { loadJson } from '../loadJson.svelte';
   import OfflineBadge from '../OfflineBadge.svelte';
 
   type Entry = { street: string; day: string };
 
-  let entries = $state<Entry[]>([]);
-  let loading = $state(true);
+  const schedule = loadJson<Entry[]>(
+    'waste-schedule.json',
+    (raw) => (raw as { entries?: Entry[] }).entries ?? [],
+    [],
+  );
+  const entries = $derived(schedule.data);
+  const loading = $derived(schedule.loading);
   let query = $state('');
-
-  onMount(async () => {
-    try {
-      const r = await dataFetch('waste-schedule.json');
-      if (r.ok) {
-        const d = (await r.json()) as { entries?: Entry[] };
-        entries = d.entries ?? [];
-      }
-    } catch {
-      entries = [];
-    }
-    loading = false;
-  });
 
   const DAY_COLORS: Record<string, string> = {
     Monday: '#1565c0',

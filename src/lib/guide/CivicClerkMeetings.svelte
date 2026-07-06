@@ -1,5 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { loadAsync } from '../loadJson.svelte';
   import OfflineBadge from '../OfflineBadge.svelte';
 
   type Ev = {
@@ -14,11 +14,6 @@
   const PORTAL = 'https://burtonmi.portal.civicclerk.com';
   const API = 'https://burtonmi.api.civicclerk.com/v1/Events';
 
-  let upcoming = $state<Ev[]>([]);
-  let recent = $state<Ev[]>([]);
-  let loading = $state(true);
-  let failed = $state(false);
-
   function query(filter: string, order: string): string {
     const params = new URLSearchParams({
       $top: '15',
@@ -28,20 +23,20 @@
     return `${API}?${params.toString()}`;
   }
 
-  onMount(async () => {
+  // Live CivicClerk API (not a committed file, so loadAsync not loadJson); a
+  // null result = the fetch failed and the offline/error state shows.
+  const meetings = loadAsync<{ upcoming: Ev[]; recent: Ev[] } | null>(async () => {
     const now = new Date().toISOString();
-    try {
-      const [u, r] = await Promise.all([
-        fetch(query(`startDateTime ge ${now}`, 'asc')).then((x) => x.json()),
-        fetch(query(`startDateTime lt ${now}`, 'desc')).then((x) => x.json()),
-      ]);
-      upcoming = (u.value ?? []).slice(0, 12);
-      recent = (r.value ?? []).slice(0, 12);
-    } catch {
-      failed = true;
-    }
-    loading = false;
-  });
+    const [u, r] = await Promise.all([
+      fetch(query(`startDateTime ge ${now}`, 'asc')).then((x) => x.json()),
+      fetch(query(`startDateTime lt ${now}`, 'desc')).then((x) => x.json()),
+    ]);
+    return { upcoming: (u.value ?? []).slice(0, 12), recent: (r.value ?? []).slice(0, 12) };
+  }, null);
+  const upcoming = $derived(meetings.data?.upcoming ?? []);
+  const recent = $derived(meetings.data?.recent ?? []);
+  const loading = $derived(meetings.loading);
+  const failed = $derived(!meetings.loading && !meetings.data);
 
   // Times are stored as the local clock time with a Z suffix, so render in UTC to
   // show the intended wall-clock time (no timezone shift).

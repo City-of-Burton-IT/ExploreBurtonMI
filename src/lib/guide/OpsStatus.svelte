@@ -1,6 +1,5 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
-  import { dataFetch } from '../remote';
+  import { loadJson } from '../loadJson.svelte';
   import {
     activeOpsItems,
     statusMeta,
@@ -19,23 +18,17 @@
     standby: 'pause-circle',
   };
 
-  let items = $state<OpsItem[]>([]);
-  let updated = $state<string>('');
-  let loading = $state(true);
-
-  onMount(async () => {
-    try {
-      const r = await dataFetch('ops-status.json');
-      if (r.ok) {
-        const b = validateOpsStatusBundle(await r.json());
-        items = b.items ?? [];
-        updated = b.updated ?? '';
-      }
-    } catch {
-      items = [];
-    }
-    loading = false;
-  });
+  const status = loadJson(
+    'ops-status.json',
+    (raw) => {
+      const b = validateOpsStatusBundle(raw);
+      return { items: b.items ?? [], updated: b.updated ?? '' };
+    },
+    { items: [] as OpsItem[], updated: '' },
+  );
+  const items = $derived(status.data.items);
+  const updated = $derived(status.data.updated);
+  const loading = $derived(status.loading);
 
   const shown = $derived(activeOpsItems(items));
 </script>

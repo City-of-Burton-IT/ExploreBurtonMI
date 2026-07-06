@@ -1,29 +1,19 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
   import type { GuideBundle } from './types';
   import { ui, setGuideSection, openAbout } from './store.svelte';
   import { safeHref } from './templates';
-  import { dataFetch } from './remote';
+  import { loadJson } from './loadJson.svelte';
   import { validateGuideBundle } from './guide/guideBundle';
   import GuideSection from './guide/GuideSection.svelte';
   import GuideIcon from './guide/GuideIcon.svelte';
   import Lightbox from './Lightbox.svelte';
   import OfflineBadge from './OfflineBadge.svelte';
 
-  let bundle = $state<GuideBundle | null>(null);
-  let loading = $state(true);
+  const guide = loadJson<GuideBundle | null>('guide.json', validateGuideBundle, null);
+  const bundle = $derived(guide.data);
+  const loading = $derived(guide.loading);
   let lightbox = $state<{ show: (src: string, caption: string) => void }>();
   const openImage = (src: string, caption: string) => lightbox?.show(src, caption);
-
-  onMount(async () => {
-    try {
-      const r = await dataFetch('guide.json');
-      if (r.ok) bundle = validateGuideBundle(await r.json());
-    } catch {
-      bundle = null;
-    }
-    loading = false;
-  });
 
   const activeId = $derived(ui.guideSection ?? bundle?.sections[0]?.id ?? null);
   const activeSection = $derived(bundle?.sections.find((s) => s.id === activeId) ?? null);
