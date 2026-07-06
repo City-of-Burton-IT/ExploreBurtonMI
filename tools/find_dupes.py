@@ -16,11 +16,12 @@
 from __future__ import annotations
 
 import json
-import os
 import re
 import sys
 
-DATA = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "data.geojson"))
+from lib.paths import public_path
+
+DATA = public_path("data.geojson")
 
 # Tokens that don't distinguish one business from another at the same address.
 GENERIC = {

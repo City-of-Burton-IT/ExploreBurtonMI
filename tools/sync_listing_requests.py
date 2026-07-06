@@ -45,7 +45,11 @@ TOKEN_STORE = os.environ.get(
 MCP_ENV = os.environ.get("EXPLORE_MCP_ENV", r"C:\utils\outlook-mcp\.env")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
-OVERRIDES_PATH = os.path.join(HERE, "..", "pipeline", "data", "overrides.json")
+sys.path.insert(0, HERE)
+from lib.iox import write_json  # noqa: E402
+from lib.paths import pipeline_data_path  # noqa: E402
+
+OVERRIDES_PATH = pipeline_data_path("overrides.json")
 CANDIDATES_PATH = os.path.join(HERE, "pending-additions.json")
 
 # SharePoint column -> feature property (only set when the submitter gave a value)
@@ -170,9 +174,7 @@ def apply_rows(rows: list[dict], overrides: dict) -> dict:
 # --- file writers (shared by the on-demand + payload paths) ------------------
 
 def _write_overrides(overrides: dict) -> None:
-    with open(OVERRIDES_PATH, "w", encoding="utf-8") as f:
-        json.dump(overrides, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    write_json(OVERRIDES_PATH, overrides)
 
 
 def _merge_candidates(new_cands: list[dict]) -> None:
@@ -189,9 +191,7 @@ def _merge_candidates(new_cands: list[dict]) -> None:
     by_id = {c.get("id"): c for c in existing.get("candidates", [])}
     for c in new_cands:
         by_id[c.get("id")] = c
-    with open(CANDIDATES_PATH, "w", encoding="utf-8") as f:
-        json.dump({"candidates": list(by_id.values())}, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    write_json(CANDIDATES_PATH, {"candidates": list(by_id.values())})
 
 
 def run_from_payload(payload: dict) -> int:
@@ -339,14 +339,10 @@ def main() -> int:
         return 0
 
     if report["applied"]:
-        with open(OVERRIDES_PATH, "w", encoding="utf-8") as f:
-            json.dump(overrides, f, indent=2, ensure_ascii=False)
-            f.write("\n")
+        _write_overrides(overrides)
         print(f"\nWrote {OVERRIDES_PATH}")
     if report["candidates"]:
-        with open(CANDIDATES_PATH, "w", encoding="utf-8") as f:
-            json.dump({"candidates": report["candidates"]}, f, indent=2, ensure_ascii=False)
-            f.write("\n")
+        write_json(CANDIDATES_PATH, {"candidates": report["candidates"]})
         print(f"Wrote {CANDIDATES_PATH} -- vet + paste into facilities.geojson by hand")
 
     for row in rows:

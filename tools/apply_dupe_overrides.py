@@ -20,10 +20,10 @@ import sys
 
 sys.path.insert(0, os.path.dirname(__file__))
 import find_dupes as fd  # noqa: E402
+from lib.iox import write_json  # noqa: E402
+from lib.paths import pipeline_data_path  # noqa: E402
 
-OVERRIDES = os.path.abspath(
-    os.path.join(os.path.dirname(__file__), "..", "pipeline", "data", "overrides.json")
-)
+OVERRIDES = pipeline_data_path("overrides.json")
 
 # Co-located POIs that are genuinely distinct, never hide these even though they
 # share an address with a survivor.
@@ -119,9 +119,7 @@ def main() -> int:
         print("\n(dry run: pass --write to save)")
         return 0
 
-    with open(OVERRIDES, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(existing, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OVERRIDES, existing)
     print(f"Wrote {OVERRIDES}")
     return 0
 
