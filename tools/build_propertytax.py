@@ -25,15 +25,16 @@ for a representative district so the breakdown sums to a real total bill.
 Re-runnable (committed output; the site reads the JSON):
     python tools/build_propertytax.py
 
-Stdlib only (json), matching the other tools/ scripts.
+Uses the shared tools/lib helpers (repo paths, atomic writes).
 """
 from __future__ import annotations
 
-import json
-import os
 import sys
 
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-propertytax.json"))
+from lib.iox import write_json
+from lib.paths import public_path
+
+OUT = public_path("info-propertytax.json")
 
 # --- City of Burton's own millage (tax year 2025 / FY2026, from the ACFR) --------
 CITY_GENERAL = 4.00
@@ -170,9 +171,7 @@ def main() -> int:
         ],
     }
 
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  city {CITY_TOTAL} mills ({city_share}% of {HOMESTEAD_TOTAL}); schools+SET remainder {schools_set}")
     print(f"  city $ on ${EXAMPLE_TAXABLE:,} taxable = ${city_dollars:,}; full bill ${lo_total:,}-${hi_total:,}")

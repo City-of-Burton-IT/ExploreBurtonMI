@@ -17,15 +17,16 @@ DATA" block below, and re-run. No PII, every figure is an aggregate count.
 Re-runnable (committed output; the site reads the JSON, never the exports):
     python tools/build_seniorcenter.py
 
-Stdlib only (json), matching the other tools/ scripts.
+Uses the shared tools/lib helpers (repo paths, atomic writes).
 """
 from __future__ import annotations
 
-import json
-import os
 import sys
 
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-seniorcenter.json"))
+from lib.iox import write_json
+from lib.paths import public_path
+
+OUT = public_path("info-seniorcenter.json")
 
 # ---------------------------------------------------------------------------
 # SOURCE DATA: Burton Senior Center, calendar year 2025. Refresh yearly.
@@ -144,9 +145,7 @@ def main() -> int:
         ],
     }
 
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  members {MEMBERS:,}  visits {CHECKINS:,}  program hours {PROGRAM_HOURS:,}")
     print(f"  volunteers {VOL_PEOPLE} ({VOL_HOURS:,}h ${VOL_VALUE:,})  rides {RIDES:,}  out-of-town {out_pct}%")

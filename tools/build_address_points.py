@@ -38,11 +38,15 @@ import time
 
 import requests
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-SOURCE_CSV = os.path.join(ROOT, "pipeline", "data", "address-points-source.csv")
-BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
-OUT_JSON = os.path.join(ROOT, "public", "address-points.json")
-CACHE = os.path.join(ROOT, "pipeline", "data", "cache", "address_geocode.json")
+from lib.iox import write_geojson
+from lib.paths import REPO_ROOT as ROOT
+from lib.paths import pipeline_data_path, public_path
+from lib.shapecheck import assert_shape
+
+SOURCE_CSV = pipeline_data_path("address-points-source.csv")
+BOUNDARY = public_path("boundary.geojson")
+OUT_JSON = public_path("address-points.json")
+CACHE = pipeline_data_path("cache", "address_geocode.json")
 
 # --- Source column mapping ----------------------------------------------------
 # The internal extract aliases the BS&A columns to these clean headers
@@ -94,29 +98,34 @@ def read_source_rows() -> list[dict]:
         )
     rows: list[dict] = []
     with open(SOURCE_CSV, newline="", encoding="utf-8-sig") as fh:
-        reader = csv.DictReader(fh)
-        for i, raw in enumerate(reader):
-            if COLUMN_ADDRESS:
-                street = _norm(raw.get(COLUMN_ADDRESS))
-                city = state = zip_ = ""
-            else:
-                street = _norm(raw.get(COLUMN_STREET))
-                city = _norm(raw.get(COLUMN_CITY)) or DEFAULT_CITY
-                state = _norm(raw.get(COLUMN_STATE)) or DEFAULT_STATE
-                zip_ = _norm(raw.get(COLUMN_ZIP))
-            if not street:
-                continue
-            lat = lng = None
-            if COLUMN_LAT and COLUMN_LNG:
-                try:
-                    lat = float(raw[COLUMN_LAT])
-                    lng = float(raw[COLUMN_LNG])
-                except (KeyError, TypeError, ValueError):
-                    lat = lng = None
-            rows.append(
-                {"id": str(i), "street": street, "city": city, "state": state,
-                 "zip": zip_, "lat": lat, "lng": lng}
-            )
+        raw_rows = list(csv.DictReader(fh))
+    # Fail loud if the extract's column aliases changed: a silently-missing
+    # street column would otherwise skip every row and emit an empty table.
+    required = [COLUMN_ADDRESS] if COLUMN_ADDRESS else [
+        COLUMN_STREET, COLUMN_CITY, COLUMN_STATE, COLUMN_ZIP]
+    assert_shape(raw_rows, required, "address-points source rows")
+    for i, raw in enumerate(raw_rows):
+        if COLUMN_ADDRESS:
+            street = _norm(raw.get(COLUMN_ADDRESS))
+            city = state = zip_ = ""
+        else:
+            street = _norm(raw.get(COLUMN_STREET))
+            city = _norm(raw.get(COLUMN_CITY)) or DEFAULT_CITY
+            state = _norm(raw.get(COLUMN_STATE)) or DEFAULT_STATE
+            zip_ = _norm(raw.get(COLUMN_ZIP))
+        if not street:
+            continue
+        lat = lng = None
+        if COLUMN_LAT and COLUMN_LNG:
+            try:
+                lat = float(raw[COLUMN_LAT])
+                lng = float(raw[COLUMN_LNG])
+            except (KeyError, TypeError, ValueError):
+                lat = lng = None
+        rows.append(
+            {"id": str(i), "street": street, "city": city, "state": state,
+             "zip": zip_, "lat": lat, "lng": lng}
+        )
     # Dedupe identical situs addresses (condos / lot splits share one street
     # address across many parcels) -- one lookup point per unique address.
     seen: set[str] = set()
@@ -242,9 +251,7 @@ def main() -> int:
     # Stamp the date without Date.now-style nondeterminism concerns: build time.
     stamp = time.strftime("%Y-%m-%d")
     out = {"updated": stamp, "points": points}
-    with open(OUT_JSON, "w", encoding="utf-8") as fh:
-        json.dump(out, fh, ensure_ascii=True, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(OUT_JSON, out, ensure_ascii=True)
     print(
         f"Wrote {len(points)} address points -> {os.path.relpath(OUT_JSON, ROOT)}\n"
         f"  dropped: {dropped_nocoord} un-geocoded, {dropped_outside} outside city"

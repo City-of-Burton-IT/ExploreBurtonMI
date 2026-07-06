@@ -43,8 +43,10 @@ import sys
 
 import openpyxl
 
-REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-PANEL = os.path.join(REPO_ROOT, "public", "info-publicsafety.json")
+from lib.iox import write_json
+from lib.paths import public_path
+
+PANEL = public_path("info-publicsafety.json")
 CACHE_DIR = os.path.join(os.path.dirname(__file__), ".cache")
 CACHE = os.path.join(CACHE_DIR, "fire-trends.json")
 # The Fire Chief's workbooks live in the user's OneDrive by default.
@@ -360,9 +362,7 @@ def main() -> None:
     fragment = build_fragment(args.src)
 
     os.makedirs(os.path.dirname(args.cache), exist_ok=True)
-    with open(args.cache, "w", encoding="utf-8") as f:
-        json.dump(fragment, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    write_json(args.cache, fragment)
 
     if not os.path.isfile(args.panel):
         sys.exit(f"ERROR: base panel not found: {args.panel}. "
@@ -376,9 +376,7 @@ def main() -> None:
     from build_publicsafety import assert_no_pii
     assert_no_pii(panel)
 
-    with open(args.panel, "w", encoding="utf-8") as f:
-        json.dump(panel, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    write_json(args.panel, panel)
 
     print(f"Wrote {args.cache}")
     print(f"Updated {args.panel}")

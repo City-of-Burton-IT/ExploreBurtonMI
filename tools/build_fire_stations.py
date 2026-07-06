@@ -12,19 +12,20 @@ so a station with 4x the calls draws 2x the radius -- an honest visual.
 Re-runnable (committed output; the site reads the geojson, never the network):
     python tools/build_fire_stations.py
 
-Stdlib only (json, math).
+Uses the shared tools/lib helpers (repo paths, atomic writes).
 """
 from __future__ import annotations
 
 import json
 import math
-import os
 import sys
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-INFO = os.path.join(ROOT, "public", "info-publicsafety.json")
-PLACES = os.path.join(ROOT, "public", "data.geojson")
-OUT = os.path.join(ROOT, "public", "fire-stations.geojson")
+from lib.iox import write_json
+from lib.paths import public_path
+
+INFO = public_path("info-publicsafety.json")
+PLACES = public_path("data.geojson")
+OUT = public_path("fire-stations.geojson")
 
 MAX_R = 24.0   # px radius of the busiest station
 MIN_R = 6.0    # never draw smaller than this
@@ -102,9 +103,9 @@ def main() -> int:
     coords = station_coords(places)
     fc = build(counts, coords)
 
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(fc, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    # NOTE: this overlay is committed indent=2 (unlike the compact overlays), so
+    # write_json (not write_geojson) preserves the existing file format.
+    write_json(OUT, fc)
     print(f"Wrote {OUT}")
     for f in fc["features"]:
         p = f["properties"]

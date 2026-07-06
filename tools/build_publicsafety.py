@@ -31,8 +31,10 @@ import sys
 
 import openpyxl
 
-REPO_ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-OUT = os.path.join(REPO_ROOT, "public", "info-publicsafety.json")
+from lib.iox import write_json
+from lib.paths import public_path
+
+OUT = public_path("info-publicsafety.json")
 DOWNLOADS = os.path.join(os.path.expanduser("~"), "Downloads")
 
 # NFIRS incident-type series (first digit of the [NNN] code) -> dashboard label.
@@ -276,9 +278,7 @@ def main() -> None:
 
     assert_no_pii(panel)
 
-    with open(args.out, "w", encoding="utf-8") as f:
-        json.dump(panel, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    write_json(args.out, panel)
 
     print(f"Wrote {args.out}")
     print(f"  year={panel['subtitle']}")

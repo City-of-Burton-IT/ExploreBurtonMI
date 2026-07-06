@@ -19,12 +19,14 @@ import math
 import os
 import re
 
-HERE = os.path.dirname(__file__)
-CSV_IN = os.path.abspath(os.path.join(HERE, "..", "pipeline", "data", "capital-projects.csv"))
-ROADS_JSON = os.path.abspath(os.path.join(HERE, "..", "public", "info-roads.json"))
-PASER_GEOJSON = os.path.abspath(os.path.join(HERE, "..", "public", "paser-roads.geojson"))
-BOUNDARY_GEOJSON = os.path.abspath(os.path.join(HERE, "..", "public", "boundary.geojson"))
-OVERLAY_GEOJSON = os.path.abspath(os.path.join(HERE, "..", "public", "capital-roads.geojson"))
+from lib.iox import write_geojson, write_json
+from lib.paths import pipeline_data_path, public_path
+
+CSV_IN = pipeline_data_path("capital-projects.csv")
+ROADS_JSON = public_path("info-roads.json")
+PASER_GEOJSON = public_path("paser-roads.geojson")
+BOUNDARY_GEOJSON = public_path("boundary.geojson")
+OVERLAY_GEOJSON = public_path("capital-roads.geojson")
 _FUNDED_COLOR = "#7b1fa2"   # bold purple, distinct from PASER condition colors
 
 STREET_CATEGORIES = {"Major Streets", "Local Streets"}
@@ -111,9 +113,7 @@ def annotate_roads_file(roads_path: str = ROADS_JSON, csv_path: str = CSV_IN) ->
     if _NOTE not in notes:
         notes.insert(0, _NOTE)
 
-    with open(roads_path, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(roads_path, panel)
     return n
 
 
@@ -293,9 +293,7 @@ def build_overlay_file(paser_path: str = PASER_GEOJSON, csv_path: str = CSV_IN,
         with open(boundary_path, encoding="utf-8") as fh:
             boundary = json.load(fh)
     overlay = build_overlay(paser, street_rows, boundary)
-    with open(out_path, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(overlay, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(out_path, overlay)
     return len(overlay["features"])
 
 

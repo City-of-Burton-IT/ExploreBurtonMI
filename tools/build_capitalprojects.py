@@ -11,18 +11,18 @@ This is the adopted PLAN, not actual expenditures (honesty per ADR-0001).
 Re-runnable (committed output; the site reads the JSON):
     python tools/build_capitalprojects.py
 
-Stdlib only (csv, json), matching the other tools/ scripts.
+Uses the shared tools/lib helpers (repo paths, atomic writes).
 """
 from __future__ import annotations
 
 import csv
-import json
-import os
 import sys
 
-HERE = os.path.dirname(__file__)
-CSV_IN = os.path.abspath(os.path.join(HERE, "..", "pipeline", "data", "capital-projects.csv"))
-OUT = os.path.abspath(os.path.join(HERE, "..", "public", "info-capital.json"))
+from lib.iox import write_json
+from lib.paths import pipeline_data_path, public_path
+
+CSV_IN = pipeline_data_path("capital-projects.csv")
+OUT = public_path("info-capital.json")
 
 VALID_CATEGORIES = {
     "Major Streets", "Local Streets", "Water & Sewer", "Parks & Recreation",
@@ -228,9 +228,7 @@ def main() -> int:
         raw = list(csv.DictReader(fh))
     rows = normalize_rows(raw)
     panel = build_panel(rows)
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OUT, panel)
     agg = aggregate(rows)
     print(f"Wrote {OUT}")
     print(f"  {agg['count']} projects, total {_money(agg['total'])}")
