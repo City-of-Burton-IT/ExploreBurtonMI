@@ -20,14 +20,16 @@ import io
 import json
 import os
 import sys
-import urllib.request
 import zipfile
 
+from lib.httpio import get_bytes
+from lib.iox import write_geojson
+from lib.paths import public_path
+
 GTFS_URL = "https://www.mtaflint.org/wp-content/media/gtfs.zip"
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
-OUT = os.path.join(ROOT, "public", "transit-routes.geojson")
-OUT_STOPS = os.path.join(ROOT, "public", "bus-stops.geojson")
+BOUNDARY = public_path("boundary.geojson")
+OUT = public_path("transit-routes.geojson")
+OUT_STOPS = public_path("bus-stops.geojson")
 DEFAULT_COLOR = "1f6fb2"
 STOP_COLOR = "#1f6fb2"
 
@@ -78,9 +80,7 @@ def _read_gtfs(path: str | None) -> dict[str, list[dict]]:
             data = open(path, "rb").read()
         else:
             print(f"Downloading {GTFS_URL} ...")
-            req = urllib.request.Request(GTFS_URL, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=60) as resp:
-                data = resp.read()
+            data = get_bytes(GTFS_URL)
         zf = zipfile.ZipFile(io.BytesIO(data))
         blobs = {t: zf.read(f"{t}.txt").decode("utf-8-sig") for t in want}
     return {t: list(csv.DictReader(io.StringIO(b))) for t, b in blobs.items()}
@@ -149,9 +149,7 @@ def main() -> int:
         ),
         "features": features,
     }
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(OUT, fc)
     print(f"Wrote {OUT}")
     print(f"  {len(features)} MTA routes through Burton:")
     for f in features:
@@ -184,9 +182,7 @@ def main() -> int:
         "_source": "MTA Flint GTFS bus stops within the City of Burton.",
         "features": stops_feats,
     }
-    with open(OUT_STOPS, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(stops_fc, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(OUT_STOPS, stops_fc)
     print(f"Wrote {OUT_STOPS} ({len(stops_feats)} bus stops in Burton)")
     return 0
 

@@ -14,16 +14,17 @@
 # Re-runnable:  python tools/extract_waste_schedule.py
 from __future__ import annotations
 
-import json
 import os
 import re
 import sys
 import xml.etree.ElementTree as ET
 import zipfile
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-XLSX = os.path.join(ROOT, "docs", "Waste Schedule.xlsx")
-OUT = os.path.join(ROOT, "public", "waste-schedule.json")
+from lib.iox import write_geojson
+from lib.paths import REPO_ROOT, public_path
+
+XLSX = os.path.join(REPO_ROOT, "docs", "Waste Schedule.xlsx")
+OUT = public_path("waste-schedule.json")
 NS = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 
 DAYS = {d.lower(): d for d in ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")}
@@ -101,9 +102,8 @@ def main() -> int:
         "days": ["Monday", "Tuesday", "Wednesday", "Thursday", "Friday"],
         "entries": entries,
     }
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(payload, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    # Compact single-line style (same as the committed overlays).
+    write_geojson(OUT, payload)
     print(f"Wrote {OUT}")
     print(f"  {len(entries)} streets; by day: {by_day}")
     print(f"  file size: {os.path.getsize(OUT) // 1024} KiB")

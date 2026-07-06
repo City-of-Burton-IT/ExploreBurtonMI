@@ -29,9 +29,11 @@ import tempfile
 from pathlib import Path
 from typing import Any
 
-REPO_ROOT = Path(__file__).resolve().parent.parent
-CONFIG = REPO_ROOT / "pipeline" / "config.json"
-DEFAULT_OUT = REPO_ROOT / "pipeline" / "data" / "overture_places.geojson"
+from lib.iox import write_json
+from lib.paths import REPO_ROOT, pipeline_data_path
+
+CONFIG = Path(REPO_ROOT) / "pipeline" / "config.json"
+DEFAULT_OUT = Path(pipeline_data_path("overture_places.geojson"))
 
 
 def load_config() -> dict:
@@ -197,7 +199,7 @@ def main() -> int:
     collection = {"type": "FeatureCollection", "features": features}
 
     args.out.parent.mkdir(parents=True, exist_ok=True)
-    args.out.write_text(json.dumps(collection, ensure_ascii=False, indent=2) + "\n", encoding="utf-8")
+    write_json(str(args.out), collection)
     print(f"Wrote {len(features):,} slim places -> {args.out}")
     print("Review the diff, then run: cd pipeline; .venv\\Scripts\\python run.py")
     return 0
