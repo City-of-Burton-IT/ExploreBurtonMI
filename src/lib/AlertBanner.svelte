@@ -4,20 +4,18 @@
   import { safeHref } from './templates';
   import { activeAlerts, loadAlerts, type CityAlert, type AlertLevel } from './alerts';
   import { localTodayISO } from './closures';
+  import Icon from './Icon.svelte';
 
   // The live banner endpoint (config.alerts.url). Undefined until config loads (this
   // component mounts above the config gate); the loader falls back to the committed
   // alerts.json when it's absent, and the $effect re-runs once it arrives.
   let { alertsUrl }: { alertsUrl?: string } = $props();
 
-  // Lucide (https://lucide.dev, ISC/MIT) inner SVG markup, rendered in a 24x24
-  // currentColor stroke icon (same approach as the Resident Guide's GuideIcon).
+  // Icon registry names per alert level (icons.ts).
   const LEVEL_ICON: Record<AlertLevel, string> = {
-    emergency:
-      '<path d="M12 16h.01"/><path d="M12 8v4"/><path d="M15.312 2a2 2 0 0 1 1.414.586l4.688 4.688A2 2 0 0 1 22 8.688v6.624a2 2 0 0 1-.586 1.414l-4.688 4.688a2 2 0 0 1-1.414.586H8.688a2 2 0 0 1-1.414-.586l-4.688-4.688A2 2 0 0 1 2 15.312V8.688a2 2 0 0 1 .586-1.414l4.688-4.688A2 2 0 0 1 8.688 2z"/>',
-    warning:
-      '<path d="m21.73 18-8-14a2 2 0 0 0-3.48 0l-8 14A2 2 0 0 0 4 21h16a2 2 0 0 0 1.73-3"/><path d="M12 9v4"/><path d="M12 17h.01"/>',
-    info: '<circle cx="12" cy="12" r="10"/><path d="M12 16v-4"/><path d="M12 8h.01"/>',
+    emergency: 'alert-emergency',
+    warning: 'alert-warning',
+    info: 'alert-info',
   };
 
   const STORAGE_KEY = 'eb-alerts-dismissed';
@@ -72,18 +70,7 @@
   <div class="alerts" role="region" aria-label="City alerts">
     {#each shown as a (a.id)}
       <div class="alert level--{a.level}" role={a.level === 'emergency' ? 'alert' : 'status'}>
-        <svg
-          class="icon"
-          viewBox="0 0 24 24"
-          width="22"
-          height="22"
-          fill="none"
-          stroke="currentColor"
-          stroke-width="2"
-          stroke-linecap="round"
-          stroke-linejoin="round"
-          aria-hidden="true">{@html LEVEL_ICON[a.level]}</svg
-        >
+        <Icon name={LEVEL_ICON[a.level]} size={22} class="icon" />
         <div class="body">
           <p class="text"><strong>{a.title}</strong> {a.message}</p>
           {#if a.link}
@@ -93,17 +80,7 @@
           {/if}
         </div>
         <button class="close" onclick={() => dismiss(a.id)} aria-label="Dismiss this alert">
-          <svg
-            viewBox="0 0 24 24"
-            width="18"
-            height="18"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true"><path d="M18 6 6 18" /><path d="m6 6 12 12" /></svg
-          >
+          <Icon name="x" size={18} />
         </button>
       </div>
     {/each}
@@ -123,7 +100,9 @@
     color: #fff;
     border-bottom: 1px solid rgba(255, 255, 255, 0.25);
   }
-  .icon {
+  /* Icon.svelte renders the <svg> in its own component scope; :global() reaches
+     through to it (same idiom as Guide.svelte's `.sectionnav button :global(.gicon)`). */
+  .alert :global(.icon) {
     flex: 0 0 auto;
     margin-top: 0.05rem;
   }

@@ -1,28 +1,18 @@
 <script lang="ts">
-  import { ICONS } from './icons';
+  import Icon from '../Icon.svelte';
 
-  // Decorative section icon (the text label carries the meaning), so aria-hidden.
+  // Decorative section icon (the text label carries the meaning), so aria-hidden
+  // (handled by Icon.svelte). Delegates to the app-wide Icon component -- this
+  // wrapper just keeps the guide's own default size and vertical-align tweak.
   let { name, size = 18 }: { name: string; size?: number } = $props();
-  const svg = $derived(ICONS[name] ?? '');
 </script>
 
-{#if svg}
-  <svg
-    class="gicon"
-    viewBox="0 0 24 24"
-    width={size}
-    height={size}
-    fill="none"
-    stroke="currentColor"
-    stroke-width="2"
-    stroke-linecap="round"
-    stroke-linejoin="round"
-    aria-hidden="true"
-  >{@html svg}</svg>
-{/if}
+<Icon {name} {size} class="gicon" />
 
 <style>
-  .gicon {
+  /* Icon.svelte renders the <svg> in its own component scope; :global() reaches
+     through to it (same idiom as Guide.svelte's `.sectionnav button :global(.gicon)`). */
+  :global(.gicon) {
     flex: 0 0 auto;
     vertical-align: -0.15em;
   }

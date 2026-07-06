@@ -1,6 +1,7 @@
 <script lang="ts">
   import { ui, dismissPushBanner } from './store.svelte';
   import { applyRoute } from './deepLinks';
+  import Icon from './Icon.svelte';
 
   // Foreground push popup (#64): Android does not raise a tray notification while
   // the app is open, so when an FCM message arrives in-foreground push.ts calls
@@ -27,11 +28,7 @@
 {#if ui.pushBanner}
   <div class="push-toast" role="status" aria-live="polite">
     <button class="body" onclick={open}>
-      <svg class="bell" viewBox="0 0 24 24" width="20" height="20" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
-        <path d="M10.268 21a2 2 0 0 0 3.464 0" />
-        <path d="M3.262 15.326A1 1 0 0 0 4 17h16a1 1 0 0 0 .74-1.673C19.41 13.956 18 12.499 18 8A6 6 0 0 0 6 8c0 4.499-1.411 5.956-2.738 7.326" />
-      </svg>
+      <Icon name="bell-push" size={20} class="bell" />
       <span class="text">
         <span class="title">{ui.pushBanner.title}</span>
         {#if ui.pushBanner.body}<span class="msg">{ui.pushBanner.body}</span>{/if}
@@ -72,7 +69,9 @@
     padding: 0.7rem 0.6rem 0.7rem 0.9rem;
     cursor: pointer;
   }
-  .bell {
+  /* Icon.svelte renders the <svg> in its own component scope; :global() reaches
+     through to it (same idiom as Guide.svelte's `.sectionnav button :global(.gicon)`). */
+  .body :global(.bell) {
     flex: none;
   }
   .text {

@@ -3,6 +3,7 @@
   import { renderProperties } from './templates';
   import { ui, clearSelection, isSaved, toggleSavedPlace, openSuggest } from './store.svelte';
   import { placeShareUrl } from './hash';
+  import Icon from './Icon.svelte';
 
   const saved = $derived(ui.selected ? isSaved(ui.selected.id) : false);
 
@@ -78,18 +79,10 @@
       aria-label={saved ? 'Remove from saved places' : 'Save this place'}
       title={saved ? 'Saved, tap to remove' : 'Save this place'}
     >
-      <svg viewBox="0 0 24 24" width="17" height="17" fill={saved ? 'currentColor' : 'none'}
-        stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-        aria-hidden="true"
-        ><polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" /></svg
-      >
+      <Icon name="star" size={17} fill={saved ? 'currentColor' : 'none'} />
     </button>
     <button class="share" onclick={share} aria-label="Share this place" title="Share this place">
-      <svg viewBox="0 0 24 24" width="17" height="17" fill="none" stroke="currentColor"
-        stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-        ><circle cx="18" cy="5" r="3" /><circle cx="6" cy="12" r="3" /><circle cx="18" cy="19" r="3" /><line
-          x1="8.59" x2="15.42" y1="13.51" y2="17.49" /><line x1="15.41" x2="8.59" y1="6.51" y2="10.49" /></svg
-      >
+      <Icon name="share-2" size={17} />
     </button>
     <button class="close" onclick={clearSelection} aria-label="Close details">&times;</button>
     <h2 bind:this={heading} tabindex="-1">{ui.selected.properties.name}</h2>

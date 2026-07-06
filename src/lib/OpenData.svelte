@@ -5,6 +5,7 @@
   import { csvSlug, downloadCsvText } from './csv';
   import { panelToCsv } from './panelCsv';
   import { safeHref } from './templates';
+  import Icon from './Icon.svelte';
 
   // One transparency index for every dashboard dataset: source, vintage
   // ("Data as of"), and a single combined CSV download (stats + every chart +
@@ -56,11 +57,7 @@
             </div>
             {#if hasData(item.id)}
               <button class="dl" onclick={() => download(item.id, item.label)}>
-                <svg viewBox="0 0 24 24" width="15" height="15" fill="none" stroke="currentColor"
-                  stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true"
-                  ><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4" /><polyline points="7 10 12 15 17 10" /><line
-                    x1="12" x2="12" y1="15" y2="3" /></svg
-                >
+                <Icon name="download" size={15} />
                 CSV
               </button>
             {:else}

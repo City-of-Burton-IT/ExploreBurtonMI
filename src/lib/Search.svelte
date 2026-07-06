@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onDestroy } from 'svelte';
   import { ui } from './store.svelte';
+  import Icon from './Icon.svelte';
 
   // Keep the input itself instant, but debounce the committed query: each
   // keystroke otherwise re-filters + re-clusters all ~1,146 markers, which janks
@@ -22,18 +23,7 @@
 
 <div class="search">
   <div class="field">
-    <svg
-      class="icon"
-      viewBox="0 0 24 24"
-      width="18"
-      height="18"
-      fill="none"
-      stroke="currentColor"
-      stroke-width="2"
-      stroke-linecap="round"
-      stroke-linejoin="round"
-      aria-hidden="true"><circle cx="11" cy="11" r="8" /><path d="m21 21-4.3-4.3" /></svg
-    >
+    <Icon name="search" size={18} class="icon" />
     <input
       type="search"
       placeholder="Search by name, category, address&hellip;"
@@ -57,7 +47,10 @@
   .field {
     position: relative;
   }
-  .icon {
+  /* Icon.svelte renders the actual <svg> inside its own component, past this
+     component's style scope -- :global() reaches through to it (same idiom as
+     Guide.svelte's `.sectionnav button :global(.gicon)`). */
+  .field :global(.icon) {
     position: absolute;
     left: 0.65rem;
     top: 50%;

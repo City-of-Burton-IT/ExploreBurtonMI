@@ -9,16 +9,14 @@
     type OpsStatusKey,
   } from './opsStatus';
   import { safeHref } from '../templates';
+  import Icon from '../Icon.svelte';
 
-  // Lucide (https://lucide.dev, ISC/MIT) inner SVG markup per status key.
+  // Icon registry names per status key (icons.ts).
   const STATUS_ICON: Record<OpsStatusKey, string> = {
-    'in-progress':
-      '<path d="M22 12h-2.48a2 2 0 0 0-1.93 1.46l-2.35 8.36a.25.25 0 0 1-.48 0L9.24 2.18a.25.25 0 0 0-.48 0l-2.35 8.36A2 2 0 0 1 4.49 12H2"/>',
-    scheduled:
-      '<path d="M8 2v4"/><path d="M16 2v4"/><rect width="18" height="18" x="3" y="4" rx="2"/><path d="M3 10h18"/>',
-    complete: '<circle cx="12" cy="12" r="10"/><path d="m9 12 2 2 4-4"/>',
-    standby:
-      '<circle cx="12" cy="12" r="10"/><line x1="10" x2="10" y1="15" y2="9"/><line x1="14" x2="14" y1="15" y2="9"/>',
+    'in-progress': 'activity',
+    scheduled: 'calendar',
+    complete: 'check-circle',
+    standby: 'pause-circle',
   };
 
   let items = $state<OpsItem[]>([]);
@@ -57,19 +55,7 @@
       {#each shown as item (item.id)}
         {@const meta = statusMeta(item.status)}
         <li>
-          <svg
-            class="icon"
-            style:color={meta.color}
-            viewBox="0 0 24 24"
-            width="22"
-            height="22"
-            fill="none"
-            stroke="currentColor"
-            stroke-width="2"
-            stroke-linecap="round"
-            stroke-linejoin="round"
-            aria-hidden="true">{@html STATUS_ICON[meta.icon]}</svg
-          >
+          <Icon name={STATUS_ICON[meta.icon]} size={22} class="icon" style={`color: ${meta.color}`} />
           <div class="body">
             <div class="head">
               <span class="service">{item.service}</span>
@@ -117,7 +103,9 @@
     padding: 0.8rem 0.2rem;
     border-bottom: 1px solid var(--pub-border, #eef1f5);
   }
-  .icon {
+  /* Icon.svelte renders the <svg> in its own component scope; :global() reaches
+     through to it (same idiom as Guide.svelte's `.sectionnav button :global(.gicon)`). */
+  .list :global(.icon) {
     flex: 0 0 auto;
     margin-top: 0.1rem;
   }

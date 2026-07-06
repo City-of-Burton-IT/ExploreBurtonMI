@@ -1,9 +1,7 @@
 <script lang="ts">
   import type { AppConfig, PlaceFeature } from './types';
   import { ui, select, toggleSavedPlace, setSavedOnly, openSuggest } from './store.svelte';
-
-  // Lucide "star" inner markup (filled when saved). Inline, no icon dep.
-  const STAR = '<polygon points="12 2 15.09 8.26 22 9.27 17 14.14 18.18 21.02 12 17.77 5.82 21.02 7 14.14 2 9.27 8.91 8.26 12 2" />';
+  import Icon from './Icon.svelte';
 
   let { config, features }: { config: AppConfig; features: PlaceFeature[] } = $props();
 
@@ -29,9 +27,7 @@
         aria-pressed={ui.savedOnly}
         title={ui.savedOnly ? 'Showing saved only, tap to show all' : 'Show only saved places'}
       >
-        <svg viewBox="0 0 24 24" width="13" height="13" fill={ui.savedOnly ? 'currentColor' : 'none'}
-          stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-          aria-hidden="true">{@html STAR}</svg>
+        <Icon name="star" size={13} fill={ui.savedOnly ? 'currentColor' : 'none'} />
         Saved ({ui.savedIds.size})
       </button>
     {/if}
@@ -64,9 +60,7 @@
             ? `Remove ${fieldText(feature, titleField)} from saved`
             : `Save ${fieldText(feature, titleField)}`}
         >
-          <svg viewBox="0 0 24 24" width="16" height="16" fill={sv ? 'currentColor' : 'none'}
-            stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"
-            aria-hidden="true">{@html STAR}</svg>
+          <Icon name="star" size={16} fill={sv ? 'currentColor' : 'none'} />
         </button>
       </li>
     {/each}
