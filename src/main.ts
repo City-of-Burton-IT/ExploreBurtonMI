@@ -19,19 +19,19 @@ if (Capacitor.isNativePlatform()) {
   // else exit (the WebView default is to exit from any screen).
   import('./lib/nativeBack')
     .then(({ initNativeBack }) => initNativeBack())
-    .catch(() => {})
+    .catch((err) => console.warn('[main] nativeBack init failed:', err))
 
   // App Links: route a shared explore.burtonmi.gov link to the matching view.
   import('./lib/deepLinks')
     .then(({ initDeepLinks }) => initDeepLinks())
-    .catch(() => {})
+    .catch((err) => console.warn('[main] deepLinks init failed:', err))
 
   // Push runtime (#64): create the notification channel + wire the foreground
   // banner and tap-to-deep-link listeners. Subscriptions/permission stay opt-in
   // via Settings; this only sets up handling for messages that arrive.
   import('./lib/push')
     .then(({ initPushRuntime }) => initPushRuntime())
-    .catch(() => {})
+    .catch((err) => console.warn('[main] push init failed:', err))
 }
 
 // COMING-SOON SOFT LAUNCH (web only)

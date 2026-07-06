@@ -2,15 +2,9 @@
 // render instructions. This is the testable core for the detail panel and the
 // home of the URL-scheme validation that fixes Finda's `javascript:` gap.
 
-import type { FeatureProperties } from './types';
+import type { FeatureProperties, PropertyConfig } from './types';
 
-export type FieldFormat = 'text' | 'url' | 'email' | 'phone' | 'directions';
-
-export interface PropertyConfig {
-  field: string;
-  label: string;
-  format?: FieldFormat;
-}
+export type { FieldFormat, PropertyConfig } from './types';
 
 export type Rendered =
   | { kind: 'text'; label: string; value: string }

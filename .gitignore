@@ -20,6 +20,7 @@ dist-ssr
 # Track 2 Python pipeline
 pipeline/.venv/
 pipeline/data/cache/
+tools/.cache/
 __pycache__/
 .pytest_cache/
 

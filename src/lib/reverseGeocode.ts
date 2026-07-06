@@ -21,7 +21,7 @@ export interface AddressPoint {
 
 /** Default reject radius: if the nearest known address is farther than this,
  *  auto-fill would be misleading, so we return null and let the resident type. */
-export const DEFAULT_MAX_DISTANCE_M = 250;
+const DEFAULT_MAX_DISTANCE_M = 250;
 
 const EARTH_RADIUS_M = 6_371_000;
 const toRad = (deg: number): number => (deg * Math.PI) / 180;

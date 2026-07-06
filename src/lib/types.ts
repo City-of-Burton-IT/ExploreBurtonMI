@@ -1,9 +1,28 @@
 // Typed shape of public/config.json and the GeoJSON data.
 // Extended per milestone as features (properties, facets, search) land.
 
-import type { PropertyConfig } from './templates';
-import type { Facets } from './filter';
-export type { PropertyConfig } from './templates';
+export type FieldFormat = 'text' | 'url' | 'email' | 'phone' | 'directions';
+
+export interface PropertyConfig {
+  field: string;
+  label: string;
+  format?: FieldFormat;
+}
+
+export type FacetType = 'single' | 'list';
+
+export interface FacetConfig {
+  title: string;
+  /** 'single' = feature value must be one of the selected (match-any);
+   *  'list'   = feature's array value must contain all selected (match-all). */
+  type: FacetType;
+}
+
+/** field -> facet definition */
+export type Facets = Record<string, FacetConfig>;
+
+/** field -> selected values */
+export type Selections = Record<string, string[]>;
 
 export interface ProjectConfig {
   name: string;

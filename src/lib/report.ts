@@ -21,7 +21,7 @@ export const REPORT_CATEGORIES = [
 export type ReportCategory = (typeof REPORT_CATEGORIES)[number];
 
 /** Mirror of the flow's accept box (and roughly the map's maxBounds). */
-export const CITY_BOUNDS = { latMin: 42.85, latMax: 43.15, lngMin: -83.85, lngMax: -83.4 };
+const CITY_BOUNDS = { latMin: 42.85, latMax: 43.15, lngMin: -83.85, lngMax: -83.4 };
 
 /** ~2 MB of base64 -- the flow rejects anything bigger. */
 export const PHOTO_BASE64_MAX = 2_800_000;

@@ -4,22 +4,9 @@
 // deliberate improvement over Finda, where this logic was tangled in the
 // event-bus components.
 
-import type { PlaceFeature } from './types';
+import type { PlaceFeature, FacetType, Facets, Selections } from './types';
 
-export type FacetType = 'single' | 'list';
-
-export interface FacetConfig {
-  title: string;
-  /** 'single' = feature value must be one of the selected (match-any);
-   *  'list'   = feature's array value must contain all selected (match-all). */
-  type: FacetType;
-}
-
-/** field -> facet definition */
-export type Facets = Record<string, FacetConfig>;
-
-/** field -> selected values */
-export type Selections = Record<string, string[]>;
+export type { FacetType, FacetConfig, Facets, Selections } from './types';
 
 /** field -> (value -> count of results if that value were selected) */
 export type FacetCounts = Record<string, Record<string, number>>;

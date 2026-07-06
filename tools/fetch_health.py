@@ -50,7 +50,9 @@ B27001_NOCOV_19_64 = ["011", "014", "017", "020", "023",   # male, no coverage
                       "039", "042", "045", "048", "051"]   # female, no coverage
 B27001_TOTAL_19_64 = ["009", "012", "015", "018", "021",   # male, band totals
                       "037", "040", "043", "046", "049"]   # female, band totals
-ACS_TREND_CACHE = os.path.abspath(os.path.join(os.path.dirname(__file__), "health-acs-trend.json"))
+ACS_TREND_CACHE = os.path.abspath(
+    os.path.join(os.path.dirname(__file__), ".cache", "health-acs-trend.json")
+)
 
 # measure code -> human label (subset of the 40 PLACES measures we surface)
 LABELS = {
@@ -210,6 +212,7 @@ def build_uninsured_trend(key: str | None) -> dict | None:
             if pts:
                 lines.append({"label": name, "points": pts})
         if lines:
+            os.makedirs(os.path.dirname(ACS_TREND_CACHE), exist_ok=True)
             with open(ACS_TREND_CACHE, "w", encoding="utf-8", newline="\n") as fh:
                 json.dump(lines, fh, ensure_ascii=False, indent=2)
                 fh.write("\n")

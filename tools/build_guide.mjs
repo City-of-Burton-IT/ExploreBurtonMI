@@ -25,7 +25,25 @@ function sanitize(html) {
   );
 }
 
-const index = JSON.parse(readFileSync(join(SRC, 'index.json'), 'utf8'));
+/** Read a required content file, turning a missing file into a friendly,
+ *  actionable error instead of a raw ENOENT stack trace (this runs as
+ *  npm predev/prebuild, so a missing file would otherwise block all local dev). */
+function readContentFile(path, description) {
+  try {
+    return readFileSync(path, 'utf8');
+  } catch (err) {
+    if (err.code === 'ENOENT') {
+      throw new Error(
+        `Missing ${description}: ${path}\n` +
+        `Check content/guide/index.json -- the referenced file may be missing, ` +
+        `misspelled, or not yet created.`,
+      );
+    }
+    throw err;
+  }
+}
+
+const index = JSON.parse(readContentFile(join(SRC, 'index.json'), 'guide index'));
 const out = { sections: [], pdf: index.pdf, content: {} };
 
 for (const s of index.sections) {
@@ -41,11 +59,16 @@ for (const s of index.sections) {
 
   const file = s.file ? join(SRC, s.file) : null;
   if (s.type === 'markdown') {
-    out.content[s.id] = sanitize(renderGuideMarkdown(readFileSync(file, 'utf8'), (m) => marked.parse(m)));
+    out.content[s.id] = sanitize(
+      renderGuideMarkdown(
+        readContentFile(file, `markdown source for section '${s.id}'`),
+        (m) => marked.parse(m),
+      ),
+    );
   } else if (s.type === 'contacts') {
-    out.contacts = JSON.parse(readFileSync(file, 'utf8'));
+    out.contacts = JSON.parse(readContentFile(file, `contacts source for section '${s.id}'`));
   } else if (s.type === 'meetings') {
-    out.meetings = JSON.parse(readFileSync(file, 'utf8'));
+    out.meetings = JSON.parse(readContentFile(file, `meetings source for section '${s.id}'`));
   } else if (
     s.type === 'waste' ||
     s.type === 'ops-status' ||
