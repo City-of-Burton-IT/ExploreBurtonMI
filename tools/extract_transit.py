@@ -137,6 +137,9 @@ def main() -> int:
             feat["properties"]["url"] = url
         features.append(feat)
 
+    if not features:
+        raise SystemExit("No MTA routes through Burton parsed from the GTFS feed (schema change?).")
+
     features.sort(key=lambda f: (len(f["properties"]["route"]), f["properties"]["route"]))
     fc = {
         "type": "FeatureCollection",
@@ -172,6 +175,9 @@ def main() -> int:
             "properties": {"name": name, "_color": STOP_COLOR},
             "geometry": {"type": "Point", "coordinates": [round(lon, 5), round(lat, 5)]},
         })
+    if not stops_feats:
+        raise SystemExit("No MTA bus stops inside Burton parsed from the GTFS feed (schema change?).")
+
     stops_feats.sort(key=lambda f: f["properties"]["name"])
     stops_fc = {
         "type": "FeatureCollection",
