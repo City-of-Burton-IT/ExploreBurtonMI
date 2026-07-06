@@ -54,7 +54,7 @@ python tools/extract_overture.py
 
 # REVIEW the snapshot diff, then rebuild + review the public output:
 cd pipeline
-.venv\Scripts\python run.py
+.venv/bin/python run.py   # Windows: .venv\Scripts\python run.py
 ```
 
 The pipeline reads the committed snapshot like any curated input and maps Overture
