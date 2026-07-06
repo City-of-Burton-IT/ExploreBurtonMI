@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { InfoSeriesItem } from '../types';
   import { barRows, formatValue } from './scale';
+  import { createChartHover } from './chartHover.svelte';
   import ChartTip from './ChartTip.svelte';
 
   let { series, unit = '' }: { series: InfoSeriesItem[]; unit?: string } = $props();
@@ -8,33 +9,25 @@
   const rows = $derived(barRows(series));
   const total = $derived(rows.reduce((s, r) => s + (r.value > 0 ? r.value : 0), 0));
 
-  let host: HTMLDivElement | undefined = $state();
-  let active = $state(-1);
-  let tip = $state({ x: 0, y: 0 });
-
-  function atPointer(e: PointerEvent, i: number) {
-    if (!host) return;
-    const r = host.getBoundingClientRect();
-    tip = { x: e.clientX - r.left, y: e.clientY - r.top };
-    active = i;
-  }
+  const hover = createChartHover(-1);
+  const active = $derived(hover.active);
   const shareOfTotal = (v: number) => (total > 0 ? Math.round((Math.max(v, 0) / total) * 100) : 0);
 </script>
 
 {#if rows.length === 0}
   <p class="nodata">No data available.</p>
 {:else}
-  <div class="chart-host" bind:this={host}>
+  <div class="chart-host" bind:this={hover.host}>
     <ul class="bars" class:has-active={active >= 0}>
       {#each rows as row, i (row.label)}
         <li
           class:active={active === i}
           role="img"
           aria-label="{row.label}: {formatValue(row.value, unit)} ({shareOfTotal(row.value)}% of total)"
-          onpointerenter={(e) => atPointer(e, i)}
-          onpointermove={(e) => atPointer(e, i)}
-          onpointerleave={() => (active = -1)}
-          onpointerdown={(e) => atPointer(e, i)}
+          onpointerenter={(e) => hover.atPointer(e, i)}
+          onpointermove={(e) => hover.atPointer(e, i)}
+          onpointerleave={() => hover.clear()}
+          onpointerdown={(e) => hover.atPointer(e, i)}
         >
           <div class="row-head">
             <span class="lbl">{row.label}</span>
@@ -47,8 +40,8 @@
       {/each}
     </ul>
     <ChartTip
-      x={tip.x}
-      y={tip.y}
+      x={hover.tip.x}
+      y={hover.tip.y}
       show={active >= 0}
       label={rows[active]?.label ?? ''}
       value={active >= 0 ? formatValue(rows[active].value, unit) : ''}

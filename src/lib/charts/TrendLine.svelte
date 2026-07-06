@@ -1,5 +1,6 @@
 <script lang="ts">
   import { trendLayout, multiTrendLayout, formatValue, seriesDelta, CIVIC_BLUE } from './scale';
+  import { createChartHover } from './chartHover.svelte';
   import ChartTip from './ChartTip.svelte';
 
   let {
@@ -58,23 +59,9 @@
   const lastIdx = $derived(single.dots.length - 1);
   const showVLabel = (i: number) => !dense || i === 0 || i === lastIdx;
 
-  let host: HTMLDivElement | undefined = $state();
-  let active = $state<[number, number] | null>(null); // [lineIndex, dotIndex]
-  let tip = $state({ x: 0, y: 0 });
-
-  function atPointer(e: PointerEvent, li: number, di: number) {
-    if (!host) return;
-    const r = host.getBoundingClientRect();
-    tip = { x: e.clientX - r.left, y: e.clientY - r.top };
-    active = [li, di];
-  }
-  function atFocus(e: FocusEvent, li: number, di: number) {
-    if (!host) return;
-    const r = (e.currentTarget as SVGCircleElement).getBoundingClientRect();
-    const hr = host.getBoundingClientRect();
-    tip = { x: r.left - hr.left + r.width / 2, y: r.top - hr.top + r.height / 2 };
-    active = [li, di];
-  }
+  // hover key: [lineIndex, dotIndex]
+  const hover = createChartHover<[number, number] | null>(null);
+  const active = $derived(hover.active);
   const activeDot = $derived(active ? (drawLines[active[0]]?.dots[active[1]] ?? null) : null);
   const activeLineLabel = $derived(active ? (drawLines[active[0]]?.label ?? '') : '');
   const tipLabel = $derived(
@@ -86,7 +73,7 @@
 {#if drawLines.every((l) => l.dots.length === 0)}
   <p class="nodata">No data available.</p>
 {:else}
-  <div class="chart-host" bind:this={host}>
+  <div class="chart-host" bind:this={hover.host}>
     <svg viewBox="0 0 {W} {H}" role="img" aria-label="Trend over time" class="trend">
       <!-- baseline -->
       <line x1={PAD} y1={H - PAD} x2={W - PAD} y2={H - PAD} class="axis" />
@@ -123,12 +110,12 @@
             role="img"
             tabindex="0"
             aria-label="{ln.label ? ln.label + ', ' : ''}{d.label}: {formatValue(d.value, unit)}"
-            onpointerenter={(e) => atPointer(e, li, di)}
-            onpointermove={(e) => atPointer(e, li, di)}
-            onpointerleave={() => (active = null)}
-            onpointerdown={(e) => atPointer(e, li, di)}
-            onfocus={(e) => atFocus(e, li, di)}
-            onblur={() => (active = null)}
+            onpointerenter={(e) => hover.atPointer(e, [li, di])}
+            onpointermove={(e) => hover.atPointer(e, [li, di])}
+            onpointerleave={() => hover.clear()}
+            onpointerdown={(e) => hover.atPointer(e, [li, di])}
+            onfocus={(e) => hover.atFocus(e, [li, di])}
+            onblur={() => hover.clear()}
           />
         {/each}
       {/each}
@@ -157,8 +144,8 @@
     {/if}
 
     <ChartTip
-      x={tip.x}
-      y={tip.y}
+      x={hover.tip.x}
+      y={hover.tip.y}
       show={!!activeDot}
       label={tipLabel}
       value={activeDot ? formatValue(activeDot.value, unit) : ''}

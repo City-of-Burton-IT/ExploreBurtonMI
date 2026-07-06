@@ -1,6 +1,7 @@
 <script lang="ts">
   import type { InfoSeriesItem } from '../types';
   import { donutSegments, formatValue } from './scale';
+  import { createChartHover } from './chartHover.svelte';
   import ChartTip from './ChartTip.svelte';
 
   let { series, unit = '' }: { series: InfoSeriesItem[]; unit?: string } = $props();
@@ -12,16 +13,8 @@
 
   const layout = $derived(donutSegments(series, R));
 
-  let host: HTMLDivElement | undefined = $state();
-  let active = $state(-1);
-  let tip = $state({ x: 0, y: 0 });
-
-  function atPointer(e: PointerEvent, i: number) {
-    if (!host) return;
-    const r = host.getBoundingClientRect();
-    tip = { x: e.clientX - r.left, y: e.clientY - r.top };
-    active = i;
-  }
+  const hover = createChartHover(-1);
+  const active = $derived(hover.active);
 
   const seg = $derived(active >= 0 ? layout.segments[active] : null);
 </script>
@@ -29,7 +22,7 @@
 {#if layout.segments.length === 0}
   <p class="nodata">No data available.</p>
 {:else}
-  <div class="donut chart-host" bind:this={host}>
+  <div class="donut chart-host" bind:this={hover.host}>
     <svg viewBox="0 0 {SIZE} {SIZE}" role="img" aria-label="Proportional breakdown">
       <g transform="rotate(-90 {center} {center})">
         {#each layout.segments as s, i (s.label)}
@@ -46,10 +39,10 @@
             class:dim={active >= 0 && active !== i}
             role="img"
             aria-label="{s.label}: {formatValue(s.value, unit)} ({Math.round(s.pct)}%)"
-            onpointerenter={(e) => atPointer(e, i)}
-            onpointermove={(e) => atPointer(e, i)}
-            onpointerleave={() => (active = -1)}
-            onpointerdown={(e) => atPointer(e, i)}
+            onpointerenter={(e) => hover.atPointer(e, i)}
+            onpointermove={(e) => hover.atPointer(e, i)}
+            onpointerleave={() => hover.clear()}
+            onpointerdown={(e) => hover.atPointer(e, i)}
           />
         {/each}
       </g>
@@ -67,10 +60,10 @@
           class:active={active === i}
           role="img"
           aria-label="{s.label}: {formatValue(s.value, unit)} ({Math.round(s.pct)}%)"
-          onpointerenter={(e) => atPointer(e, i)}
-          onpointermove={(e) => atPointer(e, i)}
-          onpointerleave={() => (active = -1)}
-          onpointerdown={(e) => atPointer(e, i)}
+          onpointerenter={(e) => hover.atPointer(e, i)}
+          onpointermove={(e) => hover.atPointer(e, i)}
+          onpointerleave={() => hover.clear()}
+          onpointerdown={(e) => hover.atPointer(e, i)}
         >
           <span class="swatch" style:background={s.color}></span>
           <span class="lbl">{s.label}</span>
@@ -79,8 +72,8 @@
       {/each}
     </ul>
     <ChartTip
-      x={tip.x}
-      y={tip.y}
+      x={hover.tip.x}
+      y={hover.tip.y}
       show={active >= 0}
       label={seg?.label ?? ''}
       value={seg ? formatValue(seg.value, unit) : ''}
