@@ -15,21 +15,23 @@
 # Re-runnable (committed output; the site reads the JSON/GeoJSON, never ArcGIS):
 #     python tools/extract_trails.py
 #
-# Stdlib only (urllib/json/math).
+# Uses tools/lib for HTTP + writes.
 from __future__ import annotations
 
 import json
-import math
 import os
+import math
 import sys
-import urllib.parse
-import urllib.request
 from collections import defaultdict
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
-OUT_GEOJSON = os.path.join(ROOT, "public", "trails.geojson")
-OUT_INFO = os.path.join(ROOT, "public", "info-trails.json")
+from lib.geo import round_coords
+from lib.httpio import get_json
+from lib.iox import write_geojson, write_json
+from lib.paths import public_path
+
+BOUNDARY = public_path("boundary.geojson")
+OUT_GEOJSON = public_path("trails.geojson")
+OUT_INFO = public_path("info-trails.json")
 
 LAYER = ("https://services2.arcgis.com/5ckbIY7K9TUKoseK/arcgis/rest/services/"
          "Legacy_Trail_Map_WFL1/FeatureServer/0/query")
@@ -45,12 +47,6 @@ STATUS_COLOR = {
     "Proposed": "#6a1b9a",            # purple = proposed
 }
 DEFAULT_COLOR = "#1565c0"
-
-
-def _round(coords, ndigits=5):
-    if isinstance(coords[0], (int, float)):
-        return [round(coords[0], ndigits), round(coords[1], ndigits)]
-    return [_round(c, ndigits) for c in coords]
 
 
 def _rings() -> list:
@@ -138,10 +134,7 @@ def fetch() -> list:
         "returnGeometry": "true",
         "f": "geojson",
     }
-    url = LAYER + "?" + urllib.parse.urlencode(params)
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        return json.load(resp).get("features", [])
+    return get_json(LAYER, params, timeout=120).get("features", [])
 
 
 def main() -> int:
@@ -198,7 +191,7 @@ def main() -> int:
                 "_dashArray": None if is_existing else "6 6",
                 "_popupRows": rows,
             },
-            "geometry": {"type": geom["type"], "coordinates": _round(geom["coordinates"])},
+            "geometry": {"type": geom["type"], "coordinates": round_coords(geom["coordinates"])},
         })
 
     if not features:
@@ -216,9 +209,7 @@ def main() -> int:
                     "are dashed."),
         "features": features,
     }
-    with open(OUT_GEOJSON, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(OUT_GEOJSON, fc)
 
     # ---- dashboard JSON --------------------------------------------------
     existing_mi = round(miles_status.get(EXISTING, 0.0), 1)
@@ -292,9 +283,7 @@ def main() -> int:
             "City of Burton inventory.",
         ],
     }
-    with open(OUT_INFO, "w", encoding="utf-8") as fh:
-        json.dump(panel, fh, indent=2, ensure_ascii=False)
-        fh.write("\n")
+    write_json(OUT_INFO, panel)
 
     print(f"Wrote {OUT_GEOJSON} ({len(features)} segments)")
     print(f"Wrote {OUT_INFO}")

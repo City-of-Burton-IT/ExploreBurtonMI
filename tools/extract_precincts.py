@@ -13,24 +13,19 @@
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import sys
-import urllib.parse
-import urllib.request
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-OUT = os.path.join(ROOT, "public", "precincts.geojson")
+from lib.geo import round_coords
+from lib.httpio import get_json
+from lib.iox import write_geojson
+from lib.paths import public_path
+
+OUT = public_path("precincts.geojson")
 # State of Michigan OpenData boundaries MapServer; layer 9 = 2024 Voting Precincts.
 SERVICE = "https://gisagocss.state.mi.us/arcgis/rest/services/OpenData/boundaries/MapServer/9/query"
 JURISDICTION = "Burton"
 COUNTY_FIPS = "049"  # Genesee
-
-
-def _round(coords, ndigits=5):
-    if isinstance(coords[0], (int, float)):
-        return [round(coords[0], ndigits), round(coords[1], ndigits)]
-    return [_round(c, ndigits) for c in coords]
 
 
 def fetch(year: int) -> list:
@@ -40,10 +35,7 @@ def fetch(year: int) -> list:
         "outSR": "4326",
         "f": "geojson",
     }
-    url = SERVICE + "?" + urllib.parse.urlencode(params)
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=40) as resp:
-        fc = json.load(resp)
+    fc = get_json(SERVICE, params, timeout=40)
     feats = fc.get("features", [])
     if not feats:
         raise SystemExit(f"No Burton precincts returned (check the service / year {year}).")
@@ -67,7 +59,7 @@ def main() -> int:
         features.append({
             "type": "Feature",
             "properties": {"name": long_name, "precinct": num},
-            "geometry": {"type": geom["type"], "coordinates": _round(geom["coordinates"])},
+            "geometry": {"type": geom["type"], "coordinates": round_coords(geom["coordinates"])},
         })
 
     features.sort(key=lambda f: int(f["properties"]["precinct"]) if f["properties"]["precinct"].isdigit() else 0)
@@ -79,9 +71,7 @@ def main() -> int:
         ),
         "features": features,
     }
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(OUT, fc)
     print(f"Wrote {OUT}")
     print(f"  {len(features)} Burton precincts ({args.year}):")
     for f in features:

@@ -18,18 +18,18 @@
 # Re-runnable (committed output; the site reads the JSON, never ArcGIS):
 #     python tools/extract_access.py
 #
-# Stdlib only (urllib/json).
+# Uses tools/lib for HTTP + writes.
 from __future__ import annotations
 
 import json
-import os
 import sys
-import urllib.parse
-import urllib.request
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
-OUT_INFO = os.path.join(ROOT, "public", "info-access.json")
+from lib.httpio import get_json
+from lib.iox import write_json
+from lib.paths import public_path
+
+BOUNDARY = public_path("boundary.geojson")
+OUT_INFO = public_path("info-access.json")
 
 BASE = "https://services2.arcgis.com/5ckbIY7K9TUKoseK/ArcGIS/rest/services"
 
@@ -65,10 +65,7 @@ def _query(service: str, fields: str, with_geom: bool = False) -> list:
         "f": "geojson" if with_geom else "json",
         "resultRecordCount": "4000",
     }
-    url = f"{BASE}/{service}/FeatureServer/0/query?" + urllib.parse.urlencode(params)
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        d = json.load(resp)
+    d = get_json(f"{BASE}/{service}/FeatureServer/0/query", params, timeout=120)
     if with_geom:
         return [(f.get("geometry"), f.get("properties", {})) for f in d.get("features", [])]
     return [f["attributes"] for f in d.get("features", [])]
@@ -179,9 +176,7 @@ def main() -> int:
             "City of Burton statistic.",
         ],
     }
-    with open(OUT_INFO, "w", encoding="utf-8") as fh:
-        json.dump(panel, fh, indent=2, ensure_ascii=False)
-        fh.write("\n")
+    write_json(OUT_INFO, panel)
 
     print(f"Wrote {OUT_INFO}")
     print(f"  Burton tracts={len(inc)} bg(cars)={len(cars)}")

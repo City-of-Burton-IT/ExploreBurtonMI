@@ -12,20 +12,22 @@
 # Re-runnable (committed output; the site reads the JSON/GeoJSON, never ArcGIS):
 #     python tools/extract_parks.py
 #
-# Stdlib only (urllib/json).
+# Uses tools/lib for HTTP + writes.
 from __future__ import annotations
 
 import json
 import os
 import sys
-import urllib.parse
-import urllib.request
 from collections import defaultdict
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
-OUT_GEOJSON = os.path.join(ROOT, "public", "parks.geojson")
-OUT_INFO = os.path.join(ROOT, "public", "info-parks.json")
+from lib.geo import round_coords
+from lib.httpio import get_json
+from lib.iox import write_geojson, write_json
+from lib.paths import public_path
+
+BOUNDARY = public_path("boundary.geojson")
+OUT_GEOJSON = public_path("parks.geojson")
+OUT_INFO = public_path("info-parks.json")
 
 LAYER = ("https://services2.arcgis.com/5ckbIY7K9TUKoseK/ArcGIS/rest/services/"
          "Genesee_County_Parks/FeatureServer/0/query")
@@ -50,12 +52,6 @@ CAT_COLOR = {
 }
 CAT_FALLBACK = "#888888"
 CAT_ORDER = ["City of Burton", "Genesee County", "Neighborhood", "Other"]
-
-
-def _round(coords, ndigits=5):
-    if isinstance(coords[0], (int, float)):
-        return [round(coords[0], ndigits), round(coords[1], ndigits)]
-    return [_round(c, ndigits) for c in coords]
 
 
 def _rings() -> list:
@@ -111,10 +107,7 @@ def fetch() -> list:
         "returnGeometry": "true",
         "f": "geojson",
     }
-    url = LAYER + "?" + urllib.parse.urlencode(params)
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        return json.load(resp).get("features", [])
+    return get_json(LAYER, params, timeout=120).get("features", [])
 
 
 def main() -> int:
@@ -159,7 +152,7 @@ def main() -> int:
                 "_weight": 1,
                 "_popupRows": rows,
             },
-            "geometry": {"type": geom["type"], "coordinates": _round(geom["coordinates"])},
+            "geometry": {"type": geom["type"], "coordinates": round_coords(geom["coordinates"])},
         })
 
     if not features:
@@ -171,9 +164,7 @@ def main() -> int:
                     "center lies within the City of Burton, colored by who runs the park."),
         "features": features,
     }
-    with open(OUT_GEOJSON, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(OUT_GEOJSON, fc)
 
     # ---- dashboard -------------------------------------------------------
     total_ac = round(sum(cat_acres.values()))
@@ -224,9 +215,7 @@ def main() -> int:
             "facilities list.",
         ],
     }
-    with open(OUT_INFO, "w", encoding="utf-8") as fh:
-        json.dump(panel, fh, indent=2, ensure_ascii=False)
-        fh.write("\n")
+    write_json(OUT_INFO, panel)
 
     print(f"Wrote {OUT_GEOJSON} ({len(features)} parks)")
     print(f"Wrote {OUT_INFO}")

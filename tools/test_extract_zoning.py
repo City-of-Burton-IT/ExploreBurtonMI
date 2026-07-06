@@ -18,8 +18,4 @@ def test_category_colors_are_distinct():
     assert ez.CAT_FALLBACK not in colors  # fallback is reserved for unknowns
 
 
-def test_round_reduces_precision():
-    assert ez._round([[-83.612345678, 43.012345678]]) == [[-83.61235, 43.01235]]
-    # nested rings handled recursively
-    nested = ez._round([[[-83.6123456, 43.0123456]]])
-    assert nested == [[[-83.61235, 43.01235]]]
+# Coordinate rounding moved to lib/geo.py (round_coords); covered in test_lib.py.

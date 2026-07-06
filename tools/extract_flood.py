@@ -18,22 +18,18 @@ from __future__ import annotations
 import json
 import os
 import sys
-import urllib.parse
-import urllib.request
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
-OUT = os.path.join(ROOT, "public", "flood-zones.geojson")
+from lib.arcgis import paged_query
+from lib.geo import round_coords
+from lib.iox import write_geojson
+from lib.paths import public_path
+
+BOUNDARY = public_path("boundary.geojson")
+OUT = public_path("flood-zones.geojson")
 
 SERVICE = "https://hazards.fema.gov/arcgis/rest/services/public/NFHL/MapServer/28/query"
 FLOOD_BLUE = "#1e6fb8"
 PAGE = 1000  # FEMA maxRecordCount
-
-
-def _round(coords, ndigits=5):
-    if isinstance(coords[0], (int, float)):
-        return [round(coords[0], ndigits), round(coords[1], ndigits)]
-    return [_round(c, ndigits) for c in coords]
 
 
 def boundary_bbox(pad: float = 0.004) -> tuple[float, float, float, float]:
@@ -58,33 +54,19 @@ def boundary_bbox(pad: float = 0.004) -> tuple[float, float, float, float]:
 
 
 def fetch(bbox: tuple[float, float, float, float]) -> list:
-    features: list = []
-    offset = 0
-    while True:
-        params = {
-            "where": "SFHA_TF='T'",  # Special Flood Hazard Area = high risk
-            "geometry": ",".join(str(round(v, 5)) for v in bbox),
-            "geometryType": "esriGeometryEnvelope",
-            "inSR": "4326",
-            "outSR": "4326",
-            "spatialRel": "esriSpatialRelIntersects",
-            "outFields": "FLD_ZONE",
-            "maxAllowableOffset": "0.0002",  # ~20 m generalization
-            "returnGeometry": "true",
-            "resultOffset": str(offset),
-            "resultRecordCount": str(PAGE),
-            "f": "geojson",
-        }
-        url = SERVICE + "?" + urllib.parse.urlencode(params)
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=90) as resp:
-            fc = json.load(resp)
-        page = fc.get("features", [])
-        features.extend(page)
-        if len(page) < PAGE:
-            break
-        offset += PAGE
-    return features
+    params = {
+        "where": "SFHA_TF='T'",  # Special Flood Hazard Area = high risk
+        "geometry": ",".join(str(round(v, 5)) for v in bbox),
+        "geometryType": "esriGeometryEnvelope",
+        "inSR": "4326",
+        "outSR": "4326",
+        "spatialRel": "esriSpatialRelIntersects",
+        "outFields": "FLD_ZONE",
+        "maxAllowableOffset": "0.0002",  # ~20 m generalization
+        "returnGeometry": "true",
+        "f": "geojson",
+    }
+    return list(paged_query(SERVICE, params, page_size=PAGE, timeout=90))
 
 
 def main() -> int:
@@ -110,7 +92,7 @@ def main() -> int:
                 "_fillOpacity": 0.35,  # filled, not just outlined
                 "_weight": 1,
             },
-            "geometry": {"type": geom["type"], "coordinates": _round(geom["coordinates"])},
+            "geometry": {"type": geom["type"], "coordinates": round_coords(geom["coordinates"])},
         })
 
     fc = {
@@ -121,9 +103,7 @@ def main() -> int:
         ),
         "features": features,
     }
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(OUT, fc)
     print(f"Wrote {OUT}")
     print(f"  {len(features)} flood-zone polygons; zones: {zones}")
     print(f"  file size: {os.path.getsize(OUT) // 1024} KiB")

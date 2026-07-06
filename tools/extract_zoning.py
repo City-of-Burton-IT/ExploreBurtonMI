@@ -13,19 +13,20 @@
 # Re-runnable (committed output; the site reads the JSON/GeoJSON, never ArcGIS):
 #     python tools/extract_zoning.py
 #
-# Stdlib only (urllib/json).
+# Uses tools/lib for HTTP paging + writes.
 from __future__ import annotations
 
-import json
 import os
 import sys
-import urllib.parse
-import urllib.request
 from collections import defaultdict
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-OUT_GEOJSON = os.path.join(ROOT, "public", "zoning.geojson")
-OUT_INFO = os.path.join(ROOT, "public", "info-zoning.json")
+from lib.arcgis import paged_query
+from lib.geo import round_coords
+from lib.iox import write_geojson, write_json
+from lib.paths import public_path
+
+OUT_GEOJSON = public_path("zoning.geojson")
+OUT_INFO = public_path("info-zoning.json")
 
 LAYER = ("https://services2.arcgis.com/5ckbIY7K9TUKoseK/ArcGIS/rest/services/"
          "Zoning_Layer/FeatureServer/0/query")
@@ -45,36 +46,16 @@ CAT_FALLBACK = "#888888"
 CAT_ORDER = ["Residential", "Commercial", "Office", "Industrial", "Parking"]
 
 
-def _round(coords, ndigits=5):
-    if isinstance(coords[0], (int, float)):
-        return [round(coords[0], ndigits), round(coords[1], ndigits)]
-    return [_round(c, ndigits) for c in coords]
-
-
 def fetch() -> list:
-    feats: list = []
-    offset = 0
-    while True:
-        params = {
-            "where": WHERE,
-            "outFields": "Zoning,ZoneDescr,ZoningCat,AcreCalc,DataYear",
-            "returnGeometry": "true",
-            "outSR": "4326",
-            "maxAllowableOffset": "0.00005",  # ~5 m generalization (keeps parcel shapes)
-            "resultOffset": str(offset),
-            "resultRecordCount": str(PAGE),
-            "f": "geojson",
-        }
-        url = LAYER + "?" + urllib.parse.urlencode(params)
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            d = json.load(resp)
-        page = d.get("features", [])
-        feats.extend(page)
-        if len(page) < PAGE:
-            break
-        offset += PAGE
-    return feats
+    params = {
+        "where": WHERE,
+        "outFields": "Zoning,ZoneDescr,ZoningCat,AcreCalc,DataYear",
+        "returnGeometry": "true",
+        "outSR": "4326",
+        "maxAllowableOffset": "0.00005",  # ~5 m generalization (keeps parcel shapes)
+        "f": "geojson",
+    }
+    return list(paged_query(LAYER, params, page_size=PAGE, timeout=120))
 
 
 def main() -> int:
@@ -113,7 +94,7 @@ def main() -> int:
                 "_weight": 1,
                 "_popupRows": [["Category", cat]],
             },
-            "geometry": {"type": geom["type"], "coordinates": _round(geom["coordinates"])},
+            "geometry": {"type": geom["type"], "coordinates": round_coords(geom["coordinates"])},
         })
 
     fc = {
@@ -122,9 +103,7 @@ def main() -> int:
                     "zoning map), colored by district category."),
         "features": features,
     }
-    with open(OUT_GEOJSON, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(OUT_GEOJSON, fc)
 
     # ---- dashboard -------------------------------------------------------
     total_ac = round(sum(cat_acres.values()))
@@ -190,9 +169,7 @@ def main() -> int:
             "zoning lookup.",
         ],
     }
-    with open(OUT_INFO, "w", encoding="utf-8") as fh:
-        json.dump(panel, fh, indent=2, ensure_ascii=False)
-        fh.write("\n")
+    write_json(OUT_INFO, panel)
 
     print(f"Wrote {OUT_GEOJSON} ({len(features)} polygons)")
     print(f"Wrote {OUT_INFO}")
