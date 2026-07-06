@@ -46,6 +46,16 @@ export interface StatusResult {
   publicNote?: string;
 }
 
+/** Shape of the read-flow's JSON response body (raw SharePoint fields, pre-mapping). */
+interface StatusResponse {
+  found?: boolean;
+  kind?: string;
+  status?: string;
+  updatedAt?: string;
+  recap?: string;
+  publicNote?: string;
+}
+
 /** POST the token as text/plain (no-preflight CORS, same as the intake forms) to the
  *  read flow; return a sanitized, stage-mapped result. Never throws. The fetch arg is
  *  injectable for tests; defaults to global fetch. */
@@ -62,7 +72,7 @@ export async function fetchStatus(
       body: JSON.stringify({ token, kind }),
     });
     if (!resp.ok) return { found: false };
-    const d = await resp.json();
+    const d = (await resp.json()) as StatusResponse;
     if (!d || !d.found) return { found: false };
     return {
       found: true,

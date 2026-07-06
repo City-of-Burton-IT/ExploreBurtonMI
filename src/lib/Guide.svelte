@@ -4,6 +4,7 @@
   import { ui, setGuideSection, openAbout } from './store.svelte';
   import { safeHref } from './templates';
   import { dataFetch } from './remote';
+  import { validateGuideBundle } from './guide/guideBundle';
   import GuideSection from './guide/GuideSection.svelte';
   import GuideIcon from './guide/GuideIcon.svelte';
   import Lightbox from './Lightbox.svelte';
@@ -17,7 +18,7 @@
   onMount(async () => {
     try {
       const r = await dataFetch('guide.json');
-      if (r.ok) bundle = (await r.json()) as GuideBundle;
+      if (r.ok) bundle = validateGuideBundle(await r.json());
     } catch {
       bundle = null;
     }

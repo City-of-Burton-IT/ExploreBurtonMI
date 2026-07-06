@@ -4,7 +4,7 @@
   import {
     activeOpsItems,
     statusMeta,
-    type OpsStatusBundle,
+    validateOpsStatusBundle,
     type OpsItem,
     type OpsStatusKey,
   } from './opsStatus';
@@ -29,7 +29,7 @@
     try {
       const r = await dataFetch('ops-status.json');
       if (r.ok) {
-        const b = (await r.json()) as OpsStatusBundle;
+        const b = validateOpsStatusBundle(await r.json());
         items = b.items ?? [];
         updated = b.updated ?? '';
       }

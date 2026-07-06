@@ -1,5 +1,6 @@
+import { readFileSync } from 'node:fs';
 import { describe, it, expect } from 'vitest';
-import { activeOpsItems, statusMeta, type OpsItem } from '../src/lib/guide/opsStatus';
+import { activeOpsItems, statusMeta, validateOpsStatusBundle, type OpsItem } from '../src/lib/guide/opsStatus';
 
 const mk = (over: Partial<OpsItem>): OpsItem => ({
   id: 'x',
@@ -42,5 +43,40 @@ describe('statusMeta', () => {
     expect(m.icon).toBe('standby');
     expect(m.label).toBe('frobnicating');
     expect(m.color).toBe('#6b7280');
+  });
+});
+
+describe('validateOpsStatusBundle', () => {
+  const valid = { updated: '2026-06-11', items: [mk({})] };
+
+  it('accepts a valid bundle', () => {
+    expect(() => validateOpsStatusBundle(valid)).not.toThrow();
+  });
+
+  it('accepts the real public/ops-status.json', () => {
+    const raw = JSON.parse(readFileSync('public/ops-status.json', 'utf-8'));
+    expect(() => validateOpsStatusBundle(raw)).not.toThrow();
+  });
+
+  it('accepts a bundle without the optional updated field', () => {
+    expect(() => validateOpsStatusBundle({ items: [mk({})] })).not.toThrow();
+  });
+
+  it('throws when not an object', () => {
+    expect(() => validateOpsStatusBundle(null)).toThrow(/object/);
+  });
+
+  it('throws when items is not an array', () => {
+    expect(() => validateOpsStatusBundle({ items: 'nope' })).toThrow(/items/);
+  });
+
+  it('throws when an item is missing required fields', () => {
+    const bad = { items: [{ id: 'x', service: 'y' }] };
+    expect(() => validateOpsStatusBundle(bad)).toThrow(/status/);
+  });
+
+  it('throws when an item.active is not a boolean', () => {
+    const bad = { items: [{ ...mk({}), active: 'yes' }] };
+    expect(() => validateOpsStatusBundle(bad)).toThrow(/active/);
   });
 });

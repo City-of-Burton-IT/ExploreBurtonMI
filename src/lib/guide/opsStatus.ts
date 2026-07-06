@@ -53,3 +53,41 @@ export function activeOpsItems(items: OpsItem[]): OpsItem[] {
 export function statusMeta(status: string): OpsStatusMeta {
   return STATUS_META[status as OpsStatusKey] ?? { label: status, color: '#6b7280', icon: 'standby' };
 }
+
+/**
+ * Validate a fetched ops-status.json payload. Fails LOUDLY (throws) on a
+ * malformed bundle rather than letting OpsStatus.svelte destructure undefined
+ * fields -- mirrors validateData/validateConfig's style.
+ */
+export function validateOpsStatusBundle(raw: unknown): OpsStatusBundle {
+  const errors: string[] = [];
+  const b = raw as Partial<OpsStatusBundle>;
+
+  if (!b || typeof b !== 'object') {
+    throw new Error('ops-status.json is not an object');
+  }
+
+  if (!Array.isArray(b.items)) {
+    errors.push('items must be an array');
+  } else {
+    b.items.forEach((it, i) => {
+      const item = it as Partial<OpsItem> | null | undefined;
+      if (!item || typeof item !== 'object') {
+        errors.push(`items[${i}] is not an object`);
+        return;
+      }
+      if (!item.id) errors.push(`items[${i}].id is required`);
+      if (!item.service) errors.push(`items[${i}].service is required`);
+      if (!item.status) errors.push(`items[${i}].status is required`);
+      if (typeof item.detail !== 'string' || !item.detail) {
+        errors.push(`items[${i}].detail is required`);
+      }
+      if (typeof item.active !== 'boolean') errors.push(`items[${i}].active must be a boolean`);
+    });
+  }
+
+  if (errors.length) {
+    throw new Error(`Invalid ops-status.json:\n - ${errors.join('\n - ')}`);
+  }
+  return b as OpsStatusBundle;
+}
