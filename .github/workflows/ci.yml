@@ -50,7 +50,7 @@ jobs:
         run: pip install -r pipeline/requirements.txt 'openpyxl>=3.1' 'pyshp>=2.3'
 
       - name: Run pipeline + tools tests
-        run: pytest pipeline/test tools -q --ignore=tools/pin-editor
+        run: pytest pipeline/test tools -q
 
   pin-editor:
     runs-on: ubuntu-latest
@@ -62,7 +62,7 @@ jobs:
           python-version: '3.12'
 
       - name: Install pin-editor deps
-        run: pip install -r tools/pin-editor/requirements.txt
+        run: pip install -r apps/pin-editor/requirements.txt
 
       - name: Run pin-editor tests
-        run: pytest tools/pin-editor/test -q
+        run: pytest apps/pin-editor/test -q

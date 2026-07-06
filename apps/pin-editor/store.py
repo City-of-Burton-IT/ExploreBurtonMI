@@ -18,7 +18,7 @@ from openpyxl.worksheet.datavalidation import DataValidation
 
 import excel
 
-# tools/pin-editor/store.py -> repo root is two levels up.
+# apps/pin-editor/store.py -> repo root is two levels up.
 REPO_ROOT = Path(__file__).resolve().parents[2]
 FACILITIES = REPO_ROOT / "pipeline" / "data" / "facilities.geojson"
 OVERRIDES = REPO_ROOT / "pipeline" / "data" / "overrides.json"
