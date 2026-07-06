@@ -41,17 +41,19 @@ export default defineConfig({
         navigateFallback: '/index.html',
         runtimeCaching: [
           {
-            // Committed data (data/boundary/overlays/info-*/guide/waste-schedule JSON):
-            // prefer fresh so a pipeline re-run shows up, fall back to cache offline.
-            urlPattern: ({ url }) =>
-              /\/(data|boundary|precincts|school-districts|transit-routes|flood-zones|info-[^/]+|guide|waste-schedule|alerts|ops-status|freshness|road-closures|address-points)\.(geo)?json$/.test(
-                url.pathname,
-              ),
+            // Committed data (every same-origin .json/.geojson: core data, overlays,
+            // info-* panels, guide, alerts, ...): prefer fresh so a pipeline re-run
+            // shows up, fall back to cache offline. Matching by extension instead of
+            // a filename allowlist so new overlays/panels are cached automatically.
+            urlPattern: ({ url, sameOrigin }) =>
+              sameOrigin && /\.(geo)?json$/.test(url.pathname),
             handler: 'NetworkFirst',
             options: {
               cacheName: 'burton-data',
               networkTimeoutSeconds: 4,
-              expiration: { maxEntries: 40, maxAgeSeconds: 60 * 60 * 24 * 30 },
+              // Comfortably above the ~30 data files shipped today so LRU eviction
+              // can't silently drop core map data in favor of dashboard panels.
+              expiration: { maxEntries: 80, maxAgeSeconds: 60 * 60 * 24 * 30 },
               cacheableResponse: { statuses: [0, 200] },
             },
           },
@@ -72,6 +74,18 @@ export default defineConfig({
       devOptions: { enabled: false },
     }),
   ],
+  build: {
+    rollupOptions: {
+      output: {
+        // Split rarely-changing vendor code into its own chunks so an app-code
+        // change doesn't bust the browser cache for leaflet/minisearch too.
+        manualChunks(id: string) {
+          if (id.includes('node_modules/leaflet')) return 'leaflet'; // + markercluster
+          if (id.includes('node_modules/minisearch')) return 'minisearch';
+        },
+      },
+    },
+  },
   test: {
     // filter.ts / templates.ts are pure logic - no DOM needed
     environment: 'node',
