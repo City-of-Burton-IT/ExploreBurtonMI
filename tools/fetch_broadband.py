@@ -10,22 +10,24 @@
 #   python tools/fetch_broadband.py --user you@example.gov --token <hash>
 #
 # Re-runnable (committed output; the site reads the JSON, never the FCC API).
-# Stdlib only (urllib/zipfile/csv).
+# Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 from __future__ import annotations
 
 import argparse
 import csv
 import io
-import json
 import os
 import sys
-import urllib.request
 import zipfile
+
+from lib.httpio import get_bytes, get_json
+from lib.iox import write_json
+from lib.paths import public_path
 
 API = "https://broadbandmap.fcc.gov/api/public/map"
 STATE_FIPS = "26"          # Michigan
 BURTON_GEOID = "2612060"   # Burton city
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-broadband.json"))
+OUT = public_path("info-broadband.json")
 
 SPEED_TIERS = [
     ("speed_25_3", "25 / 3 Mbps"),
@@ -51,14 +53,9 @@ BRANDS = {
 }
 
 
-def _get(url: str, headers: dict, timeout: int = 120) -> bytes:
-    req = urllib.request.Request(url, headers=headers)
-    with urllib.request.urlopen(req, timeout=timeout) as resp:
-        return resp.read()
-
-
 def _download_rows(H: dict, file_meta: dict) -> list:
-    raw = _get(f"{API}/downloads/downloadFile/availability/{file_meta['file_id']}", H, 240)
+    raw = get_bytes(f"{API}/downloads/downloadFile/availability/{file_meta['file_id']}",
+                    headers=H, timeout=240)
     try:
         with zipfile.ZipFile(io.BytesIO(raw)) as z:
             text = z.read(z.namelist()[0]).decode("utf-8", "replace")
@@ -108,7 +105,7 @@ def fetch_adoption(census_key: str | None) -> float | None:
     url = ("https://api.census.gov/data/2023/acs/acs5?get=B28002_001E,B28002_004E"
            f"&for=place:12060&in=state:26&key={census_key}")
     try:
-        data = json.loads(_get(url, {"User-Agent": "Mozilla/5.0"}, 45))
+        data = get_json(url, timeout=45)
         total, broadband = int(data[1][0]), int(data[1][1])
         return round(100 * broadband / total, 1) if total > 0 else None
     except Exception:
@@ -130,18 +127,19 @@ def main() -> None:
     H = {"User-Agent": "Mozilla/5.0", "username": args.user, "hash_value": args.token}
 
     # Latest availability as-of date.
-    dates = json.loads(_get(f"{API}/listAsOfDates", H, 45))["data"]
+    dates = get_json(f"{API}/listAsOfDates", headers=H, timeout=45)["data"]
     as_of = max(d["as_of_date"] for d in dates if d["data_type"] == "availability")
 
     # Find the Michigan fixed-broadband place-summary file for that date.
-    files = json.loads(_get(f"{API}/downloads/listAvailabilityData/{as_of}", H))["data"]
+    files = get_json(f"{API}/downloads/listAvailabilityData/{as_of}", headers=H, timeout=120)["data"]
     match = next((f for f in files
                   if f.get("subcategory") == "Summary by Geography Type - Census Place"
                   and f"_{STATE_FIPS}_fixed_broadband_summary_by_geography_place" in (f.get("file_name") or "")), None)
     if not match:
         sys.exit(f"No MI place-summary file found for {as_of}")
 
-    raw = _get(f"{API}/downloads/downloadFile/availability/{match['file_id']}", H)
+    raw = get_bytes(f"{API}/downloads/downloadFile/availability/{match['file_id']}",
+                    headers=H, timeout=120)
     with zipfile.ZipFile(io.BytesIO(raw)) as z:
         text = z.read(z.namelist()[0]).decode("utf-8", "replace")
     rows = list(csv.DictReader(io.StringIO(text)))
@@ -239,9 +237,7 @@ def main() -> None:
                    "href": f"https://broadbandmap.fcc.gov/area-summary/fixed?type=place&geoid={BURTON_GEOID}"}],
         "notes": notes,
     }
-    with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(panel, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  as_of={as_of} homes={homes:,} 100/20={served_100_20}% gigabit={gig}%")
     print(f"  by tech (100/20): {tech_rows}")

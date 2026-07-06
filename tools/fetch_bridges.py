@@ -12,22 +12,23 @@
 # Re-runnable (committed output; the site reads the JSON, never FHWA):
 #   python tools/fetch_bridges.py [--year 2024]
 #
-# Stdlib only (urllib/csv/json).
+# Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 from __future__ import annotations
 
 import argparse
 import csv
 import io
 import json
-import os
 import sys
-import urllib.request
 from collections import Counter
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-OUT = os.path.join(ROOT, "public", "info-bridges.json")
-OUT_GEOJSON = os.path.join(ROOT, "public", "bridges.geojson")
-BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
+from lib.httpio import get_bytes
+from lib.iox import write_geojson, write_json
+from lib.paths import public_path
+
+OUT = public_path("info-bridges.json")
+OUT_GEOJSON = public_path("bridges.geojson")
+BOUNDARY = public_path("boundary.geojson")
 GENESEE = "049"
 COND_COLS = ("DECK_COND_058", "SUPERSTRUCTURE_COND_059",
              "SUBSTRUCTURE_COND_060", "CULVERT_COND_062")
@@ -185,9 +186,7 @@ def main() -> None:
     ap.add_argument("--year", default="2024", help="NBI publication year")
     args = ap.parse_args()
     url = f"https://www.fhwa.dot.gov/bridge/nbi/{args.year}/delimited/MI{args.year[2:]}.txt"
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=120) as resp:
-        rows = list(csv.DictReader(io.StringIO(resp.read().decode("latin-1"))))
+    rows = list(csv.DictReader(io.StringIO(get_bytes(url, timeout=120).decode("latin-1"))))
 
     rings = _load_rings()
     burton = []
@@ -286,9 +285,7 @@ def main() -> None:
             "Source: FHWA NBI; not endorsed or certified by FHWA.",
         ],
     }
-    with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(panel, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  bridges={total} condition={dict(cond)} oldest={min(years) if years else None} adt={adt:,}")
     print(f"  by decade: {dict(sorted(decade.items()))}")
@@ -299,9 +296,7 @@ def main() -> None:
 
     # Per-bridge map overlay: condition-colored points the viewer toggles on.
     geojson = build_bridges_geojson(burton)
-    with open(OUT_GEOJSON, "w", encoding="utf-8") as f:
-        json.dump(geojson, f, ensure_ascii=False, separators=(",", ":"))
-        f.write("\n")
+    write_geojson(OUT_GEOJSON, geojson)
     print(f"Wrote {OUT_GEOJSON} ({len(geojson['features'])} points)")
 
 

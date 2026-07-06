@@ -27,12 +27,13 @@ import argparse
 import json
 import os
 import sys
-import time
-import urllib.request
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-DISTRICTS_GEOJSON = os.path.join(ROOT, "public", "school-districts.geojson")
-OUT = os.path.join(ROOT, "public", "info-schools.json")
+from lib.httpio import get_json
+from lib.iox import write_json
+from lib.paths import public_path
+
+DISTRICTS_GEOJSON = public_path("school-districts.geojson")
+OUT = public_path("info-schools.json")
 
 API = "https://educationdata.urban.org/api/v1/school-districts/ccd"
 
@@ -66,9 +67,7 @@ EDU_TREND_YEARS = [2013, 2018, 2023]
 def _census_row(year: int, get_vars: list[str], geo: str, key: str) -> dict:
     url = (f"https://api.census.gov/data/{year}/acs/acs5"
            f"?get={','.join(get_vars)}&{geo}&key={key}")
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=40) as resp:
-        rows = json.load(resp)
+    rows = get_json(url, timeout=40)
     return dict(zip(rows[0], rows[1]))
 
 
@@ -139,18 +138,11 @@ def build_education(key: str | None, year: int = 2023) -> dict | None:
 
 
 def _get(url: str, attempts: int = 4) -> dict:
-    """GET JSON with retry/backoff, the Urban API 522s/times out under load."""
-    last = None
-    for i in range(attempts):
-        try:
-            req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-            with urllib.request.urlopen(req, timeout=30 + i * 20) as resp:
-                return json.load(resp)
-        except Exception as exc:  # noqa: BLE001 - transient; retry then give up
-            last = exc
-            if i < attempts - 1:
-                time.sleep(2 + i * 2)
-    raise RuntimeError(f"all {attempts} attempts failed for {url}: {last}")
+    """GET JSON with retry/backoff, the Urban API 522s/times out under load.
+
+    Thin wrapper over lib.httpio.get_json (which this retry logic was promoted
+    into), kept as a module-level seam so tests can stub the API."""
+    return get_json(url, attempts=attempts, timeout=30)
 
 
 def load_districts() -> list[dict]:
@@ -315,9 +307,7 @@ def main() -> int:
     print(f"  {len(districts)} districts; fetching enrollment for {args.year} ...")
     edu = build_education(args.census_key)
     panel = build_panel(districts, args.year, edu)
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  districts charted: {len(panel['charts'][0]['series'])}  links: {len(panel['links'])}")
     return 0

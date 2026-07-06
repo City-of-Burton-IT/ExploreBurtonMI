@@ -1,10 +1,11 @@
 # Tests for fetch_schools.py.
 #
-# PRIORITY: the _get retry/backoff helper (the Urban Institute API is flaky
-# under load) is exercised with a stubbed urllib.request.urlopen and a stubbed
-# time.sleep so the tests are instant and touch no network. Also covers the
-# pure parsing helpers (load_districts, district_stats' directory/fallback
-# branching) with synthetic fixtures.
+# PRIORITY: the _get retry/backoff path (the Urban Institute API is flaky
+# under load) is exercised end-to-end through fs._get -> lib.httpio.get_json
+# with a stubbed urllib.request.urlopen and a stubbed time.sleep so the tests
+# are instant and touch no network. Also covers the pure parsing helpers
+# (load_districts, district_stats' directory/fallback branching) with
+# synthetic fixtures.
 # Run: python -m pytest tools/test_fetch_schools.py -q
 import io
 import json
@@ -15,6 +16,7 @@ import pytest
 
 sys.path.insert(0, os.path.dirname(__file__))
 import fetch_schools as fs  # noqa: E402
+from lib import httpio  # noqa: E402
 
 
 class FakeResp:
@@ -41,8 +43,8 @@ def test_get_succeeds_on_first_try(monkeypatch):
         return FakeResp({"ok": True})
 
     sleeps = []
-    monkeypatch.setattr(fs.urllib.request, "urlopen", fake_urlopen)
-    monkeypatch.setattr(fs.time, "sleep", lambda s: sleeps.append(s))
+    monkeypatch.setattr(httpio.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(httpio.time, "sleep", lambda s: sleeps.append(s))
 
     out = fs._get("http://example.test/x")
 
@@ -61,8 +63,8 @@ def test_get_retries_then_succeeds(monkeypatch):
         return FakeResp({"ok": True})
 
     sleeps = []
-    monkeypatch.setattr(fs.urllib.request, "urlopen", fake_urlopen)
-    monkeypatch.setattr(fs.time, "sleep", lambda s: sleeps.append(s))
+    monkeypatch.setattr(httpio.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(httpio.time, "sleep", lambda s: sleeps.append(s))
 
     out = fs._get("http://example.test/x", attempts=5)
 
@@ -76,8 +78,8 @@ def test_get_exhausts_attempts_and_raises(monkeypatch):
         raise TimeoutError("always fails")
 
     sleeps = []
-    monkeypatch.setattr(fs.urllib.request, "urlopen", fake_urlopen)
-    monkeypatch.setattr(fs.time, "sleep", lambda s: sleeps.append(s))
+    monkeypatch.setattr(httpio.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(httpio.time, "sleep", lambda s: sleeps.append(s))
 
     with pytest.raises(RuntimeError, match="all 3 attempts failed"):
         fs._get("http://example.test/x", attempts=3)
@@ -87,10 +89,10 @@ def test_get_exhausts_attempts_and_raises(monkeypatch):
 
 def test_get_does_not_sleep_after_the_last_attempt(monkeypatch):
     # Guards the `if i < attempts - 1` branch specifically: exactly attempts-1 sleeps.
-    monkeypatch.setattr(fs.urllib.request, "urlopen",
+    monkeypatch.setattr(httpio.urllib.request, "urlopen",
                          lambda req, timeout=None: (_ for _ in ()).throw(OSError("boom")))
     sleeps = []
-    monkeypatch.setattr(fs.time, "sleep", lambda s: sleeps.append(s))
+    monkeypatch.setattr(httpio.time, "sleep", lambda s: sleeps.append(s))
     with pytest.raises(RuntimeError):
         fs._get("http://example.test/x", attempts=1)
     assert sleeps == []  # a single attempt never sleeps

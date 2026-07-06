@@ -16,11 +16,13 @@ def get_json(
     params: dict | None = None,
     attempts: int = 4,
     timeout: int = 60,
+    headers: dict | None = None,
 ) -> dict:
     """GET a JSON document, retrying transient failures.
 
     The read timeout grows by 20 s per retry (a slow API under load gets more
     room, not the same doomed deadline) with a short sleep between attempts.
+    `headers` are merged over the default User-Agent (e.g. FCC auth headers).
     Raises RuntimeError once all attempts fail.
     """
     if params:
@@ -28,7 +30,7 @@ def get_json(
     last: Exception | None = None
     for i in range(attempts):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, **(headers or {})})
             with urllib.request.urlopen(req, timeout=timeout + i * 20) as resp:
                 return json.load(resp)
         except Exception as exc:  # noqa: BLE001 - transient; retry then give up
@@ -43,6 +45,7 @@ def get_bytes(
     params: dict | None = None,
     attempts: int = 4,
     timeout: int = 60,
+    headers: dict | None = None,
 ) -> bytes:
     """GET a raw document (zip/CSV downloads), with the same retry as get_json."""
     if params:
@@ -50,7 +53,7 @@ def get_bytes(
     last: Exception | None = None
     for i in range(attempts):
         try:
-            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT, **(headers or {})})
             with urllib.request.urlopen(req, timeout=timeout + i * 20) as resp:
                 return resp.read()
         except Exception as exc:  # noqa: BLE001 - transient; retry then give up
