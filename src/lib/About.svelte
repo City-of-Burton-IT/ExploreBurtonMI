@@ -19,10 +19,11 @@
 {/if}
 
 {#if ui.aboutOpen}
+  <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
   <div
     class="backdrop"
     role="presentation"
-    onclick={closeAbout}
+    onclick={(e) => { if (e.target === e.currentTarget) closeAbout(); }}
   >
     <div class="modal" role="dialog" aria-modal="true" aria-label="About this map">
       <button class="close" onclick={closeAbout} aria-label="Close">&times;</button>
