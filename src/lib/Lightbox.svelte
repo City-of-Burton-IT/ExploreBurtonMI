@@ -1,71 +1,49 @@
 <script lang="ts">
-  import { registerOverlay } from './store.svelte';
+  import Modal from './Modal.svelte';
 
   // Reusable image lightbox. Call `show(src, caption)` via a bound instance.
+  // Backdrop/Escape/focus-trap/Android-back all come from the shared <Modal>;
+  // this component keeps only its own image-viewer chrome (dark fullscreen-ish
+  // backdrop, no card background, a floating circular close button) via the
+  // `lightbox` class below -- visually too different from About/Settings/
+  // WelcomeModal's card style to fold into Modal's defaults, so it overrides
+  // them with :global(...) instead of forcing a shared look.
   let open = $state(false);
   let src = $state('');
   let caption = $state('');
-  let lastFocus: HTMLElement | null = null;
-  let closeBtn = $state<HTMLButtonElement>();
 
   export function show(imgSrc: string, cap = '') {
-    lastFocus = (document.activeElement as HTMLElement) ?? null;
     src = imgSrc;
     caption = cap;
     open = true;
-    queueMicrotask(() => closeBtn?.focus());
   }
 
   function close() {
     open = false;
-    lastFocus?.focus?.();
   }
-
-  function onKeydown(e: KeyboardEvent) {
-    if (e.key === 'Escape') close();
-  }
-
-  // While open, let the Android hardware back button close the lightbox first.
-  $effect(() => {
-    if (open) return registerOverlay(close);
-  });
 </script>
 
-<svelte:window onkeydown={open ? onKeydown : undefined} />
-
 {#if open}
-  <!-- Backdrop closes on a click that lands on the backdrop itself (not the image).
-       Keyboard close is Esc, handled on window above. -->
-  <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-  <div
-    class="lb-backdrop"
-    role="presentation"
-    onclick={(e) => {
-      if (e.target === e.currentTarget) close();
-    }}
+  <Modal
+    {close}
+    label={caption || 'Image viewer'}
+    closeLabel="Close image"
+    class="lightbox"
+    style="--modal-max-width: 96vw; --modal-max-height: 92vh; --modal-z: 3000; --modal-backdrop-bg: rgba(0, 0, 0, 0.82); --modal-outer-padding: 1.2rem; --modal-padding: 0"
   >
-    <div class="lb-dialog" role="dialog" aria-modal="true" aria-label={caption || 'Image viewer'} tabindex="-1">
-      <button bind:this={closeBtn} class="lb-close" onclick={close} aria-label="Close image">&times;</button>
-      <img class="lb-img" {src} alt={caption} />
-      {#if caption}<p class="lb-caption">{caption}</p>{/if}
-    </div>
-  </div>
+    <img class="lb-img" {src} alt={caption} />
+    {#if caption}<p class="lb-caption">{caption}</p>{/if}
+  </Modal>
 {/if}
 
 <style>
-  .lb-backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 3000;
-    background: rgba(0, 0, 0, 0.82);
-    display: grid;
-    place-items: center;
-    padding: 1.2rem;
-  }
-  .lb-dialog {
-    position: relative;
-    max-width: 96vw;
-    max-height: 92vh;
+  :global(.backdrop.lightbox .modal) {
+    width: auto;
+    background: none;
+    box-shadow: none;
+    border-radius: 0;
+    color: #fff;
+    overflow: visible;
     display: flex;
     flex-direction: column;
     align-items: center;
@@ -86,25 +64,22 @@
     text-align: center;
     max-width: 60ch;
   }
-  .lb-close {
-    position: absolute;
+  :global(.backdrop.lightbox .close) {
     top: -2.6rem;
     right: 0;
-    border: none;
     background: rgba(255, 255, 255, 0.15);
     color: #fff;
     width: 2.1rem;
     height: 2.1rem;
     border-radius: 999px;
     font-size: 1.5rem;
-    line-height: 1;
-    cursor: pointer;
   }
-  .lb-close:hover {
+  :global(.backdrop.lightbox .close:hover) {
     background: rgba(255, 255, 255, 0.3);
   }
-  .lb-close:focus-visible {
+  :global(.backdrop.lightbox .close:focus-visible) {
     outline: 2px solid #fff;
     outline-offset: 2px;
+    box-shadow: none;
   }
 </style>

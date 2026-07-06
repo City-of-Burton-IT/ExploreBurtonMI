@@ -1,21 +1,19 @@
 <script lang="ts">
   import { Capacitor } from '@capacitor/core';
   import { App } from '@capacitor/app';
-  import { ui, closeSettings, registerOverlay, setTheme } from './store.svelte';
+  import { ui, closeSettings, setTheme } from './store.svelte';
   import { THEME_PREFS, type ThemePref } from './theme';
   import NotificationSettings from './NotificationSettings.svelte';
   import { pushDiagnostics, pushSyncInfo, type PushDiag } from './push';
+  import Modal from './Modal.svelte';
 
   // Settings dialog (cog in the menu bar): the single home for resident
   // preferences -- Appearance (#61) + Notifications (#64). Credits/privacy stay in
-  // About. Modal mechanics mirror About / WelcomeModal (Escape, backdrop, Android
-  // back via registerOverlay, focus the close button on open).
+  // About. Modal mechanics (Escape, backdrop, Android back, focus trap) live in
+  // the shared <Modal>.
 
   const themeLabel = (p: ThemePref): string =>
     p === 'system' ? 'System' : p === 'light' ? 'Light' : 'Dark';
-
-  let closeBtn = $state<HTMLButtonElement>();
-  let lastFocus: HTMLElement | null = null;
 
   // App version + push diagnostics, loaded when the dialog opens. Shown in a small
   // footer so we can read the actual build + why push is/ isn't live ON the device.
@@ -36,116 +34,48 @@
       .then((d) => (diag = d))
       .catch((e) => (diag = { platform: '?', isNative: false, pluginDefined: false, available: null, permission: null, error: String(e) }));
   });
-
-  $effect(() => {
-    if (ui.settingsOpen) {
-      lastFocus = (document.activeElement as HTMLElement) ?? null;
-      queueMicrotask(() => closeBtn?.focus());
-    }
-  });
-
-  // Android hardware back closes Settings before changing the view / exiting.
-  $effect(() => {
-    if (ui.settingsOpen) return registerOverlay(closeSettings);
-  });
-
-  function close() {
-    closeSettings();
-    lastFocus?.focus?.();
-  }
-
-  function onKeydown(e: KeyboardEvent) {
-    if (e.key === 'Escape') close();
-  }
 </script>
 
-<svelte:window onkeydown={ui.settingsOpen ? onKeydown : undefined} />
-
 {#if ui.settingsOpen}
-  <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-  <div class="backdrop" role="presentation" onclick={(e) => { if (e.target === e.currentTarget) close(); }}>
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="settings-title" tabindex="-1">
-      <button bind:this={closeBtn} class="close" onclick={close} aria-label="Close">&times;</button>
-      <h2 id="settings-title">Settings</h2>
+  <Modal close={closeSettings} labelledby="settings-title" style="--modal-max-width: 460px">
+    <h2 id="settings-title">Settings</h2>
 
-      <div class="row">
-        <span class="row-label">Appearance</span>
-        <div class="seg-group" role="group" aria-label="Appearance / theme">
-          {#each THEME_PREFS as p (p)}
-            <button
-              class="seg"
-              class:on={ui.theme === p}
-              aria-pressed={ui.theme === p}
-              onclick={() => setTheme(p)}>{themeLabel(p)}</button>
-          {/each}
-        </div>
-      </div>
-
-      <hr />
-
-      <NotificationSettings />
-
-      <hr />
-
-      <div class="diag">
-        <div class="diag-line"><strong>Version</strong> {appVersion || '...'}</div>
-        <div class="diag-line">
-          <strong>Push</strong>
-          platform={pushSync.platform}; native={pushSync.isNative ? 'yes' : 'no'};
-          plugin={pushSync.pluginDefined ? 'yes' : 'no'};
-          available={diag ? (diag.available === null ? '?' : diag.available ? 'yes' : 'no') : '...'};
-          permission={diag ? (diag.permission ?? '-') : '...'}
-        </div>
-        {#if diag?.error}
-          <div class="diag-line diag-err">error: {diag.error}</div>
-        {/if}
+    <div class="row">
+      <span class="row-label">Appearance</span>
+      <div class="seg-group" role="group" aria-label="Appearance / theme">
+        {#each THEME_PREFS as p (p)}
+          <button
+            class="seg"
+            class:on={ui.theme === p}
+            aria-pressed={ui.theme === p}
+            onclick={() => setTheme(p)}>{themeLabel(p)}</button>
+        {/each}
       </div>
     </div>
-  </div>
+
+    <hr />
+
+    <NotificationSettings />
+
+    <hr />
+
+    <div class="diag">
+      <div class="diag-line"><strong>Version</strong> {appVersion || '...'}</div>
+      <div class="diag-line">
+        <strong>Push</strong>
+        platform={pushSync.platform}; native={pushSync.isNative ? 'yes' : 'no'};
+        plugin={pushSync.pluginDefined ? 'yes' : 'no'};
+        available={diag ? (diag.available === null ? '?' : diag.available ? 'yes' : 'no') : '...'};
+        permission={diag ? (diag.permission ?? '-') : '...'}
+      </div>
+      {#if diag?.error}
+        <div class="diag-line diag-err">error: {diag.error}</div>
+      {/if}
+    </div>
+  </Modal>
 {/if}
 
 <style>
-  .backdrop {
-    position: fixed;
-    inset: 0;
-    background: rgba(0, 0, 0, 0.4);
-    display: grid;
-    place-items: center;
-    z-index: 2000;
-    padding: 1rem;
-  }
-  .modal {
-    position: relative;
-    background: var(--pub-surface);
-    color: var(--pub-ink);
-    border-radius: var(--pub-radius-lg);
-    max-width: 460px;
-    width: 100%;
-    max-height: calc(100% - 2rem);
-    overflow-y: auto;
-    padding: 1.6rem 1.7rem;
-    box-shadow: 0 1rem 3rem rgba(0, 0, 0, 0.175);
-    line-height: 1.6;
-  }
-  .close {
-    position: absolute;
-    top: 0.5rem;
-    right: 0.7rem;
-    border: none;
-    background: none;
-    font-size: 1.6rem;
-    line-height: 1;
-    cursor: pointer;
-    color: var(--pub-muted);
-  }
-  .close:hover {
-    color: var(--civic-blue);
-  }
-  .close:focus-visible {
-    outline: none;
-    box-shadow: var(--pub-focus-ring);
-    border-radius: var(--pub-radius-sm, 8px);
-  }
   h2 {
     margin: 0 1.5rem 0.8rem 0;
     font-family: var(--font-head);

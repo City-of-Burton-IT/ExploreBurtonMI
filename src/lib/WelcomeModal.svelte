@@ -1,13 +1,14 @@
 <script lang="ts">
-  import { ui, setView, DASHBOARDS, registerOverlay } from './store.svelte';
+  import { setView, DASHBOARDS } from './store.svelte';
   import { WELCOME_STORAGE_KEY, welcomeDismissed } from './welcome';
+  import Modal from './Modal.svelte';
 
   // First-visit orientation as a one-time modal (not an inline strip): a new
   // resident sees what the site offers, then closes it. Dismissal persists per
   // device. On a native first launch the WebView storage is empty -> this also
   // serves as the app's first-run onboarding (#59), no duplicate component.
-  // Focus management mirrors Lightbox.svelte (focus in on open, Escape / backdrop
-  // close, restore focus on close).
+  // Modal mechanics (focus in/out, Escape/backdrop close, Android back) live in
+  // the shared <Modal>.
   let dismissed = $state(true);
   try {
     dismissed = welcomeDismissed(localStorage.getItem(WELCOME_STORAGE_KEY));
@@ -16,21 +17,6 @@
   }
 
   const open = $derived(!dismissed);
-  let lastFocus: HTMLElement | null = null;
-  let closeBtn = $state<HTMLButtonElement>();
-
-  $effect(() => {
-    if (open) {
-      lastFocus = (document.activeElement as HTMLElement) ?? null;
-      queueMicrotask(() => closeBtn?.focus());
-    }
-  });
-
-  // While open, let the Android hardware back button dismiss the welcome modal
-  // (same as Escape) before it changes the view or exits the app.
-  $effect(() => {
-    if (open) return registerOverlay(dismiss);
-  });
 
   function dismiss() {
     dismissed = true;
@@ -39,7 +25,6 @@
     } catch {
       /* private mode -> just hide for this session */
     }
-    lastFocus?.focus?.();
   }
 
   const firstDashboard = DASHBOARDS[0]?.id;
@@ -51,88 +36,37 @@
     dismiss();
     setView('guide');
   }
-
-  function onKeydown(e: KeyboardEvent) {
-    if (e.key === 'Escape') dismiss();
-  }
 </script>
 
-<svelte:window onkeydown={open ? onKeydown : undefined} />
-
 {#if open}
-  <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-  <div
-    class="backdrop"
-    role="presentation"
-    onclick={(e) => {
-      if (e.target === e.currentTarget) dismiss();
-    }}
+  <Modal
+    close={dismiss}
+    labelledby="welcome-title"
+    style="--modal-max-width: 460px; --modal-z: 2500; --modal-backdrop-bg: rgba(0, 0, 0, 0.5); --modal-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.3); --modal-padding: 1.6rem 1.6rem 1.4rem"
   >
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="welcome-title" tabindex="-1">
-      <button bind:this={closeBtn} class="close" onclick={dismiss} aria-label="Close">&times;</button>
-      <h2 id="welcome-title">Welcome to Explore Burton</h2>
-      <p class="lead">Your interactive guide to the City of Burton. You can:</p>
-      <div class="options">
-        <button class="opt" onclick={dismiss}>
-          <span class="opt-title">Browse the map</span>
-          <span class="opt-desc">Find city businesses, government, and services near you.</span>
+    <h2 id="welcome-title">Welcome to Explore Burton</h2>
+    <p class="lead">Your interactive guide to the City of Burton. You can:</p>
+    <div class="options">
+      <button class="opt" onclick={dismiss}>
+        <span class="opt-title">Browse the map</span>
+        <span class="opt-desc">Find city businesses, government, and services near you.</span>
+      </button>
+      {#if firstDashboard}
+        <button class="opt" onclick={goDashboards}>
+          <span class="opt-title">Community dashboards</span>
+          <span class="opt-desc">Explore Burton's people, money, health, and infrastructure.</span>
         </button>
-        {#if firstDashboard}
-          <button class="opt" onclick={goDashboards}>
-            <span class="opt-title">Community dashboards</span>
-            <span class="opt-desc">Explore Burton's people, money, health, and infrastructure.</span>
-          </button>
-        {/if}
-        <button class="opt" onclick={goGuide}>
-          <span class="opt-title">Resident Guide</span>
-          <span class="opt-desc">Trash days, permits, meetings, elections, and more.</span>
-        </button>
-      </div>
-      <button class="primary" onclick={dismiss}>Start exploring</button>
+      {/if}
+      <button class="opt" onclick={goGuide}>
+        <span class="opt-title">Resident Guide</span>
+        <span class="opt-desc">Trash days, permits, meetings, elections, and more.</span>
+      </button>
     </div>
-  </div>
+    <button class="primary" onclick={dismiss}>Start exploring</button>
+  </Modal>
 {/if}
 
 <style>
-  .backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 2500;
-    background: rgba(0, 0, 0, 0.5);
-    display: grid;
-    place-items: center;
-    padding: 1.2rem;
-  }
-  .modal {
-    position: relative;
-    width: 100%;
-    max-width: 460px;
-    max-height: calc(100% - 2rem);
-    overflow-y: auto;
-    background: var(--pub-surface);
-    border-radius: var(--pub-radius-lg, 16px);
-    box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.3);
-    padding: 1.6rem 1.6rem 1.4rem;
-  }
-  .close {
-    position: absolute;
-    top: 0.6rem;
-    right: 0.7rem;
-    border: none;
-    background: none;
-    font-size: 1.7rem;
-    line-height: 1;
-    color: var(--pub-muted, #5c5c5c);
-    cursor: pointer;
-  }
-  .close:hover {
-    color: var(--civic-blue, #2c57a0);
-  }
-  .close:focus-visible {
-    outline: none;
-    box-shadow: var(--pub-focus-ring);
-    border-radius: var(--pub-radius-sm, 8px);
-  }
   h2 {
     margin: 0 1.5rem 0.3rem 0;
     font-family: var(--font-head, sans-serif);
