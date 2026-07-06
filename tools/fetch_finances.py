@@ -17,19 +17,20 @@ figure with an all-funds figure:
 Re-runnable (committed output; the site reads the JSON, never the API):
     python tools/fetch_finances.py
 
-Stdlib only (urllib), matching the other tools/ scripts.
+Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 """
 from __future__ import annotations
 
-import json
-import os
 import sys
-import urllib.request
 from typing import Any, cast
+
+from lib.httpio import get_json
+from lib.iox import write_json
+from lib.paths import public_path
 
 ENTITY_ID = "2612060"  # Burton city (Census GEOID; confirmed against the API)
 API = "https://micommunityfinancials.michigan.gov/api/component"
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-finances.json"))
+OUT = public_path("info-finances.json")
 
 # --- City ADOPTED BUDGET (plan): update yearly from the adopted budget --------
 BUDGET_YEAR = "FY 2026-2027"
@@ -148,9 +149,7 @@ BUDGET_EXPLAINER = {
 
 
 def _get(url: str) -> Any:
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=40) as resp:
-        return json.load(resp)
+    return get_json(url, timeout=40)
 
 
 def fetch_snapshot() -> dict:
@@ -272,9 +271,7 @@ def main() -> int:
         ],
     }
 
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  latest audited year: {latest_year}")
     print(f"  stats: {len(panel['stats'])}  charts: {len(panel['charts'])} ({len(trends)} state trends)")

@@ -27,19 +27,20 @@ follows the metric value (higher value -> lower/better rank number). Percentile
 Re-runnable (committed output; the site reads the JSON, never the API):
     python tools/fetch_fiscalhealth.py
 
-Stdlib only (urllib), matching the other tools/ scripts.
+Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 """
 from __future__ import annotations
 
-import json
-import os
 import sys
-import urllib.request
 from typing import Any, cast
+
+from lib.httpio import get_json
+from lib.iox import write_json
+from lib.paths import public_path
 
 ENTITY_ID = "2612060"  # Burton city (Census GEOID; confirmed against the API)
 API = "https://micommunityfinancials.michigan.gov/api/component"
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-fiscalhealth.json"))
+OUT = public_path("info-fiscalhealth.json")
 
 # Population used for per-resident figures. U.S. Census 2020; matches the
 # Demographics dashboard so the same denominator is used everywhere on the site.
@@ -77,9 +78,7 @@ RANK_MEASURES = [
 
 
 def _get(url: str) -> Any:
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=40) as resp:
-        return json.load(resp)
+    return get_json(url, timeout=40)
 
 
 def fetch_snapshot() -> dict:
@@ -249,9 +248,7 @@ def main() -> int:
         ],
     }
 
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  debt/resident ${debt_per:,}  pension/resident ${pension_per:,}  debt/TV {debt_pct_tv:.1f}%")
     print(f"  percentiles: {pct_lookup}")

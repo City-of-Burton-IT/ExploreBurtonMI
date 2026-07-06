@@ -137,6 +137,25 @@ def test_get_json_encodes_params(monkeypatch):
     assert seen == ["http://example.test/q?a=1&b=x+y"]
 
 
+def test_get_bytes_returns_raw_body_after_retry(monkeypatch):
+    calls = []
+
+    class _RawResp(_FakeResp):
+        def read(self, *a):
+            return b"PK\x03\x04zipbytes"
+
+    def fake_urlopen(req, timeout=None):
+        calls.append(timeout)
+        if len(calls) < 2:
+            raise OSError("transient")
+        return _RawResp(None)
+
+    monkeypatch.setattr(httpio.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(httpio.time, "sleep", lambda s: None)
+    assert httpio.get_bytes("http://example.test/z") == b"PK\x03\x04zipbytes"
+    assert len(calls) == 2
+
+
 def test_post_json_sends_payload_and_retries(monkeypatch):
     calls, sleeps = [], []
 

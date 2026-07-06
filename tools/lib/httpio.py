@@ -38,6 +38,28 @@ def get_json(
     raise RuntimeError(f"all {attempts} attempts failed for {url}: {last}")
 
 
+def get_bytes(
+    url: str,
+    params: dict | None = None,
+    attempts: int = 4,
+    timeout: int = 60,
+) -> bytes:
+    """GET a raw document (zip/CSV downloads), with the same retry as get_json."""
+    if params:
+        url = url + "?" + urllib.parse.urlencode(params)
+    last: Exception | None = None
+    for i in range(attempts):
+        try:
+            req = urllib.request.Request(url, headers={"User-Agent": USER_AGENT})
+            with urllib.request.urlopen(req, timeout=timeout + i * 20) as resp:
+                return resp.read()
+        except Exception as exc:  # noqa: BLE001 - transient; retry then give up
+            last = exc
+            if i < attempts - 1:
+                time.sleep(2 + i * 2)
+    raise RuntimeError(f"all {attempts} attempts failed for {url}: {last}")
+
+
 def post_json(
     url: str,
     payload: dict,

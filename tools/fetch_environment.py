@@ -14,31 +14,32 @@ County-level (Genesee), air monitors aren't sited per-city. Burton is in the cou
 Re-runnable (committed output; the site reads the JSON, never the network):
     python tools/fetch_environment.py
 
-Stdlib only (urllib, zipfile, csv).
+Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 """
 from __future__ import annotations
 
 import csv
 import io
-import json
-import os
 import sys
-import urllib.request
 import zipfile
+
+from lib.httpio import get_bytes
+from lib.iox import write_json
+from lib.paths import public_path
 
 STATE = "Michigan"
 COUNTY = "Genesee"
 YEARS = list(range(2015, 2026))  # 2025 may not exist yet -> skipped gracefully
 BASE = "https://aqs.epa.gov/aqsweb/airdata/annual_aqi_by_county_{}.zip"
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-environment.json"))
+OUT = public_path("info-environment.json")
 
 
 def fetch_year(year: int) -> dict | None:
     url = BASE.format(year)
     try:
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=60) as resp:
-            blob = resp.read()
+        # attempts=2: the newest year usually 404s until EPA publishes it, so
+        # keep the missing-year probe cheap while still absorbing one hiccup.
+        blob = get_bytes(url, attempts=2, timeout=60)
     except Exception as e:
         print(f"  {year}: skipped ({e})")
         return None
@@ -155,9 +156,7 @@ def main() -> int:
         ],
     }
 
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  years: {len(rows)} ({min(rows)}-{max(rows)})  stats: {len(stats)}  charts: {len(charts)}")
     return 0

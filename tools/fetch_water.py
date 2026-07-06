@@ -11,18 +11,19 @@
 # Re-runnable (committed output; the site reads the JSON, never EPA):
 #   python tools/fetch_water.py
 #
-# Stdlib only (urllib), matching the other tools/ fetchers.
+# Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 from __future__ import annotations
 
-import json
-import os
 import sys
-import urllib.request
 from collections import defaultdict
+
+from lib.httpio import get_json
+from lib.iox import write_json
+from lib.paths import public_path
 
 PWSID = "MI0001010"
 EF = "https://data.epa.gov/efservice"
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-water.json"))
+OUT = public_path("info-water.json")
 
 # SDWIS violation category codes -> resident-friendly labels.
 CATEGORY_LABELS = {
@@ -45,9 +46,7 @@ LEAD_AL = 0.015  # EPA lead action level (90th-percentile), mg/L
 
 
 def _get(url: str):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=60) as resp:
-        return json.load(resp)
+    return get_json(url, timeout=60)
 
 
 def fetch_lead():
@@ -177,9 +176,7 @@ def main() -> None:
         "notes": notes,
     }
 
-    with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(panel, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  pop={pop:,} conns={conns:,} source={source}")
     print(f"  lead(90th): {lead}")
