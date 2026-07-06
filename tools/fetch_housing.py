@@ -11,18 +11,20 @@
 # Re-runnable annually (committed output; the site reads the JSON, never the API):
 #   CENSUS_API_KEY=... python tools/fetch_housing.py [--year 2023]
 #
-# Stdlib only (urllib).
+# Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import sys
-import urllib.request
+
+from lib.httpio import get_json
+from lib.iox import write_json
+from lib.paths import public_path
 
 STATE_FIPS = "26"        # Michigan
 PLACE_FIPS = "12060"     # Burton city (GEOID 2612060)
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-housing.json"))
+OUT = public_path("info-housing.json")
 
 # B25034 Year Structure Built -> bucket label (newest first for the chart).
 YEAR_BUILT = [
@@ -44,8 +46,7 @@ CORE = ["NAME", "B25001_001E", "B25002_003E", "B25003_001E", "B25003_002E",
 def _fetch(year: int, key: str, get_vars: list[str]) -> dict:
     url = (f"https://api.census.gov/data/{year}/acs/acs5"
            f"?get={','.join(get_vars)}&for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}&key={key}")
-    with urllib.request.urlopen(url, timeout=40) as resp:
-        rows = json.load(resp)
+    rows = get_json(url, timeout=40)
     return dict(zip(rows[0], rows[1]))
 
 
@@ -132,9 +133,7 @@ def main() -> None:
             "certified by the Census Bureau.",
         ],
     }
-    with open(OUT, "w", encoding="utf-8") as f:
-        json.dump(panel, f, indent=2, ensure_ascii=False)
-        f.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  units={total:,} own_rate={own_rate}% value=${value:,} rent=${rent} "
           f"built={med_built} vacancy={vac_rate}%")

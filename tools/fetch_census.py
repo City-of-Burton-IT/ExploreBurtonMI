@@ -14,16 +14,18 @@ Bureau Data API but is not endorsed or certified by the Census Bureau" be
 displayed prominently; it is emitted into the panel's `notes` and rendered in the
 app footer.
 
-Stdlib only (urllib): no dependencies, matching the other tools/ scripts. The
-output is committed; the public site reads the JSON, never the Census API.
+Uses the shared tools/lib helpers (HTTP retry, atomic writes). The output is
+committed; the public site reads the JSON, never the Census API.
 """
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import sys
-import urllib.request
+
+from lib.httpio import get_json
+from lib.iox import write_json
+from lib.paths import public_path
 
 STATE_FIPS = "26"        # Michigan
 PLACE_FIPS = "12060"     # Burton city (GEOID 2612060; verified via data.census.gov)
@@ -194,8 +196,7 @@ def _fetch_vars(year: int, key: str, get_vars: list[str], geo: str) -> dict:
             f"https://api.census.gov/data/{year}/acs/acs5"
             f"?get={','.join(chunk)}&{geo}&key={key}"
         )
-        with urllib.request.urlopen(url, timeout=30) as resp:
-            rows = json.load(resp)
+        rows = get_json(url, timeout=30)
         record.update(dict(zip(rows[0], rows[1])))
     return record
 
@@ -246,8 +247,7 @@ def fetch_genesee_cities(year: int, key: str, bench_vars: list[str]) -> list[tup
     """
     geo = f"for=county%20subdivision:*&in=state:{STATE_FIPS}%20county:{COUNTY_FIPS}"
     url = f"https://api.census.gov/data/{year}/acs/acs5?get={','.join(bench_vars)}&{geo}&key={key}"
-    with urllib.request.urlopen(url, timeout=30) as resp:
-        rows = json.load(resp)
+    rows = get_json(url, timeout=30)
     header = rows[0]
     out: list[tuple[str, dict]] = []
     for row in rows[1:]:
@@ -350,8 +350,7 @@ def fetch_population(dataset: str, var: str, key: str) -> int | None:
         f"?get={var}&for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}&key={key}"
     )
     try:
-        with urllib.request.urlopen(url, timeout=30) as resp:
-            rows = json.load(resp)
+        rows = get_json(url, timeout=30)
         return int(rows[1][0])
     except Exception as exc:  # noqa: BLE001 - trend is optional; never fail the refresh
         print(f"  decennial fetch failed for {dataset} ({exc}); omitting that trend point")
@@ -364,8 +363,7 @@ def _fetch_decennial(dataset: str, get_vars: list[str], key: str) -> dict:
         f"https://api.census.gov/data/{dataset}"
         f"?get={','.join(get_vars)}&for=place:{PLACE_FIPS}&in=state:{STATE_FIPS}&key={key}"
     )
-    with urllib.request.urlopen(url, timeout=30) as resp:
-        rows = json.load(resp)
+    rows = get_json(url, timeout=30)
     return dict(zip(rows[0], rows[1]))
 
 
@@ -652,11 +650,8 @@ def main() -> int:
         panel["charts"].append(compare)
     # Benchmark context on the headline stats: Burton vs Genesee County vs Michigan (#16).
     attach_benchmarks(panel["stats"], bench_metrics)
-    out = os.path.join(os.path.dirname(__file__), "..", "public", "info-demographics.json")
-    out = os.path.abspath(out)
-    with open(out, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    out = public_path("info-demographics.json")
+    write_json(out, panel)
     print(f"Wrote {out}")
     print(f"  population={panel['stats'][0]['value']}  median income={panel['stats'][3]['value']}")
     print(f"  charts={len(panel['charts'])}  trend points={len(trend)}")

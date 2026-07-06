@@ -15,21 +15,23 @@ Sources (public domain):
 Re-runnable (committed output; the site reads the JSON, never the API):
     set CENSUS_API_KEY=...   &&   python tools/fetch_jobs.py
 
-Stdlib only (urllib).
+Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 """
 from __future__ import annotations
 
 import argparse
-import json
 import os
 import sys
-import urllib.request
+
+from lib.httpio import get_json, post_json
+from lib.iox import write_json
+from lib.paths import public_path
 
 CBP_YEAR = 2022
 STATE_FIPS = "26"
 COUNTY_FIPS = "049"
 LAUS_SERIES = "LAUCN260490000000003"  # Genesee County, MI: unemployment rate
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-jobs.json"))
+OUT = public_path("info-jobs.json")
 
 # Short display labels for the NAICS sector codes CBP returns.
 SECTOR_LABELS = {
@@ -44,19 +46,6 @@ SECTOR_LABELS = {
 }
 
 
-def _get_json(url: str):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=40) as resp:
-        return json.load(resp)
-
-
-def _post_json(url: str, payload: dict):
-    data = json.dumps(payload).encode()
-    req = urllib.request.Request(url, data=data, headers={"Content-Type": "application/json"})
-    with urllib.request.urlopen(req, timeout=40) as resp:
-        return json.load(resp)
-
-
 def fetch_cbp(key: str) -> tuple[dict, list]:
     """Return (totals, sectors). totals = {estab,emp,payann}; sectors = list of
     {code,label,estab,emp,payann}."""
@@ -65,7 +54,7 @@ def fetch_cbp(key: str) -> tuple[dict, list]:
         f"?get=NAICS2017_LABEL,ESTAB,EMP,PAYANN&for=county:{COUNTY_FIPS}"
         f"&in=state:{STATE_FIPS}&NAICS2017=*&key={key}"
     )
-    rows = _get_json(url)
+    rows = get_json(url, timeout=40)
     hdr = rows[0]
     ci = {name: i for i, name in enumerate(hdr)}
     totals: dict = {}
@@ -87,10 +76,11 @@ def fetch_cbp(key: str) -> tuple[dict, list]:
 def fetch_unemployment() -> tuple[dict | None, list]:
     """Return (latest_month, annual_trend). latest_month = {value,label}; trend =
     [{x:year, y:rate}] of annual averages."""
-    res = _post_json(
+    res = post_json(
         "https://api.bls.gov/publicAPI/v2/timeseries/data/",
         {"seriesid": [LAUS_SERIES], "startyear": str(CBP_YEAR - 6),
          "endyear": "2026", "annualaverage": True},
+        timeout=40,
     )
     data = res.get("Results", {}).get("series", [{}])[0].get("data", [])
     # Annual averages (period M13), oldest -> newest.
@@ -184,9 +174,7 @@ def main() -> int:
         ],
     }
 
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  stats: {len(stats)}  charts: {len(charts)}  sectors: {len(sectors)}  "
           f"unemp trend yrs: {len(unemp_trend)}")

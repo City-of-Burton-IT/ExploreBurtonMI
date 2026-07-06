@@ -7,7 +7,7 @@ import sys
 import pytest
 
 sys.path.insert(0, os.path.dirname(__file__))
-from lib import arcgis, geo, iox, paths, shapecheck  # noqa: E402
+from lib import arcgis, geo, httpio, iox, paths, shapecheck  # noqa: E402
 
 
 # --- geo.round_coords ---------------------------------------------------------
@@ -80,6 +80,77 @@ def test_assert_shape_fails_on_missing_key():
 def test_assert_shape_fails_on_empty():
     with pytest.raises(SystemExit, match="no rows"):
         shapecheck.assert_shape([], ["a"])
+
+
+# --- httpio ------------------------------------------------------------------------
+
+class _FakeResp:
+    """Minimal stand-in for the context-manager object urllib.request.urlopen
+    returns; json.load only needs .read()."""
+
+    def __init__(self, payload):
+        self._payload = payload
+
+    def read(self, *a):
+        return json.dumps(self._payload).encode()
+
+    def __enter__(self):
+        return self
+
+    def __exit__(self, *exc):
+        return False
+
+
+def test_get_json_retries_then_succeeds(monkeypatch):
+    calls, sleeps = [], []
+
+    def fake_urlopen(req, timeout=None):
+        calls.append(timeout)
+        if len(calls) < 3:
+            raise OSError("transient")
+        return _FakeResp({"ok": True})
+
+    monkeypatch.setattr(httpio.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(httpio.time, "sleep", lambda s: sleeps.append(s))
+    assert httpio.get_json("http://example.test/x", timeout=30) == {"ok": True}
+    assert calls == [30, 50, 70]  # escalating read timeout, +20 s per retry
+    assert len(sleeps) == 2
+
+
+def test_get_json_exhausts_attempts_and_raises(monkeypatch):
+    monkeypatch.setattr(httpio.urllib.request, "urlopen",
+                        lambda req, timeout=None: (_ for _ in ()).throw(OSError("down")))
+    monkeypatch.setattr(httpio.time, "sleep", lambda s: None)
+    with pytest.raises(RuntimeError, match="all 2 attempts failed"):
+        httpio.get_json("http://example.test/x", attempts=2)
+
+
+def test_get_json_encodes_params(monkeypatch):
+    seen = []
+
+    def fake_urlopen(req, timeout=None):
+        seen.append(req.full_url)
+        return _FakeResp([])
+
+    monkeypatch.setattr(httpio.urllib.request, "urlopen", fake_urlopen)
+    httpio.get_json("http://example.test/q", params={"a": "1", "b": "x y"})
+    assert seen == ["http://example.test/q?a=1&b=x+y"]
+
+
+def test_post_json_sends_payload_and_retries(monkeypatch):
+    calls, sleeps = [], []
+
+    def fake_urlopen(req, timeout=None):
+        calls.append((req.data, req.get_header("Content-type")))
+        if len(calls) < 2:
+            raise OSError("transient")
+        return _FakeResp({"ok": 1})
+
+    monkeypatch.setattr(httpio.urllib.request, "urlopen", fake_urlopen)
+    monkeypatch.setattr(httpio.time, "sleep", lambda s: sleeps.append(s))
+    assert httpio.post_json("http://example.test/p", {"q": 2}) == {"ok": 1}
+    assert calls[0] == (b'{"q": 2}', "application/json")
+    assert len(calls) == 2 and len(sleeps) == 1
 
 
 # --- arcgis.paged_query ------------------------------------------------------------

@@ -36,3 +36,28 @@ def get_json(
             if i < attempts - 1:
                 time.sleep(2 + i * 2)
     raise RuntimeError(f"all {attempts} attempts failed for {url}: {last}")
+
+
+def post_json(
+    url: str,
+    payload: dict,
+    attempts: int = 4,
+    timeout: int = 60,
+) -> dict:
+    """POST a JSON payload and return the JSON response, with the same
+    escalating-timeout retry as get_json."""
+    data = json.dumps(payload).encode()
+    last: Exception | None = None
+    for i in range(attempts):
+        try:
+            req = urllib.request.Request(
+                url, data=data,
+                headers={"User-Agent": USER_AGENT, "Content-Type": "application/json"},
+            )
+            with urllib.request.urlopen(req, timeout=timeout + i * 20) as resp:
+                return json.load(resp)
+        except Exception as exc:  # noqa: BLE001 - transient; retry then give up
+            last = exc
+            if i < attempts - 1:
+                time.sleep(2 + i * 2)
+    raise RuntimeError(f"all {attempts} attempts failed for {url}: {last}")

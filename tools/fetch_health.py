@@ -13,7 +13,7 @@ scoreboard.
 Re-runnable (committed output; the site reads the JSON, never the API):
     python tools/fetch_health.py
 
-Stdlib only (urllib).
+Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 """
 from __future__ import annotations
 
@@ -22,14 +22,17 @@ import json
 import os
 import sys
 import urllib.parse
-import urllib.request
+
+from lib.httpio import get_json
+from lib.iox import write_json
+from lib.paths import public_path
 
 PLACE_DS = "vgc8-iyc4"   # PLACES: Place Data (GIS Friendly Format), 2025 release
 COUNTY_DS = "i46a-9kgh"  # PLACES: County Data (GIS Friendly Format), 2025 release
 BURTON_FIPS = "2612060"
 GENESEE_FIPS = "26049"
 RELEASE = "2025 release"
-OUT = os.path.abspath(os.path.join(os.path.dirname(__file__), "..", "public", "info-health.json"))
+OUT = public_path("info-health.json")
 
 # --- ACS uninsured-rate trend (a multi-year "health over time" line) ----------
 # Distinct from the CDC PLACES single-snapshot estimates above: the U.S. Census
@@ -119,14 +122,8 @@ CITIES_LEDE = (
 )
 
 
-def _get(url: str):
-    req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-    with urllib.request.urlopen(req, timeout=40) as resp:
-        return json.load(resp)
-
-
 def fetch_row(dataset: str, field: str, value: str) -> dict:
-    rows = _get(f"https://data.cdc.gov/resource/{dataset}.json?{field}={value}")
+    rows = get_json(f"https://data.cdc.gov/resource/{dataset}.json?{field}={value}", timeout=40)
     if not rows:
         raise SystemExit(f"No PLACES row for {field}={value} in {dataset}")
     return rows[0]
@@ -152,7 +149,7 @@ def fetch_genesee_cities() -> dict:
     ids = "','".join(GENESEE_CITY_FIPS.values())
     where = urllib.parse.quote(f"placefips in ('{ids}')", safe="")
     url = f"https://data.cdc.gov/resource/{PLACE_DS}.json?$where={where}&$limit=50"
-    by_fips = {r.get("placefips"): r for r in _get(url)}
+    by_fips = {r.get("placefips"): r for r in get_json(url, timeout=40)}
     return {name: by_fips[fips] for name, fips in GENESEE_CITY_FIPS.items() if fips in by_fips}
 
 
@@ -183,7 +180,7 @@ def _acs_uninsured_pct(year: int, key: str, geo: str) -> float | None:
     get_vars = ",".join(f"B27001_{c}E" for c in codes)
     url = f"https://api.census.gov/data/{year}/acs/acs5?get={get_vars}&{geo}&key={key}"
     try:
-        rows = _get(url)
+        rows = get_json(url, timeout=40)
     except Exception as e:
         print(f"  ACS {year} ({geo}): skipped ({e})")
         return None
@@ -213,9 +210,7 @@ def build_uninsured_trend(key: str | None) -> dict | None:
                 lines.append({"label": name, "points": pts})
         if lines:
             os.makedirs(os.path.dirname(ACS_TREND_CACHE), exist_ok=True)
-            with open(ACS_TREND_CACHE, "w", encoding="utf-8", newline="\n") as fh:
-                json.dump(lines, fh, ensure_ascii=False, indent=2)
-                fh.write("\n")
+            write_json(ACS_TREND_CACHE, lines)
     elif os.path.exists(ACS_TREND_CACHE):
         print("  ACS key absent -> reusing committed uninsured-trend cache")
         with open(ACS_TREND_CACHE, encoding="utf-8") as fh:
@@ -345,9 +340,7 @@ def main() -> int:
     if pop:
         panel["notes"].insert(0, f"Estimates cover Burton's adult population (city total ~{int(pop):,}).")
 
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(panel, fh, ensure_ascii=False, indent=2)
-        fh.write("\n")
+    write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(f"  stats: {len(stats)}  charts: {len(panel['charts'])}  compare rows: {len(compare_rows)}")
     return 0
