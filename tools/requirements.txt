@@ -9,4 +9,5 @@ pyshp>=2.3
 openpyxl>=3.1
 
 # requests: HTTP client for tools/build_address_points.py (Census batch geocoder).
-requests>=2.32
+# Floor at 2.33: earlier 2.32.x releases carry open CVEs (Dependabot #17/#19).
+requests>=2.33
