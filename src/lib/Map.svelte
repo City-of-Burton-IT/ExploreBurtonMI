@@ -6,13 +6,13 @@
   import 'leaflet.markercluster/dist/MarkerCluster.css';
   import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
   import { Capacitor } from '@capacitor/core';
-  import { Geolocation } from '@capacitor/geolocation';
   import type { AppConfig, PlaceCollection, PlaceFeature } from './types';
-  import { ui, select, setUserLocation, openReport, setReportPin } from './store.svelte';
+  import { ui, select, openReport, setReportPin } from './store.svelte';
   import { dataFetch } from './remote';
   import { activeClosures, closuresGeoJSON, localTodayISO, type RoadClosure } from './closures';
   import { escapeHtml } from './map/html';
   import { bindClusterPreview, type PlaceMarker } from './map/clusterPreview';
+  import { createGeolocation, type MapGeolocation } from './map/geolocation';
   import ClosureBanner from './ClosureBanner.svelte';
 
   let {
@@ -34,7 +34,8 @@
   // after a deep-link selection that was applied before the markers existed.
   let markerEpoch = $state(0);
   const featureById = new Map<string, PlaceFeature>();
-  let userMarker: L.CircleMarker | undefined;
+  // "Near me" geolocation (web + native paths) — created once the map exists.
+  let geo: MapGeolocation | undefined;
   let locateMsg = $state('');
 
   function flashLocateMsg(msg: string): void {
@@ -42,77 +43,10 @@
     setTimeout(() => (locateMsg = ''), 4500);
   }
 
-  // Shared "we have the user's position" handler for both the web (Leaflet locate)
-  // and native (Capacitor Geolocation) paths: sort the list nearest-first, and only
-  // recenter + drop the "you are here" marker when the user is inside the city bounds.
-  function applyUserLocation(lat: number, lng: number): void {
-    if (!map) return;
-    locateMsg = '';
-    const latlng = L.latLng(lat, lng);
-    setUserLocation({ lat, lng });
-    // maxBounds is a LatLngBounds at construction (tightened to the city outline on
-    // load), so it's a bounds instance at runtime.
-    const bounds = map.options.maxBounds as L.LatLngBounds | undefined;
-    if (bounds && !bounds.contains(latlng)) {
-      flashLocateMsg('You appear to be outside Burton — showing the closest places on the city map.');
-      return;
-    }
-    map.setView(latlng, Math.max(map.getZoom(), 15));
-    if (!userMarker) {
-      userMarker = L.circleMarker(latlng, {
-        radius: 8,
-        color: '#ffffff',
-        weight: 3,
-        fillColor: '#1976d2',
-        fillOpacity: 1,
-      });
-      userMarker.bindTooltip('You are here');
-      userMarker.addTo(map);
-    } else {
-      userMarker.setLatLng(latlng);
-    }
-    userMarker.bringToFront();
-  }
-
-  // Native (Capacitor) geolocation: request the runtime permission, then read one
-  // position. Mirrors Leaflet's locationerror messaging on denial/failure.
-  async function locateNative(): Promise<void> {
-    try {
-      const perm = await Geolocation.requestPermissions();
-      if (perm.location === 'denied' && perm.coarseLocation === 'denied') {
-        flashLocateMsg('Couldn’t get your location — location access is turned off for this app.');
-        return;
-      }
-      const pos = await Geolocation.getCurrentPosition({ enableHighAccuracy: true });
-      applyUserLocation(pos.coords.latitude, pos.coords.longitude);
-    } catch {
-      flashLocateMsg('Couldn’t get your location — check that location access is allowed for this app.');
-    }
-  }
-
-  // "Near me": locate the user via the right path for the platform. Shared by the
-  // map's own control button and the native quick-actions row (via ui.nearMeNonce).
-  function locateMe(): void {
-    if (!map) return;
-    flashLocateMsg('Locating…');
-    // No setView: we recenter ourselves only when the user is inside the city
-    // bounds (the map is locked to Burton, so centering on a far-away user would
-    // just clamp to the edge and leave their marker unreachable off-map).
-    if (Capacitor.isNativePlatform()) {
-      // In the native app the WebView's navigator.geolocation needs the Android
-      // runtime permission, which Leaflet's map.locate() can't request. Use the
-      // Capacitor Geolocation plugin to prompt + read the position, then feed it
-      // through the same handler the web path uses.
-      locateNative();
-    } else {
-      map.locate({ enableHighAccuracy: true });
-    }
-  }
-
   // The native quick-actions "Near me" bumps ui.nearMeNonce; run a locate when it
   // changes (skip the initial 0 so we don't auto-locate on load).
   $effect(() => {
-    if (ui.nearMeNonce > 0) locateMe();
+    if (ui.nearMeNonce > 0) geo?.locateMe();
   });
 
   const DEFAULT_COLOR = '#555555';
@@ -185,6 +119,8 @@
       fadeAnimation: !reduceMotion,
       markerZoomAnimation: !reduceMotion,
     });
+
+    geo = createGeolocation(map, { flash: flashLocateMsg, clear: () => (locateMsg = '') });
 
     L.tileLayer(config.tiles.url, {
       subdomains: config.tiles.subdomains ?? 'abc',
@@ -490,7 +426,7 @@
         icon.textContent = '◎';
         btn.append(icon, ' Near me');
         L.DomEvent.disableClickPropagation(btn);
-        L.DomEvent.on(btn, 'click', () => locateMe());
+        L.DomEvent.on(btn, 'click', () => geo?.locateMe());
         return btn;
       },
     });
@@ -520,7 +456,7 @@
       if (ui.report.pinMode) setReportPin(e.latlng.lat, e.latlng.lng);
     });
 
-    map.on('locationfound', (e: L.LocationEvent) => applyUserLocation(e.latlng.lat, e.latlng.lng));
+    map.on('locationfound', (e: L.LocationEvent) => geo?.applyUserLocation(e.latlng.lat, e.latlng.lng));
     map.on('locationerror', () => {
       flashLocateMsg('Couldn’t get your location — check that location access is allowed for this site.');
     });
