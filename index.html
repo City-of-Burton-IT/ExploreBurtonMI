@@ -5,6 +5,15 @@
     <link rel="icon" type="image/svg+xml" href="/favicon.svg" />
     <meta name="viewport" content="width=device-width, initial-scale=1.0, viewport-fit=cover" />
     <meta name="description" content="Find businesses, government facilities, and services in the City of Burton, Michigan." />
+    <!-- CSP (meta fallback; the enforced copy is a Cloudflare Transform Rule header,
+         which also carries frame-ancestors -- meta CSP cannot). Keep BOTH in sync.
+         The native app shares this file with origin https://localhost, so 'self'
+         does NOT cover the production site there: explore.burtonmi.gov must stay
+         explicitly listed in connect-src/img-src or the Android app loses data.
+         Hosts: cloudflareinsights = analytics beacon; michigan/arcgisonline = map
+         tiles; usgovtexas.logic.azure.us = the 4 Power Automate intake/status
+         endpoints; civicclerk = meetings feed; elocallink = the guide video tour. -->
+    <meta http-equiv="Content-Security-Policy" content="default-src 'self'; script-src 'self' https://static.cloudflareinsights.com; style-src 'self' 'unsafe-inline'; img-src 'self' data: blob: https://explore.burtonmi.gov https://imagery.michigan.gov https://services.arcgisonline.com; connect-src 'self' https://explore.burtonmi.gov https://*.usgovtexas.logic.azure.us https://burtonmi.api.civicclerk.com https://cloudflareinsights.com https://static.cloudflareinsights.com; font-src 'self' data:; frame-src https://www.elocallink.tv; object-src 'none'; base-uri 'self'; form-action 'self'; manifest-src 'self'; worker-src 'self'" />
     <!-- PWA: installable + city-branded. The manifest + theme color give iOS/Android a
          full-screen, icon-on-home-screen app; the service worker (vite-plugin-pwa) adds offline. -->
     <meta name="theme-color" content="#2c57a0" />
