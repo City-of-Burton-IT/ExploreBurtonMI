@@ -8,6 +8,7 @@
   import type { AppConfig, PlaceCollection, InfoPanel } from './lib/types';
   import { ui, setMobileView, setView, syncViewFromHash, openAbout, openSettings, isDashboard, DASHBOARDS, select, clearSelection, dashboardGroupLabel, adjacentDashboards, initOnlineWatch } from './lib/store.svelte';
   import { placeIdFromHash } from './lib/hash';
+  import { haversineMeters } from './lib/reverseGeocode';
   import Map from './lib/Map.svelte';
   import Detail from './lib/Detail.svelte';
   import Facets from './lib/Facets.svelte';
@@ -152,17 +153,6 @@
     return new Set([...base].filter((id) => ui.savedIds.has(id)));
   });
 
-  // Great-circle distance (m) between two [lat,lng] points, for "Near me" sorting.
-  function haversine(aLat: number, aLng: number, bLat: number, bLng: number): number {
-    const R = 6371000;
-    const dLat = ((bLat - aLat) * Math.PI) / 180;
-    const dLng = ((bLng - aLng) * Math.PI) / 180;
-    const s =
-      Math.sin(dLat / 2) ** 2 +
-      Math.cos((aLat * Math.PI) / 180) * Math.cos((bLat * Math.PI) / 180) * Math.sin(dLng / 2) ** 2;
-    return 2 * R * Math.asin(Math.sqrt(s));
-  }
-
   const filteredFeatures = $derived.by(() => {
     if (!data) return [];
     const feats = data.features.filter((f) => filteredIds.has(f.id));
@@ -172,7 +162,7 @@
     return [...feats].sort((a, b) => {
       const [aLng, aLat] = a.geometry.coordinates;
       const [bLng, bLat] = b.geometry.coordinates;
-      return haversine(loc.lat, loc.lng, aLat, aLng) - haversine(loc.lat, loc.lng, bLat, bLng);
+      return haversineMeters(loc.lat, loc.lng, aLat, aLng) - haversineMeters(loc.lat, loc.lng, bLat, bLng);
     });
   });
 

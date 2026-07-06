@@ -9,8 +9,9 @@
 // called behind Capacitor.isNativePlatform() from main.ts.
 
 import { setView, clearSelection, requestNearMe } from './store.svelte';
+import { SITE_BASE } from './hash';
 
-const SITE_HOST = 'explore.burtonmi.gov';
+const SITE_HOST = new URL(SITE_BASE).hostname;
 
 /** A pseudo-route the "Near me" launcher shortcut (#56) carries; not a real view,
  *  it triggers geolocation instead of a hash change. */

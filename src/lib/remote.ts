@@ -1,4 +1,5 @@
 import { Capacitor } from '@capacitor/core';
+import { SITE_BASE } from './hash';
 
 // HYBRID DATA LOADING
 // ===================
@@ -11,7 +12,7 @@ import { Capacitor } from '@capacitor/core';
 // On the web this is a no-op: the site already IS this origin, so we just fetch the
 // same relative path as before. Code/feature changes still require a new app release;
 // only data rides the live channel.
-const REMOTE_BASE = 'https://explore.burtonmi.gov/';
+const REMOTE_BASE = SITE_BASE;
 const REMOTE_TIMEOUT_MS = 5000;
 
 const isNative = Capacitor.isNativePlatform();

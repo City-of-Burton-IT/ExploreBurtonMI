@@ -3,6 +3,7 @@
   import { dataFetch } from './remote';
   import { safeHref } from './templates';
   import { activeAlerts, loadAlerts, type CityAlert, type AlertLevel } from './alerts';
+  import { localTodayISO } from './closures';
 
   // The live banner endpoint (config.alerts.url). Undefined until config loads (this
   // component mounts above the config gate); the loader falls back to the committed
@@ -20,7 +21,6 @@
   };
 
   const STORAGE_KEY = 'eb-alerts-dismissed';
-  const pad = (n: number): string => String(n).padStart(2, '0');
 
   let alerts = $state<CityAlert[]>([]);
   let dismissed = $state<Set<string>>(new Set());
@@ -45,9 +45,8 @@
 
   onMount(() => {
     dismissed = loadDismissed();
-    const d = new Date();
     // Local calendar date (not UTC) so "today" matches the resident's clock.
-    today = `${d.getFullYear()}-${pad(d.getMonth() + 1)}-${pad(d.getDate())}`;
+    today = localTodayISO();
   });
 
   // Load alerts live-first (the read flow), falling back to the committed alerts.json.
