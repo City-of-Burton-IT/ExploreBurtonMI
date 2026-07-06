@@ -10,14 +10,10 @@
   import type { AppConfig, PlaceCollection, PlaceFeature } from './types';
   import { ui, select, setUserLocation, openReport, setReportPin } from './store.svelte';
   import { dataFetch } from './remote';
-  import { clusterSummary, CLUSTER_PREVIEW_MAX } from './cluster';
   import { activeClosures, closuresGeoJSON, localTodayISO, type RoadClosure } from './closures';
+  import { escapeHtml } from './map/html';
+  import { bindClusterPreview, type PlaceMarker } from './map/clusterPreview';
   import ClosureBanner from './ClosureBanner.svelte';
-
-  /** A map layer (our circle markers) carrying its source place feature, so a
-   *  cluster preview can read the names inside. Typed as the common Layer base so
-   *  it fits both the circleMarkers we create and getAllChildMarkers()'s Marker[]. */
-  type PlaceMarker = L.Layer & { feature?: PlaceFeature };
 
   let {
     config,
@@ -120,76 +116,6 @@
   });
 
   const DEFAULT_COLOR = '#555555';
-
-  // Leaflet bindTooltip/bindPopup render string content as HTML. Feature names come
-  // from OpenStreetMap/Overture (community-editable), so escape them to prevent a
-  // crafted name (e.g. "<img onerror=...>") from executing as DOM XSS.
-  function escapeHtml(s: string): string {
-    return s.replace(/[&<>"']/g, (c) =>
-      ({ '&': '&amp;', '<': '&lt;', '>': '&gt;', '"': '&quot;', "'": '&#39;' })[c] as string,
-    );
-  }
-
-  // --- Cluster preview (#map): peek at the places inside a cluster bubble --------
-  // markercluster's cluster events carry the hovered/clicked cluster on `.layer`.
-  type ClusterEvent = L.LeafletEvent & { layer: L.MarkerCluster };
-
-  function clusterNames(c: L.MarkerCluster): string[] {
-    return (c.getAllChildMarkers() as PlaceMarker[])
-      .map((m) => m.feature?.properties?.name)
-      .filter((n): n is string => typeof n === 'string');
-  }
-
-  function bindClusterPreview(group: L.MarkerClusterGroup): void {
-    // Desktop hover: a quick tooltip with a few names + "+N more".
-    group.on('clustermouseover', (e) => {
-      const c = (e as ClusterEvent).layer;
-      const { shown, more } = clusterSummary(clusterNames(c), 6);
-      const list = shown.map((n) => `<li>${escapeHtml(n)}</li>`).join('');
-      const extra = more ? `<p class="cp-more">+${more} more — tap to see</p>` : '';
-      c.bindTooltip(
-        `<div class="cluster-peek"><p class="cp-head">${c.getChildCount()} places here</p><ul>${list}</ul>${extra}</div>`,
-        { direction: 'top', offset: [0, -6], className: 'cluster-tip' },
-      ).openTooltip();
-    });
-    group.on('clustermouseout', (e) => (e as ClusterEvent).layer.closeTooltip());
-
-    // Tap / click: a small bubble opens a popup listing its places (tap one to open
-    // it); a big bubble zooms to drill in (the hover tooltip covers the glance there,
-    // and a 100-name popup wouldn't be useful).
-    group.on('clusterclick', (e) => {
-      if (!map) return;
-      const c = (e as ClusterEvent).layer;
-      if (c.getChildCount() > CLUSTER_PREVIEW_MAX) {
-        map.fitBounds(c.getBounds(), { padding: [40, 40] });
-      } else {
-        openClusterPreview(c);
-      }
-    });
-  }
-
-  function openClusterPreview(c: L.MarkerCluster): void {
-    const feats = (c.getAllChildMarkers() as PlaceMarker[])
-      .map((m) => m.feature)
-      .filter((f): f is PlaceFeature => !!f)
-      .sort((a, b) => String(a.properties.name).localeCompare(String(b.properties.name)));
-    const el = L.DomUtil.create('div', 'cluster-preview');
-    const head = L.DomUtil.create('p', 'cp-head', el);
-    head.textContent = `${feats.length} places here`;
-    const ul = L.DomUtil.create('ul', '', el);
-    for (const f of feats) {
-      const li = L.DomUtil.create('li', '', ul);
-      const btn = L.DomUtil.create('button', '', li) as HTMLButtonElement;
-      btn.type = 'button';
-      btn.textContent = String(f.properties.name); // textContent => no XSS
-      L.DomEvent.on(btn, 'click', (ev) => {
-        L.DomEvent.stop(ev);
-        map?.closePopup();
-        select(f); // opens the detail sheet + reveals it on the map
-      });
-    }
-    c.bindPopup(el, { className: 'cluster-popup', maxHeight: 260 }).openPopup();
-  }
 
   function colorFor(feature: PlaceFeature): string {
     // A record may carry several categories (a collapsed big-box store); the first
@@ -545,7 +471,7 @@
       featureById.set(feature.id, feature);
     }
     map.addLayer(cluster);
-    bindClusterPreview(cluster);
+    bindClusterPreview(map, cluster);
     markerEpoch += 1;
 
     // "Near me" + "Report an issue" map controls are DESKTOP-ONLY (#68 follow-up):
