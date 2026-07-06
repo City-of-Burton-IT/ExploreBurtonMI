@@ -1,6 +1,7 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { dataFetch } from './remote';
+  import { persistedStringSet } from './persisted.svelte';
   import { safeHref } from './templates';
   import { activeAlerts, loadAlerts, type CityAlert, type AlertLevel } from './alerts';
   import { localTodayISO } from './closures';
@@ -18,31 +19,11 @@
     info: 'alert-info',
   };
 
-  const STORAGE_KEY = 'eb-alerts-dismissed';
-
   let alerts = $state<CityAlert[]>([]);
-  let dismissed = $state<Set<string>>(new Set());
+  const dismissed = persistedStringSet('eb-alerts-dismissed');
   let today = $state('');
 
-  function loadDismissed(): Set<string> {
-    try {
-      const raw = localStorage.getItem(STORAGE_KEY);
-      return new Set(raw ? (JSON.parse(raw) as string[]) : []);
-    } catch {
-      return new Set();
-    }
-  }
-
-  function persist(ids: Set<string>): void {
-    try {
-      localStorage.setItem(STORAGE_KEY, JSON.stringify([...ids]));
-    } catch {
-      /* private mode / storage disabled -> dismissal just doesn't persist */
-    }
-  }
-
   onMount(() => {
-    dismissed = loadDismissed();
     // Local calendar date (not UTC) so "today" matches the resident's clock.
     today = localTodayISO();
   });
@@ -56,14 +37,7 @@
     });
   });
 
-  const shown = $derived(today ? activeAlerts(alerts, today, dismissed) : []);
-
-  function dismiss(id: string): void {
-    const next = new Set(dismissed);
-    next.add(id);
-    dismissed = next; // reassign so Svelte re-derives `shown`
-    persist(next);
-  }
+  const shown = $derived(today ? activeAlerts(alerts, today, dismissed.value) : []);
 </script>
 
 {#if shown.length}
@@ -79,7 +53,7 @@
             >
           {/if}
         </div>
-        <button class="close" onclick={() => dismiss(a.id)} aria-label="Dismiss this alert">
+        <button class="close" onclick={() => dismissed.add(a.id)} aria-label="Dismiss this alert">
           <Icon name="x" size={18} />
         </button>
       </div>

@@ -1,6 +1,7 @@
 <script lang="ts">
   import { setView, DASHBOARDS } from './store.svelte';
-  import { WELCOME_STORAGE_KEY, welcomeDismissed } from './welcome';
+  import { WELCOME_STORAGE_KEY } from './welcome';
+  import { persistedFlag } from './persisted.svelte';
   import Modal from './Modal.svelte';
 
   // First-visit orientation as a one-time modal (not an inline strip): a new
@@ -9,22 +10,12 @@
   // serves as the app's first-run onboarding (#59), no duplicate component.
   // Modal mechanics (focus in/out, Escape/backdrop close, Android back) live in
   // the shared <Modal>.
-  let dismissed = $state(true);
-  try {
-    dismissed = welcomeDismissed(localStorage.getItem(WELCOME_STORAGE_KEY));
-  } catch {
-    dismissed = false; // storage unavailable -> still show once
-  }
+  const dismissed = persistedFlag(WELCOME_STORAGE_KEY);
 
-  const open = $derived(!dismissed);
+  const open = $derived(!dismissed.value);
 
   function dismiss() {
-    dismissed = true;
-    try {
-      localStorage.setItem(WELCOME_STORAGE_KEY, '1');
-    } catch {
-      /* private mode -> just hide for this session */
-    }
+    dismissed.set();
   }
 
   const firstDashboard = DASHBOARDS[0]?.id;

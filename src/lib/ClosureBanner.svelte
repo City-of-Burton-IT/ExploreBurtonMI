@@ -1,5 +1,6 @@
 <script lang="ts">
   import { MDOT_MIDRIVE_URL, closuresSignature, type RoadClosure } from './closures';
+  import { persistedString } from './persisted.svelte';
 
   // Dismissible map callout for active road closures (#32). Dismissal is keyed
   // to the signature of the ACTIVE set, so a new/changed closure brings the
@@ -7,25 +8,13 @@
 
   let { active }: { active: RoadClosure[] } = $props();
 
-  const KEY = 'eb-closures-dismissed';
   const signature = $derived(closuresSignature(active));
+  const dismissedSig = persistedString('eb-closures-dismissed');
 
-  let dismissedSig = $state('');
-  try {
-    dismissedSig = localStorage.getItem(KEY) ?? '';
-  } catch {
-    /* storage unavailable -> banner just shows */
-  }
-
-  const show = $derived(active.length > 0 && signature !== dismissedSig);
+  const show = $derived(active.length > 0 && signature !== dismissedSig.value);
 
   function dismiss() {
-    dismissedSig = signature;
-    try {
-      localStorage.setItem(KEY, signature);
-    } catch {
-      /* private mode -> hides for this session only */
-    }
+    dismissedSig.set(signature);
   }
 
   const roadList = $derived(

@@ -1,26 +1,20 @@
 <script lang="ts">
   import { onMount } from 'svelte';
   import { ui, triggerInstall } from './store.svelte';
+  import { persistedFlag } from './persisted.svelte';
 
   // A dismissible bottom banner. Android/desktop Chromium fire `beforeinstallprompt`
   // (captured in main.ts -> ui.canInstall) so we can show a real "Install" button;
   // iOS Safari has no such API, so we show a manual "Share -> Add to Home Screen"
   // hint instead. Hidden when already installed (standalone) or once dismissed.
-  const DISMISS_KEY = 'eb-install-dismissed';
-
   let isStandalone = $state(false);
   let isIOSSafari = $state(false);
-  let dismissed = $state(false);
+  const dismissed = persistedFlag('eb-install-dismissed');
 
   onMount(() => {
     const nav = navigator as Navigator & { standalone?: boolean };
     isStandalone =
       window.matchMedia?.('(display-mode: standalone)').matches || nav.standalone === true;
-    try {
-      dismissed = localStorage.getItem(DISMISS_KEY) === '1';
-    } catch {
-      /* storage blocked (private mode) -- just show */
-    }
     const ua = navigator.userAgent;
     const isIOS =
       /iphone|ipad|ipod/i.test(ua) ||
@@ -29,19 +23,11 @@
     isIOSSafari = isIOS && inSafari;
   });
 
-  const show = $derived(!isStandalone && !dismissed && (ui.canInstall || isIOSSafari));
+  const show = $derived(!isStandalone && !dismissed.value && (ui.canInstall || isIOSSafari));
 
-  function dismiss() {
-    dismissed = true;
-    try {
-      localStorage.setItem(DISMISS_KEY, '1');
-    } catch {
-      /* ignore */
-    }
-  }
   async function install() {
     await triggerInstall();
-    dismiss();
+    dismissed.set();
   }
 </script>
 
@@ -59,7 +45,7 @@
     {#if ui.canInstall}
       <button class="go" onclick={install}>Install</button>
     {/if}
-    <button class="x" onclick={dismiss} aria-label="Dismiss">&times;</button>
+    <button class="x" onclick={() => dismissed.set()} aria-label="Dismiss">&times;</button>
   </div>
 {/if}
 
