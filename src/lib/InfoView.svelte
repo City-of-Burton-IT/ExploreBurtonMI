@@ -12,7 +12,9 @@
   import CompareBars from './charts/CompareBars.svelte';
   import InfoTable from './InfoTable.svelte';
   import TaxEstimator from './TaxEstimator.svelte';
-  import { setView } from './store.svelte';
+  import InfoHeader from './InfoHeader.svelte';
+  import InfoExplainer from './InfoExplainer.svelte';
+  import DashboardNav from './DashboardNav.svelte';
   import type { DashboardItem } from './store.svelte';
 
   let {
@@ -34,9 +36,6 @@
     prev?: DashboardItem | null;
     next?: DashboardItem | null;
   } = $props();
-
-  let explainerOpen = $state(false);
-  let methodologyOpen = $state(false);
 
   // Resident-facing "Data as of {Month YYYY}" freshness label (null when the panel
   // carries no lastUpdated, so the line is simply omitted).
@@ -65,27 +64,12 @@
       <p class="state">This information is temporarily unavailable. Please check back soon.</p>
     {/if}
   {:else}
-    <header class:has-logo={panel.logo}>
-      {#if panel.logo}
-        <!-- Hidden gracefully if the file is missing, so referencing a
-             not-yet-added logo never shows a broken-image icon. -->
-        <img
-          class="panel-logo"
-          src={panel.logo}
-          alt="{panel.title} logo"
-          onerror={(e) => ((e.currentTarget as HTMLImageElement).style.display = 'none')}
-        />
-      {/if}
-      <div class="header-text">
-        {#if group}<p class="group-crumb">{group}</p>{/if}
-        <h2>{panel.title}</h2>
-        {#if panel.subtitle}
-          <p class="subtitle">{panel.subtitle}</p>
-        {:else if description}
-          <p class="subtitle">{description}</p>
-        {/if}
-      </div>
-    </header>
+    <InfoHeader
+      title={panel.title}
+      subtitle={panel.subtitle || description}
+      {group}
+      logo={panel.logo}
+    />
 
     {#if panel.draft}
       <p class="draft" role="note">
@@ -174,46 +158,22 @@
     {/if}
 
     {#if panel.explainer?.items?.length}
-      <div class="explainer">
-        <button
-          class="explainer-toggle"
-          aria-expanded={explainerOpen}
-          onclick={() => (explainerOpen = !explainerOpen)}
-        >
-          <span class="ex-icon" aria-hidden="true">{explainerOpen ? '−' : '+'}</span>
-          {panel.explainer.title}
-        </button>
-        {#if explainerOpen}
-          <div class="explainer-body">
-            {#if panel.explainer.intro}<p class="ex-intro">{panel.explainer.intro}</p>{/if}
-            {#each panel.explainer.items as item (item.term)}
-              <details class="ex-card">
-                <summary>{item.term}</summary>
-                <p>{item.body}</p>
-              </details>
-            {/each}
-            {#if panel.explainer.source}<p class="ex-source">{panel.explainer.source}</p>{/if}
-          </div>
-        {/if}
-      </div>
+      <InfoExplainer title={panel.explainer.title}>
+        {#if panel.explainer.intro}<p class="ex-intro">{panel.explainer.intro}</p>{/if}
+        {#each panel.explainer.items as item (item.term)}
+          <details class="ex-card">
+            <summary>{item.term}</summary>
+            <p>{item.body}</p>
+          </details>
+        {/each}
+        {#if panel.explainer.source}<p class="ex-source">{panel.explainer.source}</p>{/if}
+      </InfoExplainer>
     {/if}
 
     {#if panel.methodology?.body}
-      <div class="explainer">
-        <button
-          class="explainer-toggle"
-          aria-expanded={methodologyOpen}
-          onclick={() => (methodologyOpen = !methodologyOpen)}
-        >
-          <span class="ex-icon" aria-hidden="true">{methodologyOpen ? '−' : '+'}</span>
-          {panel.methodology.title ?? 'How we measure this'}
-        </button>
-        {#if methodologyOpen}
-          <div class="explainer-body">
-            <p class="ex-intro">{panel.methodology.body}</p>
-          </div>
-        {/if}
-      </div>
+      <InfoExplainer title={panel.methodology.title ?? 'How we measure this'}>
+        <p class="ex-intro">{panel.methodology.body}</p>
+      </InfoExplainer>
     {/if}
 
     <hr />
@@ -237,22 +197,7 @@
       </p>
     </footer>
 
-    {#if prev || next}
-      <nav class="dashnav" aria-label="Browse dashboards">
-        {#if prev}
-          <button class="nav-btn prev" type="button" onclick={() => setView(prev.id)}>
-            <span class="dir" aria-hidden="true">‹</span>
-            <span class="lbl"><span class="cue">Previous</span>{prev.label}</span>
-          </button>
-        {:else}<span></span>{/if}
-        {#if next}
-          <button class="nav-btn next" type="button" onclick={() => setView(next.id)}>
-            <span class="lbl"><span class="cue">Next</span>{next.label}</span>
-            <span class="dir" aria-hidden="true">›</span>
-          </button>
-        {/if}
-      </nav>
-    {/if}
+    <DashboardNav {prev} {next} />
   {/if}
 </section>
 
@@ -287,39 +232,6 @@
   .error-state .retry:focus-visible {
     outline: none;
     box-shadow: var(--pub-focus-ring);
-  }
-  header {
-    margin-bottom: 1rem;
-  }
-  header.has-logo {
-    display: flex;
-    align-items: center;
-    gap: 0.85rem;
-  }
-  .panel-logo {
-    height: 56px;
-    width: auto;
-    flex: none;
-  }
-  h2 {
-    margin: 0;
-    font-family: var(--font-head, sans-serif);
-    font-weight: 700;
-    font-size: 1.5rem;
-    color: var(--civic-blue, #2c57a0);
-  }
-  .subtitle {
-    margin: 0.15rem 0 0;
-    color: var(--pub-muted);
-    font-size: 0.95rem;
-  }
-  .group-crumb {
-    margin: 0 0 0.1rem;
-    font-size: 0.72rem;
-    font-weight: 700;
-    letter-spacing: 0.05em;
-    text-transform: uppercase;
-    color: var(--pub-muted, #6b7280);
   }
   .draft {
     background: #fff6e6;
@@ -449,39 +361,6 @@
     padding-left: 0.5rem;
     border-left: 3px solid var(--civic-blue, #2c57a0);
   }
-  .explainer {
-    margin-top: 1.8rem;
-  }
-  .explainer-toggle {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    background: var(--civic-accent-bg);
-    color: #fff;
-    border: none;
-    border-radius: var(--pub-radius-sm, 6px);
-    padding: 0.6rem 1rem;
-    font-family: var(--font-head, sans-serif);
-    font-weight: 600;
-    font-size: 0.95rem;
-    cursor: pointer;
-  }
-  .explainer-toggle:hover {
-    background: var(--civic-blue-link, #1a4b8f);
-  }
-  .ex-icon {
-    font-size: 1.1rem;
-    line-height: 1;
-    font-weight: 700;
-  }
-  .explainer-body {
-    margin-top: 0.8rem;
-    animation: ex-reveal 0.22s ease;
-  }
-  @keyframes ex-reveal {
-    from { opacity: 0; transform: translateY(-4px); }
-    to { opacity: 1; transform: translateY(0); }
-  }
   .ex-intro {
     margin: 0 0 0.7rem;
     font-size: 0.92rem;
@@ -538,56 +417,6 @@
   .report {
     margin: 0.6rem 0 0;
     font-size: 0.8rem;
-  }
-  .dashnav {
-    display: flex;
-    justify-content: space-between;
-    gap: 0.6rem;
-    margin-top: 1.2rem;
-  }
-  .nav-btn {
-    display: inline-flex;
-    align-items: center;
-    gap: 0.5rem;
-    max-width: 48%;
-    border: 1px solid var(--pub-border, #d8dde4);
-    background: var(--pub-surface);
-    border-radius: var(--pub-radius, 10px);
-    padding: 0.5rem 0.8rem;
-    cursor: pointer;
-    font-family: var(--font-body, sans-serif);
-    color: var(--civic-blue-deep, #1e437e);
-    text-align: left;
-  }
-  .nav-btn.next {
-    text-align: right;
-  }
-  .nav-btn:hover {
-    border-color: var(--civic-blue, #2c57a0);
-    background: var(--civic-blue-soft, #d7e1f3);
-  }
-  .nav-btn:focus-visible {
-    outline: none;
-    box-shadow: var(--pub-focus-ring);
-  }
-  .nav-btn .lbl {
-    display: flex;
-    flex-direction: column;
-    min-width: 0;
-    font-weight: 700;
-    font-size: 0.86rem;
-  }
-  .nav-btn .cue {
-    font-size: 0.66rem;
-    font-weight: 600;
-    letter-spacing: 0.04em;
-    text-transform: uppercase;
-    color: var(--pub-muted, #6b7280);
-  }
-  .nav-btn .dir {
-    font-size: 1.2rem;
-    line-height: 1;
-    flex: 0 0 auto;
   }
   .report a {
     color: var(--civic-blue-link, #386fc5);
