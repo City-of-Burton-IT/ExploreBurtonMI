@@ -14,9 +14,16 @@ const out = (f) => join(ROOT, 'public', f);
 const TRANSPARENT = { r: 0, g: 0, b: 0, alpha: 0 };
 const WHITE = { r: 255, g: 255, b: 255, alpha: 1 };
 
+// Palette PNGs (indexed color) compress far smaller than truecolor for flat,
+// low-color-count icon art like the seal, with no visible quality loss.
+const PNG_OPTS = { palette: true, quality: 80, compressionLevel: 9 };
+
 /** Square icon, seal scaled to fit (aspect kept), transparent background. */
 async function standard(size, file) {
-  await sharp(SRC).resize(size, size, { fit: 'contain', background: TRANSPARENT }).png().toFile(out(file));
+  await sharp(SRC)
+    .resize(size, size, { fit: 'contain', background: TRANSPARENT })
+    .png(PNG_OPTS)
+    .toFile(out(file));
 }
 
 /** Square icon with the seal centered at `inner` px on a solid background --
@@ -28,7 +35,7 @@ async function padded(size, inner, bg, file) {
     .toBuffer();
   await sharp({ create: { width: size, height: size, channels: 4, background: bg } })
     .composite([{ input: seal, gravity: 'center' }])
-    .png()
+    .png(PNG_OPTS)
     .toFile(out(file));
 }
 
