@@ -12,18 +12,17 @@
 # Re-runnable (committed output; the site reads the JSON, never ArcGIS):
 #     python tools/extract_crashes.py
 #
-# Stdlib only (urllib/json).
+# Stdlib only (tools/lib helpers over urllib/json).
 from __future__ import annotations
 
-import json
-import os
 import sys
-import urllib.parse
-import urllib.request
 from collections import Counter
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-OUT_INFO = os.path.join(ROOT, "public", "info-roadsafety.json")
+from lib.arcgis import paged_query
+from lib.iox import write_json
+from lib.paths import public_path
+
+OUT_INFO = public_path("info-roadsafety.json")
 
 LAYER = ("https://services2.arcgis.com/5ckbIY7K9TUKoseK/ArcGIS/rest/services/"
          "Crash_Locations_2014_2018/FeatureServer/0/query")
@@ -36,30 +35,16 @@ SEV_ORDER = ["Fatal", "Injury", "Property Damage Only"]
 
 
 def fetch() -> list:
-    feats: list = []
-    offset = 0
     fields = ("YEAR,CRASHSEVER,CRASHTYPE,NUMOFINJ,NUMOFKILL,PRNAME,INTERNAME,"
               "PEDESTRIAN,BIKE,MOTORCYCLE,DRINKING")
-    while True:
-        params = {
-            "where": WHERE,
-            "outFields": fields,
-            "returnGeometry": "false",
-            "resultOffset": str(offset),
-            "resultRecordCount": str(PAGE),
-            "orderByFields": "YEAR",
-            "f": "json",
-        }
-        url = LAYER + "?" + urllib.parse.urlencode(params)
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            d = json.load(resp)
-        page = d.get("features", [])
-        feats.extend(a["attributes"] for a in page)
-        if len(page) < PAGE:
-            break
-        offset += PAGE
-    return feats
+    params = {
+        "where": WHERE,
+        "outFields": fields,
+        "returnGeometry": "false",
+        "orderByFields": "YEAR",
+        "f": "json",
+    }
+    return [f["attributes"] for f in paged_query(LAYER, params, page_size=PAGE, timeout=120)]
 
 
 def _yes(v) -> bool:
@@ -148,9 +133,7 @@ def main() -> int:
             "public awareness, not endorsed by the City of Burton.",
         ],
     }
-    with open(OUT_INFO, "w", encoding="utf-8") as fh:
-        json.dump(panel, fh, indent=2, ensure_ascii=False)
-        fh.write("\n")
+    write_json(OUT_INFO, panel)
 
     print(f"Wrote {OUT_INFO}")
     print(f"  {total} crashes {span}; by year {dict(sorted(by_year.items()))}")

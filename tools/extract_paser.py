@@ -25,20 +25,22 @@
 # Re-runnable (committed output; the site reads the JSON/GeoJSON, never ArcGIS):
 #     python tools/extract_paser.py
 #
-# Stdlib only (urllib/json).
+# Stdlib only (tools/lib helpers over urllib/json).
 from __future__ import annotations
 
 import json
 import os
 import sys
-import urllib.parse
-import urllib.request
 from collections import Counter, defaultdict
 
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
-OUT_GEOJSON = os.path.join(ROOT, "public", "paser-roads.geojson")
-OUT_INFO = os.path.join(ROOT, "public", "info-roads.json")
+from lib.arcgis import paged_query
+from lib.geo import round_coords
+from lib.iox import write_geojson, write_json
+from lib.paths import public_path
+
+BOUNDARY = public_path("boundary.geojson")
+OUT_GEOJSON = public_path("paser-roads.geojson")
+OUT_INFO = public_path("info-roads.json")
 
 LAYER = ("https://services2.arcgis.com/5ckbIY7K9TUKoseK/ArcGIS/rest/services/"
          "PASER_Map_2025_WFL1/FeatureServer/3/query")
@@ -47,12 +49,6 @@ PAGE = 2000
 
 COND_COLOR = {"Good": "#4ea735", "Fair": "#e08a00", "Poor": "#c0392b"}
 COND_FALLBACK = "#888888"
-
-
-def _round(coords, ndigits=5):
-    if isinstance(coords[0], (int, float)):
-        return [round(coords[0], ndigits), round(coords[1], ndigits)]
-    return [_round(c, ndigits) for c in coords]
 
 
 def _rings() -> list:
@@ -117,37 +113,22 @@ def _cond_pct(miles: dict) -> dict:
 
 
 def fetch(with_geometry: bool, bbox: tuple | None = None) -> list:
-    feats: list = []
-    offset = 0
-    fields = "CURRRATING,LENGTHMILE,PRNAME,SURFTYPE,AADT,AADT_YEAR,RATINGYEAR"
-    while True:
-        params = {
-            "where": WHERE,
-            "outFields": fields,
-            "returnGeometry": "true" if with_geometry else "false",
-            "outSR": "4326",
-            "resultOffset": str(offset),
-            "resultRecordCount": str(PAGE),
-            "f": "geojson" if with_geometry else "json",
-        }
-        if with_geometry and bbox:
-            params.update({
-                "geometry": ",".join(str(round(v, 5)) for v in bbox),
-                "geometryType": "esriGeometryEnvelope",
-                "inSR": "4326",
-                "spatialRel": "esriSpatialRelIntersects",
-                "maxAllowableOffset": "0.0001",  # ~10 m generalization, smaller file
-            })
-        url = LAYER + "?" + urllib.parse.urlencode(params)
-        req = urllib.request.Request(url, headers={"User-Agent": "Mozilla/5.0"})
-        with urllib.request.urlopen(req, timeout=120) as resp:
-            d = json.load(resp)
-        page = d.get("features", [])
-        feats.extend(page)
-        if len(page) < PAGE:
-            break
-        offset += PAGE
-    return feats
+    params = {
+        "where": WHERE,
+        "outFields": "CURRRATING,LENGTHMILE,PRNAME,SURFTYPE,AADT,AADT_YEAR,RATINGYEAR",
+        "returnGeometry": "true" if with_geometry else "false",
+        "outSR": "4326",
+        "f": "geojson" if with_geometry else "json",
+    }
+    if with_geometry and bbox:
+        params.update({
+            "geometry": ",".join(str(round(v, 5)) for v in bbox),
+            "geometryType": "esriGeometryEnvelope",
+            "inSR": "4326",
+            "spatialRel": "esriSpatialRelIntersects",
+            "maxAllowableOffset": "0.0001",  # ~10 m generalization, smaller file
+        })
+    return list(paged_query(LAYER, params, page_size=PAGE, timeout=120))
 
 
 def _attrs(f: dict, geo: bool) -> dict:
@@ -291,7 +272,7 @@ def main() -> int:
                 "_weight": 4,
                 "_popupRows": rows,
             },
-            "geometry": {"type": f["geometry"]["type"], "coordinates": _round(f["geometry"]["coordinates"])},
+            "geometry": {"type": f["geometry"]["type"], "coordinates": round_coords(f["geometry"]["coordinates"])},
         })
     fc = {
         "type": "FeatureCollection",
@@ -299,12 +280,8 @@ def main() -> int:
                     "within the City of Burton, colored Good/Fair/Poor."),
         "features": feats,
     }
-    with open(OUT_GEOJSON, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
-    with open(OUT_INFO, "w", encoding="utf-8") as fh:
-        json.dump(panel, fh, indent=2, ensure_ascii=False)
-        fh.write("\n")
+    write_geojson(OUT_GEOJSON, fc)
+    write_json(OUT_INFO, panel)
 
     # Re-apply the capital-projects link (a fresh fetch overwrote info-roads.json)
     # and rebuild the funded-roads overlay from the fresh geometry.

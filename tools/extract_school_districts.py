@@ -19,14 +19,17 @@ import io
 import json
 import os
 import sys
-import urllib.request
 import zipfile
+
+from lib.geo import round_coords
+from lib.httpio import get_bytes
+from lib.iox import write_geojson
+from lib.paths import public_path
 
 STATE_FIPS = "26"  # Michigan
 CB_URL = "https://www2.census.gov/geo/tiger/GENZ{year}/shp/cb_{year}_{state}_unsd_500k.zip"
-ROOT = os.path.abspath(os.path.join(os.path.dirname(__file__), ".."))
-BOUNDARY = os.path.join(ROOT, "public", "boundary.geojson")
-OUT = os.path.join(ROOT, "public", "school-districts.geojson")
+BOUNDARY = public_path("boundary.geojson")
+OUT = public_path("school-districts.geojson")
 
 
 def _rings(geom: dict) -> list:
@@ -63,11 +66,7 @@ def _shape_contains(geo: dict, x: float, y: float) -> bool:
 
 def _round_geo(geo: dict, ndigits: int = 5) -> dict:
     """Round coordinates (~1 m at this latitude) to shrink the output file."""
-    def r(coords):
-        if isinstance(coords[0], (int, float)):
-            return [round(coords[0], ndigits), round(coords[1], ndigits)]
-        return [r(c) for c in coords]
-    return {"type": geo["type"], "coordinates": r(geo["coordinates"])}
+    return {"type": geo["type"], "coordinates": round_coords(geo["coordinates"], ndigits)}
 
 
 def burton_interior_points(n: int = 60) -> list[tuple[float, float]]:
@@ -104,8 +103,7 @@ def main() -> int:
     else:
         url = CB_URL.format(year=args.year, state=STATE_FIPS)
         print(f"Downloading {url} ...")
-        with urllib.request.urlopen(url, timeout=60) as resp:
-            zf = zipfile.ZipFile(io.BytesIO(resp.read()))
+        zf = zipfile.ZipFile(io.BytesIO(get_bytes(url)))
         base = next(n[:-4] for n in zf.namelist() if n.endswith(".shp"))
         reader = shapefile.Reader(
             shp=io.BytesIO(zf.read(base + ".shp")),
@@ -142,9 +140,7 @@ def main() -> int:
         ),
         "features": features,
     }
-    with open(OUT, "w", encoding="utf-8", newline="\n") as fh:
-        json.dump(fc, fh, ensure_ascii=False, separators=(",", ":"))
-        fh.write("\n")
+    write_geojson(OUT, fc)
     print(f"Wrote {OUT}")
     print(f"  {len(features)} districts serving Burton:")
     for f in features:
