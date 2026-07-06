@@ -1,6 +1,6 @@
 <script lang="ts">
   import type { AppConfig } from './types';
-  import { ui, closeReport, startReportPin, registerOverlay } from './store.svelte';
+  import { ui, closeReport, startReportPin } from './store.svelte';
   import {
     REPORT_CATEGORIES,
     type ReportCategory,
@@ -12,10 +12,19 @@
   } from './report';
   import { newToken, trackUrl } from './track';
   import { loadAddressPoints, nearestAddress } from './reverseGeocode';
+  import Modal from './Modal.svelte';
+  import TrackLinkPanel from './TrackLinkPanel.svelte';
+  import './forms.css';
 
   // "Report an issue" (#14): pin + optional photo/notes -> the private DPW
   // triage queue. Never published; this is a report, not an emergency line.
-  // Modal mechanics mirror SuggestEdit.svelte / WelcomeModal.svelte.
+  // Modal mechanics (Escape, backdrop, Android back, focus save/trap/restore)
+  // live in the shared <Modal>; this component keeps only the field logic +
+  // its own dialog sizing. Pin-drop mode (see below) hides the dialog by
+  // toggling `open` off, which unmounts <Modal> -- Modal's own effect then
+  // restores focus to whatever opened the dialog, and since this component
+  // itself never unmounts, the in-progress field values (address, category,
+  // etc.) survive the round trip untouched.
 
   let { config }: { config: AppConfig } = $props();
 
@@ -44,7 +53,6 @@
   // Resident tracking link set on a successful submit (#status); token generated
   // client-side and sent with the payload so the flow can store + email it.
   let trackLink = $state('');
-  let copied = $state(false);
 
   // Reset only when the modal opens FRESH. "Fresh" = it was fully closed (not
   // just hidden for pin mode, which must keep the in-progress fields).
@@ -71,17 +79,11 @@
     problems = [];
     submitError = '';
     trackLink = '';
-    copied = false;
   }
 
   function fullClose() {
     closeReport();
   }
-
-  // Android hardware back: leave pin mode or close the modal.
-  $effect(() => {
-    if (open) return registerOverlay(fullClose);
-  });
 
   // #71: reverse-geocode the dropped pin to the nearest known address, fully
   // on-device (the resident's coords never leave the device pre-submission).
@@ -180,210 +182,135 @@
       submitError = result.error ?? 'Something went wrong. Please try again.';
     }
   }
-
-  async function copyLink() {
-    try {
-      await navigator.clipboard.writeText(trackLink);
-      copied = true;
-      setTimeout(() => (copied = false), 2500);
-    } catch {
-      /* clipboard blocked -> the link text is already on screen to copy by hand */
-    }
-  }
-
-  function onKeydown(e: KeyboardEvent) {
-    if (e.key === 'Escape') fullClose();
-  }
 </script>
 
-<svelte:window onkeydown={open ? onKeydown : undefined} />
-
 {#if open}
-  <!-- svelte-ignore a11y_click_events_have_key_events a11y_no_static_element_interactions -->
-  <div
-    class="backdrop"
-    role="presentation"
-    onclick={(e) => {
-      if (e.target === e.currentTarget) fullClose();
-    }}
+  <Modal
+    close={fullClose}
+    labelledby="report-title"
+    class="civic-dialog"
+    style="--modal-z: 2500; --modal-backdrop-bg: rgba(0, 0, 0, 0.5); --modal-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.3); --modal-padding: 1.6rem 1.6rem 1.4rem"
   >
-    <div class="modal" role="dialog" aria-modal="true" aria-labelledby="report-title" tabindex="-1">
-      <button class="close" onclick={fullClose} aria-label="Close">&times;</button>
+    {#if phase === 'done'}
+      <h2 id="report-title">Report sent</h2>
+      <p class="lead">
+        Thanks. Your report goes to the City of Burton public-works queue for triage.
+        This is a report line, not an emergency line: for anything dangerous right now,
+        call 911 or the DPW at (810) 742-9230.
+      </p>
+      <TrackLinkPanel {trackLink} kind="report" />
+      <button class="civic-primary-btn" onclick={fullClose}>Done</button>
+    {:else}
+      <h2 id="report-title">Report an issue</h2>
+      <p class="lead">
+        Spotted a pothole, damaged sign, drainage problem, or missed trash pickup? Mark the
+        spot or enter an address and tell us about it. Reports go to city staff and are not
+        published.
+      </p>
 
-      {#if phase === 'done'}
-        <h2 id="report-title">Report sent</h2>
-        <p class="lead">
-          Thanks. Your report goes to the City of Burton public-works queue for triage.
-          This is a report line, not an emergency line: for anything dangerous right now,
-          call 911 or the DPW at (810) 742-9230.
-        </p>
-        {#if trackLink}
-          <div class="track">
-            <p class="track-label">Track your report:</p>
-            <p class="track-link"><a href={trackLink}>{trackLink}</a></p>
-            <button class="copy" type="button" onclick={copyLink}>
-              {copied ? 'Copied' : 'Copy link'}
+      <form class="civic-form" onsubmit={submit}>
+        <div class="pin" class:set={hasPin}>
+          {#if hasPin}
+            <span>
+              Pin set at {ui.report.lat?.toFixed(5)}, {ui.report.lng?.toFixed(5)}
+            </span>
+            <button type="button" class="linkish" onclick={startReportPin}>Change spot</button>
+          {:else}
+            <span>Where is it?</span>
+            <button type="button" class="linkish" onclick={startReportPin}>
+              Tap the map to drop a pin
             </button>
-            <p class="track-note">
-              Save this link to check the status later. If you gave an email, we also sent it to you.
-            </p>
-          </div>
+          {/if}
+        </div>
+
+        <label>
+          Address <span class="opt">(or drop a pin above)</span>
+          <input
+            type="text"
+            bind:value={address}
+            oninput={() => (addressAutoFilled = false)}
+            maxlength="255"
+            placeholder="e.g. 3025 S Center Rd"
+            autocomplete="street-address"
+          />
+        </label>
+        {#if addressLookupBusy}
+          <p class="lookup-hint">Looking up the nearest address...</p>
+        {:else if addressAutoFilled}
+          <p class="lookup-hint">Nearest address filled in from your pin. Edit it if it's not quite right.</p>
         {/if}
-        <button class="primary" onclick={fullClose}>Done</button>
-      {:else}
-        <h2 id="report-title">Report an issue</h2>
-        <p class="lead">
-          Spotted a pothole, damaged sign, drainage problem, or missed trash pickup? Mark the
-          spot or enter an address and tell us about it. Reports go to city staff and are not
-          published.
-        </p>
 
-        <form onsubmit={submit}>
-          <div class="pin" class:set={hasPin}>
-            {#if hasPin}
-              <span>
-                Pin set at {ui.report.lat?.toFixed(5)}, {ui.report.lng?.toFixed(5)}
-              </span>
-              <button type="button" class="linkish" onclick={startReportPin}>Change spot</button>
-            {:else}
-              <span>Where is it?</span>
-              <button type="button" class="linkish" onclick={startReportPin}>
-                Tap the map to drop a pin
-              </button>
-            {/if}
-          </div>
+        <label>
+          What kind of issue?
+          <select bind:value={category} required>
+            {#each REPORT_CATEGORIES as c (c)}
+              <option value={c}>{c}</option>
+            {/each}
+          </select>
+        </label>
 
+        <label>
+          What's going on? <span class="opt">(optional but helpful)</span>
+          <textarea bind:value={description} rows="3" maxlength="2000"></textarea>
+        </label>
+
+        <label>
+          Photo <span class="opt">(optional, resized on your device before upload)</span>
+          <input type="file" accept="image/*" capture="environment" onchange={onPhotoChange} />
+        </label>
+        {#if photoName}
+          <p class="photo-ok">Attached: {photoName}</p>
+        {/if}
+        {#if photoError}
+          <p class="problems">{photoError}</p>
+        {/if}
+
+        <fieldset>
+          <legend>Contact (optional)</legend>
+          <p class="privacy">
+            Only if you want a follow-up. Used by city staff only, never published. See our
+            <a href="https://explore.burtonmi.gov/privacy.html" target="_blank" rel="noopener noreferrer"
+              >privacy policy</a
+            >.
+          </p>
           <label>
-            Address <span class="opt">(or drop a pin above)</span>
-            <input
-              type="text"
-              bind:value={address}
-              oninput={() => (addressAutoFilled = false)}
-              maxlength="255"
-              placeholder="e.g. 3025 S Center Rd"
-              autocomplete="street-address"
-            />
+            Your name <span class="opt">(optional)</span>
+            <input type="text" bind:value={contactName} maxlength="255" autocomplete="name" />
           </label>
-          {#if addressLookupBusy}
-            <p class="lookup-hint">Looking up the nearest address...</p>
-          {:else if addressAutoFilled}
-            <p class="lookup-hint">Nearest address filled in from your pin. Edit it if it's not quite right.</p>
-          {/if}
-
           <label>
-            What kind of issue?
-            <select bind:value={category} required>
-              {#each REPORT_CATEGORIES as c (c)}
-                <option value={c}>{c}</option>
-              {/each}
-            </select>
+            Phone or email <span class="opt">(optional)</span>
+            <input type="text" bind:value={contactInfo} maxlength="255" autocomplete="email" />
           </label>
+        </fieldset>
 
+        <!-- Honeypot: visually hidden; bots that fill it are rejected server-side. -->
+        <div class="hp" aria-hidden="true">
           <label>
-            What's going on? <span class="opt">(optional but helpful)</span>
-            <textarea bind:value={description} rows="3" maxlength="2000"></textarea>
+            Leave this field empty
+            <input type="text" bind:value={hp} tabindex="-1" autocomplete="off" />
           </label>
+        </div>
 
-          <label>
-            Photo <span class="opt">(optional, resized on your device before upload)</span>
-            <input type="file" accept="image/*" capture="environment" onchange={onPhotoChange} />
-          </label>
-          {#if photoName}
-            <p class="photo-ok">Attached: {photoName}</p>
-          {/if}
-          {#if photoError}
-            <p class="problems">{photoError}</p>
-          {/if}
+        {#if problems.length > 0}
+          <ul class="problems" role="alert">
+            {#each problems as p (p)}
+              <li>{p}</li>
+            {/each}
+          </ul>
+        {/if}
+        {#if submitError}
+          <p class="problems" role="alert">{submitError}</p>
+        {/if}
 
-          <fieldset>
-            <legend>Contact (optional)</legend>
-            <p class="privacy">
-              Only if you want a follow-up. Used by city staff only, never published. See our
-              <a href="https://explore.burtonmi.gov/privacy.html" target="_blank" rel="noopener noreferrer"
-                >privacy policy</a
-              >.
-            </p>
-            <label>
-              Your name <span class="opt">(optional)</span>
-              <input type="text" bind:value={contactName} maxlength="255" autocomplete="name" />
-            </label>
-            <label>
-              Phone or email <span class="opt">(optional)</span>
-              <input type="text" bind:value={contactInfo} maxlength="255" autocomplete="email" />
-            </label>
-          </fieldset>
-
-          <!-- Honeypot: visually hidden; bots that fill it are rejected server-side. -->
-          <div class="hp" aria-hidden="true">
-            <label>
-              Leave this field empty
-              <input type="text" bind:value={hp} tabindex="-1" autocomplete="off" />
-            </label>
-          </div>
-
-          {#if problems.length > 0}
-            <ul class="problems" role="alert">
-              {#each problems as p (p)}
-                <li>{p}</li>
-              {/each}
-            </ul>
-          {/if}
-          {#if submitError}
-            <p class="problems" role="alert">{submitError}</p>
-          {/if}
-
-          <button class="primary" type="submit" disabled={phase === 'submitting'}>
-            {phase === 'submitting' ? 'Sending...' : 'Send report'}
-          </button>
-        </form>
-      {/if}
-    </div>
-  </div>
+        <button class="civic-primary-btn" type="submit" disabled={phase === 'submitting'}>
+          {phase === 'submitting' ? 'Sending...' : 'Send report'}
+        </button>
+      </form>
+    {/if}
+  </Modal>
 {/if}
 
 <style>
-  .backdrop {
-    position: fixed;
-    inset: 0;
-    z-index: 2500;
-    background: rgba(0, 0, 0, 0.5);
-    display: grid;
-    place-items: center;
-    padding: 1.2rem;
-  }
-  .modal {
-    position: relative;
-    width: 100%;
-    max-width: 480px;
-    max-height: calc(100% - 2rem);
-    overflow-y: auto;
-    background: var(--pub-surface);
-    border-radius: var(--pub-radius-lg, 16px);
-    box-shadow: 0 1.5rem 4rem rgba(0, 0, 0, 0.3);
-    padding: 1.6rem 1.6rem 1.4rem;
-    padding-bottom: calc(
-      1.4rem + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px))
-    );
-  }
-  .close {
-    position: absolute;
-    top: 0.6rem;
-    right: 0.7rem;
-    border: none;
-    background: none;
-    font-size: 1.7rem;
-    line-height: 1;
-    color: var(--pub-muted, #5c5c5c);
-    cursor: pointer;
-  }
-  .close:hover {
-    color: var(--civic-blue, #2c57a0);
-  }
-  .close:focus-visible {
-    outline: none;
-    box-shadow: var(--pub-focus-ring);
-    border-radius: var(--pub-radius-sm, 8px);
-  }
   h2 {
     margin: 0 1.5rem 0.3rem 0;
     font-family: var(--font-head, sans-serif);
@@ -395,11 +322,6 @@
     margin: 0 0 1rem;
     font-size: 0.92rem;
     color: var(--pub-muted, #5c5c5c);
-  }
-  form {
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
   }
   .pin {
     display: flex;
@@ -432,161 +354,15 @@
     box-shadow: var(--pub-focus-ring);
     border-radius: var(--pub-radius-sm, 8px);
   }
-  label {
-    display: flex;
-    flex-direction: column;
-    gap: 0.25rem;
-    font-size: 0.85rem;
-    font-weight: 600;
-    color: var(--pub-ink, #2c2c2c);
-  }
-  .opt {
-    font-weight: 400;
-    color: var(--pub-muted, #5c5c5c);
-  }
   .lookup-hint {
     margin: -0.45rem 0 0;
     font-size: 0.78rem;
     font-weight: 400;
     color: var(--pub-muted, #5c5c5c);
   }
-  input,
-  select,
-  textarea {
-    font: inherit;
-    font-weight: 400;
-    color: var(--pub-ink, #2c2c2c);
-    background: var(--pub-surface);
-    border: 1px solid var(--pub-border, #d8dde4);
-    border-radius: var(--pub-radius-sm, 8px);
-    padding: 0.5rem 0.6rem;
-    min-height: 44px;
-  }
-  textarea {
-    resize: vertical;
-    min-height: 70px;
-  }
-  input:focus-visible,
-  select:focus-visible,
-  textarea:focus-visible {
-    outline: none;
-    border-color: var(--civic-blue, #2c57a0);
-    box-shadow: var(--pub-focus-ring);
-  }
-  fieldset {
-    margin: 0.2rem 0 0;
-    border: 1px solid var(--pub-border, #d8dde4);
-    border-radius: var(--pub-radius, 12px);
-    padding: 0.6rem 0.8rem 0.8rem;
-    display: flex;
-    flex-direction: column;
-    gap: 0.75rem;
-  }
-  legend {
-    font-size: 0.8rem;
-    font-weight: 700;
-    color: var(--civic-blue-deep, #1e437e);
-    padding: 0 0.3rem;
-  }
-  .privacy {
-    margin: 0;
-    font-size: 0.78rem;
-    font-weight: 400;
-    color: var(--pub-muted, #5c5c5c);
-  }
-  .privacy a {
-    color: var(--civic-blue-link);
-  }
   .photo-ok {
     margin: -0.35rem 0 0;
     font-size: 0.8rem;
     color: var(--pub-success);
-  }
-  .hp {
-    position: absolute;
-    left: -9999px;
-    width: 1px;
-    height: 1px;
-    overflow: hidden;
-  }
-  .problems {
-    margin: 0;
-    padding: 0.55rem 0.8rem 0.55rem 1.6rem;
-    color: var(--pub-error);
-    border: 1px solid var(--pub-error);
-    border-radius: var(--pub-radius-sm, 8px);
-    font-size: 0.85rem;
-  }
-  p.problems {
-    padding-left: 0.8rem;
-  }
-  .track {
-    margin: 0 0 1rem;
-    padding: 0.8rem 0.9rem;
-    background: var(--civic-accent-bg-soft, #eef3fb);
-    border: 1px solid var(--pub-border, #d8dde4);
-    border-radius: var(--pub-radius, 12px);
-  }
-  .track-label {
-    margin: 0 0 0.3rem;
-    font-size: 0.85rem;
-    font-weight: 700;
-    color: var(--civic-blue-deep, #1e437e);
-  }
-  .track-link {
-    margin: 0 0 0.5rem;
-    font-size: 0.82rem;
-    word-break: break-all;
-  }
-  .track-link a {
-    color: var(--civic-blue-link);
-  }
-  .copy {
-    border: 1px solid var(--civic-blue);
-    background: var(--pub-surface);
-    color: var(--civic-blue);
-    border-radius: 999px;
-    padding: 0.35rem 0.9rem;
-    font: inherit;
-    font-size: 0.82rem;
-    font-weight: 600;
-    cursor: pointer;
-  }
-  .copy:hover {
-    background: var(--civic-accent-bg);
-    color: #fff;
-  }
-  .copy:focus-visible {
-    outline: none;
-    box-shadow: var(--pub-focus-ring);
-  }
-  .track-note {
-    margin: 0.5rem 0 0;
-    font-size: 0.78rem;
-    color: var(--pub-muted, #5c5c5c);
-  }
-  .primary {
-    margin-top: 0.3rem;
-    width: 100%;
-    border: none;
-    background: var(--civic-accent-bg);
-    color: #fff;
-    border-radius: 999px;
-    padding: 0.65rem 1rem;
-    font-family: var(--font-body, sans-serif);
-    font-size: 0.95rem;
-    font-weight: 700;
-    cursor: pointer;
-  }
-  .primary:hover {
-    background: var(--civic-accent-bg-hover);
-  }
-  .primary:disabled {
-    opacity: 0.6;
-    cursor: default;
-  }
-  .primary:focus-visible {
-    outline: none;
-    box-shadow: var(--pub-focus-ring);
   }
 </style>

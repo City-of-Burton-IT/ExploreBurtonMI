@@ -1,0 +1,126 @@
+/* Shared "civic form" styling for the resident-submission dialogs (SuggestEdit,
+   ReportIssue). Plain, unscoped stylesheet -- imported directly from each
+   component's <script> (same pattern Map.svelte uses for vendor CSS) so the
+   ~90% identical form-field CSS those two dialogs used to duplicate lives in
+   one place. Every selector is qualified under .civic-form / .civic-dialog /
+   .civic-primary-btn so nothing leaks onto unrelated forms elsewhere in the app. */
+
+.civic-form {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.civic-form label {
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+  font-size: 0.85rem;
+  font-weight: 600;
+  color: var(--pub-ink, #2c2c2c);
+}
+.civic-form .opt {
+  font-weight: 400;
+  color: var(--pub-muted, #5c5c5c);
+}
+.civic-form input,
+.civic-form select,
+.civic-form textarea {
+  font: inherit;
+  font-weight: 400;
+  color: var(--pub-ink, #2c2c2c);
+  background: var(--pub-surface);
+  border: 1px solid var(--pub-border, #d8dde4);
+  border-radius: var(--pub-radius-sm, 8px);
+  padding: 0.5rem 0.6rem;
+  min-height: 44px;
+}
+.civic-form textarea {
+  resize: vertical;
+  min-height: 70px;
+}
+.civic-form input:focus-visible,
+.civic-form select:focus-visible,
+.civic-form textarea:focus-visible {
+  outline: none;
+  border-color: var(--civic-blue, #2c57a0);
+  box-shadow: var(--pub-focus-ring);
+}
+.civic-form fieldset {
+  margin: 0.2rem 0 0;
+  border: 1px solid var(--pub-border, #d8dde4);
+  border-radius: var(--pub-radius, 12px);
+  padding: 0.6rem 0.8rem 0.8rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+.civic-form legend {
+  font-size: 0.8rem;
+  font-weight: 700;
+  color: var(--civic-blue-deep, #1e437e);
+  padding: 0 0.3rem;
+}
+.civic-form .privacy {
+  margin: 0;
+  font-size: 0.78rem;
+  font-weight: 400;
+  color: var(--pub-muted, #5c5c5c);
+}
+.civic-form .privacy a {
+  color: var(--civic-blue-link);
+}
+/* Honeypot: visually hidden, never filled by people; bots that fill it are
+   rejected by the intake flow. Paired with aria-hidden on the wrapping div. */
+.civic-form .hp {
+  position: absolute;
+  left: -9999px;
+  width: 1px;
+  height: 1px;
+  overflow: hidden;
+}
+.civic-form .problems {
+  margin: 0;
+  padding: 0.55rem 0.8rem 0.55rem 1.6rem;
+  color: var(--pub-error);
+  border: 1px solid var(--pub-error);
+  border-radius: var(--pub-radius-sm, 8px);
+  font-size: 0.85rem;
+}
+.civic-form p.problems {
+  padding-left: 0.8rem;
+}
+
+/* Edge-to-edge (#30): extend the modal's bottom padding for the gesture bar.
+   Applied via the `class="civic-dialog"` passed to <Modal> in SuggestEdit /
+   ReportIssue -- Modal renders it as `.backdrop.civic-dialog`. */
+.backdrop.civic-dialog .modal {
+  padding-bottom: calc(1.4rem + var(--safe-area-inset-bottom, env(safe-area-inset-bottom, 0px)));
+}
+
+/* Primary CTA button -- the form's submit button AND the standalone "Done"
+   button on the post-submit screen (outside the <form>), so it's a top-level
+   class rather than scoped under .civic-form. */
+.civic-primary-btn {
+  margin-top: 0.3rem;
+  width: 100%;
+  border: none;
+  background: var(--civic-accent-bg);
+  color: #fff;
+  border-radius: 999px;
+  padding: 0.65rem 1rem;
+  font-family: var(--font-body, sans-serif);
+  font-size: 0.95rem;
+  font-weight: 700;
+  cursor: pointer;
+}
+.civic-primary-btn:hover {
+  background: var(--civic-accent-bg-hover);
+}
+.civic-primary-btn:disabled {
+  opacity: 0.6;
+  cursor: default;
+}
+.civic-primary-btn:focus-visible {
+  outline: none;
+  box-shadow: var(--pub-focus-ring);
+}
