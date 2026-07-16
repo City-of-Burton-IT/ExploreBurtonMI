@@ -14,7 +14,9 @@ import { Capacitor } from '@capacitor/core';
 // deters the public and the soft launch; it does not secure the content.
 //
 // AT LAUNCH: set COMING_SOON_ENABLED = false and redeploy to open the site fully.
-export const COMING_SOON_ENABLED = true;
+// Internal-preview builds (VITE_INTERNAL_PREVIEW=1 at build time) disable the
+// gate so staff mirrors show the site directly; the public build is unaffected.
+export const COMING_SOON_ENABLED = import.meta.env.VITE_INTERNAL_PREVIEW === '1' ? false : true;
 
 // The phrase you type on the holding page (or pass as ?unlock=...) to reveal the
 // site. CHANGE THIS to whatever you like. Matching is case-insensitive + trimmed.
