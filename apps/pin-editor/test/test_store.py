@@ -1,5 +1,6 @@
 # Smoke tests for store.py file IO -- newline preservation + round-trip.
 import json
+import subprocess
 
 import store
 
@@ -71,3 +72,72 @@ def test_write_json_new_file_defaults_lf(tmp_path):
     raw = p.read_bytes()
     assert b"\r\n" not in raw
     assert raw.endswith(b"\n")
+
+
+def test_git_publish_refuses_unrelated_pre_staged_file(monkeypatch):
+    calls = []
+
+    def fake_git(*args):
+        calls.append(args)
+        if args == ("diff", "--cached", "--name-only", "-z", "--"):
+            return subprocess.CompletedProcess(args, 0, "private-notes.txt\0", "")
+        return subprocess.CompletedProcess(args, 0, "ok", "")
+
+    monkeypatch.setattr(store, "_git", fake_git)
+
+    result = store.git_publish("data: test")
+
+    assert result["ok"] is False
+    assert result["step"] == "preflight"
+    assert "private-notes.txt" in result["detail"]
+    assert not any(args[0] == "add" for args in calls)
+
+
+def test_git_publish_scans_and_commits_only_allowlisted_paths(monkeypatch):
+    calls = []
+
+    def fake_git(*args):
+        calls.append(args)
+        return subprocess.CompletedProcess(args, 0, "", "")
+
+    monkeypatch.setattr(store, "_git", fake_git)
+    monkeypatch.setattr(
+        store,
+        "_scan_staged_for_secrets",
+        lambda: {"ok": True, "detail": "no leaks found"},
+        raising=False,
+    )
+
+    result = store.git_publish("data: test")
+
+    assert result["ok"] is True
+    commit = next(args for args in calls if args[0] == "commit")
+    assert commit[1:4] == ("--only", "-m", "data: test")
+    assert "--" in commit
+    assert set(commit[commit.index("--") + 1 :]) == {
+        str(path.relative_to(store.REPO_ROOT)).replace("\\", "/")
+        for path in store.PUBLISH_PATHS
+    }
+
+
+def test_pii_preflight_flags_sensitive_added_lines_without_echoing_values():
+    staged_diff = (
+        'diff --git a/public/data.geojson b/public/data.geojson\n'
+        '+      "ssn": "123-45-6789",\n'
+        '+      "ownerName": "Resident Name"\n'
+        '       "name": "Burton City Hall"\n'
+    )
+
+    findings = store._pii_findings(staged_diff)
+
+    assert findings == ["SSN-like value", "forbidden personal/property field"]
+    assert "123-45-6789" not in " ".join(findings)
+    assert "Resident Name" not in " ".join(findings)
+
+
+def test_pii_preflight_accepts_current_public_dataset():
+    current_data_as_added_lines = "\n".join(
+        f"+{line}" for line in store.DATA.read_text(encoding="utf-8").splitlines()
+    )
+
+    assert store._pii_findings(current_data_as_added_lines) == []

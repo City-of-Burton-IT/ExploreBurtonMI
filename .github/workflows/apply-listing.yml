@@ -3,13 +3,15 @@ name: Apply approved listing request
 # Phase 2 of the #3 listing-request apply path (#66). A Power Automate flow on the
 # "Explore Burton Listing Requests" SharePoint list (item modified, Status=Approved)
 # fires a repository_dispatch carrying the row fields; this workflow applies the
-# approved change to the committed data, regenerates the public data, commits, and
-# kicks off the Pages deploy. The flow marks the SharePoint row Applied itself after
-# the dispatch (no Graph credential needed cloud-side).
+# approved change to the committed data and regenerates the public data on a review
+# branch. A scoped LISTING_PR_TOKEN opens the pull request; without it, the run summary
+# links to GitHub's compare/PR page for a reviewer. Merging the PR triggers the normal
+# Pages deploy. The flow marks non-add rows Applied after dispatch (no Graph credential
+# needed cloud-side).
 #
-# Add-new ("Add my business") rows are written to tools/pending-additions.json as
-# CANDIDATES only -- never auto-published into facilities.geojson; IT vets + pastes
-# them by hand. The SharePoint Approved status is the human gate.
+# Add-new ("Add my business") rows stay in the private SharePoint review surface.
+# The flow must leave them Approved for private vetting. They are never written to
+# this public repository or its Actions artifacts/logs.
 on:
   repository_dispatch:
     types: [apply-listing]
@@ -19,18 +21,20 @@ concurrency:
   group: apply-listing
   cancel-in-progress: false
 
-permissions:
-  contents: write   # commit the applied data change + push
-  actions: write    # dispatch the Pages deploy workflow (a GITHUB_TOKEN push does
-                    # not itself trigger other workflows)
+permissions: {}
 
 jobs:
   apply:
+    name: apply
     runs-on: ubuntu-latest
+    permissions:
+      contents: write  # push the generated change to a non-production review branch
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-python@v5
+      - uses: actions/setup-python@a26af69be951a213d495a4c3e4e4022e16d87065 # v5
         with:
           python-version: '3.12'
 
@@ -56,26 +60,46 @@ jobs:
       - name: Regenerate public data (committed sources, no refresh)
         run: python pipeline/run.py
 
-      - name: Commit + push if anything changed
+      - name: Commit to a review branch if anything changed
         id: commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
         run: |
           rm -f payload.json
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          gh auth setup-git
+          BRANCH="automation/listing-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$BRANCH"
           git add pipeline/data/overrides.json public/
-          # Only an add-new row creates the candidates file; stage it when present.
-          if [ -f tools/pending-additions.json ]; then git add tools/pending-additions.json; fi
           if git diff --cached --quiet; then
-            echo "No data change to publish (e.g. an add-new candidate with no usable fields)."
+            echo "No public data change to propose."
             echo "changed=false" >> "$GITHUB_OUTPUT"
             exit 0
           fi
           git commit -m "data: apply approved listing request (#3 auto-apply via #66)"
-          git push
+          git push --set-upstream origin "$BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
           echo "changed=true" >> "$GITHUB_OUTPUT"
 
-      - name: Trigger the Pages deploy
+      - name: Open the review pull request when scoped automation is configured
         if: steps.commit.outputs.changed == 'true'
         env:
-          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
-        run: gh workflow run "Deploy to GitHub Pages" --ref main
+          # The repository intentionally prevents GITHUB_TOKEN from creating or
+          # approving PRs. Configure a fine-grained, expiring token with only
+          # Pull requests: write as LISTING_PR_TOKEN; branch pushes continue to
+          # use the job-scoped GITHUB_TOKEN with only contents: write.
+          GH_TOKEN: ${{ secrets.LISTING_PR_TOKEN }}
+          BRANCH: ${{ steps.commit.outputs.branch }}
+        run: |
+          if [ -z "${GH_TOKEN:-}" ]; then
+            COMPARE_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/main...${BRANCH}?expand=1"
+            echo "LISTING_PR_TOKEN is not configured; the review branch was pushed but no pull request was opened." >> "$GITHUB_STEP_SUMMARY"
+            echo "[Open the review pull request](${COMPARE_URL})" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "data: review approved listing request" \
+            --body "Automated proposal from an approved SharePoint listing request. Review the public-data diff before merging."

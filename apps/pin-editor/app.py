@@ -18,6 +18,7 @@ from edits import apply_edits
 app = Flask(__name__)
 # Ephemeral key: sessions reset on restart, which is fine for a local single-user tool.
 app.secret_key = secrets.token_hex(32)
+app.config["MAX_CONTENT_LENGTH"] = 10 * 1024 * 1024
 
 _MUTATING = {"POST", "PUT", "PATCH", "DELETE"}
 _last = {"regenerate": None, "publish": None}
@@ -92,7 +93,8 @@ def api_import():
     try:
         rows = store.read_pins_rows(f)
     except Exception as e:  # malformed / non-xlsx upload
-        return jsonify({"ok": False, "error": "Could not read that workbook: " + str(e)}), 400
+        app.logger.warning("Workbook import rejected: %s", e)
+        return jsonify({"ok": False, "error": "Could not read that workbook."}), 400
     feats = store.load_data().get("features", [])
     edits, warnings = excel.rows_to_edits(rows, feats, store.CATEGORIES, store.CITY_BBOX)
     return jsonify({"ok": True, "edits": edits, "warnings": warnings})
@@ -130,6 +132,11 @@ def api_status():
 def _server_error(e):
     app.logger.error("Unhandled error: %s", e, exc_info=True)
     return jsonify({"error": "Internal server error"}), 500
+
+
+@app.errorhandler(413)
+def _workbook_too_large(_e):
+    return jsonify({"ok": False, "error": "Workbook is too large."}), 413
 
 
 def main() -> None:

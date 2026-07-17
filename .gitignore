@@ -21,6 +21,7 @@ dist-ssr
 pipeline/.venv/
 pipeline/data/cache/
 tools/.cache/
+tools/pending-additions.json
 __pycache__/
 .pytest_cache/
 
