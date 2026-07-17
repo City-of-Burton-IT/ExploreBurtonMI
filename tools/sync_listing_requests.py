@@ -7,16 +7,18 @@ row Applied:
 
   Fix listing / Moved   -> an entry in pipeline/data/overrides.json
   Permanently closed    -> {"hidden": true} override
-  Add my business       -> a CANDIDATE feature written to
-                           tools/pending-additions.json for manual vetting
-                           (dedup vs OSM/Overture, category, in-city check)
-                           before pasting into pipeline/data/facilities.geojson.
+  Add my business       -> in a local Graph batch, an ignored CANDIDATE file for
+                           manual vetting (dedup vs OSM/Overture, category,
+                           in-city check) before facilities.geojson. In the public
+                           repository_dispatch path, the request stays in the
+                           private SharePoint review queue and no candidate is
+                           written to the repository worktree.
 
 PRIVACY: submitter contact details are deliberately NEVER copied into the
 committed files -- the _why notes reference the queue row number only.
 
-After a run: re-run the pipeline (python pipeline/run.py), review the git
-diff, commit, push. Nothing is published by this tool directly.
+After a local batch: re-run the pipeline (python pipeline/run.py), review the
+git diff, commit, push. Nothing is published by this tool directly.
 
 Usage:
     python tools/sync_listing_requests.py            # apply + mark rows Applied
@@ -197,8 +199,8 @@ def _merge_candidates(new_cands: list[dict]) -> None:
 def run_from_payload(payload: dict) -> int:
     """Apply ONE approved row delivered via a repository_dispatch client_payload
     (the approval-triggered Action path, #66). Reuses the same pure transforms as
-    the on-demand run; NO Graph token -- the flow pushed the fields in the payload
-    and marks the SharePoint row Applied itself after the dispatch returns."""
+    the on-demand run; NO Graph token. Add-new fields are intentionally not written
+    because this checkout belongs to a public repository."""
     if "id" not in payload:
         payload["id"] = payload.get("ID", "dispatch")
     with open(OVERRIDES_PATH, encoding="utf-8") as f:
@@ -206,16 +208,16 @@ def run_from_payload(payload: dict) -> int:
     report = apply_rows([payload], overrides)
     for line in report["applied"]:
         print(f"  apply   {line}")
-    for cand in report["candidates"]:
-        print(f"  vet     add-new candidate {cand['id']}")
+    if report["candidates"]:
+        print("  defer   add-new request remains in the private review queue")
     for line in report["skipped"]:
         print(f"  skipped {line}")
     if report["applied"]:
         _write_overrides(overrides)
         print(f"Wrote {OVERRIDES_PATH}")
-    if report["candidates"]:
-        _merge_candidates(report["candidates"])
-        print(f"Merged {len(report['candidates'])} candidate(s) into {CANDIDATES_PATH}")
+    # The repository_dispatch path runs in a PUBLIC repository. Add-new candidate
+    # fields therefore stay in SharePoint for private vetting; writing them here
+    # would disclose them in the worktree, Action logs/artifacts, or Git history.
     if not report["applied"] and not report["candidates"]:
         print("No change applied (no usable fields / no listing id).")
     return 0

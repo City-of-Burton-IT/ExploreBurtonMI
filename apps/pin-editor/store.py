@@ -6,6 +6,7 @@ from __future__ import annotations
 
 import json
 import re
+import shutil
 import subprocess
 import sys
 from io import BytesIO
@@ -199,13 +200,89 @@ def git_diff_stat() -> str:
     return proc.stdout.strip() or "(no changes)"
 
 
+_SSN_PATTERN = re.compile(r"(?<!\d)\d{3}-\d{2}-\d{4}(?!\d)")
+_FORBIDDEN_PUBLIC_FIELD_PATTERN = re.compile(
+    r'^\+\s*"(?:account(?:number)?|dateofbirth|dob|email|owner(?:name)?|'
+    r'parcel(?:id|number)?|ssn|taxpayer)"\s*:',
+    re.IGNORECASE,
+)
+
+
+def _pii_findings(staged_diff: str) -> list[str]:
+    """Return finding labels for sensitive values added to public data files.
+
+    Finding labels intentionally omit the matching content so browser responses and
+    logs never repeat a sensitive value.
+    """
+    findings: list[str] = []
+    for line in staged_diff.splitlines():
+        if not line.startswith("+") or line.startswith("+++"):
+            continue
+        if _SSN_PATTERN.search(line) and "SSN-like value" not in findings:
+            findings.append("SSN-like value")
+        if (
+            _FORBIDDEN_PUBLIC_FIELD_PATTERN.search(line)
+            and "forbidden personal/property field" not in findings
+        ):
+            findings.append("forbidden personal/property field")
+    return findings
+
+
+def _scan_staged_for_secrets() -> dict:
+    """Fail closed unless secret and PII checks approve the staged public diff."""
+    executable = shutil.which("gitleaks")
+    if not executable:
+        return {
+            "ok": False,
+            "detail": "gitleaks is required before publishing; install it and try again.",
+        }
+    proc = subprocess.run(
+        [executable, "git", str(REPO_ROOT), "--staged", "--no-banner"],
+        capture_output=True,
+        text=True,
+    )
+    if proc.returncode != 0:
+        return {
+            "ok": False,
+            "detail": "Secret preflight failed. Run gitleaks on the staged diff for details.",
+        }
+    rels = [str(path.relative_to(REPO_ROOT)).replace("\\", "/") for path in PUBLISH_PATHS]
+    diff = _git("diff", "--cached", "--unified=0", "--no-color", "--", *rels)
+    if diff.returncode != 0:
+        return {
+            "ok": False,
+            "detail": "PII preflight could not inspect the staged public-data diff.",
+        }
+    findings = _pii_findings(diff.stdout)
+    if findings:
+        return {
+            "ok": False,
+            "detail": "PII preflight blocked: " + ", ".join(findings) + ".",
+        }
+    return {"ok": True, "detail": "no secrets or PII found"}
+
+
 def git_publish(message: str) -> dict:
-    """Stage the data files, commit, and push the current branch. Never force-pushes."""
+    """Publish only allowlisted data files after index and secret preflights."""
     rels = [str(p.relative_to(REPO_ROOT)).replace("\\", "/") for p in PUBLISH_PATHS]
+    staged = _git("diff", "--cached", "--name-only", "-z", "--")
+    if staged.returncode != 0:
+        return {"ok": False, "step": "preflight", "detail": staged.stderr.strip()}
+    staged_paths = {path for path in staged.stdout.split("\0") if path}
+    unrelated = sorted(staged_paths - set(rels))
+    if unrelated:
+        return {
+            "ok": False,
+            "step": "preflight",
+            "detail": "Refusing to publish with unrelated staged files: " + ", ".join(unrelated),
+        }
     add = _git("add", "--", *rels)
     if add.returncode != 0:
         return {"ok": False, "step": "add", "detail": add.stderr.strip()}
-    commit = _git("commit", "-m", message)
+    scan = _scan_staged_for_secrets()
+    if not scan["ok"]:
+        return {"ok": False, "step": "scan", "detail": scan["detail"]}
+    commit = _git("commit", "--only", "-m", message, "--", *rels)
     if commit.returncode != 0:
         out = (commit.stdout + commit.stderr).lower()
         if "nothing to commit" in out:

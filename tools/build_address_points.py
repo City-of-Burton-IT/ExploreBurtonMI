@@ -6,7 +6,7 @@
 # Instead we ship a committed table of [lat, lng, address] for every addressable
 # point in the city; the app does a nearest-neighbour lookup entirely on-device
 # (src/lib/reverseGeocode.ts). The table is city-owned data, so it is clean to
-# publish under ADR-0001 (unlike vendor address data).
+# publish under ADR-0002 (unlike vendor address data).
 #
 # SOURCE: a Burton Assessing address export (parcel + site address), dropped at
 # pipeline/data/address-points-source.csv. Most Assessing exports carry the

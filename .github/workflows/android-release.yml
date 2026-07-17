@@ -38,27 +38,36 @@ on:
         required: false
         default: ''
 
+concurrency:
+  group: android-release
+  cancel-in-progress: false
+
+permissions: {}
+
 jobs:
   release:
+    name: release
     runs-on: ubuntu-latest
     permissions:
       contents: read
       id-token: write    # REQUIRED for keyless auth: lets the job mint a GitHub OIDC token
     steps:
-      - uses: actions/checkout@v5
+      - uses: actions/checkout@93cb6efe18208431cddfb8368fd83d5badbf9bfd # v5
+        with:
+          persist-credentials: false
 
-      - uses: actions/setup-node@v5
+      - uses: actions/setup-node@a0853c24544627f65ddf259abe73b1d18a591444 # v5
         with:
           node-version: 22
           cache: npm
 
-      - uses: actions/setup-java@v5
+      - uses: actions/setup-java@03ad4de0992f5dab5e18fcb136590ce7c4a0ac95 # v5
         with:
           distribution: temurin
           java-version: 21 # Capacitor 8's android library compiles to Java 21
 
       - name: Set up Android SDK
-        uses: android-actions/setup-android@v4
+        uses: android-actions/setup-android@40fd30fb8d7440372e1316f5d1809ec01dcd3699 # v4
 
       - name: Install dependencies
         run: npm ci
@@ -76,16 +85,20 @@ jobs:
         run: echo "sdk.dir=$ANDROID_SDK_ROOT" > android/local.properties
 
       - name: Restore the upload keystore
-        run: echo "${{ secrets.ANDROID_UPLOAD_KEYSTORE_B64 }}" | base64 -d > android/upload-keystore.jks
+        env:
+          ANDROID_UPLOAD_KEYSTORE_B64: ${{ secrets.ANDROID_UPLOAD_KEYSTORE_B64 }}
+        run: printf '%s' "$ANDROID_UPLOAD_KEYSTORE_B64" | base64 -d > android/upload-keystore.jks
 
       # Firebase/FCM client config (#64). Gitignored (carries a restricted client
       # API key); injected here from a secret. If the secret is unset the build
       # still succeeds -- the google-services Gradle plugin is skipped and push
       # stays inert (push.ts no-ops).
       - name: Restore the Firebase config
+        env:
+          GOOGLE_SERVICES_JSON_B64: ${{ secrets.GOOGLE_SERVICES_JSON_B64 }}
         run: |
-          if [ -n "${{ secrets.GOOGLE_SERVICES_JSON_B64 }}" ]; then
-            echo "${{ secrets.GOOGLE_SERVICES_JSON_B64 }}" | base64 -d > android/app/google-services.json
+          if [ -n "${GOOGLE_SERVICES_JSON_B64:-}" ]; then
+            printf '%s' "$GOOGLE_SERVICES_JSON_B64" | base64 -d > android/app/google-services.json
             echo "google-services.json written"
           else
             echo "GOOGLE_SERVICES_JSON_B64 not set -- building without push (inert)"
@@ -111,7 +124,7 @@ jobs:
           ls -la android/app/build/outputs/bundle/release/
 
       - name: Upload AAB as a build artifact (backup)
-        uses: actions/upload-artifact@v6
+        uses: actions/upload-artifact@b7c566a772e6b6bfb58ed0dc250532a479d7789f # v6
         with:
           name: explore-burton-release-aab
           path: android/app/build/outputs/bundle/release/app-release.aab
@@ -125,7 +138,7 @@ jobs:
       # the upload, so a misconfiguration fails loudly at this step, not mid-upload.
       - name: Authenticate to Google Cloud (keyless, WIF)
         id: auth
-        uses: google-github-actions/auth@v3
+        uses: google-github-actions/auth@7c6bc770dae815cd3e89ee6cdf493a5fab2cc093 # v3
         with:
           project_id: ${{ secrets.GCP_PROJECT_ID }}
           workload_identity_provider: ${{ secrets.GCP_WORKLOAD_IDENTITY_PROVIDER }}

@@ -29,19 +29,34 @@ NS = "{http://schemas.openxmlformats.org/spreadsheetml/2006/main}"
 
 DAYS = {d.lower(): d for d in ("Monday", "Tuesday", "Wednesday", "Thursday", "Friday")}
 TRAILING_DAY = re.compile(r"(.*?)[\s]+(Monday|Tuesday|Wednesday|Thursday|Friday)\s*$", re.I)
+MAX_XLSX_BYTES = 20 * 1024 * 1024
+MAX_XML_ENTRY_BYTES = 10 * 1024 * 1024
+MAX_COMPRESSION_RATIO = 100
 
 
 def _norm(s: str | None) -> str:
     return re.sub(r"\s+", " ", s or "").strip()
 
 
+def _read_bounded(z: zipfile.ZipFile, name: str) -> bytes:
+    info = z.getinfo(name)
+    if info.file_size > MAX_XML_ENTRY_BYTES:
+        raise ValueError(f"Workbook XML entry is too large: {name}")
+    compressed = max(info.compress_size, 1)
+    if info.file_size / compressed > MAX_COMPRESSION_RATIO:
+        raise ValueError(f"Workbook XML entry has a suspicious compression ratio: {name}")
+    return z.read(name)
+
+
 def _load_grid(path: str) -> dict[int, dict[str, str]]:
-    z = zipfile.ZipFile(path)
-    shared = [
-        "".join(t.text or "" for t in si.iter(NS + "t"))
-        for si in ET.fromstring(z.read("xl/sharedStrings.xml"))
-    ]
-    sheet = ET.fromstring(z.read("xl/worksheets/sheet1.xml"))
+    if os.path.getsize(path) > MAX_XLSX_BYTES:
+        raise ValueError("Workbook file is too large")
+    with zipfile.ZipFile(path) as z:
+        shared = [
+            "".join(t.text or "" for t in si.iter(NS + "t"))
+            for si in ET.fromstring(_read_bounded(z, "xl/sharedStrings.xml"))
+        ]
+        sheet = ET.fromstring(_read_bounded(z, "xl/worksheets/sheet1.xml"))
     rows: dict[int, dict[str, str]] = {}
     for c in sheet.iter(NS + "c"):
         v = c.find(NS + "v")

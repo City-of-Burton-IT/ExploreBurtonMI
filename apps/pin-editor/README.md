@@ -39,8 +39,11 @@ Double-click **`run.cmd`** (or `.venv\Scripts\python.exe app.py`). It opens
     are corrected via overrides rather than edited in place.
 - Edits accumulate in the **Pending changes** tray and only touch disk on **Save & regenerate**,
   which writes the source files then runs `pipeline/run.py` to rebuild `data.geojson`.
-- **Publish** commits the data files and pushes the current branch (the GitHub Pages deploy
-  picks it up). It never force-pushes.
+- **Publish** commits only the four allowlisted source/generated data files and pushes the
+  current review branch. It refuses to run if an unrelated file is already staged, and it
+  runs gitleaks plus a public-data PII check against the exact staged diff before committing.
+  Open a pull request and merge it after review; the protected `main` branch then triggers
+  the normal GitHub Pages deploy. Publish never force-pushes.
 
 ## Excel export / import (delegating edits)
 
@@ -56,7 +59,8 @@ buttons in the top bar.
   changes into the **Pending changes** tray for review (same as manual edits) -- nothing is
   written until you Save. A row simply *missing* from the sheet is left alone (only the
   `delete` column removes a pin), so a partial sheet can never wipe data. Invalid categories
-  or new rows missing name/coords are reported as warnings and skipped.
+  or new rows missing name/coords are reported as warnings and skipped. Imports are limited
+  to 10 MiB and malformed-workbook details stay in the local server log.
 
 This keeps the tool single-user (you run it locally and do the import) while letting a
 colleague do fieldwork in a spreadsheet.
@@ -66,7 +70,9 @@ colleague do fieldwork in a spreadsheet.
 - Regeneration uses **cached** OSM/Overture data (no network). On a fresh clone where the cache
   is missing, run the pipeline once with a refresh first:
   `cd ../../pipeline && .venv\Scripts\python.exe run.py --refresh`.
-- Publish pushes whatever branch the repo is on -- be on the branch you intend to deploy.
+- Install `gitleaks` before publishing; the publish preflight fails closed if it is missing.
+- Publish pushes whatever branch the repo is on. Use a review branch, not `main`, then open a
+  pull request so required checks and approval can run.
 - This tool edits real repo files. Everything is in git, so any edit is recoverable with
   `git checkout -- pipeline/data public/data.geojson`.
 

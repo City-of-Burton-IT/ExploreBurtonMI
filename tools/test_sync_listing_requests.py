@@ -1,4 +1,8 @@
 """Tests for the pure transforms in sync_listing_requests.py (no network)."""
+import json
+
+import sync_listing_requests
+
 from sync_listing_requests import (
     apply_rows,
     parse_coordinates,
@@ -102,3 +106,19 @@ def test_apply_rows_routes_add_new_to_candidates():
     report = apply_rows([{"fields": fields(ChangeType="Add my business")}], {})
     assert len(report["candidates"]) == 1
     assert report["applied"] == []
+
+
+def test_dispatch_add_new_never_writes_candidate_to_public_repo(tmp_path, monkeypatch):
+    overrides = tmp_path / "overrides.json"
+    overrides.write_text("{}\n", encoding="utf-8")
+    candidates = tmp_path / "pending-additions.json"
+    monkeypatch.setattr(sync_listing_requests, "OVERRIDES_PATH", str(overrides))
+    monkeypatch.setattr(sync_listing_requests, "CANDIDATES_PATH", str(candidates))
+
+    result = sync_listing_requests.run_from_payload(
+        fields(ChangeType="Add my business", NewAddress="1 Main St")
+    )
+
+    assert result == 0
+    assert json.loads(overrides.read_text(encoding="utf-8")) == {}
+    assert not candidates.exists()
