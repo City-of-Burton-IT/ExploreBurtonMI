@@ -2,7 +2,47 @@
 
 > Read this first at session start. Update at session end.
 
-**Public summary:** A public, static "Explore Burton" site (Vite + Svelte + Leaflet)
+## Current Handoff
+
+**Status:** The comprehensive security audit and the repository-side remediation are
+complete. PR #89 was rebase-merged to `main` at `62cfa65`; all seven required checks
+passed, GitHub Pages deployed successfully, Cloudflare now enforces the CSP, and the
+live site and `data.geojson` load without a Cloudflare challenge. The scoped
+`LISTING_PR_TOKEN` Actions secret is configured.
+
+**Last touched:** 2026-07-17. Verified the merged deployment, protected-branch policy,
+enforced edge CSP, Cloudflare reachability, and the newly configured PR token. No
+security-remediation code remains unmerged.
+
+**Current phase:** Close the remaining external workflow controls, then execute the
+map refactor plan. Dashboard and Resident Guide refactors follow as separate phases;
+their implementation has not started.
+
+**Open work:** Track durable work in GitHub Issues. First, complete
+[issue #66](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/66): update and
+test the Power Automate listing flow so an add-new-business request remains in the
+private approval queue and never invokes the publication dispatch; the repository now
+provides a defense-in-depth rejection if one is dispatched. Then complete
+[issue #94](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/94): add a
+second trusted maintainer and raise protected-branch required approvals from zero to
+one. After those security closure items, begin
+`planning/specs/2026-07-17-map-refactor-plan.md`; retain
+`planning/specs/2026-07-17-dashboard-refactor-plan.md` and
+`planning/specs/2026-07-17-resident-guide-refactor-plan.md` as later, separate phases.
+A real Android-device smoke test of JSON loading through Cloudflare remains worthwhile.
+
+**Blockers:** No repository blocker. The Power Automate control requires an
+authenticated Burton tenant session, and the one-approval branch policy requires the
+City to designate a second write-capable reviewer.
+
+**Public summary:** Explore Burton is a public, static civic map, dashboard, and
+Resident Guide at <https://explore.burtonmi.gov>, with moderated resident submissions,
+installable web and Android apps, protected publication workflows, and documented
+refactor plans for its three main product areas.
+
+## Historical Session Log
+
+**Historical public summary:** A public, static "Explore Burton" site (Vite + Svelte + Leaflet)
 at explore.burtonmi.gov: a searchable map of city businesses, government facilities,
 and services on a State of Michigan aerial basemap, 21 registered in-app data dashboards grouped
 into themed categories (People & Housing, Money & Taxes, Health & Environment,
@@ -19,11 +59,11 @@ Python data pipeline. Residents can suggest listing edits and report issues (pot
 blight) through M365-moderated in-app forms, see road-closure alerts, and (in the app)
 opt in to push notifications and a home-screen widget; a Settings panel controls
 appearance and notifications.
-**Phase:** LAUNCHED (soft-launch gate on the public web) + **INTERNAL PREVIEW LIVE** (staff-only
+**Historical phase:** LAUNCHED (soft-launch gate on the public web) + **INTERNAL PREVIEW LIVE** (staff-only
 mirror + docs + announcement, admin-greenlit 2026-07-16) -- map + dashboards +
 Resident Guide live; installable PWA + analytics shipped; **Android app live on Play
 internal testing** (keyless CI release). iOS wrapper compiles in CI, not published.
-**Last touched:** 2026-07-17 -- **SECURITY REMEDIATION IMPLEMENTED AND VERIFIED ON `security/remediate-audit-2026-07-17`.** Repository changes close SEC-02 through SEC-05 and SEC-07/08: add-new dispatches no longer write public candidates; listing automation pushes a review branch and uses an optional scoped `LISTING_PR_TOKEN`; Actions are SHA-pinned, least-privilege, non-persistent, concurrency-limited, and Dependabot-managed; pin-editor commits only allowlisted paths after gitleaks/PII preflight; XLSX/ZIP ceilings and generic errors are enforced; Android backup is disabled. PRIV-01 is accepted in ADR-0002 with a tested three-value public schema and explicit privacy provenance. Live GitHub: CodeQL certificate-pinning alert 14 dismissed with rationale; `main` now requires PRs, strict `web`/`python`/`pin-editor` checks bound to GitHub Actions app 15368, admin enforcement, conversation resolution, linear history, and no force-push/delete. Approval count is temporarily zero because GitHub reports only one write-capable collaborator; add a second reviewer before requiring one approval. **External remaining:** sign in to Cloudflare and promote the edge CSP from Report-Only to enforced after report review; update the Power Automate listing flow so add-new rows stay Approved/private; configure an expiring fine-grained `LISTING_PR_TOKEN` or manually open the compare-link PR. Verification: zizmor pedantic clean; Svelte check 0/0; 279 Vitest, 243 pipeline/tools pytest, and 44 pin-editor pytest passed; production/PWA build passed; modified Python compiled; the real 435-row Waste Schedule workbook parsed below both resource ceilings. Plans remain in `planning/specs/2026-07-17-*.md`. **Prior milestone:** 2026-07-16 -- **INTERNAL PREVIEW ROLLOUT BUILT** (admin greenlight; dept heads +
+**Historical entry:** 2026-07-17 -- **SECURITY REMEDIATION IMPLEMENTED AND VERIFIED ON `security/remediate-audit-2026-07-17`.** Repository changes close SEC-02 through SEC-05 and SEC-07/08: add-new dispatches no longer write public candidates; listing automation pushes a review branch and uses an optional scoped `LISTING_PR_TOKEN`; Actions are SHA-pinned, least-privilege, non-persistent, concurrency-limited, and Dependabot-managed; pin-editor commits only allowlisted paths after gitleaks/PII preflight; XLSX/ZIP ceilings and generic errors are enforced; Android backup is disabled. PRIV-01 is accepted in ADR-0002 with a tested three-value public schema and explicit privacy provenance. Live GitHub: CodeQL certificate-pinning alert 14 dismissed with rationale; `main` now requires PRs, strict `web`/`python`/`pin-editor` checks bound to GitHub Actions app 15368, admin enforcement, conversation resolution, linear history, and no force-push/delete. Approval count is temporarily zero because GitHub reports only one write-capable collaborator; add a second reviewer before requiring one approval. **External remaining:** sign in to Cloudflare and promote the edge CSP from Report-Only to enforced after report review; update the Power Automate listing flow so add-new rows stay Approved/private; configure an expiring fine-grained `LISTING_PR_TOKEN` or manually open the compare-link PR. Verification: zizmor pedantic clean; Svelte check 0/0; 279 Vitest, 243 pipeline/tools pytest, and 44 pin-editor pytest passed; production/PWA build passed; modified Python compiled; the real 435-row Waste Schedule workbook parsed below both resource ceilings. Plans remain in `planning/specs/2026-07-17-*.md`. **Prior milestone:** 2026-07-16 -- **INTERNAL PREVIEW ROLLOUT BUILT** (admin greenlight; dept heads +
 content operators, NOT council). Spec `planning/specs/2026-07-16-internal-preview-rollout.md`. Built:
 (1) internal mirror scripts at `planning/internal-mirror/` (gitignored) -- Provision (DNS CNAME via DC +
 enterprise-CA cert enrolled locally, PFX pushed to appservices; -SelfSigned fallback) | Setup (IIS
