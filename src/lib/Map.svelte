@@ -5,15 +5,20 @@
   import 'leaflet.markercluster';
   import 'leaflet.markercluster/dist/MarkerCluster.css';
   import 'leaflet.markercluster/dist/MarkerCluster.Default.css';
-  import { Capacitor } from '@capacitor/core';
-  import type { AppConfig, PlaceCollection, PlaceFeature } from './types';
-  import { ui, select, openReport, setReportPin } from './store.svelte';
+  import type { AppConfig, PlaceCollection } from './types';
+  import { ui, select, setUserLocation, openReport, setReportPin } from './store.svelte';
   import { dataFetch } from './remote';
-  import { activeClosures, closuresGeoJSON, localTodayISO, type RoadClosure } from './closures';
-  import { escapeHtml } from './map/html';
-  import { bindClusterPreview, type PlaceMarker } from './map/clusterPreview';
+  import type { RoadClosure } from './closures';
   import { createGeolocation, type MapGeolocation } from './map/geolocation';
-  import { addConfigOverlays } from './map/dataLayers';
+  import { createMapControls, type MapControlsHandle } from './map/controls';
+  import { createBaseMap, type BaseMapHandle } from './map/createBaseMap';
+  import { createPlaceLayer, type PlaceLayerHandle } from './map/placeLayer';
+  import { createClosureLayer, type ClosureLayerHandle } from './map/closureLayer';
+  import { startLocalDayRollover } from './map/closureDay';
+  import {
+    createReportPinModeAdapter,
+    type ReportPinModeAdapter,
+  } from './map/reportPinMode';
   import ClosureBanner from './ClosureBanner.svelte';
 
   let {
@@ -23,232 +28,145 @@
   }: { config: AppConfig; data: PlaceCollection; filteredIds: Set<string> } = $props();
 
   let mapEl: HTMLDivElement;
+  let baseMap: BaseMapHandle | undefined;
+  let placeLayer: PlaceLayerHandle | undefined;
   let map: L.Map | undefined;
-  let cluster: L.MarkerClusterGroup | undefined;
-  let layerControlEl: HTMLElement | undefined;
   // Road closures (#32): city-curated JSON, filtered to today's active set.
   let allClosures = $state<RoadClosure[]>([]);
-  const activeClosureList = $derived(activeClosures(allClosures, localTodayISO()));
-  let closureLayer: L.GeoJSON | undefined;
-  const markers = new Map<string, L.CircleMarker>();
+  let activeClosureList = $state<RoadClosure[]>([]);
+  let closureLayer: ClosureLayerHandle | undefined;
+  let closureDay = $state('');
+  let stopClosureDayRollover: (() => void) | undefined;
   // Bumped once the markers are built, so the "center on selected" effect re-runs
   // after a deep-link selection that was applied before the markers existed.
   let markerEpoch = $state(0);
-  const featureById = new Map<string, PlaceFeature>();
   // "Near me" geolocation (web + native paths) — created once the map exists.
   let geo: MapGeolocation | undefined;
+  let mapControls: MapControlsHandle | undefined;
+  let reportPinMode: ReportPinModeAdapter | undefined;
+  let removeMapListeners: (() => void) | undefined;
   let locateMsg = $state('');
+  let showReportPinInstructions = $state(false);
+  let locateMsgTimer: ReturnType<typeof setTimeout> | undefined;
 
   function flashLocateMsg(msg: string): void {
     locateMsg = msg;
-    setTimeout(() => (locateMsg = ''), 4500);
+    if (locateMsgTimer !== undefined) clearTimeout(locateMsgTimer);
+    locateMsgTimer = setTimeout(() => {
+      locateMsg = '';
+      locateMsgTimer = undefined;
+    }, 4500);
+  }
+
+  function clearLocateMsg(): void {
+    if (locateMsgTimer !== undefined) clearTimeout(locateMsgTimer);
+    locateMsgTimer = undefined;
+    locateMsg = '';
+  }
+
+  function synchronizeNearMe(nonce: number): void {
+    if (nonce <= 0) return;
+    geo?.locateMe();
+  }
+
+  function synchronizeFilteredPlaces(ids: Set<string>): void {
+    const layer = placeLayer;
+    if (!layer) return;
+    layer.setVisible(ids);
+  }
+
+  function synchronizeClosureData(records: RoadClosure[], day: string): void {
+    const layer = closureLayer;
+    if (!layer || !day) return;
+    activeClosureList = layer.update(records, day);
+  }
+
+  function synchronizeSelectedPlace(id: string | undefined, epoch: number): void {
+    const layer = placeLayer;
+    if (!layer) return;
+    layer.setSelected(id ?? null);
+    if (id && epoch > 0) layer.focus(id);
+  }
+
+  function synchronizeReportPinMode(enabled: boolean): void {
+    const adapter = reportPinMode;
+    if (!adapter) {
+      showReportPinInstructions = false;
+      return;
+    }
+    adapter.synchronize(enabled);
+  }
+
+  function captureMapView(view: string): void {
+    if (view === 'map') return;
+    baseMap?.captureView();
+  }
+
+  function restoreMapView(view: string): void {
+    if (view !== 'map') return;
+    baseMap?.restoreView();
+  }
+
+  function installMapListeners(target: L.Map): () => void {
+    const handleClick = (event: L.LeafletMouseEvent) => {
+      if (ui.report.pinMode) setReportPin(event.latlng.lat, event.latlng.lng);
+    };
+    const handleLocationFound = (event: L.LocationEvent) => {
+      geo?.applyUserLocation(event.latlng.lat, event.latlng.lng);
+    };
+    const handleLocationError = () => {
+      flashLocateMsg('Couldn’t get your location — check that location access is allowed for this site.');
+    };
+
+    target.on('click', handleClick);
+    target.on('locationfound', handleLocationFound);
+    target.on('locationerror', handleLocationError);
+    return () => {
+      target.off('click', handleClick);
+      target.off('locationfound', handleLocationFound);
+      target.off('locationerror', handleLocationError);
+    };
   }
 
   // The native quick-actions "Near me" bumps ui.nearMeNonce; run a locate when it
   // changes (skip the initial 0 so we don't auto-locate on load).
   $effect(() => {
-    if (ui.nearMeNonce > 0) geo?.locateMe();
+    synchronizeNearMe(ui.nearMeNonce);
   });
 
-  const DEFAULT_COLOR = '#555555';
-
-  function colorFor(feature: PlaceFeature): string {
-    // A record may carry several categories (a collapsed big-box store); the first
-    // is its primary, which drives the marker color.
-    const raw = feature.properties[config.categoryField];
-    const cat = (Array.isArray(raw) ? raw[0] : raw) as string | undefined;
-    return (cat && config.categories[cat]?.color) || DEFAULT_COLOR;
-  }
-
-  function baseStyle(feature: PlaceFeature): L.CircleMarkerOptions {
-    return {
-      radius: 8,
-      color: '#ffffff',
-      weight: 1.5,
-      fillColor: colorFor(feature),
-      fillOpacity: 0.9,
-    };
-  }
-
   onMount(() => {
-    const { center, zoom, maxZoom, minZoom, maxBounds, previewAttribute } = config.map;
+    baseMap = createBaseMap(mapEl, config);
+    map = baseMap.map;
+    geo = createGeolocation(map, { flash: flashLocateMsg, clear: clearLocateMsg }, setUserLocation);
 
-    // Honor prefers-reduced-motion: turn off Leaflet's animated pan/zoom/fade.
-    const reduceMotion =
-      typeof window !== 'undefined' &&
-      window.matchMedia?.('(prefers-reduced-motion: reduce)').matches;
-
-    map = L.map(mapEl, {
-      center,
-      zoom,
-      maxZoom,
-      minZoom,
-      maxBounds: L.latLngBounds(maxBounds[0], maxBounds[1]),
-      // Softer than a hard lock (1.0): the map resists drifting far from Burton but
-      // still lets a zoomed-in resident pan to centre on the city's edges (north,
-      // etc.) without being yanked straight back. Paired with a roomier maxBounds
-      // pad once the boundary loads (below).
-      maxBoundsViscosity: 0.5,
-      // Credits live in the About dialog instead of an on-map overlay.
-      attributionControl: false,
-      zoomAnimation: !reduceMotion,
-      fadeAnimation: !reduceMotion,
-      markerZoomAnimation: !reduceMotion,
-    });
-
-    geo = createGeolocation(map, { flash: flashLocateMsg, clear: () => (locateMsg = '') });
-
-    L.tileLayer(config.tiles.url, {
-      subdomains: config.tiles.subdomains ?? 'abc',
-      maxZoom,
-    }).addTo(map);
-
-    // Transparent reference layers (labels, roads) drawn on top of the base.
-    for (const overlay of config.tiles.overlays ?? []) {
-      L.tileLayer(overlay.url, {
-        subdomains: overlay.subdomains ?? 'abc',
-        maxZoom,
-      }).addTo(map);
-    }
-
-    L.control.scale({ imperial: true, metric: false }).addTo(map);
-
-    // City-limits outline. Drawn non-interactively so it never blocks marker
-    // clicks; when lockView is set, the map is pinned to the boundary's extent.
+    // Boundary fetching remains an application concern; the base-map controller
+    // only renders resolved GeoJSON and ignores it after teardown.
     if (config.boundary) {
-      const {
-        source,
-        color = '#1f3a5f',
-        weight = 3,
-        lockView = false,
-        dimOutside = false,
-        dimColor = '#0b1f2e',
-        dimOpacity = 0.5,
-      } = config.boundary;
-      dataFetch(source)
+      dataFetch(config.boundary.source)
         .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`boundary HTTP ${r.status}`))))
-        .then((geojson) => {
-          if (!map) return;
-          const geom = geojson.type === 'Feature' ? geojson.geometry : geojson;
-
-          // Dim everything outside the city: a world-covering polygon with the
-          // boundary's exterior ring(s) punched out as holes, so only Burton stays
-          // clear. Drawn first so the outline + markers sit on top.
-          if (dimOutside) {
-            const exteriors =
-              geom?.type === 'Polygon'
-                ? [geom.coordinates[0]]
-                : geom?.type === 'MultiPolygon'
-                  ? geom.coordinates.map((poly: number[][][]) => poly[0])
-                  : [];
-            if (exteriors.length) {
-              const world = [
-                [-179, -85],
-                [179, -85],
-                [179, 85],
-                [-179, 85],
-                [-179, -85],
-              ];
-              const mask = { type: 'Polygon' as const, coordinates: [world, ...exteriors] };
-              L.geoJSON(mask, {
-                interactive: false,
-                style: { stroke: false, fillColor: dimColor, fillOpacity: dimOpacity },
-              }).addTo(map);
-            }
-          }
-
-          const outline = L.geoJSON(geojson, {
-            interactive: false,
-            style: { color, weight, fill: false, opacity: 0.9 },
-          }).addTo(map);
-          if (lockView) {
-            const bounds = outline.getBounds();
-            // Pad generously (was 0.05): at higher zoom the viewport must extend past
-            // the city outline to centre on an edge (e.g. north Burton); too tight a
-            // bound yanked the user's pan straight back. 0.3 gives that room while
-            // still keeping the map anchored to the Burton area.
-            map.setMaxBounds(bounds.pad(0.3));
-            map.fitBounds(bounds);
-          }
-        })
+        .then((geojson) => baseMap?.applyBoundary(geojson))
         .catch((err) => console.warn('Boundary outline not loaded:', err));
     }
 
-    // Toggleable GeoJSON + image overlays (e.g. school districts, the zoning map)
-    // exposed via a layer control, OFF by default; sources load lazily on first
-    // toggle. The control's container is kept so pin-drop mode can hide it.
-    layerControlEl = addConfigOverlays(map, mapEl, config);
-
-    // zoomToBoundsOnClick is off so we own the cluster tap: a small bubble shows a
-    // preview of what's inside (below); a big one drills down by zooming.
-    cluster = L.markerClusterGroup({ showCoverageOnHover: false, zoomToBoundsOnClick: false });
-    for (const feature of data.features) {
-      // Off-map entries (real location outside the city) are listed but never
-      // plotted on the locked city map.
-      if (feature.offMap) continue;
-      const [lng, lat] = feature.geometry.coordinates;
-      const label = String(feature.properties[previewAttribute] ?? feature.properties.name);
-      const marker = L.circleMarker([lat, lng], baseStyle(feature));
-      marker.bindTooltip(escapeHtml(label));
-      marker.on('click', () => select(feature));
-      (marker as PlaceMarker).feature = feature;
-      markers.set(feature.id, marker);
-      featureById.set(feature.id, feature);
-    }
-    map.addLayer(cluster);
-    bindClusterPreview(map, cluster);
+    placeLayer = createPlaceLayer(map, data, config, select);
+    closureLayer = createClosureLayer(map);
+    stopClosureDayRollover = startLocalDayRollover((day) => (closureDay = day));
+    activeClosureList = closureLayer.update(allClosures, closureDay);
     markerEpoch += 1;
-
-    // "Near me" + "Report an issue" map controls are DESKTOP-ONLY (#68 follow-up):
-    // phones (mobile web + the native app) get the same actions in the quick-actions
-    // row under the header instead, so the map stays uncluttered. Native never
-    // creates them; mobile web hides them via the max-width rule on .near-me-btn.
-    const NearMeControl = L.Control.extend({
-      options: { position: 'topleft' as L.ControlPosition },
-      onAdd() {
-        const btn = L.DomUtil.create('button', 'near-me-btn');
-        btn.type = 'button';
-        btn.title = 'Center the map on my location';
-        btn.setAttribute('aria-label', 'Center the map on my location');
-        const icon = document.createElement('span');
-        icon.setAttribute('aria-hidden', 'true');
-        icon.textContent = '◎';
-        btn.append(icon, ' Near me');
-        L.DomEvent.disableClickPropagation(btn);
-        L.DomEvent.on(btn, 'click', () => geo?.locateMe());
-        return btn;
-      },
+    mapControls = createMapControls(map, {
+      onLocate: () => geo?.locateMe(),
+      onReport: openReport,
     });
-    if (!Capacitor.isNativePlatform()) map.addControl(new NearMeControl());
-
-    // "Report an issue" (#14): opens the report form; the form sends the user
-    // back here in pin mode, and the next map tap places the pin.
-    const ReportControl = L.Control.extend({
-      options: { position: 'topleft' as L.ControlPosition },
-      onAdd() {
-        const btn = L.DomUtil.create('button', 'near-me-btn');
-        btn.type = 'button';
-        btn.title = 'Report an issue (pothole, sign, drainage, streetlight)';
-        btn.setAttribute('aria-label', 'Report an issue');
-        const icon = document.createElement('span');
-        icon.setAttribute('aria-hidden', 'true');
-        icon.textContent = '⚠';
-        btn.append(icon, ' Report an issue');
-        L.DomEvent.disableClickPropagation(btn);
-        L.DomEvent.on(btn, 'click', () => openReport());
-        return btn;
-      },
+    reportPinMode = createReportPinModeAdapter({
+      map,
+      mapElement: mapEl,
+      getBaseMap: () => baseMap,
+      getPlaceLayer: () => placeLayer,
+      getClosureLayer: () => closureLayer,
+      onInstructions: (visible) => (showReportPinInstructions = visible),
     });
-    if (!Capacitor.isNativePlatform()) map.addControl(new ReportControl());
-
-    map.on('click', (e: L.LeafletMouseEvent) => {
-      if (ui.report.pinMode) setReportPin(e.latlng.lat, e.latlng.lng);
-    });
-
-    map.on('locationfound', (e: L.LocationEvent) => geo?.applyUserLocation(e.latlng.lat, e.latlng.lng));
-    map.on('locationerror', () => {
-      flashLocateMsg('Couldn’t get your location — check that location access is allowed for this site.');
-    });
+    removeMapListeners = installMapListeners(map);
+    synchronizeReportPinMode(ui.report.pinMode);
 
     // Road closures (#32): load the city-curated list; the $effect above draws
     // whatever is active today. A missing/invalid file just means no closures.
@@ -262,54 +180,13 @@
 
   // Sync which markers are on the map with the filtered set.
   $effect(() => {
-    if (!cluster) return;
-    const ids = filteredIds;
-    cluster.clearLayers();
-    const toAdd: L.CircleMarker[] = [];
-    for (const [id, marker] of markers) {
-      if (ids.has(id)) toAdd.push(marker);
-    }
-    cluster.addLayers(toAdd);
+    synchronizeFilteredPlaces(filteredIds);
   });
 
-  // Road closures (#32): draw the active set as an always-on safety layer.
-  // Re-runs if the JSON loads late or the active set changes; nothing renders
-  // when no closure is active (the common case).
+  // Reconcile the active closure layer when the fetched records change. The
+  // controller returns the same active records shown in the banner.
   $effect(() => {
-    if (!map) return;
-    const fc = closuresGeoJSON(activeClosureList);
-    closureLayer?.remove();
-    closureLayer = undefined;
-    if (fc.features.length === 0) return;
-    closureLayer = L.geoJSON(fc as GeoJSON.FeatureCollection, {
-      pane: 'overlayMarkers',
-      style: (f) =>
-        f?.geometry.type === 'Point'
-          ? {}
-          : { color: String(f?.properties._color), weight: 6, opacity: 0.9 },
-      pointToLayer: (f, latlng) =>
-        L.circleMarker(latlng, {
-          pane: 'overlayMarkers',
-          radius: 9,
-          color: '#ffffff',
-          weight: 2,
-          fillColor: String(f.properties._color),
-          fillOpacity: 0.95,
-        }),
-      onEachFeature: (f, lyr) => {
-        const p = (f.properties ?? {}) as Record<string, string>;
-        const rows: [string, string][] = [];
-        if (p.segment) rows.push(['Segment', p.segment]);
-        if (p.reason) rows.push(['Reason', p.reason]);
-        rows.push(['Dates', `${p.start} to ${p.end}`]);
-        rows.push(['Closure', p.status === 'partial' ? 'Partial (lanes affected)' : 'Full']);
-        if (p.detour) rows.push(['Detour', p.detour]);
-        lyr.bindPopup(
-          `<strong>${escapeHtml(p.road)}: closed</strong>` +
-            rows.map(([k, v]) => `<div>${escapeHtml(k)}: ${escapeHtml(v)}</div>`).join(''),
-        );
-      },
-    }).addTo(map);
+    synchronizeClosureData(allClosures, closureDay);
   });
 
   // Pin-drop mode (#14): clear everything that would swallow the tap or clutter
@@ -317,82 +194,45 @@
   // layers box -- and make polygon/line overlays click-through (visible but not
   // capturing). All restored when pin mode ends.
   $effect(() => {
-    if (!map) return;
-    const on = ui.report.pinMode;
-    if (cluster) {
-      if (on) map.removeLayer(cluster);
-      else if (!map.hasLayer(cluster)) map.addLayer(cluster);
-    }
-    for (const name of ['overlayMarkers', 'tooltipPane']) {
-      const pane = map.getPane(name);
-      if (pane) pane.style.display = on ? 'none' : '';
-    }
-    const dl = map.getPane('dataLayers');
-    if (dl) dl.style.pointerEvents = on ? 'none' : '';
-    if (layerControlEl) layerControlEl.style.display = on ? 'none' : '';
-    if (on) map.closePopup();
+    synchronizeReportPinMode(ui.report.pinMode);
   });
 
   // The map sits in a display:none workspace while an info view is shown, so its
   // container is 0x0 and Leaflet would otherwise reset the view on return. Capture
   // the live center/zoom BEFORE the DOM hides it ($effect.pre runs pre-DOM-update),
   // then re-measure and restore it when we come back to the map.
-  let savedView: { center: L.LatLng; zoom: number } | undefined;
   $effect.pre(() => {
-    if (map && ui.view !== 'map') {
-      savedView = { center: map.getCenter(), zoom: map.getZoom() };
-    }
+    captureMapView(ui.view);
   });
   $effect(() => {
-    if (ui.view === 'map' && map) {
-      requestAnimationFrame(() => {
-        if (!map) return;
-        map.invalidateSize();
-        if (savedView) map.setView(savedView.center, savedView.zoom, { animate: false });
-      });
-    }
+    restoreMapView(ui.view);
   });
 
-  // Highlight the selected marker. Only restyle the two markers that change
-  // (the previously- and newly-selected), not all ~1,146 every time -- the old
-  // version looped every marker and did an O(n) features.find() inside, i.e. O(n^2)
-  // per click.
-  let prevSelectedId: string | undefined;
+  // Synchronize selected styling and focus together. markerEpoch re-runs this
+  // after the markers are built when a deep link selected a place before mount.
   $effect(() => {
-    const selectedId = ui.selected?.id;
-    if (selectedId === prevSelectedId) return;
-    if (prevSelectedId) {
-      const m = markers.get(prevSelectedId);
-      const f = featureById.get(prevSelectedId);
-      if (m && f) m.setStyle(baseStyle(f));
-    }
-    if (selectedId) {
-      const m = markers.get(selectedId);
-      if (m) {
-        m.setStyle({ radius: 11, weight: 3, color: '#111111' });
-        m.bringToFront();
-      }
-    }
-    prevSelectedId = selectedId;
-  });
-
-  // Selecting a place (from the list or a marker) zooms in to reveal it -- using
-  // markercluster's zoomToShowLayer so a marker hidden inside a cluster is
-  // declustered and centred rather than left invisible. offMap features have no
-  // marker and are skipped.
-  $effect(() => {
-    markerEpoch; // re-run after the markers are (re)built, for deep-link selections
-    const id = ui.selected?.id;
-    if (!id || !map || !cluster) return;
-    const marker = markers.get(id);
-    if (!marker) return;
-    cluster.zoomToShowLayer(marker, () => marker.bringToFront());
+    synchronizeSelectedPlace(ui.selected?.id, markerEpoch);
   });
 
   onDestroy(() => {
-    map?.remove();
+    if (locateMsgTimer !== undefined) clearTimeout(locateMsgTimer);
+    locateMsgTimer = undefined;
+    removeMapListeners?.();
+    removeMapListeners = undefined;
+    reportPinMode?.destroy();
+    reportPinMode = undefined;
+    mapControls?.destroy();
+    mapControls = undefined;
+    stopClosureDayRollover?.();
+    stopClosureDayRollover = undefined;
+    closureLayer?.destroy();
+    closureLayer = undefined;
+    placeLayer?.destroy();
+    placeLayer = undefined;
+    baseMap?.destroy();
+    baseMap = undefined;
+    geo = undefined;
     map = undefined;
-    cluster = undefined;
   });
 </script>
 
@@ -401,7 +241,7 @@
 {#if locateMsg}
   <div class="locate-msg" role="status" aria-live="polite">{locateMsg}</div>
 {/if}
-{#if ui.report.pinMode}
+{#if showReportPinInstructions}
   <div class="locate-msg" role="status" aria-live="polite">
     Tap the map where the issue is
   </div>
@@ -562,3 +402,4 @@
     box-shadow: var(--pub-focus-ring);
   }
 </style>
+
