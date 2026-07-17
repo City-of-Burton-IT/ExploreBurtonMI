@@ -54,11 +54,8 @@ jobs:
       - name: Run pipeline + sync tests
         run: pytest pipeline/test tools/test_sync_listing_requests.py -q
 
-      - name: Apply the approved row
+      - name: Apply the approved row to committed data
         run: python tools/sync_listing_requests.py --payload-file payload.json
-
-      - name: Regenerate public data (committed sources, no refresh)
-        run: python pipeline/run.py
 
       - name: Commit to a review branch if anything changed
         id: commit

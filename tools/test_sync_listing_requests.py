@@ -122,3 +122,39 @@ def test_dispatch_add_new_never_writes_candidate_to_public_repo(tmp_path, monkey
     assert result == 0
     assert json.loads(overrides.read_text(encoding="utf-8")) == {}
     assert not candidates.exists()
+
+
+def test_dispatch_updates_committed_public_data_without_network(tmp_path, monkeypatch):
+    overrides = tmp_path / "overrides.json"
+    overrides.write_text("{}\n", encoding="utf-8")
+    public_data = tmp_path / "data.geojson"
+    public_data.write_text(
+        json.dumps(
+            {
+                "type": "FeatureCollection",
+                "features": [
+                    {
+                        "type": "Feature",
+                        "id": "osm:node/1",
+                        "geometry": {"type": "Point", "coordinates": [-83.6, 43.0]},
+                        "properties": {
+                            "name": "Test Cafe",
+                            "category": "Dining",
+                            "phone": "(810) 555-0000",
+                        },
+                    }
+                ],
+            }
+        ),
+        encoding="utf-8",
+    )
+    monkeypatch.setattr(sync_listing_requests, "OVERRIDES_PATH", str(overrides))
+    monkeypatch.setattr(
+        sync_listing_requests, "PUBLIC_DATA_PATH", str(public_data), raising=False
+    )
+
+    result = sync_listing_requests.run_from_payload(fields())
+
+    published = json.loads(public_data.read_text(encoding="utf-8"))
+    assert result == 0
+    assert published["features"][0]["properties"]["phone"] == "(810) 555-0100"
