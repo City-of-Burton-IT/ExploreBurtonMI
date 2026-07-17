@@ -2,12 +2,15 @@
   import type { GuideBundle, GuideSectionMeta } from '../types';
   import { reveal } from '../actions/reveal';
   import { lightboxImages } from '../actions/lightboxImages';
+  import OfflineBadge from '../OfflineBadge.svelte';
+  import GuideIcon from './GuideIcon.svelte';
   import ContactsList from './ContactsList.svelte';
   import MeetingsList from './MeetingsList.svelte';
   import WasteSchedule from './WasteSchedule.svelte';
   import OpsStatus from './OpsStatus.svelte';
   import CivicClerkMeetings from './CivicClerkMeetings.svelte';
   import VideoEmbed from './VideoEmbed.svelte';
+  import { guideRenderer, usesGenericOfflineBadge } from './guideSections';
 
   let {
     section,
@@ -18,27 +21,53 @@
     bundle: GuideBundle;
     openImage: (src: string, caption: string) => void;
   } = $props();
+
+  const renderer = $derived(guideRenderer(section));
 </script>
 
-{#if section.type === 'markdown'}
-  <!-- Build-time-rendered, link-validated HTML from content/guide/*.md (trusted, not user input). -->
-  <!-- svelte-ignore a11y_no_static_element_interactions -->
-  <div class="md" use:reveal use:lightboxImages={openImage}>{@html bundle.content[section.id] ?? ''}</div>
-{:else if section.type === 'contacts' && bundle.contacts}
-  <ContactsList contacts={bundle.contacts} />
-{:else if section.type === 'meetings' && bundle.meetings}
-  <MeetingsList meetings={bundle.meetings} />
-{:else if section.type === 'waste'}
-  <WasteSchedule />
-{:else if section.type === 'ops-status'}
-  <OpsStatus />
-{:else if section.type === 'civicclerk'}
-  <CivicClerkMeetings />
-{:else if section.type === 'video' && section.src}
-  <VideoEmbed src={section.src} title={section.title} provider={section.provider ?? ''} />
-{/if}
+<article class="guide-body">
+  {#if usesGenericOfflineBadge(renderer)}<OfflineBadge />{/if}
+  <h2>
+    {#if section.icon}<GuideIcon name={section.icon} size={24} />{/if}
+    {section.title}
+  </h2>
+
+  {#if renderer === 'markdown'}
+    <!-- Build-time-rendered, fail-closed HTML from tracked guide Markdown. -->
+    <!-- svelte-ignore a11y_no_static_element_interactions -->
+    <div class="md" use:reveal use:lightboxImages={openImage}>{@html bundle.content[section.id]}</div>
+  {:else if renderer === 'contacts' && bundle.contacts}
+    <ContactsList contacts={bundle.contacts} />
+  {:else if renderer === 'meetings' && bundle.meetings}
+    <MeetingsList meetings={bundle.meetings} />
+  {:else if renderer === 'waste'}
+    <WasteSchedule />
+  {:else if renderer === 'ops-status'}
+    <OpsStatus />
+  {:else if renderer === 'civicclerk'}
+    <CivicClerkMeetings />
+  {:else if renderer === 'video' && section.type === 'video'}
+    <VideoEmbed src={section.src} title={section.title} provider={section.provider} />
+  {/if}
+</article>
 
 <style>
+  .guide-body {
+    flex: 1 1 auto;
+    overflow-y: auto;
+    padding: 1.4rem 1.8rem 2.4rem;
+    min-width: 0;
+  }
+  .guide-body > h2 {
+    display: flex;
+    align-items: center;
+    gap: 0.55rem;
+    margin: 0 0 0.8rem;
+    font-family: var(--font-head, sans-serif);
+    font-weight: 700;
+    font-size: 1.5rem;
+    color: var(--civic-blue, #2c57a0);
+  }
   .md {
     line-height: 1.65;
   }
@@ -73,8 +102,6 @@
   .md :global(strong) {
     color: var(--pub-ink, #2c2c2c);
   }
-  /* Images in guide markdown (![alt](/photo.jpg)) -- responsive, and click-to-zoom
-     via the lightboxImages action (zoom-in cursor + focus ring added there). */
   .md :global(img) {
     display: block;
     max-width: 100%;
@@ -86,8 +113,6 @@
     outline: none;
     box-shadow: var(--pub-focus-ring);
   }
-
-  /* Typed callout boxes (::: containers in the markdown). */
   .md :global(.callout) {
     display: flex;
     gap: 0.7rem;

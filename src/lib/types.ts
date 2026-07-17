@@ -391,17 +391,29 @@ export interface InfoPanel {
 // Built from content/guide/* by tools/build_guide.mjs into public/guide.json.
 // Display-only public data (city-published); no resident PII.
 
-export interface GuideSectionMeta {
+interface GuideSectionBase {
   id: string;
   title: string;
-  type: 'markdown' | 'contacts' | 'meetings' | 'waste' | 'ops-status' | 'civicclerk' | 'video';
   /** optional section icon id (see src/lib/guide/icons.ts) */
   icon?: string;
-  /** video sections: the embed URL + provider label (click-to-load) */
-  src?: string;
-  provider?: string;
-  poster?: string;
 }
+
+export type GuideSectionMeta =
+  | (GuideSectionBase & { type: 'markdown' })
+  | (GuideSectionBase & { type: 'contacts' })
+  | (GuideSectionBase & { type: 'meetings' })
+  | (GuideSectionBase & { type: 'waste' })
+  | (GuideSectionBase & { type: 'ops-status' })
+  | (GuideSectionBase & { type: 'civicclerk' })
+  | (GuideSectionBase & {
+      type: 'video';
+      /** HTTPS embed URL + provider label for the click-to-load player. */
+      src: string;
+      provider: string;
+      poster?: string;
+    });
+
+export type GuideSectionType = GuideSectionMeta['type'];
 
 export interface GuidePerson {
   title: string;
