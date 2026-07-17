@@ -8,7 +8,7 @@
 {#each contacts.groups as group (group.name)}
   <h3>{group.name}</h3>
   <ul class="people">
-    {#each group.people as p (p.name + p.title)}
+    {#each group.people as p (p.name + '\u0000' + p.title)}
       <li>
         <div class="who">
           <span class="name">{p.name}</span>
