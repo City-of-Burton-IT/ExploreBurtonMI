@@ -1,11 +1,10 @@
 <script lang="ts">
-  import { onMount } from 'svelte';
+  import { onMount, untrack } from 'svelte';
   import { loadConfig } from './lib/config';
   import { loadData } from './lib/data';
-  import { dataFetch } from './lib/remote';
   import { filterFeatures } from './lib/filter';
   import { buildIndex, searchIds } from './lib/search';
-  import type { AppConfig, PlaceCollection, InfoPanel } from './lib/types';
+  import type { AppConfig, PlaceCollection } from './lib/types';
   import { ui, setMobileView, setView, syncViewFromHash, openAbout, openSettings, isDashboard, DASHBOARDS, select, clearSelection, dashboardGroupLabel, adjacentDashboards, initOnlineWatch } from './lib/store.svelte';
   import { placeIdFromHash } from './lib/hash';
   import { haversineMeters } from './lib/reverseGeocode';
@@ -29,17 +28,13 @@
   import ReportIssue from './lib/ReportIssue.svelte';
   import QuickActions from './lib/QuickActions.svelte';
   import Icon from './lib/Icon.svelte';
+  import { createDashboardData } from './lib/dashboard/dashboardData.svelte';
 
   let config = $state<AppConfig | null>(null);
   let data = $state<PlaceCollection | null>(null);
   let error = $state<string | null>(null);
 
-  // Info panels load independently of the map and never block or break it.
-  // Keyed by view id so the nav + activePanel lookup stay in sync with the
-  // DASHBOARDS list (one place to add a dashboard).
-  let panels = $state<Record<string, InfoPanel | null>>({});
-  let panelErrors = $state<Record<string, boolean>>({});
-  let infoLoading = $state(true);
+  const dashboardData = createDashboardData(DASHBOARDS.map(({ id }) => id));
 
   async function start() {
     const cfg = await loadConfig();
@@ -69,61 +64,22 @@
     reconcilePlace();
   }
 
-  async function loadInfo() {
-    // Distinguish a network FAILURE (offline/timeout -> retryable) from a panel
-    // that is reachable but genuinely missing (a non-OK response -> no error).
-    const safe = (url: string): Promise<{ panel: InfoPanel | null; error: boolean }> =>
-      dataFetch(url)
-        .then(async (r) => {
-          if (!r.ok) return { panel: null, error: false }; // reachable but missing
-          return { panel: (await r.json()) as InfoPanel, error: false };
-        })
-        .catch(() => ({ panel: null, error: true })); // offline/timeout -> retryable
-    // Derive from DASHBOARDS (single source of truth) so a new dashboard added
-    // there is fetched automatically -- never hardcode this list (it silently
-    // dropped newly-added panels before).
-    const ids = DASHBOARDS.map((d) => d.id);
-    // Shared "What this means" summaries for panels whose data-generator doesn't
-    // embed one (kept in one committed file so the resident text lives in a single
-    // place and survives every tool regeneration).
-    type SummaryMap = Record<string, InfoPanel['summary']>;
-    const summariesP: Promise<SummaryMap> = dataFetch('summaries.json')
-      .then((r) => (r.ok ? (r.json() as Promise<SummaryMap>) : ({} as SummaryMap)))
-      .catch(() => ({}) as SummaryMap);
-    // Data-freshness dates ("Data as of ...") kept in one committed file for the
-    // same reason as summaries: one place to maintain, survives tool regeneration.
-    // A panel may also carry its own lastUpdated (from its generator); the overlay
-    // only fills in when the panel has none. Non-id keys (e.g. "_note") are ignored.
-    type FreshnessMap = Record<string, string>;
-    const freshnessP: Promise<FreshnessMap> = dataFetch('freshness.json')
-      .then((r) => (r.ok ? (r.json() as Promise<FreshnessMap>) : ({} as FreshnessMap)))
-      .catch(() => ({}) as FreshnessMap);
-    const [loaded, summaries, freshness] = await Promise.all([
-      Promise.all(ids.map((id) => safe(`info-${id}.json`))),
-      summariesP,
-      freshnessP,
-    ]);
-    panels = Object.fromEntries(
-      ids.map((id, i) => {
-        const panel = loaded[i].panel;
-        if (panel) {
-          if (!panel.summary && summaries[id]) panel.summary = summaries[id];
-          if (!panel.lastUpdated && freshness[id]) panel.lastUpdated = freshness[id];
-        }
-        return [id, panel];
-      }),
-    );
-    panelErrors = Object.fromEntries(ids.map((id, i) => [id, loaded[i].error]));
-    infoLoading = false;
-  }
-
   function retryInfo() {
-    infoLoading = true;
-    loadInfo();
+    if (isDashboard(ui.view)) void dashboardData.retry(ui.view);
   }
 
   start().catch((e) => (error = e instanceof Error ? e.message : String(e)));
-  loadInfo();
+
+  // Route changes are the only trigger for dashboard network work. Keeping the
+  // service reads untracked prevents its loading-state updates from retriggering
+  // this effect; each route transition issues at most one explicit load request.
+  $effect(() => {
+    const view = ui.view;
+    untrack(() => {
+      if (isDashboard(view)) void dashboardData.load(view);
+      else if (view === 'opendata') void dashboardData.loadAll();
+    });
+  });
 
   onMount(() => {
     window.addEventListener('hashchange', onHashChange);
@@ -167,8 +123,19 @@
     });
   });
 
-  const activePanel = $derived(isDashboard(ui.view) ? (panels[ui.view] ?? null) : null);
-  const activePanelError = $derived(isDashboard(ui.view) ? (panelErrors[ui.view] ?? false) : false);
+  const activeDashboardState = $derived(
+    isDashboard(ui.view) ? dashboardData.state(ui.view) : null,
+  );
+  const activePanel = $derived(activeDashboardState?.panel ?? null);
+  const activePanelLoading = $derived(
+    !!activeDashboardState && (!activeDashboardState.requested || activeDashboardState.loading),
+  );
+  const activePanelError = $derived(
+    !!activeDashboardState?.error && activeDashboardState.error.kind !== 'missing',
+  );
+  const openDataLoading = $derived(
+    ui.view === 'opendata' && (dashboardData.allLoading || !dashboardData.allLoaded),
+  );
   // The active dashboard's one-line description (menu sub-line); used as a panel
   // subtitle fallback when the panel itself carries none.
   const activeDescription = $derived(
@@ -260,7 +227,7 @@
       <div class="infowrap">
         <InfoView
           panel={activePanel}
-          loading={infoLoading}
+          loading={activePanelLoading}
           error={activePanelError}
           onRetry={retryInfo}
           description={activeDescription}
@@ -275,7 +242,7 @@
       </div>
     {:else if ui.view === 'opendata'}
       <div class="infowrap">
-        <OpenData {panels} loading={infoLoading} />
+        <OpenData panels={dashboardData.panels} loading={openDataLoading} />
       </div>
     {:else if ui.view === 'status'}
       <div class="infowrap">

@@ -84,8 +84,8 @@
     bind:this={trigger}
     class="trigger"
     class:active={!!active}
-    aria-haspopup="true"
     aria-expanded={open}
+    aria-controls="dashboard-disclosure"
     onclick={() => (open ? closeMenu(false) : openMenu())}
     onkeydown={onTriggerKey}
   >
@@ -98,7 +98,7 @@
   </button>
 
   {#if open}
-    <div class="menu" role="group" aria-label="Dashboards">
+    <div id="dashboard-disclosure" class="menu" role="group" aria-label="Dashboards">
       {#each DASHBOARD_GROUPS as group (group.label)}
         <!-- Each category is a column on desktop (mega-menu) and a stacked block on
              mobile (single-column dropdown). -->
@@ -191,6 +191,11 @@
     }
     .lbl-compact {
       display: inline;
+    }
+  }
+  @media (max-width: 520px) {
+    .trigger {
+      padding-inline: 0.32rem;
     }
   }
   .caret {
