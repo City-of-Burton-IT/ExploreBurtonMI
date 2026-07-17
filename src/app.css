@@ -31,6 +31,8 @@
   --civic-blue-link: #386fc5;
   --civic-blue-deep: #1e437e;
   --civic-blue-soft: #d7e1f3;
+  --civic-blue-tint: #eef3fb;
+  --civic-callout-heading: #2c57a0;
   /* Solid accent-button background (always paired with white text). Split from
      --civic-blue so the dark theme can keep white text >=4.5:1 (AA) on buttons
      while --civic-blue itself lightens for text/icons. Light values == the old
@@ -82,6 +84,8 @@
   --civic-blue-link: #82adea;
   --civic-blue-deep: #a9caf2;
   --civic-blue-soft: #233247;
+  --civic-blue-tint: #202c3b;
+  --civic-callout-heading: #a9caf2;
   /* Accent button bg stays dark enough for white text to clear AA 4.5:1 on dark
      (white on #3666b8 ~= 5.6:1; on #28518f ~= 7.8:1), brighter than the surface. */
   --civic-accent-bg: #3666b8;
@@ -507,7 +511,17 @@ body,
     height: 36px;
   }
   .viewnav {
-    gap: 0.25rem;
+    gap: 0.125rem;
+  }
+  .view-toggle button {
+    padding-inline: 0.32rem;
+  }
+  .viewnav > button:not(.map-pill) {
+    padding-inline: 0.35rem;
+  }
+  .viewnav > button.cog {
+    width: 38px;
+    padding-inline: 0;
   }
 }
 

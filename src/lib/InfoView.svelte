@@ -1,20 +1,14 @@
 <script lang="ts">
-  import type { InfoPanel, InfoChart } from './types';
-  import { safeHref } from './templates';
-  import { formatDataAsOf } from './freshness';
-  import { reportOutdatedMailto } from './feedback';
-  import { csvSlug, downloadCsv } from './csv';
-  import { chartToTable } from './panelCsv';
+  import type { InfoPanel } from './types';
   import StatCard from './StatCard.svelte';
-  import Donut from './charts/Donut.svelte';
-  import Bars from './charts/Bars.svelte';
-  import TrendLine from './charts/TrendLine.svelte';
-  import CompareBars from './charts/CompareBars.svelte';
   import InfoTable from './InfoTable.svelte';
   import TaxEstimator from './TaxEstimator.svelte';
   import InfoHeader from './InfoHeader.svelte';
   import InfoExplainer from './InfoExplainer.svelte';
   import DashboardNav from './DashboardNav.svelte';
+  import DashboardChart from './dashboard/DashboardChart.svelte';
+  import DashboardFooter from './dashboard/DashboardFooter.svelte';
+  import DashboardSummary from './dashboard/DashboardSummary.svelte';
   import type { DashboardItem } from './store.svelte';
 
   let {
@@ -37,18 +31,6 @@
     next?: DashboardItem | null;
   } = $props();
 
-  // Resident-facing "Data as of {Month YYYY}" freshness label (null when the panel
-  // carries no lastUpdated, so the line is simply omitted).
-  const dataAsOf = $derived(formatDataAsOf(panel?.lastUpdated));
-
-  // Download a chart's data table as a CSV file (same numbers as the table),
-  // via the shared csv helper also used by InfoTable. chartToTable (the accessible
-  // plain-data builder for any chart type) is shared with the Open Data page.
-  function exportChart(chart: InfoChart): void {
-    const t = chartToTable(chart);
-    if (!t) return;
-    downloadCsv(csvSlug(chart.title), t.headers, t.rows);
-  }
 </script>
 
 <section class="info" aria-label={panel?.title ?? 'Information'}>
@@ -82,12 +64,7 @@
     {/if}
 
     {#if panel.summary?.body?.length}
-      <aside class="summary" aria-label="What this means">
-        <h3>{panel.summary.heading ?? 'What this means for you'}</h3>
-        {#each panel.summary.body as para}
-          <p>{para}</p>
-        {/each}
-      </aside>
+      <DashboardSummary summary={panel.summary} />
     {/if}
 
     {#if panel.stats?.length}
@@ -105,46 +82,7 @@
     {#if panel.charts?.length}
       <div class="charts">
         {#each panel.charts as chart (chart.title)}
-          {@const dt = chartToTable(chart)}
-          <figure class="chart">
-            <figcaption>{chart.title}</figcaption>
-            {#if chart.type === 'donut'}
-              <Donut series={chart.series ?? []} unit={chart.unit} />
-            {:else if chart.type === 'bars'}
-              <Bars series={chart.series ?? []} unit={chart.unit} />
-            {:else if chart.type === 'trend'}
-              <TrendLine
-                points={chart.points ?? []}
-                unit={chart.unit}
-                markers={chart.markers}
-                lines={chart.lines}
-              />
-            {:else if chart.type === 'compare'}
-              <CompareBars rows={chart.rows ?? []} citiesLede={chart.citiesLede} />
-            {/if}
-            {#if dt}
-              <details class="data-table">
-                <summary>View data table</summary>
-                <table>
-                  <caption class="sr-only">{chart.title}</caption>
-                  <thead>
-                    <tr>{#each dt.headers as h}<th scope="col">{h}</th>{/each}</tr>
-                  </thead>
-                  <tbody>
-                    {#each dt.rows as r}
-                      <tr>
-                        <th scope="row">{r[0]}</th>
-                        {#each r.slice(1) as cell}<td>{cell}</td>{/each}
-                      </tr>
-                    {/each}
-                  </tbody>
-                </table>
-                <button class="csv-btn" type="button" onclick={() => exportChart(chart)}>
-                  Download CSV
-                </button>
-              </details>
-            {/if}
-          </figure>
+          <DashboardChart {chart} />
         {/each}
       </div>
     {/if}
@@ -176,26 +114,7 @@
       </InfoExplainer>
     {/if}
 
-    <hr />
-    <footer>
-      {#if panel.source}<p class="source">Source: {panel.source}</p>{/if}
-      {#if dataAsOf}<p class="freshness">Data as of {dataAsOf}</p>{/if}
-      {#if panel.links?.length}
-        <ul class="links">
-          {#each panel.links as link (link.href)}
-            <li><a href={safeHref(link.href)} target="_blank" rel="noopener noreferrer">{link.text}</a></li>
-          {/each}
-        </ul>
-      {/if}
-      {#if panel.notes?.length}
-        {#each panel.notes as note}
-          <p class="note">{note}</p>
-        {/each}
-      {/if}
-      <p class="report">
-        <a href={reportOutdatedMailto(panel.title)}>Report outdated information</a>
-      </p>
-    </footer>
+    <DashboardFooter {panel} />
 
     <DashboardNav {prev} {next} />
   {/if}
@@ -241,29 +160,6 @@
     font-size: 0.88rem;
     margin: 0 0 1.1rem;
   }
-  .summary {
-    background: var(--civic-blue-tint, #eef3fb);
-    border-left: 4px solid var(--civic-blue, #2c57a0);
-    border-radius: var(--pub-radius-sm, 6px);
-    padding: 0.85rem 1.1rem;
-    margin: 0 0 1.4rem;
-  }
-  .summary h3 {
-    margin: 0 0 0.4rem;
-    font-family: var(--font-head, sans-serif);
-    font-weight: 700;
-    font-size: 1.02rem;
-    color: var(--civic-blue, #2c57a0);
-  }
-  .summary p {
-    margin: 0.4rem 0 0;
-    font-size: 0.92rem;
-    line-height: 1.5;
-    color: var(--pub-ink);
-  }
-  .summary p:first-of-type {
-    margin-top: 0;
-  }
   .stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
@@ -275,91 +171,10 @@
     grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
     gap: 1.4rem 2rem;
   }
-  .chart {
-    margin: 0;
-    min-width: 0;
-  }
-  .data-table {
-    margin-top: 0.6rem;
-  }
-  .data-table > summary {
-    font-size: 0.78rem;
-    color: var(--civic-blue-link, #1a4b8f);
-    cursor: pointer;
-    width: fit-content;
-  }
-  .data-table > summary:focus-visible {
-    outline: none;
-    box-shadow: var(--pub-focus-ring);
-    border-radius: 4px;
-  }
-  .data-table table {
-    border-collapse: collapse;
-    margin-top: 0.5rem;
-    font-size: 0.8rem;
-    width: 100%;
-  }
-  .data-table th,
-  .data-table td {
-    text-align: left;
-    padding: 0.28rem 0.6rem 0.28rem 0;
-    border-bottom: 1px solid var(--pub-border, #e3e3e3);
-    white-space: nowrap;
-  }
-  .data-table thead th {
-    color: var(--pub-muted, #5c5c5c);
-    font-weight: 700;
-  }
-  .data-table tbody th {
-    font-weight: 600;
-    white-space: normal;
-  }
-  .data-table td {
-    font-variant-numeric: tabular-nums;
-  }
-  .csv-btn {
-    margin-top: 0.6rem;
-    border: 1px solid var(--civic-blue, #2c57a0);
-    background: var(--pub-surface);
-    color: var(--civic-blue, #2c57a0);
-    border-radius: var(--pub-radius-sm, 8px);
-    padding: 0.3rem 0.7rem;
-    font-family: var(--font-body, sans-serif);
-    font-weight: 700;
-    font-size: 0.76rem;
-    cursor: pointer;
-  }
-  .csv-btn:hover {
-    background: var(--civic-blue-soft, #d7e1f3);
-  }
-  .csv-btn:focus-visible {
-    outline: none;
-    box-shadow: var(--pub-focus-ring);
-  }
-  .sr-only {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0, 0, 0, 0);
-    white-space: nowrap;
-    border: 0;
-  }
   .tables {
     display: grid;
     gap: 1.4rem;
     margin-top: 1.6rem;
-  }
-  figcaption {
-    font-family: var(--font-head, sans-serif);
-    font-weight: 600;
-    font-size: 0.95rem;
-    color: var(--civic-blue, #2c57a0);
-    margin-bottom: 0.7rem;
-    padding-left: 0.5rem;
-    border-left: 3px solid var(--civic-blue, #2c57a0);
   }
   .ex-intro {
     margin: 0 0 0.7rem;
@@ -391,47 +206,6 @@
     margin: 0.6rem 0 0;
     font-size: 0.72rem;
     color: var(--pub-muted, #5c5c5c);
-  }
-  hr {
-    border: none;
-    border-top: 2px dashed var(--civic-green, #4ea735);
-    margin: 1.6rem 0 1rem;
-  }
-  .source {
-    margin: 0;
-    font-size: 0.8rem;
-    color: var(--pub-muted, #5c5c5c);
-  }
-  .freshness {
-    margin: 0.25rem 0 0;
-    font-size: 0.8rem;
-    font-weight: 600;
-    color: var(--pub-muted, #5c5c5c);
-  }
-  .note {
-    margin: 0.4rem 0 0;
-    font-size: 0.72rem;
-    line-height: 1.35;
-    color: var(--pub-muted, #5c5c5c);
-  }
-  .report {
-    margin: 0.6rem 0 0;
-    font-size: 0.8rem;
-  }
-  .report a {
-    color: var(--civic-blue-link, #386fc5);
-  }
-  .links {
-    list-style: none;
-    margin: 0.5rem 0 0;
-    padding: 0;
-    display: flex;
-    flex-wrap: wrap;
-    gap: 0.4rem 1.2rem;
-  }
-  .links a {
-    color: var(--civic-blue-link, #1a4b8f);
-    font-size: 0.9rem;
   }
 
   @media (max-width: 860px) {
