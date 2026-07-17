@@ -3,7 +3,6 @@
 import L from 'leaflet';
 import { Capacitor } from '@capacitor/core';
 import { Geolocation } from '@capacitor/geolocation';
-import { setUserLocation } from '../store.svelte';
 
 export interface LocateMessenger {
   /** show a transient status/error toast (auto-clears) */
@@ -19,7 +18,13 @@ export interface MapGeolocation {
   locateMe: () => void;
 }
 
-export function createGeolocation(map: L.Map, msg: LocateMessenger): MapGeolocation {
+export type LocationCallback = (location: { lat: number; lng: number }) => void;
+
+export function createGeolocation(
+  map: L.Map,
+  msg: LocateMessenger,
+  onLocation: LocationCallback,
+): MapGeolocation {
   let userMarker: L.CircleMarker | undefined;
 
   // Shared "we have the user's position" handler for both the web (Leaflet locate)
@@ -28,7 +33,7 @@ export function createGeolocation(map: L.Map, msg: LocateMessenger): MapGeolocat
   function applyUserLocation(lat: number, lng: number): void {
     msg.clear();
     const latlng = L.latLng(lat, lng);
-    setUserLocation({ lat, lng });
+    onLocation({ lat, lng });
     // maxBounds is a LatLngBounds at construction (tightened to the city outline on
     // load), so it's a bounds instance at runtime.
     const bounds = map.options.maxBounds as L.LatLngBounds | undefined;
@@ -89,3 +94,4 @@ export function createGeolocation(map: L.Map, msg: LocateMessenger): MapGeolocat
 
   return { applyUserLocation, locateMe };
 }
+

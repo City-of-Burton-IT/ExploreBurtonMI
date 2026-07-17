@@ -11,14 +11,24 @@ import { boundaryClipPath } from './clip';
 
 const palette = ['#1565c0', '#2e7d32', '#e65100', '#6a1b9a', '#00838f', '#b3261e', '#9e9d24'];
 
+interface ManagedLayer<T extends L.Layer> {
+  layer: T;
+  destroy(): void;
+}
+
+export interface ConfigOverlays {
+  container: HTMLElement | undefined;
+  destroy(): void;
+}
+
 /** Add the config-driven overlay layers + their layer control to the map.
- *  Returns the layer control's container element (the map component hides it in
- *  pin-drop mode), or undefined when the config defines no overlays. */
+ *  Returns the layer control lifecycle, or undefined when the config defines no
+ *  overlays. */
 export function addConfigOverlays(
   map: L.Map,
   mapEl: HTMLElement,
   config: AppConfig,
-): HTMLElement | undefined {
+): ConfigOverlays | undefined {
   if (!config.dataLayers?.length && !config.imageOverlays?.length) return undefined;
 
   // Drawn in a dedicated pane below the markers (so they never block a marker
@@ -42,25 +52,38 @@ export function addConfigOverlays(
     .layers(undefined, undefined, { collapsed: false, position: 'topright' })
     .addTo(map);
 
-  bindMinimizeToggle(layerControl);
+  const disposers = [bindMinimizeToggle(layerControl)];
 
   for (const ov of config.imageOverlays ?? []) {
-    layerControl.addOverlay(buildImageOverlay(map, mapEl, config, ov), ov.label);
+    const managed = buildImageOverlay(map, mapEl, config, ov);
+    layerControl.addOverlay(managed.layer, ov.label);
+    disposers.push(managed.destroy);
   }
   for (const layer of config.dataLayers ?? []) {
-    layerControl.addOverlay(buildDataLayer(layer), layer.label);
+    const managed = buildDataLayer(layer);
+    layerControl.addOverlay(managed.layer, layer.label);
+    disposers.push(managed.destroy);
   }
 
-  return layerControl.getContainer();
+  let destroyed = false;
+  return {
+    container: layerControl.getContainer(),
+    destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      for (const dispose of disposers.reverse()) dispose();
+      layerControl.remove();
+    },
+  };
 }
 
 // Minimize/restore toggle for the layers box. Unlike Leaflet's collapsed
 // mode (hover/tap driven), this is an explicit click toggle that works the
 // same in desktop browsers, mobile web, and the Android app. State persists
 // per device.
-function bindMinimizeToggle(layerControl: L.Control.Layers): void {
+function bindMinimizeToggle(layerControl: L.Control.Layers): () => void {
   const lc = layerControl.getContainer();
-  if (!lc) return;
+  if (!lc) return () => {};
   const toggle = L.DomUtil.create('button', 'layers-min-toggle', lc);
   toggle.type = 'button';
   const setMin = (min: boolean) => {
@@ -87,6 +110,7 @@ function bindMinimizeToggle(layerControl: L.Control.Layers): void {
     /* ignore */
   }
   setMin(initialMin);
+  return () => L.DomEvent.off(toggle);
 }
 
 // Georeferenced image overlay (e.g. the zoning map) -- stretched to its
@@ -98,12 +122,14 @@ function buildImageOverlay(
   mapEl: HTMLElement,
   config: AppConfig,
   ov: ImageOverlayConfig,
-): L.ImageOverlay {
+): ManagedLayer<L.ImageOverlay> {
   const img = L.imageOverlay(ov.source, ov.bounds, {
     pane: 'dataLayers',
     opacity: ov.opacity ?? 0.6,
     interactive: false,
   });
+  const disposers: (() => void)[] = [];
+  let destroyed = false;
 
   // Clip the image to the city boundary (removes the out-of-city parts,
   // including the map sheet's baked-in legend over neighbouring areas).
@@ -112,10 +138,11 @@ function buildImageOverlay(
     let clip = '';
     let requested = false;
     const applyClip = () => {
+      if (destroyed) return;
       const el = img.getElement() as HTMLElement | null;
       if (el && clip) el.style.clipPath = clip;
     };
-    img.on('add', () => {
+    const onAdd = () => {
       if (clip) {
         applyClip();
         return;
@@ -125,11 +152,14 @@ function buildImageOverlay(
       dataFetch(boundarySource)
         .then((r) => (r.ok ? r.json() : Promise.reject(new Error('boundary'))))
         .then((gj) => {
+          if (destroyed) return;
           clip = boundaryClipPath(gj, ov.bounds);
           applyClip();
         })
         .catch((err) => console.warn('Zoning clip not applied:', err));
-    });
+    };
+    img.on('add', onAdd);
+    disposers.push(() => img.off('add', onAdd));
   }
 
   // Legend image shown in a side panel while this overlay is enabled.
@@ -146,42 +176,70 @@ function buildImageOverlay(
     mapEl.appendChild(panel);
     L.DomEvent.disableClickPropagation(panel);
     L.DomEvent.disableScrollPropagation(panel);
-    close.addEventListener('click', () => {
+    const closePanel = () => {
       panel.style.display = 'none';
-    });
-    img.on('add', () => {
+    };
+    const showPanel = () => {
       panel.style.display = 'block';
-    });
-    img.on('remove', () => {
+    };
+    const hidePanel = () => {
       panel.style.display = 'none';
+    };
+    close.addEventListener('click', closePanel);
+    img.on('add', showPanel);
+    img.on('remove', hidePanel);
+    disposers.push(() => {
+      close.removeEventListener('click', closePanel);
+      L.DomEvent.off(panel);
+      img.off('add', showPanel);
+      img.off('remove', hidePanel);
+      panel.remove();
     });
   }
 
-  return img;
+  return {
+    layer: img,
+    destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      for (const dispose of disposers.reverse()) dispose();
+    },
+  };
 }
 
 // A toggleable GeoJSON overlay, wrapped in a layer group so it can sit in the
 // layer control before its data exists: the source is fetched on the first
 // toggle-on and the built layer dropped into the group. A failed fetch resets
 // the guard so the next toggle retries.
-function buildDataLayer(layer: DataLayerConfig): L.LayerGroup {
+function buildDataLayer(layer: DataLayerConfig): ManagedLayer<L.LayerGroup> {
   const nameField = layer.nameField ?? 'name';
   const group = L.layerGroup();
   let requested = false;
-  group.on('add', () => {
+  let destroyed = false;
+  const onAdd = () => {
     if (requested) return;
     requested = true;
     dataFetch(layer.source)
       .then((r) => (r.ok ? r.json() : Promise.reject(new Error(`${layer.source} HTTP ${r.status}`))))
       .then((geojson) => {
+        if (destroyed) return;
         group.addLayer(buildGeoJsonLayer(geojson, nameField));
       })
       .catch((err) => {
         requested = false;
         console.warn(`Data layer ${layer.source} not loaded:`, err);
       });
-  });
-  return group;
+  };
+  group.on('add', onAdd);
+  return {
+    layer: group,
+    destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      group.off('add', onAdd);
+      group.clearLayers();
+    },
+  };
 }
 
 function buildGeoJsonLayer(
@@ -253,3 +311,4 @@ function buildGeoJsonLayer(
     },
   });
 }
+

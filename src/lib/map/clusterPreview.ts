@@ -1,7 +1,6 @@
 // Cluster preview (#map): peek at the places inside a cluster bubble.
 import L from 'leaflet';
 import type { PlaceFeature } from '../types';
-import { select } from '../store.svelte';
 import { clusterSummary, CLUSTER_PREVIEW_MAX } from '../cluster';
 import { escapeHtml } from './html';
 
@@ -19,10 +18,25 @@ function clusterNames(c: L.MarkerCluster): string[] {
     .filter((n): n is string => typeof n === 'string');
 }
 
-export function bindClusterPreview(map: L.Map, group: L.MarkerClusterGroup): void {
+export function bindClusterPreview(
+  map: L.Map,
+  group: L.MarkerClusterGroup,
+  onSelect: (feature: PlaceFeature) => void,
+): () => void {
+  const tooltipClusters = new Set<L.MarkerCluster>();
+  const popupClusters = new Set<L.MarkerCluster>();
+  const popupButtons = new Map<HTMLElement, L.DomEvent.EventHandlerFn>();
+  let disposed = false;
+
+  function clearPopupButtonListeners(): void {
+    for (const [button, handler] of popupButtons) L.DomEvent.off(button, 'click', handler);
+    popupButtons.clear();
+  }
+
   // Desktop hover: a quick tooltip with a few names + "+N more".
-  group.on('clustermouseover', (e) => {
+  const handleMouseOver = (e: L.LeafletEvent) => {
     const c = (e as ClusterEvent).layer;
+    tooltipClusters.add(c);
     const { shown, more } = clusterSummary(clusterNames(c), 6);
     const list = shown.map((n) => `<li>${escapeHtml(n)}</li>`).join('');
     const extra = more ? `<p class="cp-more">+${more} more — tap to see</p>` : '';
@@ -30,23 +44,48 @@ export function bindClusterPreview(map: L.Map, group: L.MarkerClusterGroup): voi
       `<div class="cluster-peek"><p class="cp-head">${c.getChildCount()} places here</p><ul>${list}</ul>${extra}</div>`,
       { direction: 'top', offset: [0, -6], className: 'cluster-tip' },
     ).openTooltip();
-  });
-  group.on('clustermouseout', (e) => (e as ClusterEvent).layer.closeTooltip());
+  };
+  const handleMouseOut = (e: L.LeafletEvent) => (e as ClusterEvent).layer.closeTooltip();
 
   // Tap / click: a small bubble opens a popup listing its places (tap one to open
   // it); a big bubble zooms to drill in (the hover tooltip covers the glance there,
   // and a 100-name popup wouldn't be useful).
-  group.on('clusterclick', (e) => {
+  const handleClick = (e: L.LeafletEvent) => {
     const c = (e as ClusterEvent).layer;
     if (c.getChildCount() > CLUSTER_PREVIEW_MAX) {
       map.fitBounds(c.getBounds(), { padding: [40, 40] });
     } else {
-      openClusterPreview(map, c);
+      clearPopupButtonListeners();
+      popupClusters.add(c);
+      openClusterPreview(map, c, onSelect, popupButtons);
     }
-  });
+  };
+
+  group.on('clustermouseover', handleMouseOver);
+  group.on('clustermouseout', handleMouseOut);
+  group.on('clusterclick', handleClick);
+
+  return () => {
+    if (disposed) return;
+    disposed = true;
+    group.off('clustermouseover', handleMouseOver);
+    group.off('clustermouseout', handleMouseOut);
+    group.off('clusterclick', handleClick);
+    clearPopupButtonListeners();
+    for (const cluster of tooltipClusters) cluster.closeTooltip().unbindTooltip();
+    for (const cluster of popupClusters) cluster.closePopup().unbindPopup();
+    if (popupClusters.size > 0) map.closePopup();
+    tooltipClusters.clear();
+    popupClusters.clear();
+  };
 }
 
-function openClusterPreview(map: L.Map, c: L.MarkerCluster): void {
+function openClusterPreview(
+  map: L.Map,
+  c: L.MarkerCluster,
+  onSelect: (feature: PlaceFeature) => void,
+  popupButtons: Map<HTMLElement, L.DomEvent.EventHandlerFn>,
+): void {
   const feats = (c.getAllChildMarkers() as PlaceMarker[])
     .map((m) => m.feature)
     .filter((f): f is PlaceFeature => !!f)
@@ -60,11 +99,14 @@ function openClusterPreview(map: L.Map, c: L.MarkerCluster): void {
     const btn = L.DomUtil.create('button', '', li) as HTMLButtonElement;
     btn.type = 'button';
     btn.textContent = String(f.properties.name); // textContent => no XSS
-    L.DomEvent.on(btn, 'click', (ev) => {
+    const handleSelect: L.DomEvent.EventHandlerFn = (ev) => {
       L.DomEvent.stop(ev);
       map.closePopup();
-      select(f); // opens the detail sheet + reveals it on the map
-    });
+      onSelect(f);
+    };
+    popupButtons.set(btn, handleSelect);
+    L.DomEvent.on(btn, 'click', handleSelect);
   }
   c.bindPopup(el, { className: 'cluster-popup', maxHeight: 260 }).openPopup();
 }
+

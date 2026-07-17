@@ -16,6 +16,7 @@ node_modules
 dist
 dist-ssr
 *.local
+.worktrees/
 
 # Track 2 Python pipeline
 pipeline/.venv/
@@ -55,3 +56,4 @@ pipeline/data/address-points-source.csv
 
 # graphify knowledge graph (regenerated locally by post-commit hook)
 graphify-out/
+
