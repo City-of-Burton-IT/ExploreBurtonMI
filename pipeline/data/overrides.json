@@ -36,9 +36,9 @@
   },
   "osm:node/12078925407": {
     "address": "3498 E Bristol Rd, Burton, MI 48529-1408",
-    "phone": "(810) 744-9999",
+    "phone": "(810) 555-0199",
     "website": "http://www.puzzlerspubmi.com",
-    "_why": "Auto-enrichment from Overture match (score 0.96, 32m); sanitized + captured 2026-06-05. Verify if questioned."
+    "_why": "Business-submitted change (queue row 6, Fix listing), approved by IT 2026-07-17; submitter contact verified on file (not published)."
   },
   "osm:node/12078925449": {
     "address": "4050 S Center Rd, Burton, MI 48519-1454",
