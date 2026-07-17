@@ -9,21 +9,11 @@
 import { readFileSync, writeFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
-import { marked } from 'marked';
-import { renderGuideMarkdown } from './guide-callouts.mjs';
+import { renderSafeGuideMarkdown } from './guide-html.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'content', 'guide');
 const OUT = join(ROOT, 'public', 'guide.json');
-
-const SAFE_HREF = /^(https?:\/\/|mailto:|tel:|#)/i;
-
-/** Neutralize any link whose scheme isn't http(s)/mailto/tel/anchor. */
-function sanitize(html) {
-  return html.replace(/href="([^"]*)"/gi, (m, url) =>
-    SAFE_HREF.test(url.trim()) ? m : 'href="#"',
-  );
-}
 
 /** Read a required content file, turning a missing file into a friendly,
  *  actionable error instead of a raw ENOENT stack trace (this runs as
@@ -59,11 +49,9 @@ for (const s of index.sections) {
 
   const file = s.file ? join(SRC, s.file) : null;
   if (s.type === 'markdown') {
-    out.content[s.id] = sanitize(
-      renderGuideMarkdown(
-        readContentFile(file, `markdown source for section '${s.id}'`),
-        (m) => marked.parse(m),
-      ),
+    out.content[s.id] = renderSafeGuideMarkdown(
+      readContentFile(file, `markdown source for section '${s.id}'`),
+      s.id,
     );
   } else if (s.type === 'contacts') {
     out.contacts = JSON.parse(readContentFile(file, `contacts source for section '${s.id}'`));
