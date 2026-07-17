@@ -91,6 +91,14 @@ def test_listing_pr_does_not_depend_on_the_repository_github_token():
     assert "GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}" not in pr_step
 
 
+def test_listing_dispatch_rebuilds_from_committed_data_without_network_fetches():
+    workflow = (ROOT / ".github" / "workflows" / "apply-listing.yml").read_text(
+        encoding="utf-8"
+    )
+    assert "python pipeline/run.py" not in workflow
+    assert "python tools/sync_listing_requests.py --payload-file payload.json" in workflow
+
+
 def test_android_backup_is_disabled():
     root = ET.parse(ROOT / "android" / "app" / "src" / "main" / "AndroidManifest.xml")
     application = root.getroot().find("application")

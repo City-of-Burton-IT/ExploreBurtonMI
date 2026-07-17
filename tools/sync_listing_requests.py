@@ -47,12 +47,19 @@ TOKEN_STORE = os.environ.get(
 MCP_ENV = os.environ.get("EXPLORE_MCP_ENV", r"C:\utils\outlook-mcp\.env")
 
 HERE = os.path.dirname(os.path.abspath(__file__))
+ROOT = os.path.dirname(HERE)
 sys.path.insert(0, HERE)
+sys.path.insert(0, os.path.join(ROOT, "pipeline"))
 from lib.iox import write_json  # noqa: E402
 from lib.paths import pipeline_data_path  # noqa: E402
+from src.emit import emit  # noqa: E402
+from src.merge import apply_override  # noqa: E402
+from src.validate import validate  # noqa: E402
 
 OVERRIDES_PATH = pipeline_data_path("overrides.json")
 CANDIDATES_PATH = os.path.join(HERE, "pending-additions.json")
+PUBLIC_DATA_PATH = os.path.join(ROOT, "public", "data.geojson")
+PIPELINE_CONFIG_PATH = os.path.join(ROOT, "pipeline", "config.json")
 
 # SharePoint column -> feature property (only set when the submitter gave a value)
 FIELD_MAP = [
@@ -179,6 +186,26 @@ def _write_overrides(overrides: dict) -> None:
     write_json(OVERRIDES_PATH, overrides)
 
 
+def _write_public_data(overrides: dict) -> int:
+    """Apply committed overrides to the committed public output without fetching."""
+    with open(PUBLIC_DATA_PATH, encoding="utf-8") as f:
+        public_data = json.load(f)
+    with open(PIPELINE_CONFIG_PATH, encoding="utf-8") as f:
+        config = json.load(f)
+
+    features = []
+    for feature in public_data.get("features", []):
+        override = overrides.get(feature.get("id"))
+        if override is not None:
+            feature = apply_override(feature, override)
+            if feature is None:
+                continue
+        features.append(feature)
+
+    clean = validate(features, config["overpass"]["bbox"])
+    return emit(clean, PUBLIC_DATA_PATH)
+
+
 def _merge_candidates(new_cands: list[dict]) -> None:
     """Merge add-new candidates into pending-additions.json, dedup by id. The
     payload path applies one row at a time, so it must MERGE (not overwrite like
@@ -215,6 +242,8 @@ def run_from_payload(payload: dict) -> int:
     if report["applied"]:
         _write_overrides(overrides)
         print(f"Wrote {OVERRIDES_PATH}")
+        count = _write_public_data(overrides)
+        print(f"Wrote {count} features -> {PUBLIC_DATA_PATH}")
     # The repository_dispatch path runs in a PUBLIC repository. Add-new candidate
     # fields therefore stay in SharePoint for private vetting; writing them here
     # would disclose them in the worktree, Action logs/artifacts, or Git history.
