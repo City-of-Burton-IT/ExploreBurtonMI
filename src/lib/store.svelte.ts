@@ -8,7 +8,7 @@ import type { Selections } from './filter';
 import { placeIdFromHash, placeHash } from './hash';
 import { SAVED_KEY, loadSaved, serializeSaved, toggleSaved } from './savedPlaces';
 import { THEME_KEY, loadThemePref, resolveTheme, type ThemePref } from './theme';
-import { viewFromHash, guideSectionFromHash } from './dashboards';
+import { viewFromHash, guideSectionFromHash, guideSectionHash } from './dashboards';
 
 // Pure dashboard registry + hash-routing helpers now live in ./dashboards
 // (rune-free, so they can be imported without pulling in Svelte). Re-exported
@@ -22,6 +22,9 @@ export {
   adjacentDashboards,
   viewFromHash,
   guideSectionFromHash,
+  guideAnchorFromHash,
+  guideSectionHash,
+  guideHashNeedsNormalization,
 } from './dashboards';
 
 function initialView(): AppView {
@@ -309,7 +312,19 @@ export function setView(view: AppView): void {
 export function setGuideSection(id: string): void {
   ui.view = 'guide';
   ui.guideSection = id;
-  if (typeof window !== 'undefined') window.location.hash = `guide/${id}`;
+  if (typeof window !== 'undefined') window.location.hash = guideSectionHash(id);
+}
+
+/** Normalize an invalid guide deep link without adding another history entry. */
+export function replaceGuideSection(id: string): void {
+  ui.view = 'guide';
+  ui.guideSection = id;
+  if (typeof window === 'undefined') return;
+  history.replaceState(
+    null,
+    '',
+    `${window.location.pathname}${window.location.search}#${guideSectionHash(id)}`,
+  );
 }
 
 /** Sync the view (+ guide section) from the current hash (Back/Forward + deep links). */

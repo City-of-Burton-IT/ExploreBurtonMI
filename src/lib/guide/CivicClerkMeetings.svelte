@@ -1,15 +1,7 @@
 <script lang="ts">
   import { loadAsync } from '../loadJson.svelte';
   import OfflineBadge from '../OfflineBadge.svelte';
-
-  type Ev = {
-    id: number;
-    eventName: string;
-    startDateTime: string;
-    categoryName?: string;
-    agendaId?: number;
-    mediaStreamPath?: string;
-  };
+  import { validateCivicClerkEvents, type CivicClerkEvent } from './civicClerk';
 
   const PORTAL = 'https://burtonmi.portal.civicclerk.com';
   const API = 'https://burtonmi.api.civicclerk.com/v1/Events';
@@ -25,13 +17,21 @@
 
   // Live CivicClerk API (not a committed file, so loadAsync not loadJson); a
   // null result = the fetch failed and the offline/error state shows.
-  const meetings = loadAsync<{ upcoming: Ev[]; recent: Ev[] } | null>(async () => {
+  async function responseJson(response: Response): Promise<unknown> {
+    if (!response.ok) throw new Error(`CivicClerk request failed (${response.status})`);
+    return response.json();
+  }
+
+  const meetings = loadAsync<{ upcoming: CivicClerkEvent[]; recent: CivicClerkEvent[] } | null>(async () => {
     const now = new Date().toISOString();
-    const [u, r] = await Promise.all([
-      fetch(query(`startDateTime ge ${now}`, 'asc')).then((x) => x.json()),
-      fetch(query(`startDateTime lt ${now}`, 'desc')).then((x) => x.json()),
+    const [upcomingRaw, recentRaw] = await Promise.all([
+      fetch(query(`startDateTime ge ${now}`, 'asc')).then(responseJson),
+      fetch(query(`startDateTime lt ${now}`, 'desc')).then(responseJson),
     ]);
-    return { upcoming: (u.value ?? []).slice(0, 12), recent: (r.value ?? []).slice(0, 12) };
+    return {
+      upcoming: validateCivicClerkEvents(upcomingRaw, 'upcoming').slice(0, 12),
+      recent: validateCivicClerkEvents(recentRaw, 'recent').slice(0, 12),
+    };
   }, null);
   const upcoming = $derived(meetings.data?.upcoming ?? []);
   const recent = $derived(meetings.data?.recent ?? []);

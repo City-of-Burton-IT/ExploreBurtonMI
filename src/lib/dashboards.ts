@@ -1,7 +1,7 @@
 // Pure dashboard registry + hash-routing helpers -- no runes, no reactive state,
 // safe to import from anywhere (including tests) without pulling in Svelte.
 
-import type { AppView, InfoView } from './types';
+import type { AppView, GuideSectionMeta, InfoView } from './types';
 
 export interface DashboardItem {
   id: InfoView;
@@ -105,8 +105,29 @@ export function viewFromHash(hash: string): AppView {
   return 'map';
 }
 
-/** The guide section id from a `#guide/<id>` hash, or null. */
+const GUIDE_ROUTE = /^guide\/([a-z0-9]+(?:-[a-z0-9]+)*)(?:\/([a-z0-9][a-z0-9_-]*))?$/;
+
+/** The guide section id from a `#guide/<id>[/<anchor>]` hash, or null. */
 export function guideSectionFromHash(hash: string): string | null {
-  const parts = hash.replace(/^#/, '').split('/');
-  return parts[0] === 'guide' && parts[1] ? parts[1] : null;
+  const match = GUIDE_ROUTE.exec(hash.replace(/^#/, ''));
+  return match?.[1] ?? null;
+}
+
+/** The optional heading anchor from a valid guide hash. */
+export function guideAnchorFromHash(hash: string): string | null {
+  const match = GUIDE_ROUTE.exec(hash.replace(/^#/, ''));
+  return match?.[2] ?? null;
+}
+
+export function guideSectionHash(id: string, anchor?: string): string {
+  const route = `guide/${encodeURIComponent(id)}`;
+  return anchor ? `${route}/${encodeURIComponent(anchor)}` : route;
+}
+
+/** Whether a guide-shaped hash should be replaced with the first valid route. */
+export function guideHashNeedsNormalization(hash: string, sections: GuideSectionMeta[]): boolean {
+  const route = hash.replace(/^#/, '');
+  if (route === 'guide' || !route.startsWith('guide/')) return false;
+  const id = guideSectionFromHash(hash);
+  return id === null || !sections.some((section) => section.id === id);
 }

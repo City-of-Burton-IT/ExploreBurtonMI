@@ -2,6 +2,7 @@ import { render } from 'svelte/server';
 import { describe, expect, it } from 'vitest';
 import GuideContent from '../src/lib/guide/GuideContent.svelte';
 import { guideRenderer, usesGenericOfflineBadge } from '../src/lib/guide/guideSections';
+import { ui } from '../src/lib/store.svelte';
 import type { GuideBundle, GuideSectionMeta } from '../src/lib/types';
 
 const sections: GuideSectionMeta[] = [
@@ -57,5 +58,48 @@ describe('GuideContent', () => {
     expect(usesGenericOfflineBadge('civicclerk')).toBe(false);
     expect(usesGenericOfflineBadge('markdown')).toBe(true);
     expect(usesGenericOfflineBadge('video')).toBe(true);
+  });
+
+  it('renders exactly one offline badge for generic and self-badged sections', () => {
+    const originalOnline = ui.online;
+    ui.online = false;
+    try {
+      const markdownBundle: GuideBundle = {
+        sections: [sections[0]],
+        content: { welcome: '<p>Welcome.</p>' },
+      };
+      const markdown = render(GuideContent, {
+        props: { section: sections[0], bundle: markdownBundle, openImage: () => {} },
+      }).body;
+      expect((markdown.match(/Offline: showing saved info/g) ?? []).length).toBe(1);
+
+      const wasteSection: GuideSectionMeta = { id: 'waste', title: 'Waste', type: 'waste' };
+      const wasteBundle: GuideBundle = { sections: [wasteSection], content: {} };
+      const waste = render(GuideContent, {
+        props: { section: wasteSection, bundle: wasteBundle, openImage: () => {} },
+      }).body;
+      expect((waste.match(/Offline: showing your saved pickup schedule/g) ?? []).length).toBe(1);
+      expect(waste).not.toContain('Offline: showing saved info');
+    } finally {
+      ui.online = originalOnline;
+    }
+  });
+
+  it('does not create a third-party iframe before video activation', () => {
+    const video: GuideSectionMeta = {
+      id: 'video',
+      title: 'Video Tour',
+      type: 'video',
+      src: 'https://www.elocallink.tv/m/v/watch',
+      provider: 'eLocalLink',
+    };
+    const bundle: GuideBundle = { sections: [video], content: {} };
+    const body = render(GuideContent, {
+      props: { section: video, bundle, openImage: () => {} },
+    }).body;
+
+    expect(body).toContain('Play Video Tour');
+    expect(body).not.toContain('<iframe');
+    expect(body).not.toContain('src="https://www.elocallink.tv');
   });
 });

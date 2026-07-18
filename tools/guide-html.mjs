@@ -1,4 +1,4 @@
-import { marked } from 'marked';
+import { marked, Renderer } from 'marked';
 import { renderGuideMarkdown } from './guide-callouts.mjs';
 
 const SAFE_TAGS = new Set([
@@ -47,6 +47,7 @@ const SAFE_ATTRIBUTES = new Set([
   'href',
   'r',
   'role',
+  'rel',
   'rx',
   'ry',
   'src',
@@ -55,6 +56,7 @@ const SAFE_ATTRIBUTES = new Set([
   'stroke-linejoin',
   'stroke-width',
   'title',
+  'target',
   'viewbox',
   'width',
   'x',
@@ -66,7 +68,7 @@ function decodeHtmlEntities(value) {
   return value
     .replace(/&#x([0-9a-f]+);?/gi, (_match, hex) => String.fromCodePoint(parseInt(hex, 16)))
     .replace(/&#([0-9]+);?/g, (_match, decimal) => String.fromCodePoint(parseInt(decimal, 10)))
-    .replace(/&(colon|tab|newline|sol|bsol|amp);/gi, (_match, name) => {
+    .replace(/&(colon|tab|newline|sol|bsol|amp);?/gi, (_match, name) => {
       const entities = { colon: ':', tab: '\t', newline: '\n', sol: '/', bsol: '\\', amp: '&' };
       return entities[name.toLowerCase()];
     });
@@ -100,6 +102,14 @@ function isSafeLink(value) {
   } catch {
     return false;
   }
+}
+
+function isSafeGeneratedLink(value, sectionId) {
+  if (isSafeLink(value)) return true;
+  const destination = normalizedDestination(value);
+  return destination === null
+    ? false
+    : new RegExp(`^#guide/${sectionId}/[a-z0-9][a-z0-9_-]*$`, 'i').test(destination);
 }
 
 function isSafeImage(value) {
@@ -190,17 +200,46 @@ export function assertGeneratedGuideHtml(html, sectionId) {
   }
 
   for (const href of attributeValues(html, 'href')) {
-    if (!isSafeLink(href)) throw trustError(sectionId, `generated prohibited href: ${href}`);
+    if (!isSafeGeneratedLink(href, sectionId)) {
+      throw trustError(sectionId, `generated prohibited href: ${href}`);
+    }
   }
   for (const src of attributeValues(html, 'src')) {
     if (!isSafeImage(src)) throw trustError(sectionId, `generated prohibited src: ${src}`);
   }
+
+  for (const match of html.matchAll(/<a\b[^>]*>/gi)) {
+    const tag = match[0];
+    const [href = ''] = attributeValues(tag, 'href');
+    if (!/^https?:\/\//i.test(normalizedDestination(href) ?? '')) continue;
+    const [target] = attributeValues(tag, 'target');
+    const [rel = ''] = attributeValues(tag, 'rel');
+    const relTokens = new Set(rel.toLowerCase().split(/\s+/));
+    if (target !== '_blank' || !relTokens.has('noopener') || !relTokens.has('noreferrer')) {
+      throw trustError(sectionId, 'generated an external link without safe target and rel attributes');
+    }
+  }
+}
+
+function renderMarkdownFragment(fragment, sectionId) {
+  const renderer = new Renderer();
+  const renderLink = renderer.link.bind(renderer);
+  renderer.link = (token) => {
+    const href = token.href.startsWith('#')
+      ? `#guide/${sectionId}/${token.href.slice(1)}`
+      : token.href;
+    const html = renderLink({ ...token, href });
+    return /^https?:\/\//i.test(normalizedDestination(href) ?? '')
+      ? html.replace('<a ', '<a target="_blank" rel="noopener noreferrer" ')
+      : html;
+  };
+  return marked.parse(fragment, { renderer });
 }
 
 /** Render trusted guide Markdown. Authored HTML is never accepted. */
 export function renderSafeGuideMarkdown(markdown, sectionId) {
   validateGuideMarkdown(markdown, sectionId);
-  const html = renderGuideMarkdown(markdown, (fragment) => marked.parse(fragment));
+  const html = renderGuideMarkdown(markdown, (fragment) => renderMarkdownFragment(fragment, sectionId));
   assertGeneratedGuideHtml(html, sectionId);
   return html;
 }

@@ -2,6 +2,8 @@
   import type { GuideBundle, GuideSectionMeta } from '../types';
   import { reveal } from '../actions/reveal';
   import { lightboxImages } from '../actions/lightboxImages';
+  import { guideAnchors } from '../actions/guideAnchors';
+  import { guideContentFocus } from '../actions/guideContentFocus';
   import OfflineBadge from '../OfflineBadge.svelte';
   import GuideIcon from './GuideIcon.svelte';
   import ContactsList from './ContactsList.svelte';
@@ -25,7 +27,7 @@
   const renderer = $derived(guideRenderer(section));
 </script>
 
-<article class="guide-body">
+<article class="guide-body" use:guideContentFocus={section.id}>
   {#if usesGenericOfflineBadge(renderer)}<OfflineBadge />{/if}
   <h2>
     {#if section.icon}<GuideIcon name={section.icon} size={24} />{/if}
@@ -35,7 +37,7 @@
   {#if renderer === 'markdown'}
     <!-- Build-time-rendered, fail-closed HTML from tracked guide Markdown. -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <div class="md" use:reveal use:lightboxImages={openImage}>{@html bundle.content[section.id]}</div>
+    <div class="md" use:reveal use:lightboxImages={openImage} use:guideAnchors={section.id}>{@html bundle.content[section.id]}</div>
   {:else if renderer === 'contacts' && bundle.contacts}
     <ContactsList contacts={bundle.contacts} />
   {:else if renderer === 'meetings' && bundle.meetings}

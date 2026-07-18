@@ -118,6 +118,10 @@
   }
   .pdf {
     margin-top: 0;
+    display: inline-flex;
+    align-items: center;
+    min-height: 48px;
+    box-sizing: border-box;
   }
   .about:hover {
     text-decoration: underline;
