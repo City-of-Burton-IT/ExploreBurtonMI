@@ -6,10 +6,12 @@
 //
 // Run automatically via the npm prebuild/predev scripts, or: node tools/build_guide.mjs
 
-import { readFileSync, writeFileSync } from 'node:fs';
+import { readFileSync } from 'node:fs';
 import { join, dirname } from 'node:path';
 import { fileURLToPath } from 'node:url';
+import { createServer } from 'vite';
 import { renderSafeGuideMarkdown } from './guide-html.mjs';
+import { writeValidatedGuideBundle } from './guide-output.mjs';
 
 const ROOT = join(dirname(fileURLToPath(import.meta.url)), '..');
 const SRC = join(ROOT, 'content', 'guide');
@@ -69,5 +71,19 @@ for (const s of index.sections) {
   }
 }
 
-writeFileSync(OUT, JSON.stringify(out, null, 2) + '\n', 'utf8');
+await writeValidatedGuideBundle(out, OUT, async (bundle) => {
+  const vite = await createServer({
+    root: ROOT,
+    configFile: false,
+    appType: 'custom',
+    logLevel: 'silent',
+    server: { middlewareMode: true },
+  });
+  try {
+    const { validateGuideBundle } = await vite.ssrLoadModule('/src/lib/guide/guideBundle.ts');
+    validateGuideBundle(bundle);
+  } finally {
+    await vite.close();
+  }
+});
 console.log(`Wrote ${OUT} (${index.sections.length} sections)`);

@@ -23,3 +23,23 @@ export function guideRenderer(section: GuideSectionMeta): GuideSectionType {
 export function usesGenericOfflineBadge(type: GuideSectionType): boolean {
   return type !== 'waste' && type !== 'civicclerk';
 }
+
+export function resolveGuideSection(
+  sections: GuideSectionMeta[],
+  requestedId: string | null,
+): { section: GuideSectionMeta | null; shouldNormalize: boolean } {
+  const first = sections[0] ?? null;
+  if (requestedId === null) return { section: first, shouldNormalize: false };
+  const match = sections.find((section) => section.id === requestedId) ?? null;
+  return { section: match ?? first, shouldNormalize: match === null && first !== null };
+}
+
+export function guideHeadingId(text: string): string {
+  return text
+    .normalize('NFKD')
+    .replace(/[\u0300-\u036f]/g, '')
+    .toLowerCase()
+    .replace(/&/g, ' ')
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-|-$/g, '');
+}

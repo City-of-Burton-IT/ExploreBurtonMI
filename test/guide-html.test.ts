@@ -77,7 +77,11 @@ describe('guide Markdown trust boundary', () => {
       '[Section](#city-offices)',
       '![Volunteers](/welcomevolunteer.png)',
     ].join('\n\n');
-    expect(() => renderSafeGuideMarkdown(markdown, 'fixture')).not.toThrow();
+    const html = renderSafeGuideMarkdown(markdown, 'fixture');
+    expect(html).toContain(
+      '<a target="_blank" rel="noopener noreferrer" href="https://www.burtonmi.gov">Web</a>',
+    );
+    expect(html).toContain('<a href="#guide/fixture/city-offices">Section</a>');
   });
 
   it('rejects an image without alternative text', () => {
@@ -105,5 +109,11 @@ describe('guide Markdown trust boundary', () => {
     '<img src="//evil.example/x.png" alt="bad">',
   ])('fails closed if prohibited HTML reaches the generated-output boundary: %s', (html) => {
     expect(() => assertGeneratedGuideHtml(html, 'fixture')).toThrow(/fixture.*prohibited/i);
+  });
+
+  it('rejects external renderer output without safe target and rel attributes', () => {
+    expect(() =>
+      assertGeneratedGuideHtml('<a href="https://www.burtonmi.gov">City site</a>', 'fixture'),
+    ).toThrow(/external link without safe target and rel/i);
   });
 });

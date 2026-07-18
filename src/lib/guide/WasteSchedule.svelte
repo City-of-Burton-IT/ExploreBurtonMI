@@ -1,12 +1,11 @@
 <script lang="ts">
   import { loadJson } from '../loadJson.svelte';
   import OfflineBadge from '../OfflineBadge.svelte';
+  import { validateWasteSchedule, type WasteScheduleEntry } from './wasteSchedule';
 
-  type Entry = { street: string; day: string };
-
-  const schedule = loadJson<Entry[]>(
+  const schedule = loadJson<WasteScheduleEntry[]>(
     'waste-schedule.json',
-    (raw) => (raw as { entries?: Entry[] }).entries ?? [],
+    validateWasteSchedule,
     [],
   );
   const entries = $derived(schedule.data);

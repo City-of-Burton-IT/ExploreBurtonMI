@@ -1,10 +1,17 @@
 <script lang="ts">
   import type { GuideBundle } from './types';
-  import { ui, setGuideSection, openAbout } from './store.svelte';
+  import {
+    ui,
+    setGuideSection,
+    replaceGuideSection,
+    openAbout,
+    guideHashNeedsNormalization,
+  } from './store.svelte';
   import { loadJson } from './loadJson.svelte';
   import { validateGuideBundle } from './guide/guideBundle';
   import GuideNav from './guide/GuideNav.svelte';
   import GuideContent from './guide/GuideContent.svelte';
+  import { resolveGuideSection } from './guide/guideSections';
   import Lightbox from './Lightbox.svelte';
 
   const guide = loadJson<GuideBundle | null>('guide.json', validateGuideBundle, null);
@@ -13,8 +20,25 @@
   let lightbox = $state<{ show: (src: string, caption: string) => void }>();
   const openImage = (src: string, caption: string) => lightbox?.show(src, caption);
 
-  const activeId = $derived(ui.guideSection ?? bundle?.sections[0]?.id ?? '');
-  const activeSection = $derived(bundle?.sections.find((section) => section.id === activeId) ?? null);
+  const resolution = $derived(
+    bundle
+      ? resolveGuideSection(bundle.sections, ui.guideSection)
+      : { section: null, shouldNormalize: false },
+  );
+  const activeSection = $derived(resolution.section);
+  const activeId = $derived(activeSection?.id ?? '');
+
+  $effect(() => {
+    const currentBundle = bundle;
+    const currentResolution = resolution;
+    if (!currentBundle || !currentResolution.section || typeof window === 'undefined') return;
+    if (
+      currentResolution.shouldNormalize ||
+      guideHashNeedsNormalization(window.location.hash, currentBundle.sections)
+    ) {
+      replaceGuideSection(currentResolution.section.id);
+    }
+  });
 </script>
 
 <section class="guide" aria-label="Resident Guide">
