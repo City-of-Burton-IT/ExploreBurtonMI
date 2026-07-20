@@ -13,8 +13,8 @@
 
 <style>
   .summary {
-    background: var(--civic-blue-tint, #eef3fb);
-    border-left: 4px solid var(--civic-blue, #2c57a0);
+    background: var(--pub-surface-2);
+    border-left: 4px solid var(--pub-border);
     border-radius: var(--pub-radius-sm, 6px);
     padding: 0.85rem 1.1rem;
     margin: 0 0 1.4rem;
@@ -24,7 +24,7 @@
     font-family: var(--font-head, sans-serif);
     font-weight: 700;
     font-size: 1.02rem;
-    color: var(--civic-callout-heading, #2c57a0);
+    color: var(--pub-ink);
   }
   .summary p {
     margin: 0.4rem 0 0;
