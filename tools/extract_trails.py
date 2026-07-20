@@ -137,6 +137,43 @@ def fetch() -> list:
     return get_json(LAYER, params, timeout=120).get("features", [])
 
 
+def aggregate_named_segments(segments: list[tuple[str, str, str, str, float]]) -> list[dict]:
+    """Aggregate table rows without combining built and planned mileage.
+
+    A named route can contain segments in more than one delivery status. Keeping
+    each (name, status) bucket separate prevents a partly planned route from
+    being presented as entirely built and usable.
+    """
+    buckets: dict[tuple[str, str], dict] = {}
+    for name, status, trail_type, surface, miles in segments:
+        bucket = buckets.setdefault(
+            (name, status),
+            {"name": name, "status": status, "miles": 0.0, "types": set(), "surfaces": set()},
+        )
+        bucket["miles"] += miles
+        bucket["types"].add(trail_type)
+        if surface and surface != "Unknown":
+            bucket["surfaces"].add(surface)
+
+    status_order = [EXISTING] + PLANNED_ORDER
+    rows = []
+    for bucket in buckets.values():
+        rows.append({
+            "name": bucket["name"],
+            "status": bucket["status"],
+            "miles": round(bucket["miles"], 2),
+            "type": ", ".join(sorted(bucket["types"])),
+            "surface": ", ".join(sorted(bucket["surfaces"])) or "n/a",
+        })
+    return sorted(
+        rows,
+        key=lambda row: (
+            row["name"],
+            status_order.index(row["status"]) if row["status"] in status_order else 99,
+        ),
+    )
+
+
 def main() -> int:
     rings = _rings()
     bbox = _bbox(rings)
@@ -145,8 +182,8 @@ def main() -> int:
         raise SystemExit("No trail segments returned (check the Legacy Trail Map service).")
 
     features = []
-    # Per-named-trail aggregation (clipped miles), and category tallies.
-    by_name: dict[str, dict] = {}
+    # Per-named-trail/status aggregation (clipped miles), and category tallies.
+    named_segments: list[tuple[str, str, str, str, float]] = []
     miles_status: dict[str, float] = defaultdict(float)
     miles_type: dict[str, float] = defaultdict(float)
     miles_surface: dict[str, float] = defaultdict(float)
@@ -168,13 +205,7 @@ def main() -> int:
         miles_status[status] += miles
         miles_type[ttype] += miles
         miles_surface[surface] += miles
-        agg = by_name.setdefault(name, {"miles": 0.0, "status": status, "type": ttype,
-                                        "surface": surface, "existing": is_existing})
-        agg["miles"] += miles
-        # Prefer to label a named trail by its existing portion if any segment is built.
-        if is_existing:
-            agg["existing"] = True
-            agg["status"] = EXISTING
+        named_segments.append((name, status, ttype, surface, miles))
 
         rows = [["Status", status], ["Type", ttype]]
         if surface and surface != "Unknown":
@@ -214,17 +245,23 @@ def main() -> int:
     # ---- dashboard JSON --------------------------------------------------
     existing_mi = round(miles_status.get(EXISTING, 0.0), 1)
     planned_mi = round(sum(v for k, v in miles_status.items() if k != EXISTING), 1)
-    existing_names = sorted((n for n, a in by_name.items() if a["existing"]),
-                            key=lambda n: by_name[n]["miles"], reverse=True)
-    longest = existing_names[0] if existing_names else None
+    named_rows = aggregate_named_segments(named_segments)
+    named_count = len({row["name"] for row in named_rows})
+    existing_rows = sorted(
+        (row for row in named_rows if row["status"] == EXISTING),
+        key=lambda row: row["miles"],
+        reverse=True,
+    )
+    existing_names = {row["name"] for row in existing_rows}
+    longest = existing_rows[0] if existing_rows else None
 
     stats = [
         {"label": "Existing trail miles in Burton", "value": f"{existing_mi:g}",
          "hint": "built & usable today"},
-        {"label": "Named trails serving Burton", "value": str(len(by_name)),
+        {"label": "Named trails serving Burton", "value": str(named_count),
          "hint": f"{len(existing_names)} with an existing segment"},
-        {"label": "Longest existing trail", "value": longest or "n/a",
-         "hint": f"{by_name[longest]['miles']:.1f} mi in Burton" if longest else ""},
+        {"label": "Longest existing trail", "value": longest["name"] if longest else "n/a",
+         "hint": f"{longest['miles']:.1f} mi in Burton" if longest else ""},
         {"label": "Planned / programmed miles", "value": f"{planned_mi:g}",
          "hint": "proposed, programmed or under construction"},
     ]
@@ -247,12 +284,11 @@ def main() -> int:
     ]
 
     table_rows = []
-    for n in sorted(by_name, key=lambda n: by_name[n]["miles"], reverse=True):
-        a = by_name[n]
+    for row in sorted(named_rows, key=lambda item: item["miles"], reverse=True):
         table_rows.append({
-            "cells": [n, a["status"], a["type"], a["surface"] if a["surface"] != "Unknown" else "n/a",
-                      f"{a['miles']:.2f}"],
-            "color": STATUS_COLOR.get(a["status"], DEFAULT_COLOR),
+            "cells": [row["name"], row["status"], row["type"], row["surface"],
+                      f"{row['miles']:.2f}"],
+            "color": STATUS_COLOR.get(row["status"], DEFAULT_COLOR),
         })
 
     panel = {
@@ -288,7 +324,7 @@ def main() -> int:
     print(f"Wrote {OUT_GEOJSON} ({len(features)} segments)")
     print(f"Wrote {OUT_INFO}")
     print(f"  existing in Burton: {existing_mi} mi across {len(existing_names)} trails; "
-          f"planned: {planned_mi} mi; named trails: {len(by_name)}")
+          f"planned: {planned_mi} mi; named trails: {named_count}")
     print(f"  by status (mi): { {k: round(v,1) for k,v in miles_status.items()} }")
     print(f"  by type   (mi): { {k: round(v,1) for k,v in miles_type.items()} }")
     print(f"  geojson size: {os.path.getsize(OUT_GEOJSON) // 1024} KiB")

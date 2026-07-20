@@ -386,7 +386,7 @@
     },
     "statOverrides": {
       "Long-term debt per resident": { "priority": true },
-      "Pension owed per resident": { "priority": true, "label": "Unfunded pension liability per resident" },
+      "Unfunded pension liability per resident": { "priority": true },
       "Reserve rank in Michigan": { "priority": true },
       "Pension funded": { "priority": true }
     },

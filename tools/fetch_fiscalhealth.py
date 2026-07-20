@@ -44,7 +44,7 @@ OUT = public_path("info-fiscalhealth.json")
 
 # Population used for per-resident figures. U.S. Census 2020; matches the
 # Demographics dashboard so the same denominator is used everywhere on the site.
-POPULATION = 29_529
+POPULATION = 29_715
 
 # Debt by purpose (AUDITED ACFR, 6/30/2025). These sum to the same total the state
 # F-65 reports as "Long Term Debt" ($29,271,921): governmental $2,738,964 +
@@ -134,7 +134,7 @@ def main() -> int:
     stats = [
         {"label": "Long-term debt per resident", "value": f"${debt_per:,}",
          "hint": f"${debt / 1e6:.1f}M / {POPULATION:,} residents ({yr})"},
-        {"label": "Pension owed per resident", "value": f"${pension_per:,}",
+        {"label": "Unfunded pension liability per resident", "value": f"${pension_per:,}",
          "hint": f"${pension / 1e6:.1f}M unfunded / residents ({yr})"},
         {"label": "Debt vs. property value", "value": f"{debt_pct_tv:.1f}%",
          "hint": "long-term debt as a share of the city's taxable value"},

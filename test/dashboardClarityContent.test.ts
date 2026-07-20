@@ -87,4 +87,37 @@ describe('committed dashboard clarity content', () => {
     expect(panels.fiscalhealth.summary?.body[0]).toMatch(/not personal bills/i);
     expect(panels.trails.summary?.body[0]).toMatch(/planned.*not open/i);
   });
+
+  it('keeps corrected source-data relationships visible in committed output', () => {
+    const trails = loadJson('public/info-trails.json') as {
+      tables: Array<{ rows: Array<{ cells: string[] }> }>;
+    };
+    const trailRows = trails.tables[0].rows;
+    expect(trailRows.filter((row) => row.cells[0] === 'Davison Road Trail').map((row) => row.cells[1]))
+      .toEqual(['Existing', 'Programmed']);
+    expect(trailRows.filter((row) => row.cells[0] === 'Genesee Road Sidewalk').map((row) => row.cells[1]))
+      .toEqual(['Under Construction', 'Existing']);
+
+    const senior = loadJson('public/info-seniorcenter.json') as {
+      charts: Array<{ title: string; series: Array<{ value: number }> }>;
+    };
+    const programChart = senior.charts.find((chart) => chart.title === 'Program sign-ins by category');
+    expect(programChart?.series.reduce((sum, item) => sum + item.value, 0)).toBe(28_707);
+
+    const fiscal = loadJson('public/info-fiscalhealth.json') as {
+      source: string;
+      stats: Array<{ label: string; value: string }>;
+    };
+    expect(fiscal.source).toContain('29,715');
+    expect(fiscal.stats.find((stat) => stat.label === 'Long-term debt per resident')?.value).toBe('$985');
+    expect(fiscal.stats.find((stat) => stat.label === 'Unfunded pension liability per resident')?.value)
+      .toBe('$723');
+
+    const propertyTax = loadJson('public/info-propertytax.json') as {
+      stats: Array<{ label: string; value: string; hint: string }>;
+    };
+    const cityRate = propertyTax.stats.find((stat) => stat.label === "City of Burton's rate");
+    expect(cityRate?.value).toBe('13.44 mills');
+    expect(cityRate?.hint).toContain('components round to 13.43');
+  });
 });

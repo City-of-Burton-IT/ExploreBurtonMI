@@ -6,7 +6,7 @@
     "body": [
       "When you pay your property tax bill, most of it does not go to the City of Burton. The City levies 13.44 mills, about 29% of a typical owner-occupied (homestead) bill. The single largest piece is Genesee County; the rest funds your school district, the State Education Tax, the Genesee ISD, Mott Community College, public transit, and the airport.",
       "What you actually pay depends on your home's taxable value and which of Burton's 7 school districts you live in. On a home with $50,000 of taxable value (about a $100,000 market value), the City's share is roughly $672 a year; your full bill, county and schools included, runs about $2,093-$2,674 depending on district.",
-      "The City's own rate has held at 13.44 mills since 2022 and is down from 14.20 a decade ago. Burton has not raised its operating rate."
+      "The reported City rate is lower than at the start of the displayed period and has been flat in recent years."
     ]
   },
   "estimator": {
@@ -54,7 +54,7 @@
     {
       "label": "City of Burton's rate",
       "value": "13.44 mills",
-      "hint": "General 4.00 + Police 8.44 + Fire 0.99"
+      "hint": "General 4.00 + Police 8.44 + Fire 0.99; ACFR total; displayed components round to 13.43"
     },
     {
       "label": "City's share of your bill",

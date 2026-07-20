@@ -7,6 +7,10 @@ sys.path.insert(0, os.path.dirname(__file__))
 import fetch_fiscalhealth as fh  # noqa: E402
 
 
+def test_population_matches_named_decennial_source():
+    assert fh.POPULATION == 29_715
+
+
 def test_percentile_rank_one_is_healthiest():
     # Rank 1 of 261 -> healthier than ~all cities.
     assert fh._percentile(1, 261) == 100

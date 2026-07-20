@@ -103,16 +103,6 @@
         },
         {
           "cells": [
-            "Davison Road Trail",
-            "Existing",
-            "Sidewalk",
-            "Concrete",
-            "1.98"
-          ],
-          "color": "#2e7d32"
-        },
-        {
-          "cells": [
             "Burton Iron Belle Trail",
             "Programmed",
             "Multi-Use Facility",
@@ -123,11 +113,11 @@
         },
         {
           "cells": [
-            "Genesee Road Sidewalk",
+            "Davison Road Trail",
             "Existing",
             "Sidewalk",
             "Concrete",
-            "1.46"
+            "1.01"
           ],
           "color": "#2e7d32"
         },
@@ -138,6 +128,36 @@
             "Sidewalk",
             "Concrete",
             "1.00"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "Genesee Road Sidewalk",
+            "Under Construction",
+            "Sidewalk",
+            "Concrete",
+            "0.99"
+          ],
+          "color": "#e08a00"
+        },
+        {
+          "cells": [
+            "Davison Road Trail",
+            "Programmed",
+            "Sidewalk",
+            "Concrete",
+            "0.97"
+          ],
+          "color": "#1565c0"
+        },
+        {
+          "cells": [
+            "Genesee Road Sidewalk",
+            "Existing",
+            "Sidewalk",
+            "Concrete",
+            "0.47"
           ],
           "color": "#2e7d32"
         },

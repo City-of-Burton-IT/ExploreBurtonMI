@@ -24,3 +24,7 @@ def test_program_categories_nonempty_and_descending():
     vals = [v for _, v in sc.PROGRAMS]
     assert vals and all(v > 0 for v in vals)
     assert vals == sorted(vals, reverse=True)  # largest first for the bar chart
+
+
+def test_program_categories_reconcile_to_signins():
+    assert sum(value for _, value in sc.PROGRAMS) == sc.PROGRAM_SIGNINS

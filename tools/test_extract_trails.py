@@ -53,3 +53,15 @@ def test_status_colors_distinguish_built_from_planned():
     assert et.STATUS_COLOR["Existing"] != et.STATUS_COLOR["Proposed"]
     assert "Existing" not in et.PLANNED_ORDER
     assert set(et.PLANNED_ORDER) == {"Under Construction", "Programmed", "Proposed"}
+
+
+def test_named_trail_rows_never_mix_existing_and_planned_miles():
+    rows = et.aggregate_named_segments([
+        ("Trail A", "Existing", "Shared use", "Paved", 2.0),
+        ("Trail A", "Proposed", "Shared use", "Paved", 3.0),
+    ])
+
+    assert [(row["status"], row["miles"]) for row in rows] == [
+        ("Existing", 2.0),
+        ("Proposed", 3.0),
+    ]

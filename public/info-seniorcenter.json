@@ -60,6 +60,10 @@
         {
           "label": "Education",
           "value": 1409
+        },
+        {
+          "label": "Other / uncategorized",
+          "value": 68
         }
       ]
     },
