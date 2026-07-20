@@ -24,11 +24,11 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     label: 'People & Housing',
     items: [
       { id: 'demographics', label: 'Demographics', description: 'Population, age, and household trends from the U.S. Census.' },
-      { id: 'jobs', label: 'Jobs & Employers', description: 'Where residents work, top employers, and commuting.' },
+      { id: 'jobs', label: 'Genesee County Jobs & Industries', description: 'Countywide industries, employment, wages, and unemployment.' },
       { id: 'access', label: 'Affordability & Access', description: 'Cost of living, income, and transportation access.' },
-      { id: 'housing', label: 'Housing & Growth', description: 'Homes, ownership, values, and how housing has grown.' },
+      { id: 'housing', label: 'Housing in Burton', description: 'Homes, occupancy, ownership, values, rents, and age.' },
       { id: 'zoning', label: 'Zoning', description: 'How land across the city is zoned and used.' },
-      { id: 'schools', label: 'Schools', description: 'Public school districts serving Burton and outcomes.' },
+      { id: 'schools', label: 'School Districts Serving Burton', description: 'District-wide enrollment and staffing context.' },
     ],
   },
   {
@@ -44,9 +44,9 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     label: 'Health & Environment',
     items: [
       { id: 'health', label: 'Community Health', description: 'Health indicators and how Burton compares.' },
-      { id: 'water', label: 'Drinking Water', description: 'Your water source, quality, and safety record.' },
+      { id: 'water', label: 'Drinking Water', description: 'Water-system source and EPA compliance history.' },
       { id: 'environment', label: 'Environment', description: 'Air quality and environmental measures.' },
-      { id: 'parks', label: 'Parks', description: 'City and county parks, acreage, and upkeep.' },
+      { id: 'parks', label: 'Parks', description: 'City and County park locations, ownership, and acreage.' },
       { id: 'trails', label: 'Trails & Pathways', description: 'Walking and biking trails across the city.' },
       { id: 'seniorcenter', label: 'Senior Center', description: 'Programs, activity, and services for seniors.' },
     ],
@@ -54,7 +54,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
   {
     label: 'Infrastructure',
     items: [
-      { id: 'broadband', label: 'Broadband Access', description: 'Internet providers, speeds, and coverage.' },
+      { id: 'broadband', label: 'Broadband Access', description: 'Reported internet availability, providers, and household subscription.' },
       { id: 'bridges', label: 'Bridges & Infrastructure', description: 'Condition and traffic of every bridge in the city.' },
       { id: 'roads', label: 'Roads & Pavement', description: 'Pavement condition of the federal-aid road network.' },
     ],
@@ -62,7 +62,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
   {
     label: 'Public Safety',
     items: [
-      { id: 'publicsafety', label: 'Burton Fire & Rescue', description: 'Fire & Rescue calls, response, and trends.' },
+      { id: 'publicsafety', label: 'Burton Fire & Rescue', description: 'Fire incident categories and call trends.' },
       { id: 'roadsafety', label: 'Roadway Safety', description: 'Where and how often traffic crashes happen (historical).' },
     ],
   },
