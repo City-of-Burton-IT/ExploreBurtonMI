@@ -1,10 +1,14 @@
 import { dataFetch } from '../remote';
-import type { InfoPanel, InfoSummary } from './infoPanel';
+import type { DashboardClarity, InfoPanel } from './infoPanel';
 import {
   validateFreshnessMap,
   validateInfoPanel,
-  validateSummaryMap,
+  validateRawInfoPanel,
 } from './infoPanel';
+import {
+  enrichInfoPanel,
+  validateDashboardClarityMap,
+} from './dashboardClarity';
 
 export type DashboardErrorKind = 'missing' | 'http' | 'network' | 'validation';
 
@@ -37,7 +41,7 @@ interface DashboardDataOptions {
 }
 
 interface DashboardMetadata {
-  summaries: Record<string, InfoSummary>;
+  clarity: Record<string, DashboardClarity>;
   freshness: Record<string, string>;
 }
 
@@ -102,11 +106,11 @@ export function createDashboardData(
   function metadata(): Promise<DashboardMetadata> {
     if (metadataPromise) return metadataPromise;
     metadataPromise = Promise.all([
-      loadOverlay('summaries.json', validateSummaryMap),
+      loadOverlay('dashboard-clarity.json', validateDashboardClarityMap),
       loadOverlay('freshness.json', validateFreshnessMap),
     ])
-      .then(([summaries, freshness]) => ({
-        summaries: summaries as Record<string, InfoSummary>,
+      .then(([clarity, freshness]) => ({
+        clarity: clarity as Record<string, DashboardClarity>,
         freshness: freshness as Record<string, string>,
       }))
       .catch((error) => {
@@ -136,7 +140,7 @@ export function createDashboardData(
     let raw: unknown;
     try {
       raw = await response.json();
-      return validateInfoPanel(raw, id);
+      return validateRawInfoPanel(raw, id);
     } catch (error) {
       throw new LoadFailure(
         'validation',
@@ -153,11 +157,12 @@ export function createDashboardData(
 
     try {
       const [basePanel, overlays] = await Promise.all([fetchPanel(id), metadata()]);
-      const panel: InfoPanel = {
-        ...basePanel,
-        summary: basePanel.summary ?? overlays.summaries[id],
-        lastUpdated: basePanel.lastUpdated ?? overlays.freshness[id],
-      };
+      const clarity = overlays.clarity[id];
+      if (!clarity) throw new Error(`Missing dashboard clarity metadata for ${id}`);
+      const panel = validateInfoPanel(
+        enrichInfoPanel(basePanel, clarity, overlays.freshness[id]),
+        id,
+      );
       current.panel = panel;
 
       if (allowPrefetch && prefetchAdjacent && isOnline()) {

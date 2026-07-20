@@ -5,7 +5,6 @@ import {
   validateFreshnessMap,
   validateInfoPanel,
   validateRawInfoPanel,
-  validateSummaryMap,
 } from '../src/lib/dashboard/infoPanel';
 import {
   enrichInfoPanel,
@@ -303,18 +302,10 @@ describe('dashboard clarity contract', () => {
 });
 
 describe('dashboard metadata overlays', () => {
-  it('accepts the committed summary and freshness maps', () => {
-    const summaries = JSON.parse(readFileSync('public/summaries.json', 'utf-8'));
+  it('accepts the committed freshness map', () => {
     const freshness = JSON.parse(readFileSync('public/freshness.json', 'utf-8'));
 
-    expect(validateSummaryMap(summaries, dashboardIds)).toEqual(summaries);
     expect(validateFreshnessMap(freshness, dashboardIds)).toEqual(freshness);
-  });
-
-  it('rejects a summary key that is not a registered dashboard', () => {
-    expect(() =>
-      validateSummaryMap({ typo: { body: ['Summary'] } }, dashboardIds),
-    ).toThrow(/summaries\.typo.*registered dashboard/i);
   });
 
   it('rejects an invalid freshness date with its field path', () => {
