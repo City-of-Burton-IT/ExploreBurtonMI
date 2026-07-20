@@ -373,6 +373,7 @@ export interface DashboardContext {
   scope: string;
   status: DashboardStatus;
   asOf: string;
+  sourceLinks?: InfoLink[];
 }
 
 export type DashboardAction =
