@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import DashboardMenu from '../src/lib/DashboardMenu.svelte';
 import DashboardFooter from '../src/lib/dashboard/DashboardFooter.svelte';
 import DashboardSummary from '../src/lib/dashboard/DashboardSummary.svelte';
+import InfoView from '../src/lib/InfoView.svelte';
 
 const summarySource = readFileSync('src/lib/dashboard/DashboardSummary.svelte', 'utf8');
 const appStyles = readFileSync('src/app.css', 'utf8');
@@ -69,22 +70,77 @@ describe('DashboardSummary', () => {
     ).toBeGreaterThanOrEqual(4.5);
   });
 
-  it('renders the default resident-facing heading and each paragraph', () => {
+  it('renders why it matters, City responsibility, and the resident action', () => {
     const { body } = render(DashboardSummary, {
-      props: { summary: { body: ['First paragraph.', 'Second paragraph.'] } },
+      props: {
+        summary: { heading: 'Why this matters', body: ['The finding affects service planning.'] },
+        responsibility: 'Burton manages this service directly.',
+        action: { kind: 'link', text: 'Read the service plan', href: 'https://example.gov/plan' },
+      },
     });
 
-    expect(body).toContain('What this means for you');
-    expect(body).toContain('First paragraph.');
-    expect(body).toContain('Second paragraph.');
+    expect(body).toContain('Why this matters');
+    expect(body).toContain('The finding affects service planning.');
+    expect(body).toContain('City responsibility');
+    expect(body).toContain('Burton manages this service directly.');
+    expect(body).toContain('What you can do');
+    expect(body).toContain('href="https://example.gov/plan"');
     expect(body).toContain('aria-label="What this means"');
   });
 
-  it('renders a custom heading', () => {
+  it('renders an explicit no-action statement without a disabled link', () => {
     const { body } = render(DashboardSummary, {
-      props: { summary: { heading: 'Local context', body: ['Explanation.'] } },
+      props: {
+        summary: { body: ['Explanation.'] },
+        responsibility: 'Another agency owns this system.',
+        action: { kind: 'none', text: 'No direct resident action is needed.' },
+      },
     });
-    expect(body).toContain('Local context');
+    expect(body).toContain('No direct resident action is needed.');
+    expect(body).not.toContain('disabled');
+  });
+});
+
+describe('InfoView resident hierarchy', () => {
+  it('renders context, headline, priority facts, explanation, and grouped evidence in order', () => {
+    const { body } = render(InfoView, {
+      props: {
+        group: 'Money & Taxes',
+        panel: {
+          title: 'City Finances',
+          subtitle: 'The adopted plan and audited results',
+          context: { scope: 'City of Burton', status: 'planned', asOf: 'FY2026–27 plan' },
+          headline: 'The adopted plan totals $67.7 million across all City funds.',
+          summary: { heading: 'Why this matters', body: ['A budget is a plan, not a final result.'] },
+          responsibility: 'City Council adopts the plan; audited reports show actual results later.',
+          action: { kind: 'link', text: 'Read the adopted budget', href: 'https://example.gov/budget' },
+          stats: [
+            { id: 'total-budget', label: 'Total adopted plan', value: '$67.7M', priority: true },
+            { id: 'staff', label: 'Full-time staff', value: '102', priority: false },
+          ],
+          charts: [
+            {
+              id: 'funds',
+              type: 'bars',
+              title: 'Adopted plan by fund',
+              takeaway: 'The largest displayed fund carries the most planned spending.',
+              series: [{ label: 'General Fund', value: 10 }],
+            },
+          ],
+          tables: [],
+          sections: [{ heading: 'Adopted plan', stats: ['staff'], charts: ['funds'] }],
+        },
+      },
+    });
+
+    expect(body).toContain('Money &amp; Taxes');
+    expect(body).toContain('Scope: City of Burton');
+    expect(body).toContain('Data status: Planned');
+    expect(body).toContain('As of: FY2026–27 plan');
+    expect(body.indexOf('The adopted plan totals')).toBeLessThan(body.indexOf('Total adopted plan'));
+    expect(body.indexOf('Total adopted plan')).toBeLessThan(body.indexOf('Why this matters'));
+    expect(body.indexOf('Why this matters')).toBeLessThan(body.indexOf('Adopted plan</h3>'));
+    expect(body).toContain('The largest displayed fund carries the most planned spending.');
   });
 });
 
