@@ -5,7 +5,10 @@
     "context": {
       "scope": "Burton",
       "status": "current",
-      "asOf": "ACS 2023 estimates; 2010 and 2020 Census history"
+      "asOf": "ACS 2023 estimates; 2010 and 2020 Census history",
+      "sourceLinks": [
+        { "text": "U.S. Census data", "href": "https://data.census.gov/" }
+      ]
     },
     "headline": "Burton has about 29,500 residents, with an older age profile and high homeownership.",
     "summary": {
@@ -64,7 +67,11 @@
     "context": {
       "scope": "Genesee County",
       "status": "historical",
-      "asOf": "2022 industry data; December 2025 unemployment"
+      "asOf": "2022 industry data; December 2025 unemployment",
+      "sourceLinks": [
+        { "text": "Census County Business Patterns", "href": "https://www.census.gov/programs-surveys/cbp.html" },
+        { "text": "BLS Local Area Unemployment", "href": "https://www.bls.gov/lau/" }
+      ]
     },
     "headline": "Genesee County reported 120,612 paid employees across 7,695 establishments in 2022.",
     "summary": {
@@ -107,7 +114,10 @@
     "context": {
       "scope": "Burton census areas",
       "status": "modeled",
-      "asOf": "2020 regional-planning estimates"
+      "asOf": "2020 regional-planning estimates",
+      "sourceLinks": [
+        { "text": "Housing + Transportation Affordability Index", "href": "https://htaindex.cnt.org/" }
+      ]
     },
     "headline": "Modeled housing and transportation costs use about 48% of income for a typical area-median-income household.",
     "summary": {
@@ -146,7 +156,10 @@
     "context": {
       "scope": "Burton",
       "status": "current",
-      "asOf": "ACS 2023 five-year estimates"
+      "asOf": "ACS 2023 five-year estimates",
+      "sourceLinks": [
+        { "text": "Census QuickFacts: Burton", "href": "https://www.census.gov/quickfacts/burtoncitymichigan" }
+      ]
     },
     "headline": "About 76% of Burton's occupied homes are owner-occupied, and the median home was built around 1963.",
     "summary": {
@@ -191,7 +204,10 @@
     "context": {
       "scope": "Burton",
       "status": "reference",
-      "asOf": "2017 map; not authoritative for a parcel"
+      "asOf": "2017 map; not authoritative for a parcel",
+      "sourceLinks": [
+        { "text": "Burton Zoning Division", "href": "https://www.burtonmi.gov/departments/department_of_public_works/zoning_division.php" }
+      ]
     },
     "headline": "Residential districts cover about 76% of the land represented in the 2017 zoning layer.",
     "summary": {
@@ -233,7 +249,11 @@
     "context": {
       "scope": "Districts serving Burton",
       "status": "historical",
-      "asOf": "District-wide 2023 enrollment and staffing"
+      "asOf": "District-wide 2023 enrollment and staffing",
+      "sourceLinks": [
+        { "text": "NCES Common Core of Data", "href": "https://nces.ed.gov/ccd/" },
+        { "text": "U.S. Census data", "href": "https://data.census.gov/" }
+      ]
     },
     "headline": "Seven public school districts have boundaries in Burton; displayed enrollment covers each entire district.",
     "summary": {
@@ -276,7 +296,11 @@
     "context": {
       "scope": "City of Burton",
       "status": "planned",
-      "asOf": "FY2026–27 plan; FY2025 audited actuals"
+      "asOf": "FY2026–27 plan; FY2025 audited actuals",
+      "sourceLinks": [
+        { "text": "2026-27 Approved Budget", "href": "https://www.burtonmi.gov/government/controller_s_office/budgets.php" },
+        { "text": "Michigan Community Financials", "href": "https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/2612060" }
+      ]
     },
     "headline": "Burton adopted a $67.7 million all-funds plan for FY2026–27; FY2025 General Fund revenues exceeded expenditures.",
     "summary": {
@@ -326,7 +350,11 @@
     "context": {
       "scope": "Burton parcels",
       "status": "reference",
-      "asOf": "2025 rates and FY2026 City millage"
+      "asOf": "2025 rates and FY2026 City millage",
+      "sourceLinks": [
+        { "text": "Genesee County Equalization", "href": "https://www.geneseecountymi.gov/departments/equalization/l-4029_information.php" },
+        { "text": "Burton annual financial reports", "href": "https://www.burtonmi.gov/government/controller_s_office/annual_reports.php" }
+      ]
     },
     "headline": "Burton's reported 13.44-mill City rate is about 29% of a typical homestead tax bill.",
     "summary": {
@@ -369,7 +397,11 @@
     "context": {
       "scope": "City of Burton",
       "status": "historical",
-      "asOf": "FY2025 audited actuals"
+      "asOf": "FY2025 audited actuals",
+      "sourceLinks": [
+        { "text": "Michigan Community Financials", "href": "https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/2612060" },
+        { "text": "Burton audit reports", "href": "https://www.burtonmi.gov/government/controller_s_office/audits.php" }
+      ]
     },
     "headline": "Most Burton long-term debt supports water and sewer infrastructure; pensions remain partly unfunded.",
     "summary": {
@@ -415,7 +447,10 @@
     "context": {
       "scope": "City of Burton",
       "status": "planned",
-      "asOf": "Adopted FY2026–27 capital plan"
+      "asOf": "Adopted FY2026–27 capital plan",
+      "sourceLinks": [
+        { "text": "2026-27 Approved Budget", "href": "https://www.burtonmi.gov/government/controller_s_office/budgets.php" }
+      ]
     },
     "headline": "Burton's adopted capital plan includes $13.8 million across 27 funded projects, led by Major Streets.",
     "summary": {
@@ -462,7 +497,10 @@
     "context": {
       "scope": "Burton and Genesee County",
       "status": "modeled",
-      "asOf": "CDC PLACES 2025; separate ACS uninsured history"
+      "asOf": "CDC PLACES 2025; separate ACS uninsured history",
+      "sourceLinks": [
+        { "text": "CDC PLACES", "href": "https://www.cdc.gov/places/" }
+      ]
     },
     "headline": "Modeled estimates show obesity, high blood pressure, and smoking as prominent health concerns in Burton.",
     "summary": {
@@ -509,7 +547,11 @@
     "context": {
       "scope": "Burton water system MI0001010",
       "status": "historical",
-      "asOf": "EPA compliance snapshot through 2023"
+      "asOf": "EPA compliance snapshot through 2023",
+      "sourceLinks": [
+        { "text": "EPA drinking-water data", "href": "https://echodata.epa.gov/echo/sdw_report.get_report?pgm_sys_id_in=MI0001010" },
+        { "text": "Burton water testing", "href": "https://www.burtonmi.gov/departments/department_of_public_works/water_testing.php" }
+      ]
     },
     "headline": "EPA records show no unresolved health violations in the snapshot, with one resolved health-based violation on record since 2001.",
     "summary": {
@@ -548,7 +590,11 @@
     "context": {
       "scope": "Genesee County",
       "status": "current",
-      "asOf": "252 of 303 monitored days in 2025"
+      "asOf": "252 of 303 monitored days in 2025",
+      "sourceLinks": [
+        { "text": "EPA AirNow", "href": "https://www.airnow.gov/?city=Burton&state=MI&country=USA" },
+        { "text": "Michigan EGLE", "href": "https://www.michigan.gov/egle" }
+      ]
     },
     "headline": "Air quality was rated Good on 252 of 303 monitored Genesee County days in 2025.",
     "summary": {
@@ -592,7 +638,11 @@
     "context": {
       "scope": "Parks with land in Burton",
       "status": "reference",
-      "asOf": "Source refresh date not published"
+      "asOf": "Source refresh date not published",
+      "sourceLinks": [
+        { "text": "Burton Parks & Recreation", "href": "https://www.burtonmi.gov/departments/parks_and_recreation/index.php" },
+        { "text": "Genesee County Parks", "href": "https://www.geneseecountyparks.org/" }
+      ]
     },
     "headline": "Seven mapped parks have land in Burton; five are City-run and two are County-run.",
     "summary": {
@@ -632,7 +682,11 @@
     "context": {
       "scope": "Trail segments within Burton",
       "status": "reference",
-      "asOf": "Source refresh date not published; planned status shown separately"
+      "asOf": "Source refresh date not published; planned status shown separately",
+      "sourceLinks": [
+        { "text": "Genesee County trails dashboard", "href": "https://gccountymi.maps.arcgis.com/apps/dashboards/882502c5000146ec8cafa9158a8e63c1" },
+        { "text": "Michigan Iron Belle Trail", "href": "https://www.michigan.gov/dnr/things-to-do/iron-belle-trail" }
+      ]
     },
     "headline": "The regional inventory shows 12.1 existing trail miles in Burton and 4.0 additional planned or programmed miles.",
     "summary": {
@@ -674,7 +728,10 @@
     "context": {
       "scope": "Burton Senior Center service area",
       "status": "current",
-      "asOf": "Calendar year 2025"
+      "asOf": "Calendar year 2025",
+      "sourceLinks": [
+        { "text": "Burton Senior Center", "href": "https://www.burtonmi.gov/government/senior_center/index.php" }
+      ]
     },
     "headline": "The Senior Center served 1,564 members and recorded 28,710 visits during 248 open days in 2025.",
     "summary": {
@@ -718,7 +775,10 @@
     "context": {
       "scope": "Burton serviceable locations",
       "status": "current",
-      "asOf": "FCC December 31, 2025; ACS household subscription estimate"
+      "asOf": "FCC December 31, 2025; ACS household subscription estimate",
+      "sourceLinks": [
+        { "text": "FCC National Broadband Map", "href": "https://broadbandmap.fcc.gov/area-summary/fixed?type=place&geoid=2612060" }
+      ]
     },
     "headline": "FCC data reports 100/20 Mbps availability citywide, while an estimated 85.5% of households subscribe to broadband.",
     "summary": {
@@ -758,7 +818,10 @@
     "context": {
       "scope": "Bridges within Burton",
       "status": "historical",
-      "asOf": "FHWA National Bridge Inventory 2024"
+      "asOf": "FHWA National Bridge Inventory 2024",
+      "sourceLinks": [
+        { "text": "FHWA InfoBridge", "href": "https://infobridge.fhwa.dot.gov/" }
+      ]
     },
     "headline": "One of the 20 inventoried bridges in Burton is rated Poor; ten are City-maintained and ten are State-maintained.",
     "summary": {
@@ -801,7 +864,11 @@
     "context": {
       "scope": "Federal-aid roads in Burton",
       "status": "historical",
-      "asOf": "PASER 2024 rating cycle"
+      "asOf": "PASER 2024 rating cycle",
+      "sourceLinks": [
+        { "text": "Michigan TAMC", "href": "https://www.mcgi.state.mi.us/mappingforhealth/" },
+        { "text": "GCMPC pavement conditions", "href": "https://www.gcmpc.org/" }
+      ]
     },
     "headline": "Fifty-four percent of rated federal-aid road-miles are in Poor condition, while 13% are Good.",
     "summary": {
@@ -844,7 +911,10 @@
     "context": {
       "scope": "Burton Fire Department",
       "status": "historical",
-      "asOf": "Calendar 2025 detail; 2014–2025 trend"
+      "asOf": "Calendar 2025 detail; 2014–2025 trend",
+      "sourceLinks": [
+        { "text": "Burton Fire Department", "href": "https://www.burtonmi.gov/government/fire_department/index.php" }
+      ]
     },
     "headline": "Burton Fire recorded 758 responses in 2025, including 108 fire responses and 174 false alarms.",
     "summary": {
@@ -888,7 +958,10 @@
     "context": {
       "scope": "Burton crash records",
       "status": "historical",
-      "asOf": "2014–2018 only"
+      "asOf": "2014–2018 only",
+      "sourceLinks": [
+        { "text": "Michigan Traffic Crash Facts", "href": "https://www.michigantrafficcrashfacts.org/" }
+      ]
     },
     "headline": "Burton records show 3,011 crashes from 2014–2018, including 700 injury crashes and nine fatal crashes.",
     "summary": {
