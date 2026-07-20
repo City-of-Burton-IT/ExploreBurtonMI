@@ -4,8 +4,13 @@ import { DASHBOARDS } from '../src/lib/dashboards';
 import {
   validateFreshnessMap,
   validateInfoPanel,
+  validateRawInfoPanel,
   validateSummaryMap,
 } from '../src/lib/dashboard/infoPanel';
+import {
+  enrichInfoPanel,
+  validateDashboardClarityMap,
+} from '../src/lib/dashboard/dashboardClarity';
 
 const dashboardIds = DASHBOARDS.map(({ id }) => id);
 
@@ -68,15 +73,53 @@ const completePanel = {
   notes: ['A caveat.'],
 };
 
+const completeClarity = {
+  context: {
+    scope: 'City of Burton',
+    status: 'planned',
+    asOf: 'FY2026–27 adopted plan',
+  },
+  headline: 'The adopted plan directs the largest share of spending to public services.',
+  summary: {
+    heading: 'Why this matters',
+    body: ['The plan shows what the City expects to collect and spend during the fiscal year.'],
+  },
+  responsibility: 'Burton adopts and manages this plan; audited results later show what occurred.',
+  action: {
+    kind: 'link',
+    text: 'Read the adopted budget',
+    href: 'https://example.gov/budget',
+  },
+  statOverrides: {
+    Residents: { priority: true },
+  },
+  chartOverrides: {
+    Share: { takeaway: 'Most of the displayed share is in the leading category.' },
+    Count: { takeaway: 'The chart shows ten recorded items.' },
+    Trend: { takeaway: 'The displayed measure is unchanged in the one-year example.' },
+    Comparison: { takeaway: 'Burton is one point below the comparison city.' },
+  },
+  tableIds: {
+    Details: 'details',
+  },
+  sections: [
+    {
+      heading: 'Evidence',
+      charts: ['share', 'count', 'trend', 'comparison'],
+      tables: ['details'],
+    },
+  ],
+} as const;
+
 describe('validateInfoPanel', () => {
   it('accepts the complete dashboard contract', () => {
-    expect(validateInfoPanel(completePanel, 'example')).toEqual(completePanel);
+    expect(validateRawInfoPanel(completePanel, 'example')).toEqual(completePanel);
   });
 
   it('accepts every committed dashboard panel', () => {
     for (const id of dashboardIds) {
       const raw = JSON.parse(readFileSync(`public/info-${id}.json`, 'utf-8'));
-      expect(validateInfoPanel(raw, id)).toEqual(raw);
+      expect(validateRawInfoPanel(raw, id)).toEqual(raw);
     }
   });
 
@@ -91,7 +134,7 @@ describe('validateInfoPanel', () => {
 
   it('rejects an unknown chart type with the dashboard id and field path', () => {
     const invalid = { ...completePanel, charts: [{ type: 'pie', title: 'Invalid' }] };
-    expect(() => validateInfoPanel(invalid, 'finances')).toThrow(
+    expect(() => validateRawInfoPanel(invalid, 'finances')).toThrow(
       /finances.*charts\[0\]\.type.*unknown chart type/i,
     );
   });
@@ -107,7 +150,7 @@ describe('validateInfoPanel', () => {
         },
       ],
     };
-    expect(() => validateInfoPanel(invalid, 'health')).toThrow(
+    expect(() => validateRawInfoPanel(invalid, 'health')).toThrow(
       /health.*charts\[0\]\.rows\[0\]\.values\[0\]\.value/i,
     );
   });
@@ -117,7 +160,7 @@ describe('validateInfoPanel', () => {
       ...completePanel,
       tables: [{ title: 'Details', columns: ['Name', 'Value'], rows: [{ cells: ['Only one'] }] }],
     };
-    expect(() => validateInfoPanel(invalid, 'roads')).toThrow(
+    expect(() => validateRawInfoPanel(invalid, 'roads')).toThrow(
       /roads.*tables\[0\]\.rows\[0\]\.cells.*2 columns/i,
     );
   });
@@ -125,7 +168,7 @@ describe('validateInfoPanel', () => {
   it('rejects duplicate values used as top-level Svelte keys', () => {
     const duplicate = completePanel.charts[0];
     const invalid = { ...completePanel, charts: [duplicate, { ...duplicate }] };
-    expect(() => validateInfoPanel(invalid, 'finances')).toThrow(
+    expect(() => validateRawInfoPanel(invalid, 'finances')).toThrow(
       /finances.*charts\[1\]\.title.*duplicate/i,
     );
   });
@@ -149,8 +192,112 @@ describe('validateInfoPanel', () => {
         },
       ],
     };
-    expect(() => validateInfoPanel(invalid, 'health')).toThrow(
+    expect(() => validateRawInfoPanel(invalid, 'health')).toThrow(
       /health.*charts\[0\]\.rows\[0\]\.values\[1\]\.name.*duplicate/i,
+    );
+  });
+});
+
+describe('dashboard clarity contract', () => {
+  it('enriches a raw panel with stable ids before applying display overrides', () => {
+    const clarity = {
+      ...completeClarity,
+      statOverrides: {
+        Residents: { priority: true, label: 'People counted' },
+      },
+      chartOverrides: {
+        ...completeClarity.chartOverrides,
+        Share: {
+          title: 'How the total is divided',
+          takeaway: 'Most of the displayed share is in the leading category.',
+        },
+      },
+    };
+
+    const { lastUpdated: _lastUpdated, ...panelWithoutDate } = completePanel;
+    const panel = enrichInfoPanel(panelWithoutDate, clarity, '2026-06');
+
+    expect(panel.stats[0]).toMatchObject({ id: 'residents', label: 'People counted', priority: true });
+    expect(panel.charts[0]).toMatchObject({
+      id: 'share',
+      title: 'How the total is divided',
+      takeaway: 'Most of the displayed share is in the leading category.',
+    });
+    expect(panel.lastUpdated).toBe('2026-06');
+    expect(validateInfoPanel(panel, 'example')).toEqual(panel);
+  });
+
+  it('rejects an unknown dashboard status with its field path', () => {
+    const invalid = {
+      example: {
+        ...completeClarity,
+        context: { ...completeClarity.context, status: 'forecast' },
+      },
+    };
+
+    expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
+      /example.*context\.status.*current.*historical.*modeled.*planned.*reference/i,
+    );
+  });
+
+  it('rejects more than four priority facts', () => {
+    const invalid = {
+      example: {
+        ...completeClarity,
+        statOverrides: Object.fromEntries(
+          ['One', 'Two', 'Three', 'Four', 'Five'].map((label) => [label, { priority: true }]),
+        ),
+      },
+    };
+
+    expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
+      /example.*statOverrides.*four priority/i,
+    );
+  });
+
+  it('rejects duplicate section headings', () => {
+    const invalid = {
+      example: {
+        ...completeClarity,
+        sections: [completeClarity.sections[0], completeClarity.sections[0]],
+      },
+    };
+
+    expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
+      /example.*sections\[1\]\.heading.*duplicate/i,
+    );
+  });
+
+  it('rejects section references that do not exist in the raw panel', () => {
+    const invalid = {
+      ...completeClarity,
+      sections: [{ heading: 'Evidence', charts: ['missing-chart'] }],
+    };
+
+    expect(() => enrichInfoPanel(completePanel, invalid, '2026-06')).toThrow(
+      /charts.*missing-chart.*unknown/i,
+    );
+  });
+
+  it('rejects a link action without an https or hash destination', () => {
+    const invalid = {
+      example: {
+        ...completeClarity,
+        action: { kind: 'link', text: 'Open details', href: 'javascript:alert(1)' },
+      },
+    };
+
+    expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
+      /example.*action\.href.*https.*hash/i,
+    );
+  });
+
+  it('rejects a raw chart that has no clarity takeaway', () => {
+    const { Share: _share, ...withoutShare } = completeClarity.chartOverrides;
+    const invalid = { ...completeClarity, chartOverrides: withoutShare };
+
+    expect(() => enrichInfoPanel(completePanel, invalid, '2026-06')).toThrow(
+      /chart.*Share.*takeaway/i,
     );
   });
 });
