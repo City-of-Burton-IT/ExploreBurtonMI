@@ -4,20 +4,20 @@
   "summary": {
     "heading": "What this means for you",
     "body": [
-      "The City of Burton carries about $991 per resident in long-term debt and $728 per resident toward pensions already earned by current and retired employees. These are not personal bills: the city repays them over many years through utility rates, dedicated road and public-safety millages, and the regular budget, not a charge sent to your household. In fact, about 91% of the city's debt is for the water and sewer system, repaid by usage bills rather than taxes; the only general-government debt is the fire hall and fire trucks.",
-      "Compared with other Michigan cities, Burton sits near the middle: healthier than about 69% of cities on cash on hand and 52% on general-fund reserves, but below the middle (44%) on overall net financial position. In plain terms, the city keeps a reasonable cushion for day-to-day bills, while long-term promises like pensions and retiree health care are the main pressure on the budget.",
+      "The City of Burton carries about $985 per resident in long-term debt and $723 per resident toward pensions already earned by current and retired employees. These are not personal bills: the city repays them over many years through utility rates, dedicated road and public-safety millages, and the regular budget, not a charge sent to your household. In fact, about 91% of the city's debt is for the water and sewer system, repaid by usage bills rather than taxes; the only general-government debt is the fire hall and fire trucks.",
+      "Compared with other Michigan cities, Burton sits near the middle: healthier than about 69% of cities on cash on hand and 53% on general-fund reserves, but below the middle (44%) on overall net financial position. In plain terms, the city keeps a reasonable cushion for day-to-day bills, while long-term promises like pensions and retiree health care are the main pressure on the budget.",
       "Retirement promises are funded over decades, not all at once. Burton's pension is about 65% funded (41 million set aside against 62 million owed) and retiree health care (OPEB) about 62% funded, both above the level the state flags for concern, with the rest set aside over time. (See City Finances for the full budget and multi-year trends.)"
     ]
   },
   "stats": [
     {
       "label": "Long-term debt per resident",
-      "value": "$991",
-      "hint": "$29.3M / 29,529 residents (audited FY2025)"
+      "value": "$985",
+      "hint": "$29.3M / 29,715 residents (audited FY2025)"
     },
     {
-      "label": "Pension owed per resident",
-      "value": "$728",
+      "label": "Unfunded pension liability per resident",
+      "value": "$723",
       "hint": "$21.5M unfunded / residents (audited FY2025)"
     },
     {
@@ -27,7 +27,7 @@
     },
     {
       "label": "Reserve rank in Michigan",
-      "value": "125 of 261",
+      "value": "129 of 272",
       "hint": "general-fund reserves; 1 = healthiest city"
     },
     {
@@ -53,7 +53,7 @@
         },
         {
           "label": "General Fund reserves",
-          "value": 52
+          "value": 53
         },
         {
           "label": "Net financial position",
@@ -68,11 +68,11 @@
       "series": [
         {
           "label": "Debt",
-          "value": 991
+          "value": 985
         },
         {
           "label": "Unfunded pension",
-          "value": 728
+          "value": 723
         }
       ]
     },
@@ -127,7 +127,7 @@
       ]
     }
   ],
-  "source": "State of Michigan Community Financials program (audited F-65 annual financial reports). Per-resident figures use the U.S. Census 2020 population (29,529).",
+  "source": "State of Michigan Community Financials program (audited F-65 annual financial reports). Per-resident figures use the U.S. Census 2020 population (29,715).",
   "links": [
     {
       "text": "Finances dashboard (budget + trends)",

@@ -41,6 +41,7 @@ CITY_GENERAL = 4.00
 CITY_POLICE = 8.44
 CITY_FIRE = 0.99
 CITY_TOTAL = 13.44   # ACFR "Total direct City taxes" (rounding of the three above)
+CITY_COMPONENT_ROUNDING_NOTE = "ACFR total; displayed components round to 13.43"
 
 # --- Overlapping authorities, homestead, uniform across Burton (ACFR p.118) ------
 COUNTY = 17.46       # Genesee County (operating, parks, library, health, paramedics, ...)
@@ -86,7 +87,8 @@ def main() -> int:
 
     stats = [
         {"label": "City of Burton's rate", "value": f"{CITY_TOTAL:.2f} mills",
-         "hint": f"General {CITY_GENERAL:.2f} + Police {CITY_POLICE:.2f} + Fire {CITY_FIRE:.2f}"},
+         "hint": (f"General {CITY_GENERAL:.2f} + Police {CITY_POLICE:.2f} + Fire {CITY_FIRE:.2f}; "
+                  f"{CITY_COMPONENT_ROUNDING_NOTE}")},
         {"label": "City's share of your bill", "value": f"~{city_share}%",
          "hint": "the rest goes to county, schools & others"},
         {"label": "City tax on a $50k-taxable home", "value": f"${city_dollars:,}/yr",
@@ -126,8 +128,8 @@ def main() -> int:
             f"districts you live in. On a home with ${EXAMPLE_TAXABLE:,} of taxable value (about a "
             f"$100,000 market value), the City's share is roughly ${city_dollars:,} a year; your full bill, "
             f"county and schools included, runs about ${lo_total:,}-${hi_total:,} depending on district.",
-            "The City's own rate has held at 13.44 mills since 2022 and is down from 14.20 a decade ago. "
-            "Burton has not raised its operating rate.",
+            "The reported City rate is lower than at the start of the displayed period and has been "
+            "flat in recent years.",
         ],
     }
 
