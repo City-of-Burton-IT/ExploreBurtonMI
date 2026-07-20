@@ -1,0 +1,928 @@
+{
+  "demographics": {
+    "title": "Burton Demographics",
+    "subtitle": "Who lives in Burton and how the community has changed",
+    "context": {
+      "scope": "Burton",
+      "status": "current",
+      "asOf": "ACS 2023 estimates; 2010 and 2020 Census history"
+    },
+    "headline": "Burton has about 29,500 residents, with an older age profile and high homeownership.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Population, age, income, and housing patterns help explain demand for City services. Most figures are survey estimates, while the population history uses the more exact decennial Census counts."
+      ]
+    },
+    "responsibility": "The U.S. Census Bureau produces these estimates. Burton uses them for planning but does not control demographic change.",
+    "action": {
+      "kind": "link",
+      "text": "Explore the Census source data",
+      "href": "https://data.census.gov/"
+    },
+    "statOverrides": {
+      "Population": { "priority": true, "hint": "ACS 2023 estimate" },
+      "Median age": { "priority": true },
+      "Median household income": { "priority": true },
+      "Owner-occupied homes": { "priority": true }
+    },
+    "chartOverrides": {
+      "Housing tenure": { "takeaway": "About three-quarters of occupied homes are owner-occupied." },
+      "Age distribution": { "takeaway": "Older adult age groups make up a substantial share of Burton's population." },
+      "Race & ethnicity": { "takeaway": "The chart describes Burton's reported racial and ethnic composition." },
+      "Households by income": { "takeaway": "Households span a wide income range; the median does not describe every household." },
+      "How residents get to work": { "takeaway": "Driving remains the dominant reported commute mode among employed residents." },
+      "Population": { "takeaway": "Burton's population was lower in 2023 than at the 2010 and 2020 Census counts." },
+      "Homeownership rate": { "takeaway": "Homeownership has remained a defining feature of Burton's housing profile." },
+      "Race & ethnicity over time": { "takeaway": "Burton's racial and ethnic composition has changed across Census periods." },
+      "Median household income ($)": { "takeaway": "Nominal median household income increased over the displayed years." },
+      "Residents below the poverty line (%)": { "takeaway": "The estimated poverty rate remains important context for affordability and service access." },
+      "Residents who work from home (%)": { "takeaway": "Working from home increased from its earlier low base." },
+      "How Burton compares (2023)": { "takeaway": "The comparison shows where Burton differs from county and statewide estimates." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "People and households",
+        "stats": ["households", "unemployment-rate", "below-poverty-line", "veterans"],
+        "charts": ["age-distribution", "race-and-ethnicity", "households-by-income", "how-residents-get-to-work"]
+      },
+      {
+        "heading": "Housing context",
+        "stats": ["median-home-value"],
+        "charts": ["housing-tenure", "homeownership-rate"]
+      },
+      {
+        "heading": "Change and comparison",
+        "charts": ["population", "race-and-ethnicity-over-time", "median-household-income", "residents-below-the-poverty-line", "residents-who-work-from-home", "how-burton-compares-2023"]
+      }
+    ]
+  },
+  "jobs": {
+    "title": "Genesee County Jobs & Industries",
+    "subtitle": "Countywide employment, industries, wages, and unemployment",
+    "context": {
+      "scope": "Genesee County",
+      "status": "historical",
+      "asOf": "2022 industry data; December 2025 unemployment"
+    },
+    "headline": "Genesee County reported 120,612 paid employees across 7,695 establishments in 2022.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "This is countywide economic context, not a count of jobs located in Burton or a Burton-resident commuting dataset. Industry size and average wages help describe the regional labor market."
+      ]
+    },
+    "responsibility": "Employers report these figures to federal agencies. Burton supports local development but does not control countywide hiring, wages, or unemployment.",
+    "action": {
+      "kind": "link",
+      "text": "See Michigan labor-market information",
+      "href": "https://milmi.org/"
+    },
+    "statOverrides": {
+      "Establishments": { "priority": true },
+      "Paid employees": { "priority": true },
+      "Average annual wage": { "priority": true },
+      "Unemployment rate": { "priority": true, "hint": "Genesee County, December 2025" }
+    },
+    "chartOverrides": {
+      "Jobs by industry (Genesee County, 2022)": { "takeaway": "The largest industry bars account for the greatest shares of county employment." },
+      "Average annual wage by industry": { "takeaway": "Average pay varies substantially by industry and is not an individual worker's wage." },
+      "Unemployment rate (Genesee County, annual avg)": { "takeaway": "County unemployment changed over time and the latest monthly figure uses a different reference period." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "County employment base",
+        "stats": ["annual-payroll"],
+        "charts": ["jobs-by-industry-genesee-county-2022", "average-annual-wage-by-industry"]
+      },
+      {
+        "heading": "Labor-market trend",
+        "charts": ["unemployment-rate-genesee-county-annual-avg"]
+      }
+    ]
+  },
+  "access": {
+    "context": {
+      "scope": "Burton census areas",
+      "status": "modeled",
+      "asOf": "2020 regional-planning estimates"
+    },
+    "headline": "Modeled housing and transportation costs use about 48% of income for a typical area-median-income household.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "These are modeled neighborhood estimates, not household bills. The income chart counts eight census areas, and rounded housing and transportation components may not sum to the separately rounded 48% combined value."
+      ]
+    },
+    "responsibility": "The regional planning agency produced the model. Burton can use the findings in planning but does not set household income, housing costs, or transportation costs.",
+    "action": {
+      "kind": "link",
+      "text": "Compare affordability assumptions",
+      "href": "https://htaindex.cnt.org/"
+    },
+    "statOverrides": {
+      "Typical household income": { "priority": true, "hint": "median across eight Burton census areas" },
+      "Housing + transport cost": { "priority": true, "hint": "modeled combined value; components are rounded separately" },
+      "Cars per household": { "priority": true },
+      "Neighborhood income range": { "priority": true, "hint": "across eight census areas" }
+    },
+    "chartOverrides": {
+      "Cost of living: share of income (modeled)": { "takeaway": "The modeled combined burden is above the commonly used 45% affordability benchmark." },
+      "Household income across Burton neighborhoods": { "takeaway": "The bars count census areas, not households, and show a wide range in neighborhood medians." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "Modeled affordability",
+        "charts": ["cost-of-living-share-of-income-modeled", "household-income-across-burton-neighborhoods"]
+      }
+    ]
+  },
+  "housing": {
+    "title": "Housing in Burton",
+    "subtitle": "Homes, occupancy, ownership, values, and rents",
+    "context": {
+      "scope": "Burton",
+      "status": "current",
+      "asOf": "ACS 2023 five-year estimates"
+    },
+    "headline": "About 76% of Burton's occupied homes are owner-occupied, and the median home was built around 1963.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Burton has an established housing stock with high homeownership. Value and rent trends are nominal dollars, not adjusted for inflation, and this dashboard does not contain building-permit or new-construction data."
+      ]
+    },
+    "responsibility": "The Census Bureau estimates housing conditions. Burton regulates land use and permits projects, but it does not set private sale prices or rents.",
+    "action": {
+      "kind": "link",
+      "text": "Check Burton zoning information",
+      "href": "#zoning"
+    },
+    "statOverrides": {
+      "Housing units": { "priority": true },
+      "Owner-occupied": { "priority": true },
+      "Median home value": { "priority": true },
+      "Median gross rent": { "priority": true }
+    },
+    "chartOverrides": {
+      "Owner vs. renter (occupied homes)": { "takeaway": "Owner-occupied homes make up about three-quarters of occupied units." },
+      "Homes by decade built": { "takeaway": "Much of Burton's housing was built several decades ago." },
+      "Median home value ($)": { "takeaway": "The displayed nominal median value increased over time but is not inflation-adjusted." },
+      "Median gross rent ($/mo)": { "takeaway": "The displayed nominal median rent increased over time but is not inflation-adjusted." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "Housing supply and occupancy",
+        "stats": ["median-year-built", "vacancy-rate"],
+        "charts": ["owner-vs-renter-occupied-homes", "homes-by-decade-built"]
+      },
+      {
+        "heading": "Values and rents over time",
+        "charts": ["median-home-value", "median-gross-rent-mo"]
+      }
+    ]
+  },
+  "zoning": {
+    "subtitle": "A 2017 citywide reference map of zoning districts",
+    "context": {
+      "scope": "Burton",
+      "status": "reference",
+      "asOf": "2017 map; not authoritative for a parcel"
+    },
+    "headline": "Residential districts cover about 76% of the land represented in the 2017 zoning layer.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Zoning identifies generally permitted land uses, but this 2017 reference layer is not authoritative for a parcel. Amendments, overlays, conditions, and parcel boundaries can change the answer."
+      ]
+    },
+    "responsibility": "Burton administers and amends its zoning ordinance. The City Zoning Division is the authoritative source for a specific property.",
+    "action": {
+      "kind": "link",
+      "text": "Contact the Burton Zoning Division",
+      "href": "https://www.burtonmi.gov/government/planning___zoning/index.php"
+    },
+    "statOverrides": {
+      "Zoned acres": { "priority": true },
+      "Zoning districts": { "priority": true },
+      "Residential": { "priority": true },
+      "Map vintage": { "priority": true, "hint": "reference only; verify a parcel with the City" }
+    },
+    "chartOverrides": {
+      "Zoned land by category (acres)": { "takeaway": "Residential categories account for most mapped acreage." },
+      "Largest districts (acres)": { "takeaway": "The largest district bars show how the 2017 layer distributes land among zoning codes." }
+    },
+    "tableIds": {
+      "Zoning districts": "zoning-districts"
+    },
+    "sections": [
+      {
+        "heading": "2017 zoning pattern",
+        "charts": ["zoned-land-by-category-acres", "largest-districts-acres"],
+        "tables": ["zoning-districts"]
+      }
+    ]
+  },
+  "schools": {
+    "title": "School Districts Serving Burton",
+    "subtitle": "District-wide enrollment and staffing context for districts whose boundaries include Burton",
+    "context": {
+      "scope": "Districts serving Burton",
+      "status": "historical",
+      "asOf": "District-wide 2023 enrollment and staffing"
+    },
+    "headline": "Seven public school districts have boundaries in Burton; displayed enrollment covers each entire district.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Enrollment and students-per-teacher figures cover whole districts, including students outside Burton. They provide scale and staffing context, not a measure of school quality or student outcomes."
+      ]
+    },
+    "responsibility": "Independent school districts and the State oversee public education. Burton reports boundary and public data but does not operate the districts.",
+    "action": {
+      "kind": "link",
+      "text": "Use the district map for location context",
+      "href": "#map"
+    },
+    "statOverrides": {
+      "Districts serving Burton": { "priority": true },
+      "Bachelor's degree or higher": { "priority": true, "hint": "Burton adults age 25+; not a school outcome" }
+    },
+    "chartOverrides": {
+      "Enrollment by district (2023)": { "takeaway": "District sizes vary, and each bar includes enrollment outside Burton." },
+      "Students per teacher by district (2023)": { "takeaway": "This staffing ratio is not a class-size or performance measure." },
+      "Adults' education levels (citywide, age 25+)": { "takeaway": "This chart describes adult residents citywide, not current students or district performance." },
+      "Bachelor's degree or higher (% age 25+)": { "takeaway": "The adult attainment trend is separate from the district enrollment data." },
+      "Education levels: Burton vs. county & state": { "takeaway": "Burton's adult attainment profile differs from county and statewide estimates." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "District scale and staffing",
+        "charts": ["enrollment-by-district-2023", "students-per-teacher-by-district-2023"]
+      },
+      {
+        "heading": "Adult education context",
+        "charts": ["adults-education-levels-citywide-age-25", "bachelor-s-degree-or-higher-age-25", "education-levels-burton-vs-county-and-state"]
+      }
+    ]
+  },
+  "finances": {
+    "subtitle": "The adopted FY2026–27 plan alongside FY2025 audited results",
+    "context": {
+      "scope": "City of Burton",
+      "status": "planned",
+      "asOf": "FY2026–27 plan; FY2025 audited actuals"
+    },
+    "headline": "Burton adopted a $67.7 million all-funds plan for FY2026–27; FY2025 General Fund revenues exceeded expenditures.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "A budget is a plan, while audited figures show what actually occurred. The $67.7 million total covers all City funds; General Fund figures cover the main operating fund and should not be compared as if they share the same boundary."
+      ]
+    },
+    "responsibility": "City Council adopts the budget, staff administers it, and independent audit reporting records actual results. Restricted funds cannot automatically be used for any purpose.",
+    "action": {
+      "kind": "link",
+      "text": "Review financial health and obligations",
+      "href": "#fiscalhealth"
+    },
+    "statOverrides": {
+      "Total budget": { "priority": true, "label": "All-funds adopted plan" },
+      "General Fund revenues": { "priority": true },
+      "General Fund expenditures": { "priority": true },
+      "General Fund reserve": { "priority": true }
+    },
+    "chartOverrides": {
+      "Revenue by source (FY2025 audited, governmental funds, $M)": { "takeaway": "This audited chart covers governmental-fund revenue, not the $67.7 million all-funds plan." },
+      "FY2026-27 adopted budget by fund (all funds)": { "takeaway": "The adopted plan distributes spending across funds with legally or operationally distinct purposes." },
+      "General Fund spending mix, FY2026-27 (plan)": { "takeaway": "This chart shows planned General Fund spending, not final audited expenditures." },
+      "Total taxable value (audited, $M)": { "takeaway": "Taxable value increased across the displayed audited years." },
+      "General Fund revenues (audited, $M)": { "takeaway": "Audited General Fund revenue changed over time and is separate from all-funds budget totals." },
+      "General Fund expenditures (audited, $M)": { "takeaway": "Audited General Fund expenditures were below revenues in the latest displayed year." },
+      "Long-term debt (audited, $M)": { "takeaway": "Long-term debt includes obligations repaid over many years, much of it tied to utilities." },
+      "Unfunded pension liability (audited, $M)": { "takeaway": "The unfunded amount is the difference between pension obligations and assets set aside." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "FY2026–27 adopted plan",
+        "stats": ["taxable-value", "full-time-staff"],
+        "charts": ["fy2026-27-adopted-budget-by-fund-all-funds", "general-fund-spending-mix-fy2026-27-plan"]
+      },
+      {
+        "heading": "FY2025 audited results and trends",
+        "stats": ["long-term-debt"],
+        "charts": ["revenue-by-source-fy2025-audited-governmental-funds-m", "total-taxable-value-audited-m", "general-fund-revenues-audited-m", "general-fund-expenditures-audited-m", "long-term-debt-audited-m", "unfunded-pension-liability-audited-m"]
+      }
+    ]
+  },
+  "propertytax": {
+    "subtitle": "How mills and taxable value determine the City portion of a property-tax bill",
+    "context": {
+      "scope": "Burton parcels",
+      "status": "reference",
+      "asOf": "2025 rates and FY2026 City millage"
+    },
+    "headline": "Burton's reported 13.44-mill City rate is about 29% of a typical homestead tax bill.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "One mill is $1 per $1,000 of taxable value. The City reports a 13.44-mill total; its individually displayed General, Police, and Fire components sum to 13.43 because published components are rounded."
+      ]
+    },
+    "responsibility": "Burton sets and receives only the City portion. County, schools, the State, college, transit, and airport authorities set and receive the other portions.",
+    "action": {
+      "kind": "link",
+      "text": "Estimate a bill on this dashboard",
+      "href": "#propertytax"
+    },
+    "statOverrides": {
+      "City of Burton's rate": { "priority": true, "hint": "ACFR total; displayed components round to 13.43" },
+      "City's share of your bill": { "priority": true },
+      "City tax on a $50k-taxable home": { "priority": true },
+      "School districts in Burton": { "priority": true }
+    },
+    "chartOverrides": {
+      "Where a typical homestead tax bill goes (mills)": { "takeaway": "Most mills on a typical homestead bill go to governments and authorities other than Burton." },
+      "Total homestead tax rate by school district (mills)": { "takeaway": "The total rate varies by school district even though Burton's City rate is the same." },
+      "City of Burton's own millage, last 10 years": { "takeaway": "The reported City rate is lower than at the start of the displayed period and flat in recent years." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "What makes up the bill",
+        "charts": ["where-a-typical-homestead-tax-bill-goes-mills", "total-homestead-tax-rate-by-school-district-mills"]
+      },
+      {
+        "heading": "City rate over time",
+        "charts": ["city-of-burton-s-own-millage-last-10-years"]
+      }
+    ]
+  },
+  "fiscalhealth": {
+    "subtitle": "Audited debt, retirement obligations, reserves, and statewide comparisons",
+    "context": {
+      "scope": "City of Burton",
+      "status": "historical",
+      "asOf": "FY2025 audited actuals"
+    },
+    "headline": "Most Burton long-term debt supports water and sewer infrastructure; pensions remain partly unfunded.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Per-resident debt and pension figures divide Citywide obligations by population for scale; they are not personal bills. About 91% of long-term debt supports the water and sewer system, while retirement obligations are funded over time."
+      ]
+    },
+    "responsibility": "Burton manages debt repayment and contributes to pension and retiree-health systems. Audited state reports provide the comparison measures.",
+    "action": {
+      "kind": "link",
+      "text": "Compare with the adopted budget",
+      "href": "#finances"
+    },
+    "statOverrides": {
+      "Long-term debt per resident": { "priority": true },
+      "Pension owed per resident": { "priority": true, "label": "Unfunded pension liability per resident" },
+      "Reserve rank in Michigan": { "priority": true },
+      "Pension funded": { "priority": true }
+    },
+    "chartOverrides": {
+      "Where Burton ranks among Michigan cities (healthier than this share)": { "takeaway": "Burton's short-term cushions rank near the middle, while net financial position is weaker." },
+      "Long-term obligations per resident": { "takeaway": "The debt and pension amounts are Citywide obligations divided by population, not household charges." },
+      "What the city's debt paid for": { "takeaway": "Water and sewer infrastructure accounts for about 91% of displayed long-term debt." },
+      "Retirement promises: money set aside vs. owed ($M)": { "takeaway": "Assets set aside do not yet equal the displayed pension and retiree-health obligations." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "Debt and property-value context",
+        "stats": ["debt-vs-property-value"],
+        "charts": ["long-term-obligations-per-resident", "what-the-city-s-debt-paid-for"]
+      },
+      {
+        "heading": "Reserves and retirement obligations",
+        "stats": ["retiree-health-opeb-funded"],
+        "charts": ["where-burton-ranks-among-michigan-cities-healthier-than-this-share", "retirement-promises-money-set-aside-vs-owed-m"]
+      }
+    ]
+  },
+  "capital": {
+    "subtitle": "Funded one-time investments in the adopted FY2026–27 plan",
+    "context": {
+      "scope": "City of Burton",
+      "status": "planned",
+      "asOf": "Adopted FY2026–27 capital plan"
+    },
+    "headline": "Burton's adopted capital plan includes $13.8 million across 27 funded projects, led by Major Streets.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Capital projects are major one-time investments, not routine operating costs or money already spent. The per-resident figure is a scale comparison, not a charge to each resident."
+      ]
+    },
+    "responsibility": "Burton selects and delivers City capital projects. Act 51 is restricted state transportation funding; Other combines the funding sources itemized in the adopted plan.",
+    "action": {
+      "kind": "link",
+      "text": "View funded roads on the map",
+      "href": "#map"
+    },
+    "statOverrides": {
+      "Total capital investment": { "priority": true },
+      "Per resident": { "priority": true, "hint": "scale comparison, not a household charge" },
+      "Funded projects": { "priority": true },
+      "Largest category": { "priority": true }
+    },
+    "chartOverrides": {
+      "Capital investment by category": { "takeaway": "Major Streets receives the largest share of planned capital investment." },
+      "How capital projects are funded": { "takeaway": "Capital work combines restricted transportation funding with other identified sources." },
+      "Largest projects": { "takeaway": "A small number of large projects account for much of the adopted total." },
+      "Road & street capital by fiscal year": { "takeaway": "Planned road and street capital is substantially higher in FY2026–27 than in the two prior years." }
+    },
+    "tableIds": {
+      "Funded capital projects": "funded-capital-projects"
+    },
+    "sections": [
+      {
+        "heading": "Adopted investment and funding",
+        "charts": ["capital-investment-by-category", "how-capital-projects-are-funded", "largest-projects"]
+      },
+      {
+        "heading": "Projects and road trend",
+        "charts": ["road-and-street-capital-by-fiscal-year"],
+        "tables": ["funded-capital-projects"]
+      }
+    ]
+  },
+  "health": {
+    "subtitle": "Modeled health estimates for Burton with county and state context",
+    "context": {
+      "scope": "Burton and Genesee County",
+      "status": "modeled",
+      "asOf": "CDC PLACES 2025; separate ACS uninsured history"
+    },
+    "headline": "Modeled estimates show obesity, high blood pressure, and smoking as prominent health concerns in Burton.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "CDC PLACES values are modeled population estimates, not diagnoses counted from local medical records. The uninsured trend comes from a separate Census survey and should not be read as the same measure."
+      ]
+    },
+    "responsibility": "Public-health agencies produce these measures and lead health programs. Burton can support access and healthy places but does not directly control individual outcomes.",
+    "action": {
+      "kind": "link",
+      "text": "Explore CDC PLACES data",
+      "href": "https://www.cdc.gov/places/"
+    },
+    "statOverrides": {
+      "Without health insurance (18-64)": { "priority": true },
+      "High blood pressure": { "priority": true },
+      "Diabetes": { "priority": true },
+      "Obesity": { "priority": true }
+    },
+    "chartOverrides": {
+      "Uninsured rate, working-age adults (19-64): Burton vs Michigan, by year": { "takeaway": "This ACS trend uses survey estimates and a different source from the current PLACES figures." },
+      "Chronic conditions (estimated adult prevalence)": { "takeaway": "High blood pressure and diabetes affect substantial estimated shares of Burton adults." },
+      "Prevention & screening (share of adults)": { "takeaway": "The prevention measures estimate how often adults receive recommended care." },
+      "Lifestyle & risk factors": { "takeaway": "Smoking and obesity estimates identify important community health risks without explaining their causes." },
+      "Health-related social needs": { "takeaway": "Social and economic conditions can affect access to care and health opportunities." },
+      "How Burton compares to Genesee County": { "takeaway": "The comparison shows modeled differences, not proof that location caused an outcome." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "Current modeled estimates",
+        "stats": ["routine-checkup-past-year", "currently-smoke"],
+        "charts": ["chronic-conditions-estimated-adult-prevalence", "prevention-and-screening-share-of-adults", "lifestyle-and-risk-factors", "health-related-social-needs", "how-burton-compares-to-genesee-county"]
+      },
+      {
+        "heading": "Separate insurance trend",
+        "charts": ["uninsured-rate-working-age-adults-19-64-burton-vs-michigan-by-year"]
+      }
+    ]
+  },
+  "water": {
+    "subtitle": "EPA compliance history for Burton's public water system",
+    "context": {
+      "scope": "Burton water system MI0001010",
+      "status": "historical",
+      "asOf": "EPA compliance snapshot through 2023"
+    },
+    "headline": "EPA records show no unresolved health violations in the snapshot, with one resolved health-based violation on record since 2001.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "This is system-level compliance history, not a test of water at a household tap. The lead value is the 90th-percentile result from sampled locations, meaning nine of ten sampled results were at or below it."
+      ]
+    },
+    "responsibility": "Burton operates the local distribution system and purchases treated surface water. EPA and state regulators set standards and record compliance; household plumbing can affect tap results.",
+    "action": {
+      "kind": "link",
+      "text": "Check Burton water services",
+      "href": "https://www.burtonmi.gov/government/public_works/water_and_sewer/index.php"
+    },
+    "statOverrides": {
+      "Service connections": { "priority": true },
+      "Lead (90th percentile)": { "priority": true, "hint": "sampled locations, 2023; EPA action level 0.015 mg/L" },
+      "Open health violations": { "priority": true },
+      "Health-based violations": { "priority": true, "hint": "one resolved violation on record since 2001" }
+    },
+    "chartOverrides": {
+      "Violations by type (on record)": { "takeaway": "The record includes monitoring and reporting issues as well as one resolved health-based violation." },
+      "Violations by year": { "takeaway": "All displayed violations are historical; the current-open count is shown separately." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "System and compliance details",
+        "stats": ["residents-served", "water-source", "total-violations-on-record"],
+        "charts": ["violations-by-type-on-record", "violations-by-year"]
+      }
+    ]
+  },
+  "environment": {
+    "subtitle": "Countywide air-quality monitoring that provides context for Burton",
+    "context": {
+      "scope": "Genesee County",
+      "status": "current",
+      "asOf": "252 of 303 monitored days in 2025"
+    },
+    "headline": "Air quality was rated Good on 252 of 303 monitored Genesee County days in 2025.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Countywide monitors provide the best available local air-quality context but do not measure every Burton neighborhood. Unmonitored days are not counted as Good or unhealthy days."
+      ]
+    },
+    "responsibility": "EPA and Michigan environmental agencies monitor and regulate air quality. Burton can reduce local emissions but does not operate the countywide monitoring network.",
+    "action": {
+      "kind": "link",
+      "text": "Check today's AirNow conditions",
+      "href": "https://www.airnow.gov/"
+    },
+    "statOverrides": {
+      "Good air-quality days": { "priority": true, "hint": "252 of 303 monitored days, 2025" },
+      "Median AQI": { "priority": true },
+      "Moderate days": { "priority": true },
+      "Unhealthy days": { "priority": true }
+    },
+    "chartOverrides": {
+      "Good air-quality days by year (higher is better)": { "takeaway": "Most monitored days were rated Good in each displayed year." },
+      "Median AQI by year (lower is better)": { "takeaway": "The median AQI stayed within the Good range in the displayed years." },
+      "Air-quality days by level (2025)": { "takeaway": "Good days dominate the monitored-day distribution, with three days in an unhealthy category." },
+      "Days set by each pollutant (2025)": { "takeaway": "The pollutant named for a day is the one that determined that day's AQI." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "Air quality over time",
+        "charts": ["good-air-quality-days-by-year-higher-is-better", "median-aqi-by-year-lower-is-better"]
+      },
+      {
+        "heading": "2025 monitored days",
+        "charts": ["air-quality-days-by-level-2025", "days-set-by-each-pollutant-2025"]
+      }
+    ]
+  },
+  "parks": {
+    "subtitle": "City and County parks with land inside Burton",
+    "context": {
+      "scope": "Parks with land in Burton",
+      "status": "reference",
+      "asOf": "Source refresh date not published"
+    },
+    "headline": "Seven mapped parks have land in Burton; five are City-run and two are County-run.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Ownership determines who manages amenities and maintenance. The large acreage total is heavily influenced by For-Mar Nature Preserve, so park count, location, access, and facilities may be more useful than acreage alone."
+      ]
+    },
+    "responsibility": "Burton manages its five City parks. Genesee County manages County parks, including For-Mar, even where their land lies within Burton.",
+    "action": {
+      "kind": "link",
+      "text": "Find park locations on the map",
+      "href": "#map"
+    },
+    "statOverrides": {
+      "Parks in Burton": { "priority": true },
+      "Total park acres": { "priority": true },
+      "Largest park": { "priority": true },
+      "City of Burton parks": { "priority": true }
+    },
+    "chartOverrides": {
+      "Park acres by who runs it": { "takeaway": "County-managed For-Mar accounts for most mapped park acreage in Burton." }
+    },
+    "tableIds": {
+      "Parks in Burton": "parks-in-burton"
+    },
+    "sections": [
+      {
+        "heading": "Ownership and locations",
+        "charts": ["park-acres-by-who-runs-it"],
+        "tables": ["parks-in-burton"]
+      }
+    ]
+  },
+  "trails": {
+    "subtitle": "Built and planned trail segments within Burton",
+    "context": {
+      "scope": "Trail segments within Burton",
+      "status": "reference",
+      "asOf": "Source refresh date not published; planned status shown separately"
+    },
+    "headline": "The regional inventory shows 12.1 existing trail miles in Burton and 4.0 additional planned or programmed miles.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Existing miles are built and usable; under-construction, programmed, and proposed miles are planned, not open facilities unless completed. Mileage is clipped to Burton and mixed-status trail names must keep each status separate."
+      ]
+    },
+    "responsibility": "The regional planning dataset includes City, County, and other routes. Ownership and delivery vary by segment; Burton does not control every listed trail.",
+    "action": {
+      "kind": "link",
+      "text": "View trail segments on the map",
+      "href": "#map"
+    },
+    "statOverrides": {
+      "Existing trail miles in Burton": { "priority": true },
+      "Named trails serving Burton": { "priority": true },
+      "Longest existing trail": { "priority": true },
+      "Planned / programmed miles": { "priority": true }
+    },
+    "chartOverrides": {
+      "Trail miles by status (Burton)": { "takeaway": "Existing mileage is separated from under-construction, programmed, and proposed mileage." },
+      "Trail miles by type": { "takeaway": "The regional inventory classifies trail mileage by facility type." },
+      "Trail miles by surface": { "takeaway": "Surface information helps distinguish paved and unpaved segments where the source reports it." }
+    },
+    "tableIds": {
+      "Trails serving Burton": "trails-serving-burton"
+    },
+    "sections": [
+      {
+        "heading": "Mileage and status",
+        "charts": ["trail-miles-by-status-burton", "trail-miles-by-type", "trail-miles-by-surface"],
+        "tables": ["trails-serving-burton"]
+      }
+    ]
+  },
+  "seniorcenter": {
+    "subtitle": "Program participation and service activity during calendar year 2025",
+    "context": {
+      "scope": "Burton Senior Center service area",
+      "status": "current",
+      "asOf": "Calendar year 2025"
+    },
+    "headline": "The Senior Center served 1,564 members and recorded 28,710 visits during 248 open days in 2025.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Visits and program sign-ins count attendances, not unique people. Program hours total participant-hours across sign-ins, and September's low daily average should be read with the center's operating schedule and source records."
+      ]
+    },
+    "responsibility": "Burton operates the Senior Center for an area wider than the city; members outside Burton are eligible under the center's service model.",
+    "action": {
+      "kind": "link",
+      "text": "See Senior Center programs",
+      "href": "https://www.burtonmi.gov/government/senior_center/index.php"
+    },
+    "statOverrides": {
+      "Members served": { "priority": true },
+      "Visits": { "priority": true },
+      "Program hours": { "priority": true, "hint": "participant-hours across 28,707 program sign-ins" },
+      "Volunteer value": { "priority": true }
+    },
+    "chartOverrides": {
+      "Program sign-ins by category": { "takeaway": "Socialization and nutrition account for the largest reported program-attendance categories." },
+      "Average daily attendance by month": { "takeaway": "September is unusually low and should be interpreted with operating-day and source-record context." },
+      "Members by age": { "takeaway": "Most active members are age 65 or older." },
+      "Where members live": { "takeaway": "Most members live outside Burton, reflecting the center's regional service area." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "Programs and attendance",
+        "charts": ["program-sign-ins-by-category", "average-daily-attendance-by-month"]
+      },
+      {
+        "heading": "Who the center serves",
+        "charts": ["members-by-age", "where-members-live"]
+      }
+    ]
+  },
+  "broadband": {
+    "subtitle": "Reported internet availability compared with household subscription",
+    "context": {
+      "scope": "Burton serviceable locations",
+      "status": "current",
+      "asOf": "FCC December 31, 2025; ACS household subscription estimate"
+    },
+    "headline": "FCC data reports 100/20 Mbps availability citywide, while an estimated 85.5% of households subscribe to broadband.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Reported availability means a provider says it can serve a location; it does not prove affordability, adoption, or performance at every address. Nine providers citywide does not mean every household has nine choices."
+      ]
+    },
+    "responsibility": "Providers report coverage to the FCC. Burton can support infrastructure and digital access but does not verify every service claim or set retail prices.",
+    "action": {
+      "kind": "link",
+      "text": "Check the FCC map for an address",
+      "href": "https://broadbandmap.fcc.gov/"
+    },
+    "statOverrides": {
+      "Broadband-serviceable homes": { "priority": true },
+      "Have 100/20 Mbps access": { "priority": true, "label": "Reported 100/20 Mbps availability" },
+      "Have gigabit access": { "priority": true, "label": "Reported gigabit availability" },
+      "Households with broadband": { "priority": true, "label": "Estimated household subscription" }
+    },
+    "chartOverrides": {
+      "Home internet availability by speed": { "takeaway": "Reported availability is broad at lower benchmark speeds but drops at gigabit speed." },
+      "Availability by technology (100/20 Mbps)": { "takeaway": "Technology coverage differs, with limited fiber availability despite broader cable or wireless reporting." },
+      "Where each provider reaches (% of Burton homes)": { "takeaway": "Provider footprints vary; a citywide provider count does not describe choices at one address." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "Availability and provider claims",
+        "stats": ["have-250-25-mbps", "home-internet-providers"],
+        "charts": ["home-internet-availability-by-speed", "availability-by-technology-100-20-mbps", "where-each-provider-reaches-of-burton-homes"]
+      }
+    ]
+  },
+  "bridges": {
+    "subtitle": "Condition, ownership, and traffic for bridges located in Burton",
+    "context": {
+      "scope": "Bridges within Burton",
+      "status": "historical",
+      "asOf": "FHWA National Bridge Inventory 2024"
+    },
+    "headline": "One of the 20 inventoried bridges in Burton is rated Poor; ten are City-maintained and ten are State-maintained.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "A Poor rating means significant repair or rehabilitation is needed; it does not by itself mean a bridge is closed or unsafe to cross. The responsible owner, not simply its Burton location, plans the work."
+      ]
+    },
+    "responsibility": "Burton maintains ten listed bridges and the State maintains ten. The inventory's owner field identifies who is responsible for the Poor-rated bridge.",
+    "action": {
+      "kind": "none",
+      "text": "Follow posted restrictions and closure signs."
+    },
+    "statOverrides": {
+      "Bridges in Burton": { "priority": true },
+      "In good condition": { "priority": true },
+      "Needing repair (poor)": { "priority": true },
+      "City-maintained": { "priority": true }
+    },
+    "chartOverrides": {
+      "Bridge condition (FHWA rating)": { "takeaway": "Most inventoried bridges are Good or Fair, with one rated Poor." },
+      "How Burton compares, bridge condition": { "takeaway": "The comparison places Burton's bridge-condition shares beside other displayed areas." },
+      "Who maintains them": { "takeaway": "Maintenance responsibility is evenly split between Burton and the State in this inventory." },
+      "Bridges by decade built": { "takeaway": "Construction decade describes age, not present structural condition." }
+    },
+    "tableIds": {
+      "Every bridge in Burton": "every-bridge-in-burton"
+    },
+    "sections": [
+      {
+        "heading": "Condition and responsibility",
+        "stats": ["busiest-bridge", "oldest-bridge"],
+        "charts": ["bridge-condition-fhwa-rating", "how-burton-compares-bridge-condition", "who-maintains-them", "bridges-by-decade-built"],
+        "tables": ["every-bridge-in-burton"]
+      }
+    ]
+  },
+  "roads": {
+    "subtitle": "PASER condition ratings for the federal-aid road network only",
+    "context": {
+      "scope": "Federal-aid roads in Burton",
+      "status": "historical",
+      "asOf": "PASER 2024 rating cycle"
+    },
+    "headline": "Fifty-four percent of rated federal-aid road-miles are in Poor condition, while 13% are Good.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "This dashboard covers 65.4 miles on the federal-aid network, not every local street. PASER rates pavement condition; a funded project may cover only a named section rather than an entire road."
+      ]
+    },
+    "responsibility": "Road ownership and maintenance can belong to Burton, Genesee County, or the State. Project responsibility must be checked for the specific segment.",
+    "action": {
+      "kind": "link",
+      "text": "See funded capital road projects",
+      "href": "#capital"
+    },
+    "statOverrides": {
+      "Rated road-miles": { "priority": true },
+      "In good condition": { "priority": true },
+      "Needing major repair (poor)": { "priority": true },
+      "Rated this cycle": { "priority": true }
+    },
+    "chartOverrides": {
+      "Pavement condition (PASER, by road-mile)": { "takeaway": "Poor-rated mileage makes up more than half of the federal-aid network measured." },
+      "How Burton compares, pavement condition": { "takeaway": "The comparison uses the same federal-aid network boundary for the displayed places." },
+      "Road-miles by surface": { "takeaway": "Surface type provides maintenance context but is not a condition rating." }
+    },
+    "tableIds": {
+      "Federal-aid roads in Burton": "federal-aid-roads-in-burton"
+    },
+    "sections": [
+      {
+        "heading": "Federal-aid network condition",
+        "stats": ["busiest-rated-road"],
+        "charts": ["pavement-condition-paser-by-road-mile", "how-burton-compares-pavement-condition", "road-miles-by-surface"],
+        "tables": ["federal-aid-roads-in-burton"]
+      }
+    ]
+  },
+  "publicsafety": {
+    "subtitle": "Fire Department incident categories and trends from separate annual records",
+    "context": {
+      "scope": "Burton Fire Department",
+      "status": "historical",
+      "asOf": "Calendar 2025 detail; 2014–2025 trend"
+    },
+    "headline": "Burton Fire recorded 758 responses in 2025, including 108 fire responses and 174 false alarms.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "The 758 responses are grouped from the displayed incident records. This dashboard does not contain response-time data or support describing medical incidents as the majority; 2025 detail and the multi-year trend come from separate reports."
+      ]
+    },
+    "responsibility": "Burton Fire responds within its service system and records incidents. Dispatch, mutual aid, and source-report definitions affect the totals shown.",
+    "action": {
+      "kind": "none",
+      "text": "Call 911 for an emergency."
+    },
+    "statOverrides": {
+      "Total responses": { "priority": true },
+      "Fire responses": { "priority": true },
+      "False alarms": { "priority": true },
+      "11-year change": { "priority": true }
+    },
+    "chartOverrides": {
+      "Responses by month (2025)": { "takeaway": "Monthly response counts vary across 2025 without showing why the variation occurred." },
+      "Calls by type: 2025 vs 2015": { "takeaway": "Incident categories changed across the two comparison years; definitions should be read with the source notes." },
+      "Total calls for service by year (2014-2025)": { "takeaway": "Recorded calls were higher in 2025 than at the start of the displayed trend." },
+      "Calls by station area: 2025 vs 2015": { "takeaway": "Station-area totals describe where incidents were assigned, not response speed." },
+      "Busiest months (2020-2025 average)": { "takeaway": "Average monthly activity is uneven across the year but does not establish a cause." }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "2025 incident detail",
+        "charts": ["responses-by-month-2025", "calls-by-type-2025-vs-2015", "calls-by-station-area-2025-vs-2015"]
+      },
+      {
+        "heading": "Multi-year activity",
+        "charts": ["total-calls-for-service-by-year-2014-2025", "busiest-months-2020-2025-average"]
+      }
+    ]
+  },
+  "roadsafety": {
+    "subtitle": "Historical crash patterns from 2014 through 2018",
+    "context": {
+      "scope": "Burton crash records",
+      "status": "historical",
+      "asOf": "2014–2018 only"
+    },
+    "headline": "Burton records show 3,011 crashes from 2014–2018, including 700 injury crashes and nine fatal crashes.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "These records are historical and should not be treated as current conditions. Intersection totals are raw counts: busy locations can record more crashes partly because they carry more traffic, not only because they are riskier."
+      ]
+    },
+    "responsibility": "Police crash reports feed the regional dataset. Road owners, enforcement agencies, and drivers share different parts of traffic-safety responsibility.",
+    "action": {
+      "kind": "none",
+      "text": "Use current signs and traffic controls."
+    },
+    "statOverrides": {
+      "Crashes recorded": { "priority": true },
+      "Injury crashes": { "priority": true },
+      "Fatal crashes": { "priority": true },
+      "Most common type": { "priority": true, "label": "Most recorded crash type", "hint": "Rear-end, straight movement; 22% of records" }
+    },
+    "chartOverrides": {
+      "Crashes by year": { "takeaway": "Annual counts vary within the 2014–2018 historical period." },
+      "Crashes by severity": { "takeaway": "Most records did not involve a fatality, while injury crashes still affected many people." },
+      "Most common crash types": { "takeaway": "Rear-end crashes during straight movement were the most common recorded type." }
+    },
+    "tableIds": {
+      "Most frequent crash locations": "most-frequent-crash-locations"
+    },
+    "sections": [
+      {
+        "heading": "Historical crash record",
+        "stats": ["typical-crashes-year"],
+        "charts": ["crashes-by-year", "crashes-by-severity", "most-common-crash-types"],
+        "tables": ["most-frequent-crash-locations"]
+      }
+    ]
+  }
+}

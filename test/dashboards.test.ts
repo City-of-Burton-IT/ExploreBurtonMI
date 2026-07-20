@@ -64,6 +64,27 @@ describe('isDashboard', () => {
   });
 });
 
+describe('resident-facing dashboard registry copy', () => {
+  it('uses labels and descriptions that match the data actually displayed', () => {
+    const jobs = DASHBOARDS.find(({ id }) => id === 'jobs');
+    const schools = DASHBOARDS.find(({ id }) => id === 'schools');
+    const fire = DASHBOARDS.find(({ id }) => id === 'publicsafety');
+
+    expect(jobs).toMatchObject({
+      label: 'Genesee County Jobs & Industries',
+      description: 'Countywide industries, employment, wages, and unemployment.',
+    });
+    expect(schools).toMatchObject({
+      label: 'School Districts Serving Burton',
+      description: 'District-wide enrollment and staffing context.',
+    });
+    expect(fire?.description).toBe('Fire incident categories and call trends.');
+    expect(DASHBOARDS.map(({ description }) => description).join(' ')).not.toMatch(
+      /top employers|how quickly|school outcomes|building permits/i,
+    );
+  });
+});
+
 describe('adjacentDashboards', () => {
   it('has no prev for the first dashboard', () => {
     const first = DASHBOARDS[0];
