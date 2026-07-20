@@ -1,6 +1,7 @@
 import type {
   CompareRow,
   CompareValue,
+  DashboardClarity,
   EstimatorDistrict,
   InfoChart,
   InfoEstimator,
@@ -18,6 +19,7 @@ import type {
 export type {
   CompareRow,
   CompareValue,
+  DashboardClarity,
   EstimatorDistrict,
   InfoChart,
   InfoEstimator,
@@ -427,22 +429,6 @@ export function validateInfoPanel(value: unknown, id: string): InfoPanel {
   });
 
   return panel;
-}
-
-export function validateSummaryMap(
-  value: unknown,
-  dashboardIds: readonly string[],
-): Record<string, InfoSummary> {
-  const summaries = objectValue(value, 'dashboard metadata', 'summaries');
-  const knownIds = new Set(dashboardIds);
-  for (const [id, summary] of Object.entries(summaries)) {
-    if (id.startsWith('_')) continue;
-    if (!knownIds.has(id)) {
-      fail('dashboard metadata', `summaries.${id}`, 'expected a registered dashboard id');
-    }
-    validateSummary(summary, 'dashboard metadata', `summaries.${id}`);
-  }
-  return value as Record<string, InfoSummary>;
 }
 
 export function validateFreshnessMap(
