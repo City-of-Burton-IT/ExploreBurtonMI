@@ -159,8 +159,10 @@ function validateSeriesItem(value: unknown, context: string, path: string): void
 
 function validateChart(value: unknown, context: string, path: string): void {
   const chart = objectValue(value, context, path) as Partial<InfoChart> & JsonObject;
+  optionalString(chart.id, context, `${path}.id`);
   const type = stringValue(chart.type, context, `${path}.type`);
   stringValue(chart.title, context, `${path}.title`);
+  optionalString(chart.takeaway, context, `${path}.takeaway`);
   optionalUnit(chart.unit, context, `${path}.unit`);
   optionalString(chart.citiesLede, context, `${path}.citiesLede`);
 
@@ -224,9 +226,13 @@ function validateChart(value: unknown, context: string, path: string): void {
 
 function validateStat(value: unknown, context: string, path: string): void {
   const stat = objectValue(value, context, path) as Partial<InfoStat>;
+  optionalString(stat.id, context, `${path}.id`);
   stringValue(stat.label, context, `${path}.label`);
   stringValue(stat.value, context, `${path}.value`);
   optionalString(stat.hint, context, `${path}.hint`);
+  if (stat.priority !== undefined && typeof stat.priority !== 'boolean') {
+    fail(context, `${path}.priority`, 'expected a boolean');
+  }
 
   if (stat.benchmarks !== undefined) {
     const benchmarks = arrayValue(stat.benchmarks, context, `${path}.benchmarks`);
@@ -283,6 +289,7 @@ function validateEstimator(value: unknown, context: string, path: string): void 
 
 function validateTable(value: unknown, context: string, path: string): void {
   const table = objectValue(value, context, path) as Partial<InfoTable>;
+  optionalString(table.id, context, `${path}.id`);
   stringValue(table.title, context, `${path}.title`);
   const columns = stringArray(table.columns, context, `${path}.columns`);
   uniqueStrings(columns, context, `${path}.columns`);
@@ -321,8 +328,8 @@ function validateIsoDate(value: unknown, context: string, path: string): void {
   }
 }
 
-/** Validate untrusted dashboard JSON before it reaches a renderer. */
-export function validateInfoPanel(value: unknown, id: string): InfoPanel {
+/** Validate generator-owned dashboard JSON before clarity metadata is applied. */
+export function validateRawInfoPanel(value: unknown, id: string): InfoPanel {
   const context = `dashboard "${id}"`;
   const panel = objectValue(value, context, '$') as Partial<InfoPanel> & JsonObject;
 
@@ -370,6 +377,56 @@ export function validateInfoPanel(value: unknown, id: string): InfoPanel {
   if (panel.notes !== undefined) stringArray(panel.notes, context, 'notes');
 
   return value as InfoPanel;
+}
+
+/** Validate a fully enriched dashboard immediately before it reaches a renderer. */
+export function validateInfoPanel(value: unknown, id: string): InfoPanel {
+  const panel = validateRawInfoPanel(value, id);
+  const context = `dashboard "${id}"`;
+  const raw = objectValue(value, context, '$');
+
+  const dashboardContext = objectValue(raw.context, context, 'context');
+  stringValue(dashboardContext.scope, context, 'context.scope');
+  const status = stringValue(dashboardContext.status, context, 'context.status');
+  if (!['current', 'historical', 'modeled', 'planned', 'reference'].includes(status)) {
+    fail(context, 'context.status', 'expected current, historical, modeled, planned, or reference');
+  }
+  stringValue(dashboardContext.asOf, context, 'context.asOf');
+  stringValue(raw.headline, context, 'headline');
+  stringValue(raw.responsibility, context, 'responsibility');
+
+  const action = objectValue(raw.action, context, 'action');
+  const actionKind = stringValue(action.kind, context, 'action.kind');
+  stringValue(action.text, context, 'action.text');
+  if (actionKind === 'link') {
+    stringValue(action.href, context, 'action.href');
+  } else if (actionKind !== 'none') {
+    fail(context, 'action.kind', 'expected "link" or "none"');
+  }
+
+  const sections = arrayValue(raw.sections, context, 'sections');
+  if (sections.length === 0) fail(context, 'sections', 'expected a non-empty array');
+  sections.forEach((section, index) => {
+    const sectionPath = `sections[${index}]`;
+    const item = objectValue(section, context, sectionPath);
+    stringValue(item.heading, context, `${sectionPath}.heading`);
+  });
+
+  let priorityCount = 0;
+  panel.stats.forEach((stat, index) => {
+    stringValue(stat.id, context, `stats[${index}].id`);
+    if (stat.priority === true) priorityCount += 1;
+  });
+  if (priorityCount > 4) fail(context, 'stats', 'expected no more than four priority facts');
+  panel.charts.forEach((chart, index) => {
+    stringValue(chart.id, context, `charts[${index}].id`);
+    stringValue(chart.takeaway, context, `charts[${index}].takeaway`);
+  });
+  (panel.tables ?? []).forEach((table, index) => {
+    stringValue(table.id, context, `tables[${index}].id`);
+  });
+
+  return panel;
 }
 
 export function validateSummaryMap(

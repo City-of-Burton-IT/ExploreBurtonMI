@@ -230,8 +230,12 @@ export type InfoView =
 export type AppView = 'map' | InfoView | 'guide' | 'opendata' | 'status';
 
 export interface InfoStat {
+  /** stable local identifier assigned when clarity metadata is applied */
+  id?: string;
   label: string;
   value: string;
+  /** true when this fact belongs in the initial resident-facing key-facts group */
+  priority?: boolean;
   /** optional small note under the value (e.g. a year or qualifier) */
   hint?: string;
   /** optional area benchmarks (e.g. Genesee County / Michigan) shown small
@@ -266,8 +270,12 @@ export interface CompareRow {
 }
 
 export interface InfoChart {
+  /** stable local identifier assigned from the generator-owned source title */
+  id?: string;
   type: 'donut' | 'bars' | 'trend' | 'compare';
   title: string;
+  /** one sentence telling a non-specialist what to notice */
+  takeaway?: string;
   /** unit suffix for rendered values, e.g. "$M" or "%" */
   unit?: string;
   /** donut + bars */
@@ -347,9 +355,49 @@ export interface InfoTableRow {
 /** A simple per-item table (e.g. every bridge in Burton). Cells are plain text
  *  (Svelte auto-escapes them); `columns` are the header labels in order. */
 export interface InfoTable {
+  /** stable local identifier assigned when clarity metadata is applied */
+  id?: string;
   title: string;
   columns: string[];
   rows: InfoTableRow[];
+}
+
+export type DashboardStatus =
+  | 'current'
+  | 'historical'
+  | 'modeled'
+  | 'planned'
+  | 'reference';
+
+export interface DashboardContext {
+  scope: string;
+  status: DashboardStatus;
+  asOf: string;
+}
+
+export type DashboardAction =
+  | { kind: 'link'; text: string; href: string }
+  | { kind: 'none'; text: string };
+
+export interface InfoSection {
+  heading: string;
+  stats?: string[];
+  charts?: string[];
+  tables?: string[];
+}
+
+export interface DashboardClarity {
+  title?: string;
+  subtitle?: string;
+  context: DashboardContext;
+  headline: string;
+  summary: InfoSummary;
+  responsibility: string;
+  action: DashboardAction;
+  statOverrides: Record<string, { label?: string; hint?: string; priority?: boolean }>;
+  chartOverrides: Record<string, { title?: string; takeaway: string }>;
+  tableIds: Record<string, string>;
+  sections: InfoSection[];
 }
 
 export interface InfoPanel {
@@ -385,6 +433,12 @@ export interface InfoPanel {
   links?: InfoLink[];
   /** small footnotes under the source line (data caveats, required attributions) */
   notes?: string[];
+  /** resident-facing fields are injected by dashboard-clarity.json at load time */
+  context?: DashboardContext;
+  headline?: string;
+  responsibility?: string;
+  action?: DashboardAction;
+  sections?: InfoSection[];
 }
 
 // --- Resident Guide -------------------------------------------------------
