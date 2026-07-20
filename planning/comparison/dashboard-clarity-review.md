@@ -31,7 +31,8 @@ Use these representative routes in both versions:
 
 Every dashboard now uses the same resident-first reading order:
 
-1. scope, status, and as-of date;
+1. an `About this data` block explaining what the dashboard covers, its information
+   type, time period, and primary official sources;
 2. one plain-language headline;
 3. no more than four priority facts;
 4. why the information matters;
@@ -41,6 +42,21 @@ Every dashboard now uses the same resident-first reading order:
 
 The shared explanation component uses semantic theme tokens, so the dark-mode
 contrast fix applies to every dashboard rather than to individual pages.
+
+The former `Scope`, `Status`, and `As of` pills are now full plain-language rows:
+
+- `This covers`
+- `Information type`
+- `Time period`
+- `Official sources`
+
+Stored status values are translated for residents as `Latest available data`,
+`Historical record`, `Model-based estimate`, `Adopted plan`, or
+`Reference information`. Each dashboard has one to three curated source links rather
+than automatically repeating every related footer link. City Finances and Capital
+Projects link directly to the City's stable Budgets & Resources page, which lists the
+2026-27 Approved Budget; complete source descriptions and secondary resources remain
+in the footer.
 
 All 21 explanations were reviewed for audience, geography, time period, source
 boundary, municipal responsibility, and unsupported conclusions. Important scope
@@ -76,31 +92,36 @@ For each representative route, answer these questions:
 Fresh local gates on the comparison head:
 
 - `npm run check`: 0 errors, 0 warnings;
-- `npm test`: 54 files, 484 tests passed;
+- `npm test`: 54 files, 494 tests passed;
 - `npm run build`: production and PWA build completed;
 - pipeline/tools: 249 tests passed;
 - pin-editor: 44 tests passed;
 - repository security: 12 tests passed;
 - modified Python generators: `py_compile` completed, and 21 focused tests passed.
 
-Visual verification covered all 21 dashboard hashes at 1280×720 desktop and
-390×844 Android-phone width in light and dark modes:
+The full redesign review covered all 21 dashboard hashes at 1280×720 desktop and
+390×844 Android-phone width in light and dark modes. After the shared context block
+changed, targeted current-head verification repeated both sizes and both themes for
+City Finances and Genesee County Jobs & Industries:
 
-- every route rendered title, three context items, headline, priority facts, and
-  explanation;
-- every phone layout began priority facts within the first viewport;
-- no route had document-level horizontal overflow;
+- both routes rendered the four context rows, plain-language status, headline,
+  priority facts, and primary source links;
+- the phone layouts began key facts in or immediately below the first viewport;
+- neither route had horizontal overflow at desktop or phone width;
 - no comparison or baseline browser warnings/errors were recorded;
 - light-mode measured contrast was at least 7.05:1 for the blue dashboard heading
   and 13.01:1 for explanation text;
 - dark-mode measured contrast was at least 4.89:1 for the blue dashboard heading
-  and 11.78:1 for explanation text.
+  and 11.78:1 for explanation text;
+- context-block contrast was 13.01:1 for values, 6.23:1 for labels, and 4.61:1 for
+  links in light mode; dark mode measured 11.78:1, 6.72:1, and 6.12:1 respectively.
 
 Representative captures are in `planning/comparison/screenshots/`:
 
 - `old-finances-desktop-light.png`
 - `new-finances-desktop-light.png`
 - `new-finances-phone-light.png`
+- `new-finances-phone-dark.png`
 - `new-demographics-phone-light.png`
 - `new-jobs-phone-light.png`
 - `new-water-phone-dark.png`

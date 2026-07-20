@@ -4,6 +4,7 @@ import { describe, expect, it } from 'vitest';
 import DashboardMenu from '../src/lib/DashboardMenu.svelte';
 import DashboardFooter from '../src/lib/dashboard/DashboardFooter.svelte';
 import DashboardSummary from '../src/lib/dashboard/DashboardSummary.svelte';
+import InfoHeader from '../src/lib/InfoHeader.svelte';
 import InfoView from '../src/lib/InfoView.svelte';
 
 const summarySource = readFileSync('src/lib/dashboard/DashboardSummary.svelte', 'utf8');
@@ -101,6 +102,25 @@ describe('DashboardSummary', () => {
   });
 });
 
+describe('InfoHeader data context', () => {
+  it.each([
+    ['current', 'Latest available data'],
+    ['historical', 'Historical record'],
+    ['modeled', 'Model-based estimate'],
+    ['planned', 'Adopted plan'],
+    ['reference', 'Reference information'],
+  ] as const)('explains %s information as "%s"', (status, expected) => {
+    const { body } = render(InfoHeader, {
+      props: {
+        title: 'Example dashboard',
+        context: { scope: 'City of Burton', status, asOf: 'June 2026' },
+      },
+    });
+
+    expect(body).toContain(expected);
+  });
+});
+
 describe('InfoView resident hierarchy', () => {
   it('renders context, headline, priority facts, explanation, and grouped evidence in order', () => {
     const { body } = render(InfoView, {
@@ -109,7 +129,14 @@ describe('InfoView resident hierarchy', () => {
         panel: {
           title: 'City Finances',
           subtitle: 'The adopted plan and audited results',
-          context: { scope: 'City of Burton', status: 'planned', asOf: 'FY2026–27 plan' },
+          context: {
+            scope: 'City of Burton',
+            status: 'planned',
+            asOf: 'FY2026–27 plan',
+            sourceLinks: [
+              { text: '2026-27 Approved Budget', href: 'https://example.gov/budget' },
+            ],
+          },
           headline: 'The adopted plan totals $67.7 million across all City funds.',
           summary: { heading: 'Why this matters', body: ['A budget is a plan, not a final result.'] },
           responsibility: 'City Council adopts the plan; audited reports show actual results later.',
@@ -134,9 +161,21 @@ describe('InfoView resident hierarchy', () => {
     });
 
     expect(body).toContain('Money &amp; Taxes');
-    expect(body).toContain('Scope: City of Burton');
-    expect(body).toContain('Data status: Planned');
-    expect(body).toContain('As of: FY2026–27 plan');
+    expect(body).toContain('About this data');
+    expect(body).toContain('This covers');
+    expect(body).toContain('City of Burton');
+    expect(body).toContain('Information type');
+    expect(body).toContain('Adopted plan');
+    expect(body).toContain('Time period');
+    expect(body).toContain('FY2026–27 plan');
+    expect(body).toContain('Official sources');
+    expect(body).toContain('2026-27 Approved Budget');
+    expect(body).toContain('href="https://example.gov/budget"');
+    expect(body).toContain('target="_blank"');
+    expect(body).toContain('rel="noopener noreferrer"');
+    expect(body).not.toContain('<span>Scope</span>');
+    expect(body).not.toContain('<span>Status</span>');
+    expect(body).not.toContain('<span>As of</span>');
     expect(body.indexOf('The adopted plan totals')).toBeLessThan(body.indexOf('Total adopted plan'));
     expect(body.indexOf('Total adopted plan')).toBeLessThan(body.indexOf('Why this matters'));
     expect(body.indexOf('Why this matters')).toBeLessThan(body.indexOf('Adopted plan</h3>'));

@@ -62,6 +62,34 @@ function maxWords(value: string, maximum: number, context: string, path: string)
   if (wordCount(value) > maximum) fail(context, path, `expected no more than ${maximum} words`);
 }
 
+function validateSourceLinks(
+  value: unknown,
+  context: string,
+  path: string,
+): NonNullable<DashboardContext['sourceLinks']> {
+  if (value === undefined) return [];
+  if (!Array.isArray(value)) fail(context, path, 'expected an array');
+  if (value.length === 0 || value.length > 3) {
+    fail(context, path, 'expected one to three official source links');
+  }
+
+  const seen = new Set<string>();
+  return value.map((rawLink, index) => {
+    const linkPath = `${path}[${index}]`;
+    const link = objectValue(rawLink, context, linkPath);
+    const text = stringValue(link.text, context, `${linkPath}.text`);
+    const href = stringValue(link.href, context, `${linkPath}.href`);
+    if (!href.startsWith('https://')) {
+      fail(context, `${linkPath}.href`, 'expected an https URL');
+    }
+    if (seen.has(href)) {
+      fail(context, `${linkPath}.href`, `duplicate URL "${href}"`);
+    }
+    seen.add(href);
+    return { text, href };
+  });
+}
+
 function validateContext(value: unknown, context: string, path: string): DashboardContext {
   const item = objectValue(value, context, path);
   const scope = stringValue(item.scope, context, `${path}.scope`);
@@ -74,7 +102,13 @@ function validateContext(value: unknown, context: string, path: string): Dashboa
     );
   }
   const asOf = stringValue(item.asOf, context, `${path}.asOf`);
-  return { scope, status: status as DashboardStatus, asOf };
+  const sourceLinks = validateSourceLinks(item.sourceLinks, context, `${path}.sourceLinks`);
+  return {
+    scope,
+    status: status as DashboardStatus,
+    asOf,
+    ...(sourceLinks.length ? { sourceLinks } : {}),
+  };
 }
 
 function validateAction(value: unknown, context: string, path: string): DashboardAction {

@@ -77,6 +77,9 @@ const completeClarity = {
     scope: 'City of Burton',
     status: 'planned',
     asOf: 'FY2026–27 adopted plan',
+    sourceLinks: [
+      { text: '2026-27 Approved Budget', href: 'https://example.gov/budget' },
+    ],
   },
   headline: 'The adopted plan directs the largest share of spending to public services.',
   summary: {
@@ -198,6 +201,25 @@ describe('validateInfoPanel', () => {
 });
 
 describe('dashboard clarity contract', () => {
+  it('gives every committed dashboard one to three curated official sources', () => {
+    const raw = JSON.parse(readFileSync('public/dashboard-clarity.json', 'utf-8'));
+    const clarity = validateDashboardClarityMap(raw, dashboardIds);
+
+    for (const id of dashboardIds) {
+      const links = clarity[id].context.sourceLinks;
+      if (!links) throw new Error(`Missing official sources for ${id}`);
+      expect(links.length).toBeGreaterThanOrEqual(1);
+      expect(links.length).toBeLessThanOrEqual(3);
+      expect(new Set(links.map(({ href }) => href)).size).toBe(links.length);
+      expect(links.every(({ href }) => href.startsWith('https://'))).toBe(true);
+    }
+
+    expect(clarity.finances.context.sourceLinks).toContainEqual({
+      text: '2026-27 Approved Budget',
+      href: 'https://www.burtonmi.gov/government/controller_s_office/budgets.php',
+    });
+  });
+
   it('enriches a raw panel with stable ids before applying display overrides', () => {
     const clarity = {
       ...completeClarity,
@@ -236,6 +258,68 @@ describe('dashboard clarity contract', () => {
 
     expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
       /example.*context\.status.*current.*historical.*modeled.*planned.*reference/i,
+    );
+  });
+
+  it('preserves curated official source links in dashboard context', () => {
+    const validated = validateDashboardClarityMap({ example: completeClarity }, ['example']);
+
+    expect(validated.example.context.sourceLinks).toEqual([
+      { text: '2026-27 Approved Budget', href: 'https://example.gov/budget' },
+    ]);
+  });
+
+  it('rejects a dashboard source link without an https destination', () => {
+    const invalid = {
+      example: {
+        ...completeClarity,
+        context: {
+          ...completeClarity.context,
+          sourceLinks: [{ text: 'Unsafe source', href: 'http://example.gov/data' }],
+        },
+      },
+    };
+
+    expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
+      /example.*context\.sourceLinks\[0\]\.href.*https/i,
+    );
+  });
+
+  it('rejects more than three dashboard source links', () => {
+    const invalid = {
+      example: {
+        ...completeClarity,
+        context: {
+          ...completeClarity.context,
+          sourceLinks: ['one', 'two', 'three', 'four'].map((text) => ({
+            text,
+            href: `https://example.gov/${text}`,
+          })),
+        },
+      },
+    };
+
+    expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
+      /example.*context\.sourceLinks.*three/i,
+    );
+  });
+
+  it('rejects duplicate dashboard source URLs', () => {
+    const invalid = {
+      example: {
+        ...completeClarity,
+        context: {
+          ...completeClarity.context,
+          sourceLinks: [
+            { text: 'First label', href: 'https://example.gov/data' },
+            { text: 'Second label', href: 'https://example.gov/data' },
+          ],
+        },
+      },
+    };
+
+    expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
+      /example.*context\.sourceLinks\[1\]\.href.*duplicate/i,
     );
   });
 
