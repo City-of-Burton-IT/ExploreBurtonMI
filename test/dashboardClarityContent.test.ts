@@ -120,4 +120,37 @@ describe('committed dashboard clarity content', () => {
     expect(cityRate?.value).toBe('13.44 mills');
     expect(cityRate?.hint).toContain('components round to 13.43');
   });
+
+  it('uses verified resident-service destinations for high-value actions', () => {
+    const panels = enrichedPanels();
+    expect(panels.zoning.action).toEqual({
+      kind: 'link',
+      text: 'Contact the Burton Zoning Division',
+      href: 'https://www.burtonmi.gov/departments/department_of_public_works/zoning_division.php',
+    });
+    expect(panels.water.action).toEqual({
+      kind: 'link',
+      text: "Read Burton's 2025 water quality report",
+      href: 'https://www.burtonmi.gov/departments/department_of_public_works/water_testing.php',
+    });
+    expect(panels.environment.action?.href).toBe(
+      'https://www.airnow.gov/?city=Burton&state=MI&country=USA',
+    );
+    expect(panels.seniorcenter.action?.href).toBe(
+      'https://www.burtonmi.gov/departments/senior_activity_center/index.php',
+    );
+    expect(panels.roads.action).toEqual({
+      kind: 'link',
+      text: 'Report a road issue to Burton',
+      href: 'https://www.burtonmi.gov/citizen_request_center/index.php',
+    });
+
+    expect(panels.propertytax.action?.href).toBe('#propertytax');
+    expect(panels.parks.action?.href).toBe('#map');
+    expect(panels.trails.action?.href).toBe('#map');
+    expect(panels.publicsafety.action).toEqual({
+      kind: 'none',
+      text: 'Call 911 for an emergency.',
+    });
+  });
 });

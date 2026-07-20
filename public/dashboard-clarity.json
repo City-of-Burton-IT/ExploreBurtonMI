@@ -204,7 +204,7 @@
     "action": {
       "kind": "link",
       "text": "Contact the Burton Zoning Division",
-      "href": "https://www.burtonmi.gov/government/planning___zoning/index.php"
+      "href": "https://www.burtonmi.gov/departments/department_of_public_works/zoning_division.php"
     },
     "statOverrides": {
       "Zoned acres": { "priority": true },
@@ -521,8 +521,8 @@
     "responsibility": "Burton operates the local distribution system and purchases treated surface water. EPA and state regulators set standards and record compliance; household plumbing can affect tap results.",
     "action": {
       "kind": "link",
-      "text": "Check Burton water services",
-      "href": "https://www.burtonmi.gov/government/public_works/water_and_sewer/index.php"
+      "text": "Read Burton's 2025 water quality report",
+      "href": "https://www.burtonmi.gov/departments/department_of_public_works/water_testing.php"
     },
     "statOverrides": {
       "Service connections": { "priority": true },
@@ -561,7 +561,7 @@
     "action": {
       "kind": "link",
       "text": "Check today's AirNow conditions",
-      "href": "https://www.airnow.gov/"
+      "href": "https://www.airnow.gov/?city=Burton&state=MI&country=USA"
     },
     "statOverrides": {
       "Good air-quality days": { "priority": true, "hint": "252 of 303 monitored days, 2025" },
@@ -687,7 +687,7 @@
     "action": {
       "kind": "link",
       "text": "See Senior Center programs",
-      "href": "https://www.burtonmi.gov/government/senior_center/index.php"
+      "href": "https://www.burtonmi.gov/departments/senior_activity_center/index.php"
     },
     "statOverrides": {
       "Members served": { "priority": true },
@@ -813,8 +813,8 @@
     "responsibility": "Road ownership and maintenance can belong to Burton, Genesee County, or the State. Project responsibility must be checked for the specific segment.",
     "action": {
       "kind": "link",
-      "text": "See funded capital road projects",
-      "href": "#capital"
+      "text": "Report a road issue to Burton",
+      "href": "https://www.burtonmi.gov/citizen_request_center/index.php"
     },
     "statOverrides": {
       "Rated road-miles": { "priority": true },
