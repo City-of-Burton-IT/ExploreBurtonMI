@@ -1,13 +1,13 @@
 <script lang="ts">
   import type { InfoPanel } from './types';
   import StatCard from './StatCard.svelte';
-  import InfoTable from './InfoTable.svelte';
   import TaxEstimator from './TaxEstimator.svelte';
   import InfoHeader from './InfoHeader.svelte';
   import InfoExplainer from './InfoExplainer.svelte';
   import DashboardNav from './DashboardNav.svelte';
-  import DashboardChart from './dashboard/DashboardChart.svelte';
   import DashboardFooter from './dashboard/DashboardFooter.svelte';
+  import DashboardHeadline from './dashboard/DashboardHeadline.svelte';
+  import DashboardSection from './dashboard/DashboardSection.svelte';
   import DashboardSummary from './dashboard/DashboardSummary.svelte';
   import type { DashboardItem } from './store.svelte';
 
@@ -31,6 +31,12 @@
     next?: DashboardItem | null;
   } = $props();
 
+  function byIds<T extends { id?: string }>(items: T[], ids: string[] | undefined): T[] {
+    if (!ids?.length) return [];
+    const lookup = new Map(items.map((item) => [item.id, item]));
+    return ids.map((id) => lookup.get(id)).filter((item): item is T => item !== undefined);
+  }
+
 </script>
 
 <section class="info" aria-label={panel?.title ?? 'Information'}>
@@ -51,7 +57,12 @@
       subtitle={panel.subtitle || description}
       {group}
       logo={panel.logo}
+      context={panel.context}
     />
+
+    {#if panel.headline}
+      <DashboardHeadline headline={panel.headline} />
+    {/if}
 
     {#if panel.draft}
       <p class="draft" role="note">
@@ -63,36 +74,36 @@
       </p>
     {/if}
 
-    {#if panel.summary?.body?.length}
-      <DashboardSummary summary={panel.summary} />
-    {/if}
-
-    {#if panel.stats?.length}
-      <div class="stats">
-        {#each panel.stats as stat (stat.label)}
+    {@const priorityStats = panel.stats.filter((stat) => stat.priority)}
+    {#if priorityStats.length}
+      <div class="priority-stats" aria-label="Key facts">
+        {#each priorityStats as stat (stat.id)}
           <StatCard {stat} />
         {/each}
       </div>
+    {/if}
+
+    {#if panel.summary?.body?.length && panel.responsibility && panel.action}
+      <DashboardSummary
+        summary={panel.summary}
+        responsibility={panel.responsibility}
+        action={panel.action}
+      />
     {/if}
 
     {#if panel.estimator?.districts?.length}
       <TaxEstimator data={panel.estimator} />
     {/if}
 
-    {#if panel.charts?.length}
-      <div class="charts">
-        {#each panel.charts as chart (chart.title)}
-          <DashboardChart {chart} />
-        {/each}
-      </div>
-    {/if}
-
-    {#if panel.tables?.length}
-      <div class="tables">
-        {#each panel.tables as table (table.title)}
-          <InfoTable {table} />
-        {/each}
-      </div>
+    {#if panel.sections?.length}
+      {#each panel.sections as section (section.heading)}
+        <DashboardSection
+          {section}
+          stats={byIds(panel.stats, section.stats)}
+          charts={byIds(panel.charts, section.charts)}
+          tables={byIds(panel.tables ?? [], section.tables)}
+        />
+      {/each}
     {/if}
 
     {#if panel.explainer?.items?.length}
@@ -160,21 +171,11 @@
     font-size: 0.88rem;
     margin: 0 0 1.1rem;
   }
-  .stats {
+  .priority-stats {
     display: grid;
     grid-template-columns: repeat(auto-fit, minmax(160px, 1fr));
     gap: 0.8rem;
     margin-bottom: 1.4rem;
-  }
-  .charts {
-    display: grid;
-    grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
-    gap: 1.4rem 2rem;
-  }
-  .tables {
-    display: grid;
-    gap: 1.4rem;
-    margin-top: 1.6rem;
   }
   .ex-intro {
     margin: 0 0 0.7rem;
@@ -212,7 +213,13 @@
     .info {
       padding: 1.1rem 1.1rem 2rem;
     }
-    .charts {
+    .priority-stats {
+      grid-template-columns: repeat(2, minmax(0, 1fr));
+      gap: 0.6rem;
+    }
+  }
+  @media (max-width: 390px) {
+    .priority-stats {
       grid-template-columns: 1fr;
     }
   }

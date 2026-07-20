@@ -36,6 +36,7 @@
 
 <figure class="chart">
   <figcaption>{chart.title}</figcaption>
+  {#if chart.takeaway}<p class="takeaway">{chart.takeaway}</p>{/if}
   {#if kind === 'donut'}
     <Donut series={chart.series ?? []} unit={chart.unit} />
   {:else if kind === 'bars'}
@@ -85,6 +86,12 @@
     margin-bottom: 0.7rem;
     padding-left: 0.5rem;
     border-left: 3px solid var(--civic-blue, #2c57a0);
+  }
+  .takeaway {
+    margin: -0.25rem 0 0.65rem 0.5rem;
+    color: var(--pub-muted);
+    font-size: 0.84rem;
+    line-height: 1.4;
   }
   .data-table {
     margin-top: 0.6rem;

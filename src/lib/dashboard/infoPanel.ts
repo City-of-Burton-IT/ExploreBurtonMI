@@ -1,6 +1,7 @@
 import type {
   CompareRow,
   CompareValue,
+  DashboardAction,
   DashboardClarity,
   EstimatorDistrict,
   InfoChart,
@@ -10,6 +11,7 @@ import type {
   InfoLink,
   InfoPanel,
   InfoSeriesItem,
+  InfoSection,
   InfoStat,
   InfoSummary,
   InfoTable,
@@ -19,6 +21,7 @@ import type {
 export type {
   CompareRow,
   CompareValue,
+  DashboardAction,
   DashboardClarity,
   EstimatorDistrict,
   InfoChart,
@@ -28,6 +31,7 @@ export type {
   InfoLink,
   InfoPanel,
   InfoSeriesItem,
+  InfoSection,
   InfoStat,
   InfoSummary,
   InfoTable,
