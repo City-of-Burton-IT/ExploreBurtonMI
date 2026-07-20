@@ -12,6 +12,12 @@ def test_city_components_sum_to_total():
     assert abs((pt.CITY_GENERAL + pt.CITY_POLICE + pt.CITY_FIRE) - pt.CITY_TOTAL) <= 0.02
 
 
+def test_city_component_rounding_is_explicit():
+    assert round(pt.CITY_GENERAL + pt.CITY_POLICE + pt.CITY_FIRE, 2) == 13.43
+    assert pt.CITY_TOTAL == 13.44
+    assert pt.CITY_COMPONENT_ROUNDING_NOTE == "ACFR total; displayed components round to 13.43"
+
+
 def test_breakdown_reconciles_to_homestead_total():
     uniform = pt.CITY_TOTAL + pt.COUNTY + pt.MOTT + pt.ISD + pt.MTA + pt.AIRPORT
     schools_set = round(pt.HOMESTEAD_TOTAL - uniform, 2)

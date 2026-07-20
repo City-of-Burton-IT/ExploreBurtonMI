@@ -55,6 +55,7 @@ PROGRAMS = [
     ("Social services", 2447),
     ("Outreach", 1934),
     ("Education", 1409),
+    ("Other / uncategorized", 68),
 ]
 
 # Average daily attendance by month (avg per open day).
