@@ -7,19 +7,47 @@ sys.path.insert(0, os.path.dirname(__file__))
 import build_propertytax as pt  # noqa: E402
 
 
-def test_city_components_sum_to_total():
-    # Allow 0.01 for the ACFR's rounding of the three component mills.
-    assert abs((pt.CITY_GENERAL + pt.CITY_POLICE + pt.CITY_FIRE) - pt.CITY_TOTAL) <= 0.02
+def test_fy2026_27_city_levies_match_adopted_budget():
+    assert pt.CITY_GENERAL == 4.0000
+    assert pt.CITY_POLICE == 8.3159
+    assert pt.CITY_FIRE == 0.9789
+    assert pt.CITY_TOTAL == 13.2948
+    assert pt.VOTER_APPROVED_TOTAL == 9.2948
 
 
-def test_city_component_rounding_is_explicit():
-    assert round(pt.CITY_GENERAL + pt.CITY_POLICE + pt.CITY_FIRE, 2) == 13.43
-    assert pt.CITY_TOTAL == 13.44
-    assert pt.CITY_COMPONENT_ROUNDING_NOTE == "ACFR total; displayed components round to 13.43"
+def test_city_levies_have_unique_ids_and_exact_authorization():
+    assert len({levy["id"] for levy in pt.CITY_LEVIES}) == 3
+    assert [levy["authorization"] for levy in pt.CITY_LEVIES] == [
+        "City Charter",
+        "Voter approved",
+        "Voter approved",
+    ]
+    assert round(sum(levy["mills"] for levy in pt.CITY_LEVIES), 4) == pt.CITY_TOTAL
+    assert round(
+        sum(levy["mills"] for levy in pt.CITY_LEVIES if levy["voterApproved"]),
+        4,
+    ) == pt.VOTER_APPROVED_TOTAL
+
+
+def test_estimator_separates_city_and_complete_bill_periods():
+    estimator = pt.build_estimator()
+    assert estimator["cityRatePeriod"] == "FY2026-27 adopted levy"
+    assert estimator["fullBillRatePeriod"] == "2025 published rates"
+    assert estimator["cityMills"] == 13.2948
+    assert estimator["cityLevies"] == pt.CITY_LEVIES
+    assert "countyMills" not in estimator
 
 
 def test_breakdown_reconciles_to_homestead_total():
-    uniform = pt.CITY_TOTAL + pt.COUNTY + pt.MOTT + pt.ISD + pt.MTA + pt.AIRPORT
+    assert pt.PUBLISHED_2025_CITY_TOTAL == 13.44
+    uniform = (
+        pt.PUBLISHED_2025_CITY_TOTAL
+        + pt.COUNTY
+        + pt.MOTT
+        + pt.ISD
+        + pt.MTA
+        + pt.AIRPORT
+    )
     schools_set = round(pt.HOMESTEAD_TOTAL - uniform, 2)
     assert schools_set > 0  # the remainder must be a real, positive slice
     assert abs((uniform + schools_set) - pt.HOMESTEAD_TOTAL) < 0.001
