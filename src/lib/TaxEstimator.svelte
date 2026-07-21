@@ -330,6 +330,7 @@
   .numeric {
     text-align: right;
     font-variant-numeric: tabular-nums;
+    white-space: nowrap;
   }
   tfoot th,
   tfoot td {
@@ -386,6 +387,18 @@
     .complete-total {
       align-items: flex-start;
       text-align: left;
+    }
+    .service-col {
+      width: 29%;
+    }
+    .authorization-col {
+      width: 24%;
+    }
+    .mills-col {
+      width: 20%;
+    }
+    .amount-col {
+      width: 27%;
     }
     th,
     td {
