@@ -25,6 +25,9 @@
   const cityTotal = $derived(taxForMills(safeTaxableValue, data.cityMills));
   const voterMills = $derived(sumLevyMills(data.cityLevies, true));
   const voterTotal = $derived(taxForMills(safeTaxableValue, voterMills));
+  const hasReconciliationRow = $derived(
+    data.cityLevies.some((levy) => levy.id === 'l4029-reconciliation'),
+  );
   const completeBillTotal = $derived(taxForMills(safeTaxableValue, totalRate));
   const rowCents = $derived(
     cityRows.reduce((sum, row) => sum + roundedCents(row.amount), 0),
@@ -39,14 +42,16 @@
     maximumFractionDigits: 2,
   });
   const fmtCurrency = (value: number) => currency.format(roundedCents(value) / 100);
-  const fmtMills = (value: number) => value.toFixed(4);
+  const fmtComponentMills = (value: number) => value.toFixed(4);
+  const fmtTotalMills = (value: number) => value.toFixed(1);
 </script>
 
 <div class="estimator">
   <h3>Estimate your tax bill</h3>
   <p class="lead">
     Enter the <strong>taxable value</strong> from your assessment notice. The first result shows
-    exactly how the adopted City levy supports City services; the second estimates your complete bill.
+    the provisional City amount using the last supported rate. Its service rows use the
+    FY2026-27 Approved Budget and keep the L-4029 reconciliation difference visible.
   </p>
 
   <div class="controls">
@@ -97,7 +102,7 @@
       <thead>
         <tr>
           <th scope="col">City service</th>
-          <th scope="col">Who authorized it</th>
+          <th scope="col">Source / status</th>
           <th scope="col">Mills</th>
           <th scope="col">Your annual amount</th>
         </tr>
@@ -110,7 +115,7 @@
               <span class="description">{levy.description}</span>
             </th>
             <td><span class="authorization">{levy.authorization}</span></td>
-            <td class="numeric">{fmtMills(levy.mills)}</td>
+            <td class="numeric">{fmtComponentMills(levy.mills)}</td>
             <td class="numeric amount">{fmtCurrency(levy.amount)}</td>
           </tr>
         {/each}
@@ -118,7 +123,7 @@
       <tfoot>
         <tr>
           <th scope="row" colspan="2">City of Burton total</th>
-          <td class="numeric">{fmtMills(data.cityMills)}</td>
+          <td class="numeric">{fmtTotalMills(data.cityMills)}</td>
           <td class="numeric amount">{fmtCurrency(cityTotal)}</td>
         </tr>
       </tfoot>
@@ -130,10 +135,19 @@
       </p>
     {/if}
 
-    <p class="voter-takeaway">
-      Police and Fire account for <strong>{fmtMills(voterMills)} voter-approved mills</strong>,
-      or <strong>{fmtCurrency(voterTotal)}</strong> of this City estimate.
-    </p>
+    {#if hasReconciliationRow}
+      <p class="reconciliation-note">
+        The current sources do not yet identify how the 0.1452-mill difference is allocated.
+        It is shown separately instead of being assigned to Police, Fire, or general operations.
+      </p>
+    {/if}
+
+    {#if voterMills > 0}
+      <p class="voter-takeaway">
+        Police and Fire account for <strong>{fmtComponentMills(voterMills)} voter-approved mills</strong>,
+        or <strong>{fmtCurrency(voterTotal)}</strong> of this City estimate.
+      </p>
+    {/if}
   </section>
 
   <section class="complete-result" aria-labelledby="complete-tax-heading">
@@ -188,6 +202,7 @@
   .complete-result > div:first-child p,
   .description,
   .rounding-note,
+  .reconciliation-note,
   .fineprint {
     color: var(--pub-muted);
   }
@@ -353,6 +368,12 @@
   .rounding-note {
     margin: 0.5rem 0 0;
     font-size: 0.72rem;
+  }
+  .reconciliation-note {
+    margin: 0.65rem 0 0;
+    color: var(--pub-muted);
+    font-size: 0.78rem;
+    line-height: 1.4;
   }
   .fineprint {
     margin: 0.8rem 0 0;
