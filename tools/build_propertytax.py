@@ -1,11 +1,9 @@
 """Build public/info-propertytax.json: the Property Taxes dashboard.
 
 Answers the question residents actually ask: "when I pay my property tax bill,
-where does the money go?" The key, often-surprising answer is that most of a
-Burton tax bill does NOT go to the City: the City levies about 13.44 mills
-(roughly 29% of a typical homestead bill); the largest single piece is Genesee
-County, and the rest funds schools, the State Education Tax, the ISD, Mott
-Community College, public transit, and the airport.
+where does the money go?" It presents the adopted City levy by service and
+keeps the separately dated complete-bill estimate distinct so residents are
+not shown arithmetic that mixes different source periods.
 
 Figures are held as documented constants from authoritative public sources and
 refreshed yearly:
@@ -36,12 +34,47 @@ from lib.paths import public_path
 
 OUT = public_path("info-propertytax.json")
 
-# --- City of Burton's own millage (tax year 2025 / FY2026, from the ACFR) --------
-CITY_GENERAL = 4.00
-CITY_POLICE = 8.44
-CITY_FIRE = 0.99
-CITY_TOTAL = 13.44   # ACFR "Total direct City taxes" (rounding of the three above)
-CITY_COMPONENT_ROUNDING_NOTE = "ACFR total; displayed components round to 13.43"
+# --- City of Burton FY2026-27 adopted levy (Approved Budget, Tax Millage) --------
+CITY_RATE_PERIOD = "FY2026-27 adopted levy"
+FULL_BILL_RATE_PERIOD = "2025 published rates"
+
+CITY_GENERAL = 4.0000
+CITY_POLICE = 8.3159
+CITY_FIRE = 0.9789
+CITY_TOTAL = round(CITY_GENERAL + CITY_POLICE + CITY_FIRE, 4)
+VOTER_APPROVED_TOTAL = round(CITY_POLICE + CITY_FIRE, 4)
+
+# The latest complete published district totals are still 2025. Use their City
+# component only for the 2025 authority chart; never subtract the adopted levy
+# from a 2025 complete-bill total.
+PUBLISHED_2025_CITY_TOTAL = 13.44
+
+CITY_LEVIES = [
+    {
+        "id": "general-operating",
+        "service": "General city operations",
+        "authorization": "City Charter",
+        "description": "Supports general municipal services provided by the City.",
+        "mills": CITY_GENERAL,
+        "voterApproved": False,
+    },
+    {
+        "id": "police",
+        "service": "Police services",
+        "authorization": "Voter approved",
+        "description": "Supports Police Department staffing and operations.",
+        "mills": CITY_POLICE,
+        "voterApproved": True,
+    },
+    {
+        "id": "fire",
+        "service": "Fire services",
+        "authorization": "Voter approved",
+        "description": "Supports Fire Department services and operations.",
+        "mills": CITY_FIRE,
+        "voterApproved": True,
+    },
+]
 
 # --- Overlapping authorities, homestead, uniform across Burton (ACFR p.118) ------
 COUNTY = 17.46       # Genesee County (operating, parks, library, health, paramedics, ...)
@@ -76,30 +109,56 @@ CITY_MILLAGE_HISTORY = [
 EXAMPLE_TAXABLE = 50_000  # a ~$100k market-value homesteaded home
 
 
-def main() -> int:
-    uniform = CITY_TOTAL + COUNTY + MOTT + ISD + MTA + AIRPORT
-    schools_set = round(HOMESTEAD_TOTAL - uniform, 2)  # remainder = schools + State Ed
-    city_share = round(CITY_TOTAL / HOMESTEAD_TOTAL * 100)
+def build_estimator() -> dict:
+    return {
+        "cityRatePeriod": CITY_RATE_PERIOD,
+        "fullBillRatePeriod": FULL_BILL_RATE_PERIOD,
+        "cityMills": CITY_TOTAL,
+        "cityLevies": CITY_LEVIES,
+        "districts": [
+            {"name": name, "homestead": hs, "nonHomestead": nhs}
+            for name, hs, nhs in DISTRICT_RATES
+        ],
+    }
 
-    city_dollars = round(CITY_TOTAL * EXAMPLE_TAXABLE / 1000)
+
+def main() -> int:
+    uniform = PUBLISHED_2025_CITY_TOTAL + COUNTY + MOTT + ISD + MTA + AIRPORT
+    schools_set = round(HOMESTEAD_TOTAL - uniform, 2)  # remainder = schools + State Ed
+
+    city_dollars = CITY_TOTAL * EXAMPLE_TAXABLE / 1000
     lo_total = round(DISTRICT_HOMESTEAD[0][1] * EXAMPLE_TAXABLE / 1000)
     hi_total = round(DISTRICT_HOMESTEAD[-1][1] * EXAMPLE_TAXABLE / 1000)
 
     stats = [
-        {"label": "City of Burton's rate", "value": f"{CITY_TOTAL:.2f} mills",
-         "hint": (f"General {CITY_GENERAL:.2f} + Police {CITY_POLICE:.2f} + Fire {CITY_FIRE:.2f}; "
-                  f"{CITY_COMPONENT_ROUNDING_NOTE}")},
-        {"label": "City's share of your bill", "value": f"~{city_share}%",
-         "hint": "the rest goes to county, schools & others"},
-        {"label": "City tax on a $50k-taxable home", "value": f"${city_dollars:,}/yr",
-         "hint": "about a $100,000 market-value home"},
-        {"label": "School districts in Burton", "value": "7",
-         "hint": "your total rate depends on which"},
+        {
+            "label": "City of Burton's rate",
+            "value": f"{CITY_TOTAL:.4f} mills",
+            "hint": (
+                f"General {CITY_GENERAL:.4f} + Police {CITY_POLICE:.4f} "
+                f"+ Fire {CITY_FIRE:.4f}"
+            ),
+        },
+        {
+            "label": "Voter-approved City millages",
+            "value": f"{VOTER_APPROVED_TOTAL:.4f} mills",
+            "hint": "Police and Fire levies approved by Burton voters",
+        },
+        {
+            "label": "City tax on a $50k-taxable home",
+            "value": f"${round(city_dollars):,}/yr",
+            "hint": "FY2026-27 adopted City levy; about a $100,000 market-value home",
+        },
+        {
+            "label": "School districts in Burton",
+            "value": "7",
+            "hint": "2025 complete-bill rates vary by district",
+        },
     ]
 
     breakdown = [
         ("Genesee County", COUNTY, "#c0392b"),
-        ("City of Burton", CITY_TOTAL, "#2c57a0"),
+        ("City of Burton", PUBLISHED_2025_CITY_TOTAL, "#2c57a0"),
         ("Schools & State Education", schools_set, "#e08a00"),
         ("Genesee ISD", ISD, "#7e57c2"),
         ("Mott Community College", MOTT, "#00897b"),
@@ -108,39 +167,37 @@ def main() -> int:
     ]
 
     charts = [
-        {"type": "bars", "title": "Where a typical homestead tax bill goes (mills)", "unit": "",
+        {"type": "bars", "title": "Where a typical 2025 homestead tax bill went (mills)", "unit": "",
          "series": [{"label": lbl, "value": v, "color": c} for lbl, v, c in breakdown]},
         {"type": "bars", "title": "Total homestead tax rate by school district (mills)", "unit": "",
          "series": [{"label": lbl, "value": v} for lbl, v in DISTRICT_HOMESTEAD]},
-        {"type": "trend", "title": "City of Burton's own millage, last 10 years", "unit": "",
+        {"type": "trend", "title": "Reported City millage, FY2017-FY2026", "unit": "",
          "points": [{"x": yr, "y": v} for yr, v in CITY_MILLAGE_HISTORY]},
     ]
 
     summary = {
         "heading": "What this means for you",
         "body": [
-            f"When you pay your property tax bill, most of it does not go to the City of Burton. "
-            f"The City levies {CITY_TOTAL:.2f} mills, about {city_share}% of a typical owner-occupied "
-            "(homestead) bill. The single largest piece is Genesee County; the rest funds your school "
-            "district, the State Education Tax, the Genesee ISD, Mott Community College, public transit, "
-            "and the airport.",
-            f"What you actually pay depends on your home's taxable value and which of Burton's 7 school "
-            f"districts you live in. On a home with ${EXAMPLE_TAXABLE:,} of taxable value (about a "
-            f"$100,000 market value), the City's share is roughly ${city_dollars:,} a year; your full bill, "
-            f"county and schools included, runs about ${lo_total:,}-${hi_total:,} depending on district.",
-            "The reported City rate is lower than at the start of the displayed period and has been "
-            "flat in recent years.",
+            (
+                f"Burton's FY2026-27 adopted City levy is {CITY_TOTAL:.4f} mills. "
+                f"Of that, {VOTER_APPROVED_TOTAL:.4f} mills are voter-approved Police "
+                f"and Fire levies; {CITY_GENERAL:.4f} mills support general City operations "
+                "under the City Charter."
+            ),
+            (
+                f"At ${EXAMPLE_TAXABLE:,} of taxable value, the City portion is about "
+                f"${round(city_dollars):,} a year. The latest complete published bill rates "
+                f"are from 2025 and range from about ${lo_total:,} to ${hi_total:,} at that "
+                "taxable value, depending on school district."
+            ),
+            (
+                "County, schools, the State, ISD, college, transit, airport, and other "
+                "authorities receive their own portions; those amounts do not become City revenue."
+            ),
         ],
     }
 
-    estimator = {
-        "cityMills": CITY_TOTAL,
-        "countyMills": COUNTY,
-        "districts": [
-            {"name": name, "homestead": hs, "nonHomestead": nhs}
-            for name, hs, nhs in DISTRICT_RATES
-        ],
-    }
+    estimator = build_estimator()
 
     panel = {
         "title": "Property Taxes",
@@ -150,33 +207,50 @@ def main() -> int:
         "stats": stats,
         "charts": charts,
         "source": (
-            "City of Burton audited financial statements (ACFR), Statistical Section: Direct and "
-            "Overlapping Property Tax Rates (Genesee County Apportionment Report); and Michigan "
-            "Department of Treasury, 2025 Total Property Tax Rates in Michigan."
+            "City of Burton FY2026-27 Approved Budget, Tax Millage; Michigan Department "
+            "of Treasury, 2025 Total Property Tax Rates in Michigan; and City of Burton "
+            "audited financial statements for the historical rate series."
         ),
         "links": [
+            {
+                "text": "City of Burton 2026-27 Approved Budget",
+                "href": "https://www.burtonmi.gov/government/controller_s_office/budgets.php",
+            },
+            {
+                "text": "Genesee County L-4029 information",
+                "href": "https://www.geneseecountymi.gov/departments/equalization/l-4029_information.php",
+            },
+            {
+                "text": "Michigan property-tax estimator",
+                "href": "https://www.michigan.gov/taxes/property/estimator",
+            },
             {"text": "City Finances dashboard", "href": "#finances"},
-            {"text": "Genesee County Equalization (L-4029)",
-             "href": "https://www.geneseecountymi.gov/departments/equalization/l-4029_information.php"},
         ],
         "notes": [
-            "Rates are in mills: dollars per $1,000 of TAXABLE value, which is usually about half of a "
-            "home's market value. The breakdown is for a typical HOMESTEAD (owner-occupied) home; "
-            "non-homestead/rental property pays about 18 mills more, almost all to schools.",
-            "The City of Burton only sets and keeps the City portion (General, Police, Fire). Every other "
-            "line is set by and sent to the county, schools, ISD, college, transit, or airport. The school "
-            "amount varies by which of Burton's 7 districts you are in, so the \"Schools & State Education\" "
-            "slice is the remainder for a representative district; the full per-authority split for your "
-            "exact parcel is in the Genesee County Apportionment Report (L-4029).",
-            "Source: City of Burton ACFR (FY2025) and Michigan Treasury 2025 Total Property Tax Rates. "
-            "Public data; not a calculation of any individual tax bill.",
+            (
+                "One mill is $1 per $1,000 of taxable value. Taxable value is shown on the "
+                "assessment notice and is not the same as market value."
+            ),
+            (
+                "The City service table uses the FY2026-27 adopted City levy. The complete-bill "
+                "district estimate and authority chart use 2025 published rates; the two periods "
+                "are shown separately and are not subtracted from one another."
+            ),
+            (
+                "Estimate only. Actual bills can differ because of exact parcel values, exemptions, "
+                "special assessments, administrative fees, and a possible Downtown Development "
+                "Authority levy for affected parcels. Not a tax statement."
+            ),
         ],
     }
 
     write_json(OUT, panel)
     print(f"Wrote {OUT}")
-    print(f"  city {CITY_TOTAL} mills ({city_share}% of {HOMESTEAD_TOTAL}); schools+SET remainder {schools_set}")
-    print(f"  city $ on ${EXAMPLE_TAXABLE:,} taxable = ${city_dollars:,}; full bill ${lo_total:,}-${hi_total:,}")
+    print(
+        f"  FY2026-27 City {CITY_TOTAL:.4f} mills; "
+        f"voter-approved {VOTER_APPROVED_TOTAL:.4f} mills"
+    )
+    print(f"  2025 complete-bill districts: {len(DISTRICT_RATES)}")
     return 0
 
 

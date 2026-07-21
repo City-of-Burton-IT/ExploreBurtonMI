@@ -3,6 +3,7 @@ import type {
   CompareValue,
   DashboardAction,
   DashboardClarity,
+  EstimatorCityLevy,
   EstimatorDistrict,
   InfoChart,
   InfoEstimator,
@@ -23,6 +24,7 @@ export type {
   CompareValue,
   DashboardAction,
   DashboardClarity,
+  EstimatorCityLevy,
   EstimatorDistrict,
   InfoChart,
   InfoEstimator,
@@ -82,6 +84,17 @@ function numberValue(value: unknown, context: string, path: string): number {
   if (typeof value !== 'number' || !Number.isFinite(value)) {
     fail(context, path, 'expected a finite number');
   }
+  return value;
+}
+
+function nonNegativeNumber(value: unknown, context: string, path: string): number {
+  const number = numberValue(value, context, path);
+  if (number < 0) fail(context, path, 'expected a non-negative number');
+  return number;
+}
+
+function booleanValue(value: unknown, context: string, path: string): boolean {
+  if (typeof value !== 'boolean') fail(context, path, 'expected a boolean');
   return value;
 }
 
@@ -280,15 +293,38 @@ function validateExplainer(value: unknown, context: string, path: string): void 
 
 function validateEstimator(value: unknown, context: string, path: string): void {
   const estimator = objectValue(value, context, path) as Partial<InfoEstimator>;
-  numberValue(estimator.cityMills, context, `${path}.cityMills`);
-  numberValue(estimator.countyMills, context, `${path}.countyMills`);
+  stringValue(estimator.cityRatePeriod, context, `${path}.cityRatePeriod`);
+  stringValue(estimator.fullBillRatePeriod, context, `${path}.fullBillRatePeriod`);
+  const cityMills = nonNegativeNumber(estimator.cityMills, context, `${path}.cityMills`);
+  const cityLevies = arrayValue(estimator.cityLevies, context, `${path}.cityLevies`);
+  if (cityLevies.length === 0) {
+    fail(context, `${path}.cityLevies`, 'expected at least one levy');
+  }
+  cityLevies.forEach((item, index) => {
+    const levyPath = `${path}.cityLevies[${index}]`;
+    const levy = objectValue(item, context, levyPath) as Partial<EstimatorCityLevy>;
+    stringValue(levy.id, context, `${levyPath}.id`);
+    stringValue(levy.service, context, `${levyPath}.service`);
+    stringValue(levy.authorization, context, `${levyPath}.authorization`);
+    stringValue(levy.description, context, `${levyPath}.description`);
+    nonNegativeNumber(levy.mills, context, `${levyPath}.mills`);
+    booleanValue(levy.voterApproved, context, `${levyPath}.voterApproved`);
+  });
+  uniqueObjectField(cityLevies, 'id', context, `${path}.cityLevies`);
+  const levyTotal = cityLevies.reduce(
+    (sum, item) => sum + (item as EstimatorCityLevy).mills,
+    0,
+  );
+  if (Math.abs(levyTotal - cityMills) > 0.0000001) {
+    fail(context, `${path}.cityMills`, 'expected the sum of cityLevies');
+  }
   const districts = arrayValue(estimator.districts, context, `${path}.districts`);
   districts.forEach((item, index) => {
     const districtPath = `${path}.districts[${index}]`;
     const district = objectValue(item, context, districtPath) as Partial<EstimatorDistrict>;
     stringValue(district.name, context, `${districtPath}.name`);
-    numberValue(district.homestead, context, `${districtPath}.homestead`);
-    numberValue(district.nonHomestead, context, `${districtPath}.nonHomestead`);
+    nonNegativeNumber(district.homestead, context, `${districtPath}.homestead`);
+    nonNegativeNumber(district.nonHomestead, context, `${districtPath}.nonHomestead`);
   });
   uniqueObjectField(districts, 'name', context, `${path}.districts`);
 }
