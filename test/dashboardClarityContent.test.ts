@@ -114,11 +114,85 @@ describe('committed dashboard clarity content', () => {
       .toBe('$723');
 
     const propertyTax = loadJson('public/info-propertytax.json') as {
+      estimator: {
+        cityRatePeriod: string;
+        fullBillRatePeriod: string;
+        cityMills: number;
+        cityLevies: Array<{
+          id: string;
+          authorization: string;
+          mills: number;
+          voterApproved: boolean;
+        }>;
+      };
       stats: Array<{ label: string; value: string; hint: string }>;
+      links: Array<{ text: string; href: string }>;
     };
-    const cityRate = propertyTax.stats.find((stat) => stat.label === "City of Burton's rate");
-    expect(cityRate?.value).toBe('13.44 mills');
-    expect(cityRate?.hint).toContain('components round to 13.43');
+    expect(propertyTax.estimator.cityMills).toBe(13.2948);
+    expect(propertyTax.estimator.cityRatePeriod).toBe('FY2026-27 adopted levy');
+    expect(propertyTax.estimator.fullBillRatePeriod).toBe('2025 published rates');
+    expect(propertyTax.estimator.cityLevies.map((levy) => levy.mills)).toEqual([
+      4,
+      8.3159,
+      0.9789,
+    ]);
+    expect(propertyTax.estimator.cityLevies.filter((levy) => levy.voterApproved))
+      .toHaveLength(2);
+    expect(propertyTax.stats.find((stat) => stat.label === "City of Burton's rate")?.value)
+      .toBe('13.2948 mills');
+    expect(propertyTax.stats.find((stat) => stat.label === 'Voter-approved City millages')?.value)
+      .toBe('9.2948 mills');
+    expect(propertyTax.links).toEqual(expect.arrayContaining([
+      {
+        text: 'City of Burton 2026-27 Approved Budget',
+        href: 'https://www.burtonmi.gov/government/controller_s_office/budgets.php',
+      },
+      {
+        text: 'Genesee County L-4029 information',
+        href: 'https://www.geneseecountymi.gov/departments/equalization/l-4029_information.php',
+      },
+      {
+        text: 'Michigan property-tax estimator',
+        href: 'https://www.michigan.gov/taxes/property/estimator',
+      },
+    ]));
+  });
+
+  it('keeps Property Taxes source periods and authorization plain to residents', () => {
+    const propertyTaxPanel = enrichedPanels().propertytax;
+    const propertyTax = loadJson('public/info-propertytax.json') as {
+      estimator: { cityLevies: Array<{ authorization: string }> };
+    };
+
+    expect(propertyTaxPanel.context).toEqual(expect.objectContaining({
+      asOf: 'FY2026-27 City levy; 2025 complete-bill rates',
+      sourceLinks: [
+        {
+          text: '2026-27 Approved Budget',
+          href: 'https://www.burtonmi.gov/government/controller_s_office/budgets.php',
+        },
+        {
+          text: 'Genesee County L-4029 information',
+          href: 'https://www.geneseecountymi.gov/departments/equalization/l-4029_information.php',
+        },
+        {
+          text: 'Michigan property-tax estimator',
+          href: 'https://www.michigan.gov/taxes/property/estimator',
+        },
+      ],
+    }));
+    expect(propertyTaxPanel.headline).toContain('13.2948 mills');
+    expect(propertyTaxPanel.headline).toContain('9.2948 voter-approved');
+    expect(propertyTaxPanel.headline).toContain('4.0000 charter');
+    expect(JSON.stringify(propertyTaxPanel)).toContain('FY2026-27');
+    expect(JSON.stringify(propertyTaxPanel)).toContain('2025');
+    expect(JSON.stringify(propertyTaxPanel)).not.toContain('13.44-mill City rate is about 29%');
+    expect(JSON.stringify(propertyTaxPanel)).not.toContain('components round to 13.43');
+    expect(propertyTax.estimator.cityLevies.map((levy) => levy.authorization)).toEqual([
+      'City Charter',
+      'Voter approved',
+      'Voter approved',
+    ]);
   });
 
   it('uses verified resident-service destinations for high-value actions', () => {
