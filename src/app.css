@@ -525,6 +525,15 @@ body,
   }
 }
 
+/* A 390px device viewport leaves about 375px after the browser scrollbar. Keep
+   the one-line mobile navigation inside that usable width. */
+@media (max-width: 390px) {
+  .topbar {
+    gap: 0.25rem;
+    padding-inline: 0.2rem;
+  }
+}
+
 .status {
   display: grid;
   place-items: center;

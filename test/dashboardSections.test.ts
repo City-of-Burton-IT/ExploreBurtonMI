@@ -119,6 +119,25 @@ describe('TaxEstimator theme contract', () => {
     expect(taxEstimatorSource).not.toContain('border: 1px solid #d6e0f0');
     expect(taxEstimatorSource).not.toContain('background: var(--civic-blue-tint');
   });
+
+  it('keeps exact mill and dollar values together in the phone table', () => {
+    expect(taxEstimatorSource).toContain(`.numeric {
+    text-align: right;
+    font-variant-numeric: tabular-nums;
+    white-space: nowrap;
+  }`);
+    expect(taxEstimatorSource).toContain(`.mills-col {
+      width: 20%;
+    }`);
+  });
+
+  it('tightens the shell at Android phone width so the header cannot widen the page', () => {
+    expect(appStyles).toContain(`@media (max-width: 390px) {
+  .topbar {
+    gap: 0.25rem;
+    padding-inline: 0.2rem;
+  }`);
+  });
 });
 
 describe('InfoHeader data context', () => {

@@ -4,41 +4,51 @@
 
 ## Current Handoff
 
-**Status:** The comprehensive security audit and the repository-side remediation are
-complete. PR #89 was rebase-merged to `main` at `62cfa65`; all seven required checks
-passed, GitHub Pages deployed successfully, Cloudflare now enforces the CSP, and the
-live site and `data.geojson` load without a Cloudflare challenge. The scoped
-`LISTING_PR_TOKEN` Actions secret is configured.
+**Status:** Active comparison work on `feature/dashboard-clarity-comparison`. The branch
+contains the dashboard clarity and property-tax changes on top of `origin/main`: all
+dashboards are easier to scan, explain scope/status/data dates in plain language, link
+official sources, and give Property Taxes a detailed City millage estimator. Nothing
+from this comparison branch has been pushed, opened as a PR, merged, or published.
 
-**Last touched:** 2026-07-17. Verified the merged deployment, protected-branch policy,
-enforced edge CSP, Cloudflare reachability, and the newly configured PR token. No
-security-remediation code remains unmerged.
+**Last touched:** 2026-07-20. Implemented and tested the resident-first dashboard
+hierarchy, clearer explanations and data provenance, source/status/as-of blocks, and
+the FY2026-27 City property-tax service breakdown. The Property Taxes dashboard now
+separates the adopted 13.2948-mill City levy from the historical FY2026 value of 13.44
+mills and from 2025 complete-bill rates. Light/dark desktop and phone review is mostly
+complete; the final phone-table and header-overflow fixes pass focused regression tests
+and Svelte/TypeScript checks. One last light/dark phone visual confirmation and the full
+protected-gate rerun remain before the comparison is complete.
 
-**Current phase:** Close the remaining external workflow controls, then execute the
-map refactor plan. Dashboard and Resident Guide refactors follow as separate phases;
-their implementation has not started.
+**Current phase:** **Dashboard clarity comparison -- IN PROGRESS.** The implementation
+is ready for final visual verification and user comparison against the unchanged
+baseline before any protected pull request is created.
 
-**Open work:** Track durable work in GitHub Issues. First, complete
-[issue #66](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/66): update and
-test the Power Automate listing flow so an add-new-business request remains in the
-private approval queue and never invokes the publication dispatch; the repository now
-provides a defense-in-depth rejection if one is dispatched. Then complete
-[issue #94](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/94): add a
-second trusted maintainer and raise protected-branch required approvals from zero to
-one. After those security closure items, begin
-`planning/specs/2026-07-17-map-refactor-plan.md`; retain
-`planning/specs/2026-07-17-dashboard-refactor-plan.md` and
-`planning/specs/2026-07-17-resident-guide-refactor-plan.md` as later, separate phases.
-A real Android-device smoke test of JSON loading through Cloudflare remains worthwhile.
+**Open work:** Tracked in GitHub Issues where it outlives this comparison. Issue #101
+is closed by the semantic-token dashboard-summary fix now on `origin/main`. Finish the
+comparison branch by confirming the exact City mill values do not wrap at Android phone
+width in light and dark modes, capturing the final Property Taxes screenshots, updating
+`planning/comparison/dashboard-clarity-review.md`, rerunning all strict web, Python,
+pin-editor, and repository-security checks, and presenting old and new previews for the
+user's decision. Keep [issue #94](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/94)
+open and explicitly deferred; do not alter branch protections.
 
-**Blockers:** No repository blocker. The Power Automate control requires an
-authenticated Burton tenant session, and the one-approval branch policy requires the
-City to designate a second write-capable reviewer.
+**Blockers:** None. Publication is intentionally paused at the comparison boundary until
+the user approves the new dashboards. The local `gh` credential is expired, but the
+authenticated GitHub connector confirmed issue #101 closed and issue #94 still open.
 
-**Public summary:** Explore Burton is a public, static civic map, dashboard, and
-Resident Guide at <https://explore.burtonmi.gov>, with moderated resident submissions,
-installable web and Android apps, protected publication workflows, and documented
-refactor plans for its three main product areas.
+**Property-tax source decision:** The FY2026-27 Approved Budget's Tax Millage table is
+the source of the current City service rows: General Operating 4.0000 mills, Police
+8.3159 mills, and Fire 0.9789 mills, totaling 13.2948. Police plus Fire total 9.2948
+voter-approved mills; General Operating is authorized by the City Charter. The separate
+historical chart retains the audited-financial-statement series, including 13.44 mills
+for FY2022-FY2026; its one-decimal chart label displays that as 13.4. These periods must
+remain visibly dated and must not be arithmetically mixed. The Approved Budget reports
+the 8.3159 mills as one aggregate `Police Levies` line; do not infer or display separate
+police ballot sub-levies without an official levy-by-levy source.
+
+**Public summary:** Explore Burton's public civic dashboards are being reviewed in an
+isolated comparison branch for clearer explanations, data dates, official sources, and
+resident-focused property-tax information; publication is pending approval.
 
 ## Historical Session Log
 
