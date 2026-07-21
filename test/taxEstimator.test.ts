@@ -4,61 +4,72 @@ import TaxEstimator from '../src/lib/TaxEstimator.svelte';
 import type { InfoEstimator } from '../src/lib/types';
 
 const data: InfoEstimator = {
-  cityRatePeriod: 'FY2026-27 adopted levy',
+  cityRatePeriod: 'Provisional — current L-4029 pending',
   fullBillRatePeriod: '2025 published rates',
-  cityMills: 13.2948,
+  cityMills: 13.44,
   cityLevies: [
     {
       id: 'general-operating',
       service: 'General city operations',
-      authorization: 'City Charter',
-      description: 'Supports general municipal services provided by the City.',
+      authorization: 'City Charter — budget reference',
+      description: 'FY2026-27 Approved Budget service line.',
       mills: 4,
       voterApproved: false,
     },
     {
       id: 'police',
       service: 'Police services',
-      authorization: 'Voter approved',
-      description: 'Supports Police Department staffing and operations.',
+      authorization: 'Voter approved — budget aggregate',
+      description: 'FY2026-27 Approved Budget aggregate Police Levies line.',
       mills: 8.3159,
       voterApproved: true,
     },
     {
       id: 'fire',
       service: 'Fire services',
-      authorization: 'Voter approved',
-      description: 'Supports Fire Department services and operations.',
+      authorization: 'Voter approved — budget reference',
+      description: 'FY2026-27 Approved Budget service line.',
       mills: 0.9789,
       voterApproved: true,
+    },
+    {
+      id: 'l4029-reconciliation',
+      service: 'Unassigned difference',
+      authorization: 'Pending L-4029',
+      description: 'Difference between the 13.44 provisional total and 13.2948 budget service-line total.',
+      mills: 0.1452,
+      voterApproved: false,
     },
   ],
   districts: [{ name: 'Atherton', homestead: 41.86, nonHomestead: 59.72 }],
 };
 
 describe('TaxEstimator', () => {
-  it('renders the latest City levy as a personalized service table', () => {
+  it('renders the budget service breakdown and reconciles it to the provisional City total', () => {
     const { body } = render(TaxEstimator, { props: { data } });
 
     expect(body).toContain('Your City of Burton taxes');
-    expect(body).toContain('FY2026-27 adopted levy');
+    expect(body).toContain('Provisional — current L-4029 pending');
     expect(body).toContain('<table');
     expect(body).toContain('City service');
-    expect(body).toContain('Who authorized it');
+    expect(body).toContain('Source / status');
     expect(body).toContain('General city operations');
     expect(body).toContain('Police services');
     expect(body).toContain('Fire services');
-    expect(body).toContain('City Charter');
-    expect(body.match(/Voter approved/g)).toHaveLength(2);
+    expect(body).toContain('Unassigned difference');
+    expect(body).toContain('Pending L-4029');
     expect(body).toContain('4.0000');
     expect(body).toContain('8.3159');
     expect(body).toContain('0.9789');
+    expect(body).toContain('0.1452');
     expect(body).toContain('$200.00');
     expect(body).toContain('$415.80');
     expect(body).toContain('$48.95');
-    expect(body).toContain('$664.74');
+    expect(body).toContain('$7.26');
+    expect(body).toContain('13.4');
+    expect(body).toContain('$672.00');
     expect(body).toContain('9.2948 voter-approved mills');
-    expect(body).toContain('$464.74');
+    expect(body).toContain('do not yet identify how the 0.1452-mill difference is allocated');
   });
 
   it('keeps the older complete-bill estimate in a separately dated result', () => {

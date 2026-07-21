@@ -1,9 +1,9 @@
 """Build public/info-propertytax.json: the Property Taxes dashboard.
 
 Answers the question residents actually ask: "when I pay my property tax bill,
-where does the money go?" It presents the adopted City levy by service and
-keeps the separately dated complete-bill estimate distinct so residents are
-not shown arithmetic that mixes different source periods.
+where does the money go?" It presents a provisional City rate while the
+current L-4029 is pending and keeps the separately dated complete-bill estimate
+distinct so residents are not shown arithmetic that mixes source periods.
 
 Figures are held as documented constants from authoritative public sources and
 refreshed yearly:
@@ -34,15 +34,32 @@ from lib.paths import public_path
 
 OUT = public_path("info-propertytax.json")
 
-# --- City of Burton FY2026-27 adopted levy (Approved Budget, Tax Millage) --------
-CITY_RATE_PERIOD = "FY2026-27 adopted levy"
+# --- Provisional City rate pending the current L-4029 ---------------------------
+CITY_RATE_PERIOD = "Provisional — current L-4029 pending"
 FULL_BILL_RATE_PERIOD = "2025 published rates"
 
+# Retain the last supported exact rate underneath the resident-facing 13.4 display.
+# Do not substitute the Approved Budget's 13.2948 service-line sum for a certified
+# levy; update this value and replace the reconciliation row when the L-4029 arrives.
+CITY_TOTAL = 13.44
+
+# FY2026-27 Approved Budget service-line reference. These rows do not fully
+# reconcile to the provisional 13.44 total, so the difference remains explicit
+# rather than being assigned to a service without the certified L-4029.
 CITY_GENERAL = 4.0000
 CITY_POLICE = 8.3159
 CITY_FIRE = 0.9789
-CITY_TOTAL = round(CITY_GENERAL + CITY_POLICE + CITY_FIRE, 4)
-VOTER_APPROVED_TOTAL = round(CITY_POLICE + CITY_FIRE, 4)
+BUDGET_SERVICE_TOTAL = round(CITY_GENERAL + CITY_POLICE + CITY_FIRE, 4)
+RECONCILIATION_DIFFERENCE = round(CITY_TOTAL - BUDGET_SERVICE_TOTAL, 4)
+
+BREAKDOWN_NOTE = (
+    "The provisional City estimate uses the last supported 13.44-mill rate, shown "
+    "as 13.4. The FY2026-27 Approved Budget lists General 4.0000, aggregate Police "
+    "8.3159, and Fire 0.9789 mills (13.2948 total), and those budget lines are "
+    "shown as budget-reference rows. Their 0.1452-mill difference from the "
+    "provisional total is not assigned to a service while the current L-4029 "
+    "is pending."
+)
 
 # The latest complete published district totals are still 2025. Use their City
 # component only for the 2025 authority chart; never subtract the adopted levy
@@ -53,26 +70,37 @@ CITY_LEVIES = [
     {
         "id": "general-operating",
         "service": "General city operations",
-        "authorization": "City Charter",
-        "description": "Supports general municipal services provided by the City.",
+        "authorization": "City Charter — budget reference",
+        "description": "FY2026-27 Approved Budget service line.",
         "mills": CITY_GENERAL,
         "voterApproved": False,
     },
     {
         "id": "police",
         "service": "Police services",
-        "authorization": "Voter approved",
-        "description": "Supports Police Department staffing and operations.",
+        "authorization": "Voter approved — budget aggregate",
+        "description": "FY2026-27 Approved Budget aggregate Police Levies line.",
         "mills": CITY_POLICE,
         "voterApproved": True,
     },
     {
         "id": "fire",
         "service": "Fire services",
-        "authorization": "Voter approved",
-        "description": "Supports Fire Department services and operations.",
+        "authorization": "Voter approved — budget reference",
+        "description": "FY2026-27 Approved Budget service line.",
         "mills": CITY_FIRE,
         "voterApproved": True,
+    },
+    {
+        "id": "l4029-reconciliation",
+        "service": "Unassigned difference",
+        "authorization": "Pending L-4029",
+        "description": (
+            "Difference between the 13.44 provisional total and 13.2948 "
+            "budget service-line total."
+        ),
+        "mills": RECONCILIATION_DIFFERENCE,
+        "voterApproved": False,
     },
 ]
 
@@ -133,21 +161,18 @@ def main() -> int:
     stats = [
         {
             "label": "City of Burton's rate",
-            "value": f"{CITY_TOTAL:.4f} mills",
-            "hint": (
-                f"General {CITY_GENERAL:.4f} + Police {CITY_POLICE:.4f} "
-                f"+ Fire {CITY_FIRE:.4f}"
-            ),
+            "value": f"{CITY_TOTAL:.1f} mills",
+            "hint": "Provisional display; last supported exact rate is 13.44",
         },
         {
-            "label": "Voter-approved City millages",
-            "value": f"{VOTER_APPROVED_TOTAL:.4f} mills",
-            "hint": "Police and Fire levies approved by Burton voters",
+            "label": "Rate status",
+            "value": "Provisional",
+            "hint": "Replace when the current certified L-4029 is available",
         },
         {
             "label": "City tax on a $50k-taxable home",
             "value": f"${round(city_dollars):,}/yr",
-            "hint": "FY2026-27 adopted City levy; about a $100,000 market-value home",
+            "hint": "Provisional 13.44-mill rate; about a $100,000 market-value home",
         },
         {
             "label": "School districts in Burton",
@@ -179,16 +204,21 @@ def main() -> int:
         "heading": "What this means for you",
         "body": [
             (
-                f"Burton's FY2026-27 adopted City levy is {CITY_TOTAL:.4f} mills. "
-                f"Of that, {VOTER_APPROVED_TOTAL:.4f} mills are voter-approved Police "
-                f"and Fire levies; {CITY_GENERAL:.4f} mills support general City operations "
-                "under the City Charter."
+                f"Burton's City rate is shown provisionally as {CITY_TOTAL:.1f} mills, "
+                f"using the last supported exact rate of {CITY_TOTAL:.2f}. The current "
+                "certified L-4029 is pending and will replace this figure when available."
             ),
             (
                 f"At ${EXAMPLE_TAXABLE:,} of taxable value, the City portion is about "
                 f"${round(city_dollars):,} a year. The latest complete published bill rates "
                 f"are from 2025 and range from about ${lo_total:,} to ${hi_total:,} at that "
                 "taxable value, depending on school district."
+            ),
+            (
+                f"The estimator shows the Approved Budget's General ({CITY_GENERAL:.4f}), "
+                f"aggregate Police ({CITY_POLICE:.4f}), and Fire ({CITY_FIRE:.4f}) lines. "
+                f"Their {BUDGET_SERVICE_TOTAL:.4f}-mill subtotal leaves "
+                f"{RECONCILIATION_DIFFERENCE:.4f} mills unassigned pending the L-4029."
             ),
             (
                 "County, schools, the State, ISD, college, transit, airport, and other "
@@ -207,9 +237,10 @@ def main() -> int:
         "stats": stats,
         "charts": charts,
         "source": (
-            "City of Burton FY2026-27 Approved Budget, Tax Millage; Michigan Department "
-            "of Treasury, 2025 Total Property Tax Rates in Michigan; and City of Burton "
-            "audited financial statements for the historical rate series."
+            "City of Burton audited financial statements for the 13.44-mill historical "
+            "rate; Michigan Department of Treasury, 2025 Total Property Tax Rates in "
+            "Michigan; and City of Burton FY2026-27 Approved Budget, Tax Millage, as an "
+            "uncertified service-line reference pending the current L-4029."
         ),
         "links": [
             {
@@ -231,10 +262,10 @@ def main() -> int:
                 "One mill is $1 per $1,000 of taxable value. Taxable value is shown on the "
                 "assessment notice and is not the same as market value."
             ),
+            BREAKDOWN_NOTE,
             (
-                "The City service table uses the FY2026-27 adopted City levy. The complete-bill "
-                "district estimate and authority chart use 2025 published rates; the two periods "
-                "are shown separately and are not subtracted from one another."
+                "The complete-bill district estimate and authority chart use 2025 published "
+                "rates and are kept separately dated from the provisional City rate."
             ),
             (
                 "Estimate only. Actual bills can differ because of exact parcel values, exemptions, "
@@ -247,8 +278,8 @@ def main() -> int:
     write_json(OUT, panel)
     print(f"Wrote {OUT}")
     print(
-        f"  FY2026-27 City {CITY_TOTAL:.4f} mills; "
-        f"voter-approved {VOTER_APPROVED_TOTAL:.4f} mills"
+        f"  Provisional City {CITY_TOTAL:.2f} mills (displayed {CITY_TOTAL:.1f}); "
+        "current L-4029 pending"
     )
     print(f"  2025 complete-bill districts: {len(DISTRICT_RATES)}")
     return 0

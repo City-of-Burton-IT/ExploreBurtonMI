@@ -4,51 +4,58 @@
 
 ## Current Handoff
 
-**Status:** Active comparison work on `feature/dashboard-clarity-comparison`. The branch
+**Status:** Comparison approved and pushed on `feature/dashboard-clarity-comparison`. The branch
 contains the dashboard clarity and property-tax changes on top of `origin/main`: all
 dashboards are easier to scan, explain scope/status/data dates in plain language, link
 official sources, and give Property Taxes a detailed City millage estimator. Nothing
-from this comparison branch has been pushed, opened as a PR, merged, or published.
+from this comparison branch has been merged or published, and no pull request has been opened yet.
 
-**Last touched:** 2026-07-20. Implemented and tested the resident-first dashboard
-hierarchy, clearer explanations and data provenance, source/status/as-of blocks, and
-the FY2026-27 City property-tax service breakdown. The Property Taxes dashboard now
-separates the adopted 13.2948-mill City levy from the historical FY2026 value of 13.44
-mills and from 2025 complete-bill rates. Light/dark desktop and phone review is mostly
-complete; the final phone-table and header-overflow fixes pass focused regression tests
-and Svelte/TypeScript checks. One last light/dark phone visual confirmation and the full
-protected-gate rerun remain before the comparison is complete.
+**Last touched:** 2026-07-21. The user approved the completed comparison and requested
+that the branch be pushed. Property Taxes now displays the
+City rate provisionally as 13.4 mills, backed by the last supported exact 13.44 rate,
+until the current L-4029 is available. At the user's direction, the estimator now
+shows the Approved Budget's General 4.0000, aggregate Police 8.3159, and Fire 0.9789
+service rows. Because those total 13.2948, a separate 0.1452-mill `Unassigned
+difference` row reconciles the table to 13.44 without inventing a service allocation.
+Final Android-width review is complete in light and dark modes: the page and header
+have no horizontal overflow, every exact mill value stays on one line, and the revised
+table stays inside its card. Captures and measurements are in
+`planning/comparison/dashboard-clarity-review.md`. Fresh gates passed: Svelte/TypeScript
+0 errors and 0 warnings; 509 Vitest, 251 pipeline/tools, 44 pin-editor, and 12
+repository-security tests; production/PWA build; and `py_compile` for the changed
+property-tax generator. The build retains only the three known ineffective
+dynamic-import warnings.
 
-**Current phase:** **Dashboard clarity comparison -- IN PROGRESS.** The implementation
-is ready for final visual verification and user comparison against the unchanged
-baseline before any protected pull request is created.
+**Current phase:** **Dashboard clarity comparison -- APPROVED; AWAITING PROTECTED PR.**
+The unchanged baseline runs at port 4173 and the verified comparison runs at port 43820.
 
-**Open work:** Tracked in GitHub Issues where it outlives this comparison. Issue #101
-is closed by the semantic-token dashboard-summary fix now on `origin/main`. Finish the
-comparison branch by confirming the exact City mill values do not wrap at Android phone
-width in light and dark modes, capturing the final Property Taxes screenshots, updating
-`planning/comparison/dashboard-clarity-review.md`, rerunning all strict web, Python,
-pin-editor, and repository-security checks, and presenting old and new previews for the
-user's decision. Keep [issue #94](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/94)
-open and explicitly deferred; do not alter branch protections.
+**Open work:** Open a ready protected pull request from the approved comparison branch
+and wait for the required remote checks. Obtain the current L-4029 and replace the
+provisional City rate with its certified levy details when available.
+Issue #101 is closed by the semantic-token dashboard-summary fix now on `origin/main`. Keep
+[issue #94](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/94) open and
+explicitly deferred; do not alter branch protections.
 
-**Blockers:** None. Publication is intentionally paused at the comparison boundary until
-the user approves the new dashboards. The local `gh` credential is expired, but the
-authenticated GitHub connector confirmed issue #101 closed and issue #94 still open.
+**Blockers:** None for opening the protected pull request. The current L-4029 remains a
+source follow-up, so the City rate is explicitly provisional. The local `gh`
+credential is expired, but the authenticated GitHub connector confirmed issue #101
+closed and issue #94 still open.
 
-**Property-tax source decision:** The FY2026-27 Approved Budget's Tax Millage table is
-the source of the current City service rows: General Operating 4.0000 mills, Police
-8.3159 mills, and Fire 0.9789 mills, totaling 13.2948. Police plus Fire total 9.2948
-voter-approved mills; General Operating is authorized by the City Charter. The separate
-historical chart retains the audited-financial-statement series, including 13.44 mills
-for FY2022-FY2026; its one-decimal chart label displays that as 13.4. These periods must
-remain visibly dated and must not be arithmetically mixed. The Approved Budget reports
-the 8.3159 mills as one aggregate `Police Levies` line; do not infer or display separate
-police ballot sub-levies without an official levy-by-levy source.
+**Property-tax source decision:** Pending the current L-4029, the public-facing City
+rate is provisional: use the last supported exact 13.44-mill rate for calculations and
+display it as 13.4 mills. Do not describe 13.2948 as rounding to 13.4. The FY2026-27
+Approved Budget lists General Operating 4.0000 mills, aggregate Police Levies 8.3159,
+and Fire 0.9789, totaling 13.2948. The estimator shows those as clearly labeled budget
+references plus a 0.1452-mill unassigned reconciliation row; it must not imply that the
+difference belongs to General, Police, or Fire. The historical chart retains the
+audited-financial-statement series, including 13.44 for FY2022-FY2026. When the current
+L-4029 arrives, replace the provisional rate and reconciliation row with only the levy
+detail that the official form supports. Do not split the aggregate Police line into
+individual ballot levies without another official source.
 
-**Public summary:** Explore Burton's public civic dashboards are being reviewed in an
-isolated comparison branch for clearer explanations, data dates, official sources, and
-resident-focused property-tax information; publication is pending approval.
+**Public summary:** Explore Burton's clearer public civic dashboards and resident-focused
+property-tax estimator were approved in comparison and pushed to a feature branch;
+publication remains pending the protected pull-request workflow.
 
 ## Historical Session Log
 

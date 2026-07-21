@@ -4,39 +4,48 @@
   "summary": {
     "heading": "What this means for you",
     "body": [
-      "Burton's FY2026-27 adopted City levy is 13.2948 mills. Of that, 9.2948 mills are voter-approved Police and Fire levies; 4.0000 mills support general City operations under the City Charter.",
-      "At $50,000 of taxable value, the City portion is about $665 a year. The latest complete published bill rates are from 2025 and range from about $2,093 to $2,674 at that taxable value, depending on school district.",
+      "Burton's City rate is shown provisionally as 13.4 mills, using the last supported exact rate of 13.44. The current certified L-4029 is pending and will replace this figure when available.",
+      "At $50,000 of taxable value, the City portion is about $672 a year. The latest complete published bill rates are from 2025 and range from about $2,093 to $2,674 at that taxable value, depending on school district.",
+      "The estimator shows the Approved Budget's General (4.0000), aggregate Police (8.3159), and Fire (0.9789) lines. Their 13.2948-mill subtotal leaves 0.1452 mills unassigned pending the L-4029.",
       "County, schools, the State, ISD, college, transit, airport, and other authorities receive their own portions; those amounts do not become City revenue."
     ]
   },
   "estimator": {
-    "cityRatePeriod": "FY2026-27 adopted levy",
+    "cityRatePeriod": "Provisional — current L-4029 pending",
     "fullBillRatePeriod": "2025 published rates",
-    "cityMills": 13.2948,
+    "cityMills": 13.44,
     "cityLevies": [
       {
         "id": "general-operating",
         "service": "General city operations",
-        "authorization": "City Charter",
-        "description": "Supports general municipal services provided by the City.",
+        "authorization": "City Charter — budget reference",
+        "description": "FY2026-27 Approved Budget service line.",
         "mills": 4.0,
         "voterApproved": false
       },
       {
         "id": "police",
         "service": "Police services",
-        "authorization": "Voter approved",
-        "description": "Supports Police Department staffing and operations.",
+        "authorization": "Voter approved — budget aggregate",
+        "description": "FY2026-27 Approved Budget aggregate Police Levies line.",
         "mills": 8.3159,
         "voterApproved": true
       },
       {
         "id": "fire",
         "service": "Fire services",
-        "authorization": "Voter approved",
-        "description": "Supports Fire Department services and operations.",
+        "authorization": "Voter approved — budget reference",
+        "description": "FY2026-27 Approved Budget service line.",
         "mills": 0.9789,
         "voterApproved": true
+      },
+      {
+        "id": "l4029-reconciliation",
+        "service": "Unassigned difference",
+        "authorization": "Pending L-4029",
+        "description": "Difference between the 13.44 provisional total and 13.2948 budget service-line total.",
+        "mills": 0.1452,
+        "voterApproved": false
       }
     ],
     "districts": [
@@ -80,18 +89,18 @@
   "stats": [
     {
       "label": "City of Burton's rate",
-      "value": "13.2948 mills",
-      "hint": "General 4.0000 + Police 8.3159 + Fire 0.9789"
+      "value": "13.4 mills",
+      "hint": "Provisional display; last supported exact rate is 13.44"
     },
     {
-      "label": "Voter-approved City millages",
-      "value": "9.2948 mills",
-      "hint": "Police and Fire levies approved by Burton voters"
+      "label": "Rate status",
+      "value": "Provisional",
+      "hint": "Replace when the current certified L-4029 is available"
     },
     {
       "label": "City tax on a $50k-taxable home",
-      "value": "$665/yr",
-      "hint": "FY2026-27 adopted City levy; about a $100,000 market-value home"
+      "value": "$672/yr",
+      "hint": "Provisional 13.44-mill rate; about a $100,000 market-value home"
     },
     {
       "label": "School districts in Burton",
@@ -225,7 +234,7 @@
       ]
     }
   ],
-  "source": "City of Burton FY2026-27 Approved Budget, Tax Millage; Michigan Department of Treasury, 2025 Total Property Tax Rates in Michigan; and City of Burton audited financial statements for the historical rate series.",
+  "source": "City of Burton audited financial statements for the 13.44-mill historical rate; Michigan Department of Treasury, 2025 Total Property Tax Rates in Michigan; and City of Burton FY2026-27 Approved Budget, Tax Millage, as an uncertified service-line reference pending the current L-4029.",
   "links": [
     {
       "text": "City of Burton 2026-27 Approved Budget",
@@ -246,7 +255,8 @@
   ],
   "notes": [
     "One mill is $1 per $1,000 of taxable value. Taxable value is shown on the assessment notice and is not the same as market value.",
-    "The City service table uses the FY2026-27 adopted City levy. The complete-bill district estimate and authority chart use 2025 published rates; the two periods are shown separately and are not subtracted from one another.",
+    "The provisional City estimate uses the last supported 13.44-mill rate, shown as 13.4. The FY2026-27 Approved Budget lists General 4.0000, aggregate Police 8.3159, and Fire 0.9789 mills (13.2948 total), and those budget lines are shown as budget-reference rows. Their 0.1452-mill difference from the provisional total is not assigned to a service while the current L-4029 is pending.",
+    "The complete-bill district estimate and authority chart use 2025 published rates and are kept separately dated from the provisional City rate.",
     "Estimate only. Actual bills can differ because of exact parcel values, exemptions, special assessments, administrative fees, and a possible Downtown Development Authority levy for affected parcels. Not a tax statement."
   ]
 }

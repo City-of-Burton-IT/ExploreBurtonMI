@@ -128,20 +128,21 @@ describe('committed dashboard clarity content', () => {
       stats: Array<{ label: string; value: string; hint: string }>;
       links: Array<{ text: string; href: string }>;
     };
-    expect(propertyTax.estimator.cityMills).toBe(13.2948);
-    expect(propertyTax.estimator.cityRatePeriod).toBe('FY2026-27 adopted levy');
+    expect(propertyTax.estimator.cityMills).toBe(13.44);
+    expect(propertyTax.estimator.cityRatePeriod).toBe('Provisional — current L-4029 pending');
     expect(propertyTax.estimator.fullBillRatePeriod).toBe('2025 published rates');
     expect(propertyTax.estimator.cityLevies.map((levy) => levy.mills)).toEqual([
       4,
       8.3159,
       0.9789,
+      0.1452,
     ]);
     expect(propertyTax.estimator.cityLevies.filter((levy) => levy.voterApproved))
       .toHaveLength(2);
     expect(propertyTax.stats.find((stat) => stat.label === "City of Burton's rate")?.value)
-      .toBe('13.2948 mills');
-    expect(propertyTax.stats.find((stat) => stat.label === 'Voter-approved City millages')?.value)
-      .toBe('9.2948 mills');
+      .toBe('13.4 mills');
+    expect(propertyTax.stats.find((stat) => stat.label === 'Rate status')?.value)
+      .toBe('Provisional');
     expect(propertyTax.links).toEqual(expect.arrayContaining([
       {
         text: 'City of Burton 2026-27 Approved Budget',
@@ -165,7 +166,7 @@ describe('committed dashboard clarity content', () => {
     };
 
     expect(propertyTaxPanel.context).toEqual(expect.objectContaining({
-      asOf: 'FY2026-27 City levy; 2025 complete-bill rates',
+      asOf: 'Provisional City rate; current L-4029 pending; 2025 complete-bill rates',
       sourceLinks: [
         {
           text: '2026-27 Approved Budget',
@@ -181,17 +182,17 @@ describe('committed dashboard clarity content', () => {
         },
       ],
     }));
-    expect(propertyTaxPanel.headline).toContain('13.2948 mills');
-    expect(propertyTaxPanel.headline).toContain('9.2948 voter-approved');
-    expect(propertyTaxPanel.headline).toContain('4.0000 charter');
-    expect(JSON.stringify(propertyTaxPanel)).toContain('FY2026-27');
+    expect(propertyTaxPanel.headline).toContain('13.4 mills');
+    expect(propertyTaxPanel.headline).toContain('provisional');
+    expect(JSON.stringify(propertyTaxPanel)).toContain('current L-4029');
     expect(JSON.stringify(propertyTaxPanel)).toContain('2025');
     expect(JSON.stringify(propertyTaxPanel)).not.toContain('13.44-mill City rate is about 29%');
     expect(JSON.stringify(propertyTaxPanel)).not.toContain('components round to 13.43');
     expect(propertyTax.estimator.cityLevies.map((levy) => levy.authorization)).toEqual([
-      'City Charter',
-      'Voter approved',
-      'Voter approved',
+      'City Charter — budget reference',
+      'Voter approved — budget aggregate',
+      'Voter approved — budget reference',
+      'Pending L-4029',
     ]);
   });
 

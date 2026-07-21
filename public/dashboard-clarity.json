@@ -346,22 +346,22 @@
     ]
   },
   "propertytax": {
-    "subtitle": "See the adopted City levy by service and estimate your complete property-tax bill",
+    "subtitle": "See the provisional City rate and estimate your complete property-tax bill",
     "context": {
       "scope": "Burton parcels",
       "status": "reference",
-      "asOf": "FY2026-27 City levy; 2025 complete-bill rates",
+      "asOf": "Provisional City rate; current L-4029 pending; 2025 complete-bill rates",
       "sourceLinks": [
         { "text": "2026-27 Approved Budget", "href": "https://www.burtonmi.gov/government/controller_s_office/budgets.php" },
         { "text": "Genesee County L-4029 information", "href": "https://www.geneseecountymi.gov/departments/equalization/l-4029_information.php" },
         { "text": "Michigan property-tax estimator", "href": "https://www.michigan.gov/taxes/property/estimator" }
       ]
     },
-    "headline": "Burton's FY2026-27 City levy is 13.2948 mills: 9.2948 voter-approved Police and Fire mills plus 4.0000 charter mills for general operations.",
+    "headline": "Burton's City rate is shown provisionally as 13.4 mills while the current certified L-4029 is pending.",
     "summary": {
       "heading": "Why this matters",
       "body": [
-        "One mill is $1 per $1,000 of taxable value. The calculator shows the latest adopted City levy by service and keeps the separately published 2025 complete-bill estimate clearly dated."
+        "One mill is $1 per $1,000 of taxable value. The calculator uses the last supported exact City rate of 13.44, displayed as 13.4, and keeps the separately published 2025 complete-bill estimate clearly dated."
       ]
     },
     "responsibility": "Burton sets and receives only the City portion. County, schools, the State, college, transit, and airport authorities set and receive the other portions.",
@@ -372,7 +372,7 @@
     },
     "statOverrides": {
       "City of Burton's rate": { "priority": true },
-      "Voter-approved City millages": { "priority": true },
+      "Rate status": { "priority": true },
       "City tax on a $50k-taxable home": { "priority": true },
       "School districts in Burton": { "priority": true }
     },
