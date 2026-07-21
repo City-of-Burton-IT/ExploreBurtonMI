@@ -28,8 +28,35 @@ const completePanel = {
   },
   methodology: { title: 'Methodology', body: 'Measured consistently.' },
   estimator: {
-    cityMills: 12.5,
-    countyMills: 8.25,
+    cityRatePeriod: 'FY2026-27 adopted levy',
+    fullBillRatePeriod: '2025 published rates',
+    cityMills: 13.2948,
+    cityLevies: [
+      {
+        id: 'general-operating',
+        service: 'General city operations',
+        authorization: 'City Charter',
+        description: 'Supports general municipal services.',
+        mills: 4,
+        voterApproved: false,
+      },
+      {
+        id: 'police',
+        service: 'Police services',
+        authorization: 'Voter approved',
+        description: 'Supports Police Department operations.',
+        mills: 8.3159,
+        voterApproved: true,
+      },
+      {
+        id: 'fire',
+        service: 'Fire services',
+        authorization: 'Voter approved',
+        description: 'Supports Fire Department operations.',
+        mills: 0.9789,
+        voterApproved: true,
+      },
+    ],
     districts: [{ name: 'Example district', homestead: 32, nonHomestead: 50 }],
   },
   stats: [
@@ -116,6 +143,40 @@ const completeClarity = {
 describe('validateInfoPanel', () => {
   it('accepts the complete dashboard contract', () => {
     expect(validateRawInfoPanel(completePanel, 'example')).toEqual(completePanel);
+  });
+
+  it.each([
+    ['negative mills', { mills: -1 }, /cityLevies\[0\]\.mills.*non-negative/i],
+    ['invalid voter flag', { voterApproved: 'yes' }, /cityLevies\[0\]\.voterApproved.*boolean/i],
+    ['missing authorization', { authorization: '' }, /cityLevies\[0\]\.authorization/i],
+  ] as const)('rejects %s in City levy data', (_label, change, expected) => {
+    const levy = { ...completePanel.estimator.cityLevies[0], ...change };
+    const invalid = {
+      ...completePanel,
+      estimator: { ...completePanel.estimator, cityLevies: [levy] },
+    };
+    expect(() => validateRawInfoPanel(invalid, 'propertytax')).toThrow(expected);
+  });
+
+  it('rejects duplicate levy ids', () => {
+    const levy = completePanel.estimator.cityLevies[0];
+    const invalid = {
+      ...completePanel,
+      estimator: { ...completePanel.estimator, cityLevies: [levy, { ...levy }] },
+    };
+    expect(() => validateRawInfoPanel(invalid, 'propertytax')).toThrow(
+      /cityLevies\[1\]\.id.*duplicate/i,
+    );
+  });
+
+  it('rejects a City total that does not equal its levy components', () => {
+    const invalid = {
+      ...completePanel,
+      estimator: { ...completePanel.estimator, cityMills: 99 },
+    };
+    expect(() => validateRawInfoPanel(invalid, 'propertytax')).toThrow(
+      /cityMills.*sum of cityLevies/i,
+    );
   });
 
   it('accepts every committed dashboard panel', () => {

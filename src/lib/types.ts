@@ -324,14 +324,24 @@ export interface EstimatorDistrict {
   nonHomestead: number;
 }
 
-/** Data driving the interactive property-tax estimator. The city and county
- *  millages are uniform across Burton; the school portion varies by district, so
- *  the per-district totals carry it. */
+/** One component of the City of Burton's adopted property-tax levy. */
+export interface EstimatorCityLevy {
+  id: string;
+  service: string;
+  authorization: string;
+  description: string;
+  mills: number;
+  voterApproved: boolean;
+}
+
+/** Data driving the interactive property-tax estimator. City levy components
+ *  and complete-bill district totals have separate source periods. */
 export interface InfoEstimator {
+  cityRatePeriod: string;
+  fullBillRatePeriod: string;
   /** City of Burton's own rate (General + Police + Fire), in mills */
   cityMills: number;
-  /** Genesee County's rate, in mills (uniform countywide) */
-  countyMills: number;
+  cityLevies: EstimatorCityLevy[];
   districts: EstimatorDistrict[];
 }
 
