@@ -24,5 +24,6 @@ export function sumLevyMills(
 }
 
 export function roundedCents(value: number): number {
-  return Math.round((value + Number.EPSILON) * 100);
+  const scaled = value * 100;
+  return Math.round(scaled + Number.EPSILON * Math.abs(scaled));
 }

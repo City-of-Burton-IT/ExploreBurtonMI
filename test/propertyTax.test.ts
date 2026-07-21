@@ -36,6 +36,7 @@ describe('property-tax calculations', () => {
 
   it('rounds display values to integer cents', () => {
     expect(roundedCents(415.795)).toBe(41_580);
+    expect(roundedCents(taxForMills(50_000, 8.3159))).toBe(41_580);
     expect(roundedCents(48.945)).toBe(4_895);
     expect(roundedCents(664.74)).toBe(66_474);
   });

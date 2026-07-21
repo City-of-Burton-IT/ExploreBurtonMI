@@ -311,7 +311,7 @@ function validateEstimator(value: unknown, context: string, path: string): void 
     booleanValue(levy.voterApproved, context, `${levyPath}.voterApproved`);
   });
   uniqueObjectField(cityLevies, 'id', context, `${path}.cityLevies`);
-  const levyTotal = cityLevies.reduce(
+  const levyTotal = cityLevies.reduce<number>(
     (sum, item) => sum + (item as EstimatorCityLevy).mills,
     0,
   );
