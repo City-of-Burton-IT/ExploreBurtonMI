@@ -324,7 +324,7 @@ export interface EstimatorDistrict {
   nonHomestead: number;
 }
 
-/** One component of the City of Burton's adopted property-tax levy. */
+/** One sourced row in the City of Burton property-tax estimate. */
 export interface EstimatorCityLevy {
   id: string;
   service: string;
@@ -339,7 +339,7 @@ export interface EstimatorCityLevy {
 export interface InfoEstimator {
   cityRatePeriod: string;
   fullBillRatePeriod: string;
-  /** City of Burton's own rate (General + Police + Fire), in mills */
+  /** City of Burton's own displayed estimate rate, in mills */
   cityMills: number;
   cityLevies: EstimatorCityLevy[];
   districts: EstimatorDistrict[];
