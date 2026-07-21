@@ -8,6 +8,7 @@ import InfoHeader from '../src/lib/InfoHeader.svelte';
 import InfoView from '../src/lib/InfoView.svelte';
 
 const summarySource = readFileSync('src/lib/dashboard/DashboardSummary.svelte', 'utf8');
+const taxEstimatorSource = readFileSync('src/lib/TaxEstimator.svelte', 'utf8');
 const appStyles = readFileSync('src/app.css', 'utf8');
 
 function themeBlock(selector: string): string {
@@ -99,6 +100,24 @@ describe('DashboardSummary', () => {
     });
     expect(body).toContain('No direct resident action is needed.');
     expect(body).not.toContain('disabled');
+  });
+});
+
+describe('TaxEstimator theme contract', () => {
+  it('uses semantic tokens for surfaces, borders, text, and emphasis', () => {
+    for (const token of [
+      '--pub-surface',
+      '--pub-surface-2',
+      '--pub-border',
+      '--pub-ink',
+      '--pub-muted',
+      '--civic-blue-link',
+    ]) {
+      expect(taxEstimatorSource).toContain(`var(${token})`);
+    }
+    expect(taxEstimatorSource).not.toContain('color: #444');
+    expect(taxEstimatorSource).not.toContain('border: 1px solid #d6e0f0');
+    expect(taxEstimatorSource).not.toContain('background: var(--civic-blue-tint');
   });
 });
 
