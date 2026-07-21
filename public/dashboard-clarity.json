@@ -346,49 +346,50 @@
     ]
   },
   "propertytax": {
-    "subtitle": "How mills and taxable value determine the City portion of a property-tax bill",
+    "subtitle": "See the adopted City levy by service and estimate your complete property-tax bill",
     "context": {
       "scope": "Burton parcels",
       "status": "reference",
-      "asOf": "2025 rates and FY2026 City millage",
+      "asOf": "FY2026-27 City levy; 2025 complete-bill rates",
       "sourceLinks": [
-        { "text": "Genesee County Equalization", "href": "https://www.geneseecountymi.gov/departments/equalization/l-4029_information.php" },
-        { "text": "Burton annual financial reports", "href": "https://www.burtonmi.gov/government/controller_s_office/annual_reports.php" }
+        { "text": "2026-27 Approved Budget", "href": "https://www.burtonmi.gov/government/controller_s_office/budgets.php" },
+        { "text": "Genesee County L-4029 information", "href": "https://www.geneseecountymi.gov/departments/equalization/l-4029_information.php" },
+        { "text": "Michigan property-tax estimator", "href": "https://www.michigan.gov/taxes/property/estimator" }
       ]
     },
-    "headline": "Burton's reported 13.44-mill City rate is about 29% of a typical homestead tax bill.",
+    "headline": "Burton's FY2026-27 City levy is 13.2948 mills: 9.2948 voter-approved Police and Fire mills plus 4.0000 charter mills for general operations.",
     "summary": {
       "heading": "Why this matters",
       "body": [
-        "One mill is $1 per $1,000 of taxable value. The City reports a 13.44-mill total; its individually displayed General, Police, and Fire components sum to 13.43 because published components are rounded."
+        "One mill is $1 per $1,000 of taxable value. The calculator shows the latest adopted City levy by service and keeps the separately published 2025 complete-bill estimate clearly dated."
       ]
     },
     "responsibility": "Burton sets and receives only the City portion. County, schools, the State, college, transit, and airport authorities set and receive the other portions.",
     "action": {
       "kind": "link",
-      "text": "Estimate a bill on this dashboard",
+      "text": "Use the City millage calculator",
       "href": "#propertytax"
     },
     "statOverrides": {
-      "City of Burton's rate": { "priority": true, "hint": "ACFR total; displayed components round to 13.43" },
-      "City's share of your bill": { "priority": true },
+      "City of Burton's rate": { "priority": true },
+      "Voter-approved City millages": { "priority": true },
       "City tax on a $50k-taxable home": { "priority": true },
       "School districts in Burton": { "priority": true }
     },
     "chartOverrides": {
-      "Where a typical homestead tax bill goes (mills)": { "takeaway": "Most mills on a typical homestead bill go to governments and authorities other than Burton." },
-      "Total homestead tax rate by school district (mills)": { "takeaway": "The total rate varies by school district even though Burton's City rate is the same." },
-      "City of Burton's own millage, last 10 years": { "takeaway": "The reported City rate is lower than at the start of the displayed period and flat in recent years." }
+      "Where a typical 2025 homestead tax bill went (mills)": { "takeaway": "The typical 2025 homestead bill included separate City, County, school, State, college, transit, and airport millages." },
+      "Total homestead tax rate by school district (mills)": { "takeaway": "The 2025 complete-bill rate varies by school district even though the City levy applies across Burton." },
+      "Reported City millage, FY2017-FY2026": { "takeaway": "Reported City millage declined early in the FY2017-FY2026 period and then remained nearly level." }
     },
     "tableIds": {},
     "sections": [
       {
         "heading": "What makes up the bill",
-        "charts": ["where-a-typical-homestead-tax-bill-goes-mills", "total-homestead-tax-rate-by-school-district-mills"]
+        "charts": ["where-a-typical-2025-homestead-tax-bill-went-mills", "total-homestead-tax-rate-by-school-district-mills"]
       },
       {
         "heading": "City rate over time",
-        "charts": ["city-of-burton-s-own-millage-last-10-years"]
+        "charts": ["reported-city-millage-fy2017-fy2026"]
       }
     ]
   },
