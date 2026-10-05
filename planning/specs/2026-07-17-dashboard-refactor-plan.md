@@ -4,7 +4,7 @@
 
 **Area:** Dashboard registry, loading, rendering, navigation, and data validation
 
-**Status:** Planning only
+**Status:** Complete -- PR #99 rebase-merged to `main` at `823ac3f`
 
 **Security gate:** Begin only after the audit's four Medium findings are closed or explicitly accepted.
 
