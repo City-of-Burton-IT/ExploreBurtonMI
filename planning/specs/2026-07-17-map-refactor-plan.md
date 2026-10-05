@@ -4,9 +4,21 @@
 
 **Area:** Interactive Leaflet map
 
-**Status:** Planning only
+**Status:** Complete -- PR #98 rebase-merged to `main` at `7c3747f`
 
 **Security gate:** Do not start until SEC-01 through SEC-04 in the comprehensive audit are closed or explicitly accepted.
+
+**Gate decision (2026-07-17):** Repository and listing-flow controls are closed.
+Issue #94 is explicitly deferred by the user without changing existing protections.
+
+**Execution clarifications:** Preserve the implementation's current resident-visible
+behavior where the draft wording conflicts with the application. Markers are created
+once per on-map place ID; selection focuses and emphasizes without newly opening a
+popup; the existing desktop control dimensions remain unchanged. Controller contract
+tests are added with each controller extraction after M1 freezes pure presentation and
+style behavior. Report-pin suppression is exposed explicitly by the base, place, and
+closure handles. Existing store-bound helpers are converted to callback contracts, and
+closure rendering uses a signature covering geometry and all popup fields.
 
 ## Outcome
 
@@ -54,7 +66,7 @@ Do not move application routing, `ui` state, or report-modal state into Leaflet 
 
 ## Implementation sequence
 
-### Phase M1 — Freeze behavior with contract tests
+### Task 1 — Phase M1: Freeze behavior with contract tests
 
 **Files:** existing `test/mapClip.test.ts`, `test/cluster.test.ts`, `test/closures.test.ts`; new focused tests under `test/`.
 
@@ -70,7 +82,7 @@ Do not move application routing, `ui` state, or report-modal state into Leaflet 
 
 **Exit:** Tests describe current behavior before production extraction begins.
 
-### Phase M2 — Extract base-map construction
+### Task 2 — Phase M2: Extract base-map construction
 
 **Files:** create `src/lib/map/createBaseMap.ts`; modify `src/lib/Map.svelte`; retain `src/lib/map/dataLayers.ts`.
 
@@ -86,7 +98,7 @@ Keep data fetching and Svelte/store reads out of the factory. Make teardown idem
 
 **Exit:** `Map.svelte` creates and destroys a base-map handle; map initialization output and visible layers are unchanged.
 
-### Phase M3 — Extract the place-layer controller
+### Task 3 — Phase M3: Extract the place-layer controller
 
 **Files:** create `src/lib/map/placeLayer.ts`; modify `src/lib/Map.svelte`; extend map tests.
 
@@ -104,7 +116,7 @@ Keep `PlaceFeature` as the public domain type. Do not expose marker maps to `Map
 
 **Exit:** Marker creation, filtering, clustering, and selection are absent from `Map.svelte`; contract tests and existing filter/deep-link tests pass.
 
-### Phase M4 — Isolate closure-layer reconciliation
+### Task 4 — Phase M4: Isolate closure-layer reconciliation
 
 **Files:** create `src/lib/map/closureLayer.ts`; modify `src/lib/Map.svelte`; retain `src/lib/closures.ts` pure transforms.
 
@@ -114,7 +126,7 @@ Fetching remains in the orchestrator or a shared remote loader so network error/
 
 **Exit:** A closure update cannot leak a stale layer or duplicate features; banner and map derive from the same active set.
 
-### Phase M5 — Extract custom controls and simplify effects
+### Task 5 — Phase M5: Extract custom controls and simplify effects
 
 **Files:** create `src/lib/map/controls.ts`; modify `src/lib/Map.svelte`; add focused tests.
 
@@ -130,7 +142,7 @@ Then consolidate `Map.svelte` effects into named adapter functions:
 
 **Exit:** `Map.svelte` reads as lifecycle plus five explicit state synchronizations. No controller imports the application store.
 
-### Phase M6 — Responsive, accessibility, and native verification
+### Task 6 — Phase M6: Responsive, accessibility, and native verification
 
 Test at narrow phone, tablet breakpoint, and desktop widths, in light/dark themes and with reduced motion. Verify:
 

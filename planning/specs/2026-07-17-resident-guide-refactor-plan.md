@@ -4,7 +4,13 @@
 
 **Area:** Resident Guide sections/navigation (“resident tabs”), content dispatch, and build-time content boundary
 
-**Status:** Planning only
+**Status:** Complete -- PR #100 rebase-merged to `main` at `6716800`
+
+**Execution result:** The guide shell now has separate navigation and content
+composition, complete runtime bundle validation, a fail-closed build-time HTML
+allowlist, section-qualified anchor routes, focus recovery for history navigation,
+dedicated CivicClerk and waste-schedule validators, and privacy-first click-to-load
+video behavior. The final protected checks passed with 53 Vitest files and 467 tests.
 
 **Security gate:** Begin only after the audit's four Medium findings are closed or explicitly accepted.
 

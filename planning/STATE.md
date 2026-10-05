@@ -4,41 +4,42 @@
 
 ## Current Handoff
 
-**Status:** The comprehensive security audit and the repository-side remediation are
-complete. PR #89 was rebase-merged to `main` at `62cfa65`; all seven required checks
-passed, GitHub Pages deployed successfully, Cloudflare now enforces the CSP, and the
-live site and `data.geojson` load without a Cloudflare challenge. The scoped
-`LISTING_PR_TOKEN` Actions secret is configured.
+**Status:** The security closure and all three planned product-area refactors are
+complete on protected `main`. PR #96 closed the listing workflow and issue #66; PR #98
+completed the map controller refactor; PR #99 completed the dashboard refactor; and PR
+#100 completed the Resident Guide refactor. Issue #94 remains explicitly deferred by
+the user, with the existing branch protections unchanged. Android v1.17 (versionCode
+26) is published to the Google Play internal-testing track from `main` at `6716800`
+and has passed post-update device verification. Issue #87 is closed.
 
-**Last touched:** 2026-07-17. Verified the merged deployment, protected-branch policy,
-enforced edge CSP, Cloudflare reachability, and the newly configured PR token. No
-security-remediation code remains unmerged.
+**Last touched:** 2026-07-17. Rebase-merged Resident Guide PR #100 at `6716800` after
+all seven required checks passed, following map PR #98 at `7c3747f` and dashboard PR
+#99 at `823ac3f`. Final Resident Guide verification passed Svelte check with zero
+errors/warnings, 53 Vitest files with 467 tests, the production/PWA build, and protected
+web, Python, pin-editor, and CodeQL checks. Android release workflow run #26 then passed
+tests, built and archived the signed AAB, authenticated keylessly, and uploaded v1.17
+to Play internal testing with status `completed` and release notes attached. The user
+installed the update and confirmed that map layers, dashboards, and the Resident Guide
+work. A dark-mode contrast bug in dashboard "What this means" panels was filed as #101.
 
-**Current phase:** Close the remaining external workflow controls, then execute the
-map refactor plan. Dashboard and Resident Guide refactors follow as separate phases;
-their implementation has not started.
+**Current phase:** COMPLETE -- security closure, map refactor, dashboard refactor,
+Resident Guide refactor, and Android v1.17 release are complete. The next maintenance
+change is the isolated dashboard dark-mode contrast fix in issue #101.
 
-**Open work:** Track durable work in GitHub Issues. First, complete
-[issue #66](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/66): update and
-test the Power Automate listing flow so an add-new-business request remains in the
-private approval queue and never invokes the publication dispatch; the repository now
-provides a defense-in-depth rejection if one is dispatched. Then complete
-[issue #94](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/94): add a
-second trusted maintainer and raise protected-branch required approvals from zero to
-one. After those security closure items, begin
-`planning/specs/2026-07-17-map-refactor-plan.md`; retain
-`planning/specs/2026-07-17-dashboard-refactor-plan.md` and
-`planning/specs/2026-07-17-resident-guide-refactor-plan.md` as later, separate phases.
-A real Android-device smoke test of JSON loading through Cloudflare remains worthwhile.
+**Open work:** Keep [issue #94](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/94)
+open and deferred until the user designates a second trusted maintainer; do not guess,
+lower, or otherwise alter the current protections. [Issue #87](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/87)
+is closed after successful physical-device production JSON and v1.17 post-update smoke
+tests. Next, fix the deferred dashboard dark-mode explanation-panel contrast regression
+under [issue #101](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/101).
 
-**Blockers:** No repository blocker. The Power Automate control requires an
-authenticated Burton tenant session, and the one-approval branch policy requires the
-City to designate a second write-capable reviewer.
+**Blockers:** None. The one-approval branch-policy change remains intentionally deferred
+until the City designates a second write-capable reviewer.
 
 **Public summary:** Explore Burton is a public, static civic map, dashboard, and
 Resident Guide at <https://explore.burtonmi.gov>, with moderated resident submissions,
-installable web and Android apps, protected publication workflows, and documented
-refactor plans for its three main product areas.
+installable web and Android apps, protected publication workflows, and completed
+maintainability refactors across its map, dashboards, and Resident Guide.
 
 ## Historical Session Log
 
