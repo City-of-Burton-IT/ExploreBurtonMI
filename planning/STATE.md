@@ -2,7 +2,43 @@
 
 > Read this first at session start. Update at session end.
 
-## Current Handoff
+## Current Handoff - City Website Review
+
+**Status:** Authorized staging content migration and available editor fixes are
+complete and verified. Production launch remains pending platform fixes, City
+decisions and final-domain acceptance testing.
+
+**Last touched:** 2026-10-05. Logged skill observations 57-60 and updated the existing
+City Website (Revize) vault topic with publishing/verification lessons. Current
+reports are under `mayor-review/content-audit/launch-fixes/`; read
+`fixes-and-remaining.md`, `revize-request.md` and `city-verification-checklist.md`.
+The vendor request is prepared but has not been sent.
+
+**Current phase:** VERIFY / HANDOFF - editor remediation complete; launch
+acceptance remains open. The original 14 findings have four closed, two partial
+and eight open; the current register is `launch-fixes/updated-findings.csv`.
+
+**Open work:** Authoritative tracking is now
+[platform fixes #124](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/124)
+and [City decisions and acceptance #125](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/125).
+Local checklists carry detailed evidence and proposed ownership; update the issues
+as work closes. Do not rerun completed migration jobs; inspect their journals first.
+
+**Blockers:** Platform/template fixes, approved form routing and owner decisions,
+and production cutover verification. No real form submission or production
+cutover was performed. Early voting remains October 24-November 1, 2026.
+
+**Public summary:** City website content updates and editor-level improvements
+have been verified; remaining platform fixes and launch acceptance checks are
+tracked separately.
+
+**Handoff boundaries:** The separate Explore Burton application was not modified
+by this website work. Raw browser/editor captures and audit helpers remain local
+under the repository's existing planning-directory exclusion. Only the already
+tracked state file is included in this handoff commit. README status generation
+is skipped because the README has no generated status markers.
+
+## Previous Explore Burton Application Handoff
 
 **Status:** The security closure and all three planned product-area refactors are
 complete on protected `main`. PR #96 closed the listing workflow and issue #66; PR #98
@@ -41,7 +77,104 @@ Resident Guide at <https://explore.burtonmi.gov>, with moderated resident submis
 installable web and Android apps, protected publication workflows, and completed
 maintainability refactors across its map, dashboards, and Resident Guide.
 
+## Revize content migration audit
+
+**Status:** READ-ONLY AUDIT COMPLETE, 2026-10-05. The reachable-link crawl read
+187 production URLs and 147 staging URLs; Cloudflare interrupted staging once,
+then the user cleared it and the crawl resumed from checkpoints at a slower rate.
+No unresolved crawl HTTP failures remain. URL totals include aliases.
+
+**Review artifact:** `mayor-review/content-audit/comparison-report.html`, with
+action, news, calendar, page and document CSVs beside it. All 20 live archive
+articles were read; staging's published feed contains only two demos. October
+2026 through January 2027 has 17 live calendar occurrences not represented in the
+staging feed. Document-link inventory: 234 production URLs, 186 staging URLs;
+59 production URLs (57 filenames) lack a same-filename staging match and need
+reconciliation, not automatic classification as missing files.
+
+**Open migration work:** Content owners should work through `action-checklist.csv`
+and the news/calendar lists, starting with the Clerk placeholder page, current
+approved budget/annual documents, staff/council/contact updates, public events,
+request-form departments, meeting-video access and home-page placeholder links.
+PDF contents, renamed/unlinked files and unpublished CMS records are outside the
+completed link comparison; external repositories were compared as integrations.
+No CMS content was edited during that audit. Raw browser evidence and audit scripts
+remain under `mayor-review/content-audit/` for traceability.
+
+**Authorized news/calendar migration:** Published and verified on 2026-10-05:
+19 news articles (6 Main, 13 Archive), 10 calendar records (9 source records plus
+Trick or Treat Trail), and 25 assets (16 documents, 9 images). All 19 article
+texts and 10 event descriptions match prepared content; all 25 public files
+return HTTP 200 with expected byte sizes. News page filter now includes Main
+and Archive, newest first, and the page was republished. Browser detail views
+and image rendering passed. Result: `mayor-review/content-audit/migration-result.md`.
+
+Early Voting Begins was published as event 31 after the user confirmed October 24.
+Its start is October 24, 2026, 9 a.m.-5 p.m.; the description now says October 24-November 1.
+
+**Migration holds:** Heat's On applications-open story held because the verified
+deadline was October 2. Fire Open House event was added, but its source flyer resolves to 404
+and the broken link was omitted. Two pre-existing demo news stories remain for
+separate cleanup. Other audit checklist work remains open.
+
+**Authorized follow-up updates, 2026-10-05:** After the user restored CMS sign-in,
+published and verified Clerk/DPW/Roads/Senior/Attorney contacts, council roster,
+November election and October 24 early-voting guidance, meeting-video/archive
+access, homepage links/copy/news settings and header Contact the City button.
+Restored five resident-resource sections on the Residents landing page and the
+Parks 2026 schedule/seasonal forms. Updated five current financial/environmental
+PDFs. All 23 follow-up files (14 documents, 9 images) returned public HTTP 200 and
+matched source SHA-256 hashes. Budget/annual pages needed Admin Tools > Publish
+this Page to refresh saved changes. Details: `mayor-review/content-audit/page-update-result.md`.
+
+**Cleanup and launch limitations:** Demo news 22/18 moved to Training and is absent
+from homepage/News listings; direct article records remain. Calendar training
+10/11 remains public because expiration dates did not persist when saved; this
+cleanup is unresolved. Existing Parks online-form URLs are linked, but native
+staging form migration/recipient routing is not verified. City-confirmation items
+(footer phone, exemption deadline, Senior application, Title VI, request routing)
+and the expired/unavailable migration holds remain untouched. Resume from
+`mayor-review/content-audit/page-updates/remaining-updates.json`; verified journals
+prevent duplicate writes. No production-domain cutover was performed.
+
+**Authorized launch fixes, 2026-10-05:** Published and anonymously verified current
+budget navigation, removal of the duplicate floating announcement and unused
+footer icons, corrected/labeled Facebook and YouTube controls, CivicClerk frame
+title/direct link, Residents inline contrast cleanup, and removal of two empty
+election document anchors. All nine migrated Residents images and original
+document destinations remain. A 14-page desktop/phone recheck returned HTTP 200
+in all 28 combinations; final Elections check also passed unnamed-link rules.
+Of the original 14 findings, four are closed, two partially resolved and eight
+open. Remaining combined axe findings: 70 affected element instances, mostly
+shared templates, not 70 independent defects.
+
+**Remaining launch work:** Revize search, sitemap, redirects, translation/calendar
+accessible names, news hidden-slide focus, shared contrast, form anti-spam field
+accessibility and metadata rendering. Residents metadata_title persists as
+Residents but published title/og:title stay generic even after admin republish;
+no bulk title edits were attempted after confirming the issue. City must approve
+form recipients, old-link mappings and earlier owner questions, then coordinate
+delivery and final-domain cutover verification. Demo cleanup remains as documented
+above. No vendor request or real form submission was sent. Current deliverables:
+`mayor-review/content-audit/launch-fixes/fixes-and-remaining.md`,
+`revize-request.md`, `city-verification-checklist.md`, `updated-findings.csv` and
+`remaining-accessibility.csv` in the same folder. Original audit links to this
+follow-up; its finding CSV now includes current statuses.
+
 ## Historical Session Log
+
+**Revize launch-readiness review, 2026-10-05:** Read-only anonymous browser review
+completed for 14 pages at desktop/phone widths, plus four 320px checks, search,
+mobile menu/submenu, keyboard skip and redirect/sitemap probes. Search returns
+"No pagebuilder data"; request departments remain placeholders; sitemap URLs
+point to `/revize/gigagen/`; two legacy staging paths return 404. Shared accessible
+names/contrast and news-carousel focus need fixes. Mobile menu after animation,
+Escape focus return and budget-page skip link passed. Report lists 8 P1 and 6 P2
+items with owners and acceptance checks; 187-row redirect worksheet is a draft,
+not approved configuration (77 destinations unresolved). Form delivery and full
+screen-reader/PDF accessibility remain untested. No CMS changes were made.
+Artifacts: `mayor-review/content-audit/launch-readiness/20261005-152929/`
+(`launch-readiness-report.md`, `prioritized-fixes.csv`, `redirect-candidates.csv`).
 
 **Historical public summary:** A public, static "Explore Burton" site (Vite + Svelte + Leaflet)
 at explore.burtonmi.gov: a searchable map of city businesses, government facilities,
