@@ -1,4 +1,7 @@
 import { readFileSync } from 'node:fs';
+
+/** Read a source file with line endings normalised so snippet assertions are OS-independent. */
+const readSource = (path: string) => readFileSync(path, 'utf8').replace(/\r\n/g, '\n');
 import { render } from 'svelte/server';
 import { describe, expect, it } from 'vitest';
 import DashboardMenu from '../src/lib/DashboardMenu.svelte';
@@ -7,9 +10,9 @@ import DashboardSummary from '../src/lib/dashboard/DashboardSummary.svelte';
 import InfoHeader from '../src/lib/InfoHeader.svelte';
 import InfoView from '../src/lib/InfoView.svelte';
 
-const summarySource = readFileSync('src/lib/dashboard/DashboardSummary.svelte', 'utf8');
-const taxEstimatorSource = readFileSync('src/lib/TaxEstimator.svelte', 'utf8');
-const appStyles = readFileSync('src/app.css', 'utf8');
+const summarySource = readSource('src/lib/dashboard/DashboardSummary.svelte');
+const taxEstimatorSource = readSource('src/lib/TaxEstimator.svelte');
+const appStyles = readSource('src/app.css');
 
 function themeBlock(selector: string): string {
   const escapedSelector = selector.replace(/[.*+?^${}()|[\]\\]/g, '\\$&');
