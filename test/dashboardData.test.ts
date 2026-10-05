@@ -162,6 +162,49 @@ describe('createDashboardData', () => {
     expect(fetcher.mock.calls.filter(([url]) => url === 'info-finances.json')).toHaveLength(1);
   });
 
+  it('surfaces a transient clarity overlay failure as retryable instead of caching an empty map', async () => {
+    const ids = ['finances'];
+    let clarityAttempts = 0;
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === 'info-finances.json') return jsonResponse(panel('Finances'));
+      if (url === 'dashboard-clarity.json') {
+        clarityAttempts += 1;
+        if (clarityAttempts === 1) throw new TypeError('offline');
+        if (clarityAttempts === 2) return jsonResponse({}, 503);
+        return jsonResponse(clarityMap(ids));
+      }
+      return jsonResponse({});
+    });
+    const data = createDashboardData(ids, { fetch: fetcher, prefetchAdjacent: false });
+
+    await data.load('finances');
+    expect(data.state('finances').error?.kind).toBe('network');
+
+    await data.retry('finances');
+    expect(data.state('finances').error?.kind).toBe('http');
+
+    await data.retry('finances');
+    expect(data.state('finances').error).toBeNull();
+    expect(data.state('finances').panel?.title).toBe('Finances');
+    expect(clarityAttempts).toBe(3);
+  });
+
+  it('treats an absent optional freshness overlay as empty', async () => {
+    const ids = ['finances'];
+    const fetcher = vi.fn(async (url: string) => {
+      if (url === 'info-finances.json') return jsonResponse(panel('Finances'));
+      if (url === 'dashboard-clarity.json') return jsonResponse(clarityMap(ids));
+      if (url === 'freshness.json') return jsonResponse({}, 404);
+      return jsonResponse({});
+    });
+    const data = createDashboardData(ids, { fetch: fetcher, prefetchAdjacent: false });
+
+    await data.load('finances');
+
+    expect(data.state('finances').error).toBeNull();
+    expect(data.state('finances').panel?.title).toBe('Finances');
+  });
+
   it('keeps rapid navigation results isolated by dashboard id', async () => {
     const ids = ['finances', 'health'];
     const finances = deferred<Response>();

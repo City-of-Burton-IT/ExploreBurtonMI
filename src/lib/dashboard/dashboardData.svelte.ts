@@ -95,10 +95,16 @@ export function createDashboardData(
     let response: Response;
     try {
       response = await fetcher(url);
-    } catch {
-      return {};
+    } catch (error) {
+      // Throw so metadata() drops its memoised promise and the next retry refetches.
+      throw new LoadFailure(
+        'network',
+        error instanceof Error ? error.message : `Network error loading ${url}`,
+      );
     }
-    if (!response.ok) return {};
+    // An overlay that genuinely does not exist is an empty overlay; anything else is transient.
+    if (response.status === 404 || response.status === 410) return {};
+    if (!response.ok) throw new LoadFailure('http', `${url} returned HTTP ${response.status}`);
     const raw = await response.json();
     return validate(raw, ids);
   }
