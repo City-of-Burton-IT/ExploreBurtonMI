@@ -38,44 +38,57 @@ under the repository's existing planning-directory exclusion. Only the already
 tracked state file is included in this handoff commit. README status generation
 is skipped because the README has no generated status markers.
 
-## Previous Explore Burton Application Handoff
+## Current Handoff - Explore Burton application and Mayor review
 
-**Status:** The security closure and all three planned product-area refactors are
-complete on protected `main`. PR #96 closed the listing workflow and issue #66; PR #98
-completed the map controller refactor; PR #99 completed the dashboard refactor; and PR
-#100 completed the Resident Guide refactor. Issue #94 remains explicitly deferred by
-the user, with the existing branch protections unchanged. Android v1.17 (versionCode
-26) is published to the Google Play internal-testing track from `main` at `6716800`
-and has passed post-update device verification. Issue #87 is closed.
+Last verified: 2026-10-05 18:30 (git log, gh issue list, live probes).
 
-**Last touched:** 2026-07-17. Rebase-merged Resident Guide PR #100 at `6716800` after
-all seven required checks passed, following map PR #98 at `7c3747f` and dashboard PR
-#99 at `823ac3f`. Final Resident Guide verification passed Svelte check with zero
-errors/warnings, 53 Vitest files with 467 tests, the production/PWA build, and protected
-web, Python, pin-editor, and CodeQL checks. Android release workflow run #26 then passed
-tests, built and archived the signed AAB, authenticated keylessly, and uploaded v1.17
-to Play internal testing with status `completed` and release notes attached. The user
-installed the update and confirmed that map layers, dashboards, and the Resident Guide
-work. A dark-mode contrast bug in dashboard "What this means" panels was filed as #101.
+**Status:** Repo housekeeping and the dashboard clarity work are complete on protected
+`main`. Issues #111 (duplicate local commit) and #112 (branch and worktree hygiene) are
+closed. All thirteen Dependabot PRs plus a lockfile/overrides fix (PR #121) merged on
+2026-10-05; Dependabot shows zero open alerts (two dev-only `sharp` pins inside
+`@capacitor/assets` dismissed as tolerable risk with a written reason). PR #122 landed
+the July dashboard clarity and City millage breakdown work after a code review that
+found and fixed one real bug (transient overlay fetch failures were memoised as an empty
+clarity map); the public Pages deploy for `74a0da3` succeeded on the third attempt after
+a GitHub Actions incident. Low findings from that review are issue #123.
 
-**Current phase:** COMPLETE -- security closure, map refactor, dashboard refactor,
-Resident Guide refactor, and Android v1.17 release are complete. The next maintenance
-change is the isolated dashboard dark-mode contrast fix in issue #101.
+**Mayor review page:** live on the internal mirror at `https://explore.burton.local/review/`
+(static folder `wwwroot\review`, excluded from the mirror deploy's robocopy with `/XD review`).
+It holds ten Revize staging captures (taken by a Codex session over CDP against the
+user's signed-in Chrome; `planning/mayor-review/capture.py` and `capture-log.md`),
+three live Explore buttons, the Revize preview link
+`https://builder1.revize.com/revize/cityofburtonmi/`, and an embedded Microsoft Form
+(two Likert grids, two comment boxes, three closing questions; org-only, resubmit allowed,
+email per response). Deploy with `C:\utils\Run-DeployMayorReviewAsAdmin.ps1` (stored
+admin credential, loopback session) or `planning/mayor-review/Deploy-MayorReview.ps1`
+from an admin shell. Spec: `planning/specs/2026-10-05-mayor-review-page.md`. The Mayor
+has NOT yet been sent the link; a fresh browser may see a Cloudflare interstitial on the
+Revize preview.
 
-**Open work:** Keep [issue #94](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/94)
-open and deferred until the user designates a second trusted maintainer; do not guess,
-lower, or otherwise alter the current protections. [Issue #87](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/87)
-is closed after successful physical-device production JSON and v1.17 post-update smoke
-tests. Next, fix the deferred dashboard dark-mode explanation-panel contrast regression
-under [issue #101](https://github.com/City-of-Burton-IT/ExploreBurtonMI/issues/101).
+**Branches kept on purpose (local only):** `feature/crime-dashboard-hold` (sole copy,
+never push) and `feature/public-safety-combined` (reference for rebuilding #19; the FD
+review rules and data-script pointers are recorded on #19). Everything else merged or
+deleted; see the closing comment on #112.
 
-**Blockers:** None. The one-approval branch-policy change remains intentionally deferred
+**Current phase:** MAINTENANCE. Next product work is whichever open enhancement the user
+picks; the review page needs the Mayor's responses collected and turned into a punch
+list, then teardown with the mirror at public launch (#88).
+
+**Open work:** GitHub Issues are the single source of truth; run `gh issue list --state open`
+from this clone. Explore-side items as of this handoff: issue #126 (Mayor review page:
+send, collect, punch list), issue #123 (clarity follow-ups), issue #88 (staff preview
+window and mirror teardown, which now also hosts the Mayor review page), issue #94
+(deferred, needs a second maintainer), and the older enhancements numbered 19, 17, 23,
+44, 69, 70, 72, 80 and 83.
+
+**Blockers:** None on the application. The one-approval branch policy stays deferred
 until the City designates a second write-capable reviewer.
 
 **Public summary:** Explore Burton is a public, static civic map, dashboard, and
 Resident Guide at <https://explore.burtonmi.gov>, with moderated resident submissions,
-installable web and Android apps, protected publication workflows, and completed
-maintainability refactors across its map, dashboards, and Resident Guide.
+installable web and Android apps, protected publication workflows, resident-first
+dashboard explanations with a City millage breakdown, and a fully reconciled dependency
+and branch baseline as of October 2026.
 
 ## Revize content migration audit
 
