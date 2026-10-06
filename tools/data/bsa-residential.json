@@ -1,0 +1,48 @@
+{
+  "_source": "City of Burton BS&A Assessing database (D001City Of Burton 2026), read-only aggregate export. Residential = property class 401. Sales = assessor terms code 03 (arm's length), price over 10,000 dollars, by calendar year of sale.",
+  "extracted": "2026-10-06",
+  "assessment_year": 2026,
+  "residential": {
+    "parcels": 10953,
+    "median_sev": 78300,
+    "median_taxable": 45808,
+    "pre_parcels": 10502
+  },
+  "sales": [
+    {
+      "year": 2019,
+      "sales": 548,
+      "median_price": 105000
+    },
+    {
+      "year": 2020,
+      "sales": 542,
+      "median_price": 122000
+    },
+    {
+      "year": 2021,
+      "sales": 626,
+      "median_price": 126000
+    },
+    {
+      "year": 2022,
+      "sales": 545,
+      "median_price": 139900
+    },
+    {
+      "year": 2023,
+      "sales": 495,
+      "median_price": 150000
+    },
+    {
+      "year": 2024,
+      "sales": 461,
+      "median_price": 155000
+    },
+    {
+      "year": 2025,
+      "sales": 466,
+      "median_price": 158000
+    }
+  ]
+}

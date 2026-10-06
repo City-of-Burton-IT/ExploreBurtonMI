@@ -1,7 +1,7 @@
 {
   "_note": "Data-freshness dates per dashboard id (key matches info-<id>.json). Value is an ISO date (YYYY-MM or YYYY-MM-DD) of the data's latest reference period; the app renders it as 'Data as of {Month YYYY}' beside the source line. A panel may instead carry its own lastUpdated (e.g. set by its generator); this overlay only fills in when the panel has none, and any key that is not a dashboard id (like this _note) is ignored. parks and trails are intentionally undated (static reference geography, not periodically-updated statistics).",
-  "demographics": "2023-12",
-  "housing": "2023-12",
+  "demographics": "2024-12",
+  "housing": "2024-12",
   "costofliving": "2024-12",
   "schools": "2023-12",
   "jobs": "2022-12",

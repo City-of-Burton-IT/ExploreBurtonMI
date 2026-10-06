@@ -8,6 +8,10 @@
 #     read from the FRED mirrors of the BEA tables (keyless text endpoint). If
 #     FRED is unreachable, pass --rpp-file with the same series as JSON
 #     ({"RPPALL22420": {"2024": 93.034, ...}, ...}) copied from BEA/FRED by hand.
+#   * Optional City records: residential aggregates (median arm's-length sale
+#     price by year, principal residence exemption share) exported from the
+#     City's BS&A Assessing database by tools/Export-BsaCostOfLiving.ps1 into
+#     tools/data/bsa-residential.json. Aggregates only, never parcel rows.
 #
 # Framing (issue #23): this is an honest "what it costs to live here" view, not an
 # "affordable" pitch. Every cost stat carries its margin of error and sits next to
@@ -31,6 +35,7 @@ STATE_FIPS = "26"        # Michigan
 PLACE_FIPS = "12060"     # Burton city (GEOID 2612060)
 MSA_CODE = "22420"       # Flint, MI Metro Area (Genesee County)
 OUT = public_path("info-costofliving.json")
+CITY_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "bsa-residential.json")
 
 # ACS variables: estimate (E) and 90% margin of error (M).
 ACS_VARS = [
@@ -113,6 +118,45 @@ def fetch_rpp() -> dict[str, dict[str, float]]:
     return out
 
 
+def load_city_file(path: str) -> dict:
+    """Read and validate the BS&A aggregate export written by
+    tools/Export-BsaCostOfLiving.ps1. Aggregates only; a missing or implausible
+    figure is rejected rather than published."""
+    with open(path, encoding="utf-8") as fh:
+        raw = json.load(fh)
+    return validate_city(raw, path)
+
+
+def validate_city(raw: object, where: str = "city file") -> dict:
+    if not isinstance(raw, dict):
+        sys.exit(f"{where}: expected an object")
+    res = raw.get("residential")
+    if not isinstance(res, dict):
+        sys.exit(f"{where}: missing 'residential' object")
+    for key in ("parcels", "median_sev", "median_taxable", "pre_parcels"):
+        if not isinstance(res.get(key), int) or res[key] <= 0:
+            sys.exit(f"{where}: residential.{key} must be a positive integer")
+    if res["pre_parcels"] > res["parcels"]:
+        sys.exit(f"{where}: pre_parcels exceeds parcels")
+    sales = raw.get("sales")
+    if not isinstance(sales, list) or not sales:
+        sys.exit(f"{where}: 'sales' must be a non-empty list")
+    years = []
+    for row in sales:
+        if not isinstance(row, dict):
+            sys.exit(f"{where}: each sales row must be an object")
+        for key in ("year", "sales", "median_price"):
+            if not isinstance(row.get(key), int) or row[key] <= 0:
+                sys.exit(f"{where}: sales.{key} must be a positive integer")
+        years.append(row["year"])
+    if years != sorted(set(years)):
+        sys.exit(f"{where}: sales years must be ascending and unique")
+    for key in ("extracted", "assessment_year", "_source"):
+        if key not in raw:
+            sys.exit(f"{where}: missing '{key}'")
+    return raw
+
+
 def rent_burden_share(row: dict[str, str]) -> tuple[float, int, int]:
     """(percent of renters paying 30%+ of income, numerator, denominator).
 
@@ -136,7 +180,7 @@ def _rpp_value(rpp: dict, sid: str, year: int) -> float:
 
 
 def build_panel(acs: dict[str, dict[str, str]], rpp: dict[str, dict[str, float]],
-                year: int, rpp_year: int) -> dict:
+                year: int, rpp_year: int, city: dict | None = None) -> dict:
     b = acs["Burton"]
     geos = ["Burton", "Flint metro", "Michigan", "United States"]
 
@@ -213,7 +257,76 @@ def build_panel(acs: dict[str, dict[str, str]], rpp: dict[str, dict[str, float]]
         {"type": "trend", "title": "Flint metro price level over time (US = 100)", "unit": "", "lines": lines},
     ]
 
-    window = f"{year - 4}-{year}"
+    explainer_items = [
+        {"term": "Price level (RPP)",
+         "body": "The Bureau of Economic Analysis compares what goods, rents and services cost in each "
+                 "metro area with the national average, set to 100. A value of 93 means prices run about "
+                 "7% below the national average. It exists only for metro areas and states, so the figure "
+                 "shown is for the whole Flint metro (Genesee County), not Burton alone."},
+        {"term": "Cost-burdened renters",
+         "body": "Households paying 30% or more of their income in gross rent (rent plus utilities). "
+                 "The Census treats that line as the point where housing starts to crowd out other needs."},
+        {"term": "Why income is on a cost dashboard",
+         "body": "Burton's rents and home values are far below the national median, but so is household "
+                 "income. Comparing costs without income would make the city look cheaper to live in than "
+                 "it is for the people who already live here."},
+        {"term": "Margins of error",
+         "body": "ACS figures are survey estimates averaged over five years. Each Burton figure shows its "
+                 "90% margin of error; the gaps to Michigan and the nation are far larger than those margins, "
+                 "while the gap to the Flint metro usually is not."},
+    ]
+
+    source = (f"US Census Bureau, American Community Survey (ACS) {year} 5-year estimates ({year - 4}-{year}) for "
+              f"Burton city, the Flint, MI metro area, Michigan and the United States; US Bureau of Economic "
+              f"Analysis, Regional Price Parities {rpp_year} (via FRED).")
+    notes = [
+        "Dollar figures are nominal (not inflation-adjusted) ACS five-year averages, not exact counts. "
+        "Rent-burden shares exclude renter households whose burden the Census could not compute.",
+        "Regional Price Parities are metro-level and revise from year to year; the Flint metro series "
+        "moved several points between recent years, so treat small differences as noise.",
+        "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.",
+    ]
+
+    if city:
+        res = city["residential"]
+        latest = city["sales"][-1]
+        pre_share = round(100 * res["pre_parcels"] / res["parcels"], 1)
+        stats.append({
+            "label": "Typical home sale price",
+            "value": _money(latest["median_price"]),
+            "hint": f"Median of {latest['sales']:,} arm's-length sales in {latest['year']}, City assessing records",
+            "benchmarks": [{"name": f"Census estimate, ACS {year}", "value": _money(est("B25077_001E", "Burton"))}],
+        })
+        stats.append({
+            "label": "Homes with a principal residence exemption",
+            "value": f"{pre_share}%",
+            "hint": f"{res['pre_parcels']:,} of {res['parcels']:,} residential parcels on the {city['assessment_year']} roll",
+        })
+        charts.append({
+            "type": "trend", "title": "What Burton homes sold for", "unit": "$",
+            "points": [{"x": str(row["year"]), "y": row["median_price"]} for row in city["sales"]],
+        })
+        explainer_items.append({
+            "term": "City records next to Census estimates",
+            "body": "The Census home value is what owners say their home is worth, averaged over five years. The "
+                    "sale price comes from the City's own assessing records: the median of arm's-length sales "
+                    "(a willing buyer and seller, no family or foreclosure transfers) in each calendar year. "
+                    "Recent sales running above the Census figure is normal; the two measure different things.",
+        })
+        explainer_items.append({
+            "term": "Principal residence exemption",
+            "body": "Michigan homeowners who live in their home as their main residence are exempt from the "
+                    "school operating levy. The share of residential parcels with that exemption is the City's "
+                    "own measure of owner-occupancy.",
+        })
+        source += (f" City of Burton assessing records, {city['assessment_year']} roll and sales through "
+                   f"{latest['year']} (aggregates extracted {city['extracted']}).")
+        notes.append(
+            "City sale figures are medians of arm's-length residential sales over $10,000 recorded by the "
+            "City Assessor; they are not adjusted for inflation and exclude family transfers, foreclosures "
+            "and other non-market sales. Only aggregates are published, never individual parcels."
+        )
+
     return {
         "title": "What it costs to live here",
         "subtitle": f"Housing costs, income, and prices: Census ACS {year} five-year and BEA {rpp_year}",
@@ -222,39 +335,14 @@ def build_panel(acs: dict[str, dict[str, str]], rpp: dict[str, dict[str, float]]
         "explainer": {
             "title": "How to read these numbers",
             "intro": "Costs only mean something next to what people earn. This dashboard shows both.",
-            "items": [
-                {"term": "Price level (RPP)",
-                 "body": "The Bureau of Economic Analysis compares what goods, rents and services cost in each "
-                         "metro area with the national average, set to 100. A value of 93 means prices run about "
-                         "7% below the national average. It exists only for metro areas and states, so the figure "
-                         "shown is for the whole Flint metro (Genesee County), not Burton alone."},
-                {"term": "Cost-burdened renters",
-                 "body": "Households paying 30% or more of their income in gross rent (rent plus utilities). "
-                         "The Census treats that line as the point where housing starts to crowd out other needs."},
-                {"term": "Why income is on a cost dashboard",
-                 "body": "Burton's rents and home values are far below the national median, but so is household "
-                         "income. Comparing costs without income would make the city look cheaper to live in than "
-                         "it is for the people who already live here."},
-                {"term": "Margins of error",
-                 "body": "ACS figures are survey estimates averaged over five years. Each Burton figure shows its "
-                         "90% margin of error; the gaps to Michigan and the nation are far larger than those margins, "
-                         "while the gap to the Flint metro usually is not."},
-            ],
+            "items": explainer_items,
         },
-        "source": f"US Census Bureau, American Community Survey (ACS) {year} 5-year estimates ({window}) for "
-                  f"Burton city, the Flint, MI metro area, Michigan and the United States; US Bureau of Economic "
-                  f"Analysis, Regional Price Parities {rpp_year} (via FRED).",
+        "source": source,
         "links": [
             {"text": "Census QuickFacts: Burton", "href": "https://www.census.gov/quickfacts/burtoncitymichigan"},
             {"text": "BEA Regional Price Parities", "href": BEA_RPP_PAGE},
         ],
-        "notes": [
-            "Dollar figures are nominal (not inflation-adjusted) ACS five-year averages, not exact counts. "
-            "Rent-burden shares exclude renter households whose burden the Census could not compute.",
-            "Regional Price Parities are metro-level and revise from year to year; the Flint metro series "
-            "moved several points between recent years, so treat small differences as noise.",
-            "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.",
-        ],
+        "notes": notes,
     }
 
 
@@ -264,6 +352,9 @@ def main() -> None:
     ap.add_argument("--rpp-year", type=int, default=2024, help="BEA RPP data year")
     ap.add_argument("--key", default=os.environ.get("CENSUS_API_KEY"))
     ap.add_argument("--rpp-file", help="JSON {series id: {year: value}} used instead of fetching FRED")
+    ap.add_argument("--city-file", default=CITY_FILE if os.path.exists(CITY_FILE) else None,
+                    help="BS&A aggregate export from tools/Export-BsaCostOfLiving.ps1 "
+                         "(default: tools/data/bsa-residential.json when present; pass '' to skip)")
     args = ap.parse_args()
     if not args.key:
         sys.exit("Census API key required: set CENSUS_API_KEY or pass --key. "
@@ -277,11 +368,16 @@ def main() -> None:
     else:
         rpp = fetch_rpp()
 
-    panel = build_panel(acs, rpp, args.year, args.rpp_year)
+    city = load_city_file(args.city_file) if args.city_file else None
+    if city:
+        print(f"  City records from {args.city_file} (extracted {city['extracted']})")
+
+    panel = build_panel(acs, rpp, args.year, args.rpp_year, city)
     write_json(OUT, panel)
     print(f"Wrote {OUT}")
     for s in panel["stats"]:
-        print(f"  {s['label']}: {s['value']}  ({', '.join(b['name'] + ' ' + b['value'] for b in s['benchmarks'])})")
+        bench = ", ".join(b["name"] + " " + b["value"] for b in s.get("benchmarks", []))
+        print(f"  {s['label']}: {s['value']}" + (f"  ({bench})" if bench else ""))
 
 
 if __name__ == "__main__":

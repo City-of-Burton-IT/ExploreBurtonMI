@@ -5,7 +5,7 @@
     "context": {
       "scope": "Burton",
       "status": "current",
-      "asOf": "ACS 2023 estimates; 2010 and 2020 Census history",
+      "asOf": "ACS 2024 estimates; 2010 and 2020 Census history",
       "sourceLinks": [
         { "text": "U.S. Census data", "href": "https://data.census.gov/" }
       ]
@@ -35,13 +35,13 @@
       "Race & ethnicity": { "takeaway": "The chart describes Burton's reported racial and ethnic composition." },
       "Households by income": { "takeaway": "Households span a wide income range; the median does not describe every household." },
       "How residents get to work": { "takeaway": "Driving remains the dominant reported commute mode among employed residents." },
-      "Population": { "takeaway": "Burton's population was lower in 2023 than at the 2010 and 2020 Census counts." },
+      "Population": { "takeaway": "Burton's population was lower in 2024 than at the 2010 and 2020 Census counts." },
       "Homeownership rate": { "takeaway": "Homeownership has remained a defining feature of Burton's housing profile." },
       "Race & ethnicity over time": { "takeaway": "Burton's racial and ethnic composition has changed across Census periods." },
       "Median household income ($)": { "takeaway": "Nominal median household income increased over the displayed years." },
       "Residents below the poverty line (%)": { "takeaway": "The estimated poverty rate remains important context for affordability and service access." },
       "Residents who work from home (%)": { "takeaway": "Working from home increased from its earlier low base." },
-      "How Burton compares (2023)": { "takeaway": "The comparison shows where Burton differs from county and statewide estimates." }
+      "How Burton compares (2024)": { "takeaway": "The comparison shows where Burton differs from county and statewide estimates." }
     },
     "tableIds": {},
     "sections": [
@@ -57,7 +57,7 @@
       },
       {
         "heading": "Change and comparison",
-        "charts": ["population", "race-and-ethnicity-over-time", "median-household-income", "residents-below-the-poverty-line", "residents-who-work-from-home", "how-burton-compares-2023"]
+        "charts": ["population", "race-and-ethnicity-over-time", "median-household-income", "residents-below-the-poverty-line", "residents-who-work-from-home", "how-burton-compares-2024"]
       }
     ]
   },
@@ -156,12 +156,12 @@
     "context": {
       "scope": "Burton",
       "status": "current",
-      "asOf": "ACS 2023 five-year estimates",
+      "asOf": "ACS 2024 five-year estimates",
       "sourceLinks": [
         { "text": "Census QuickFacts: Burton", "href": "https://www.census.gov/quickfacts/burtoncitymichigan" }
       ]
     },
-    "headline": "About 76% of Burton's occupied homes are owner-occupied, and the median home was built around 1963.",
+    "headline": "About 76% of Burton's occupied homes are owner-occupied, and the median home was built around 1964.",
     "summary": {
       "heading": "Why this matters",
       "body": [
@@ -345,10 +345,23 @@
       },
       "Flint metro price level over time (US = 100)": {
         "takeaway": "The metro price level moves several points from year to year, so read the direction, not any single year's figure."
+      },
+      "What Burton homes sold for": {
+        "takeaway": "The typical arm's-length sale rose every year since 2019 in the City's own records; prices are not adjusted for inflation."
       }
     },
     "tableIds": {},
     "sections": [
+      {
+        "heading": "What homes actually sold for",
+        "stats": [
+          "typical-home-sale-price",
+          "homes-with-a-principal-residence-exemption"
+        ],
+        "charts": [
+          "what-burton-homes-sold-for"
+        ]
+      },
       {
         "heading": "Costs and income compared",
         "stats": [

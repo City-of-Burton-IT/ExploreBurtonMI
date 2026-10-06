@@ -118,3 +118,61 @@ def test_build_panel_rejects_missing_rpp_year():
 
     with pytest.raises(SystemExit):
         col.build_panel(ACS, RPP, 2024, 2019)
+
+
+CITY = {
+    "_source": "test",
+    "extracted": "2026-10-06",
+    "assessment_year": 2026,
+    "residential": {"parcels": 10953, "median_sev": 78300, "median_taxable": 45808, "pre_parcels": 10502},
+    "sales": [
+        {"year": 2023, "sales": 495, "median_price": 150000},
+        {"year": 2024, "sales": 461, "median_price": 155000},
+        {"year": 2025, "sales": 466, "median_price": 158000},
+    ],
+}
+
+
+def test_city_records_add_sale_price_exemption_and_trend():
+    panel = col.build_panel(ACS, RPP, 2024, 2024, CITY)
+    labels = [s["label"] for s in panel["stats"]]
+    assert labels[-2:] == ["Typical home sale price", "Homes with a principal residence exemption"]
+    sale = panel["stats"][-2]
+    assert sale["value"] == "$158,000"
+    assert "466" in sale["hint"] and "2025" in sale["hint"]
+    assert sale["benchmarks"] == [{"name": "Census estimate, ACS 2024", "value": "$141,600"}]
+    pre = panel["stats"][-1]
+    assert pre["value"] == "95.9%"
+    trend = panel["charts"][-1]
+    assert trend["type"] == "trend" and trend["title"] == "What Burton homes sold for"
+    assert trend["points"] == [
+        {"x": "2023", "y": 150000}, {"x": "2024", "y": 155000}, {"x": "2025", "y": 158000},
+    ]
+    assert "City of Burton assessing records" in panel["source"]
+    assert any("Only aggregates are published" in n for n in panel["notes"])
+    assert panel["explainer"]["items"][-1]["term"] == "Principal residence exemption"
+
+
+def test_without_city_records_panel_is_unchanged():
+    panel = col.build_panel(ACS, RPP, 2024, 2024)
+    assert len(panel["stats"]) == 6 and len(panel["charts"]) == 3
+    assert "assessing records" not in panel["source"]
+
+
+def test_validate_city_rejects_bad_shapes():
+    import copy
+    import pytest
+
+    bad = copy.deepcopy(CITY)
+    bad["residential"]["pre_parcels"] = 99999
+    with pytest.raises(SystemExit):
+        col.validate_city(bad)
+    bad = copy.deepcopy(CITY)
+    bad["sales"] = [bad["sales"][1], bad["sales"][0]]
+    with pytest.raises(SystemExit):
+        col.validate_city(bad)
+    bad = copy.deepcopy(CITY)
+    del bad["extracted"]
+    with pytest.raises(SystemExit):
+        col.validate_city(bad)
+    assert col.validate_city(copy.deepcopy(CITY)) == CITY

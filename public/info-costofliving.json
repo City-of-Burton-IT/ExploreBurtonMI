@@ -111,6 +111,22 @@
           "value": "100"
         }
       ]
+    },
+    {
+      "label": "Typical home sale price",
+      "value": "$158,000",
+      "hint": "Median of 466 arm's-length sales in 2025, City assessing records",
+      "benchmarks": [
+        {
+          "name": "Census estimate, ACS 2024",
+          "value": "$141,600"
+        }
+      ]
+    },
+    {
+      "label": "Homes with a principal residence exemption",
+      "value": "95.9%",
+      "hint": "10,502 of 10,953 residential parcels on the 2026 roll"
     }
   ],
   "charts": [
@@ -389,6 +405,41 @@
           ]
         }
       ]
+    },
+    {
+      "type": "trend",
+      "title": "What Burton homes sold for",
+      "unit": "$",
+      "points": [
+        {
+          "x": "2019",
+          "y": 105000
+        },
+        {
+          "x": "2020",
+          "y": 122000
+        },
+        {
+          "x": "2021",
+          "y": 126000
+        },
+        {
+          "x": "2022",
+          "y": 139900
+        },
+        {
+          "x": "2023",
+          "y": 150000
+        },
+        {
+          "x": "2024",
+          "y": 155000
+        },
+        {
+          "x": "2025",
+          "y": 158000
+        }
+      ]
     }
   ],
   "explainer": {
@@ -410,10 +461,18 @@
       {
         "term": "Margins of error",
         "body": "ACS figures are survey estimates averaged over five years. Each Burton figure shows its 90% margin of error; the gaps to Michigan and the nation are far larger than those margins, while the gap to the Flint metro usually is not."
+      },
+      {
+        "term": "City records next to Census estimates",
+        "body": "The Census home value is what owners say their home is worth, averaged over five years. The sale price comes from the City's own assessing records: the median of arm's-length sales (a willing buyer and seller, no family or foreclosure transfers) in each calendar year. Recent sales running above the Census figure is normal; the two measure different things."
+      },
+      {
+        "term": "Principal residence exemption",
+        "body": "Michigan homeowners who live in their home as their main residence are exempt from the school operating levy. The share of residential parcels with that exemption is the City's own measure of owner-occupancy."
       }
     ]
   },
-  "source": "US Census Bureau, American Community Survey (ACS) 2024 5-year estimates (2020-2024) for Burton city, the Flint, MI metro area, Michigan and the United States; US Bureau of Economic Analysis, Regional Price Parities 2024 (via FRED).",
+  "source": "US Census Bureau, American Community Survey (ACS) 2024 5-year estimates (2020-2024) for Burton city, the Flint, MI metro area, Michigan and the United States; US Bureau of Economic Analysis, Regional Price Parities 2024 (via FRED). City of Burton assessing records, 2026 roll and sales through 2025 (aggregates extracted 2026-10-06).",
   "links": [
     {
       "text": "Census QuickFacts: Burton",
@@ -427,6 +486,7 @@
   "notes": [
     "Dollar figures are nominal (not inflation-adjusted) ACS five-year averages, not exact counts. Rent-burden shares exclude renter households whose burden the Census could not compute.",
     "Regional Price Parities are metro-level and revise from year to year; the Flint metro series moved several points between recent years, so treat small differences as noise.",
-    "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
+    "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.",
+    "City sale figures are medians of arm's-length residential sales over $10,000 recorded by the City Assessor; they are not adjusted for inflation and exclude family transfers, foreclosures and other non-market sales. Only aggregates are published, never individual parcels."
   ]
 }
