@@ -20,20 +20,22 @@
   <div class="chart-host" bind:this={hover.host}>
     <ul class="bars" class:has-active={active >= 0}>
       {#each rows as row, i (row.label)}
+        <!-- The <li> stays a list item (a ul may only contain list items); its
+             accessible name carries the value, and the visual children are hidden
+             from assistive tech so the row is announced once. -->
         <li
           class:active={active === i}
-          role="img"
           aria-label="{row.label}: {formatValue(row.value, unit)} ({shareOfTotal(row.value)}% of total)"
           onpointerenter={(e) => hover.atPointer(e, i)}
           onpointermove={(e) => hover.atPointer(e, i)}
           onpointerleave={() => hover.clear()}
           onpointerdown={(e) => hover.atPointer(e, i)}
         >
-          <div class="row-head">
+          <div class="row-head" aria-hidden="true">
             <span class="lbl">{row.label}</span>
             <span class="val">{formatValue(row.value, unit)}</span>
           </div>
-          <div class="track">
+          <div class="track" aria-hidden="true">
             <div class="fill" style:width="{row.pct}%" style:background={row.color}></div>
           </div>
         </li>

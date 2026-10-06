@@ -209,6 +209,7 @@ body,
   width: 44px;
   height: 44px;
   flex-shrink: 0;
+  object-fit: contain; /* the seal artwork is not square; keep its aspect ratio inside the box */
 }
 
 .topbar .brand {

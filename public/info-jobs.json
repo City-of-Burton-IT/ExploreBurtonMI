@@ -1,78 +1,78 @@
 {
   "title": "Jobs & Employers",
-  "subtitle": "Genesee County employment: Census County Business Patterns 2022 + BLS",
+  "subtitle": "Genesee County employment, Census County Business Patterns 2023 + BLS",
   "stats": [
     {
       "label": "Establishments",
-      "value": "7,695",
-      "hint": "Genesee County, 2022"
+      "value": "7,733",
+      "hint": "Genesee County, 2023"
     },
     {
       "label": "Paid employees",
-      "value": "120,612",
-      "hint": "Genesee County, 2022"
+      "value": "121,033",
+      "hint": "Genesee County, 2023"
     },
     {
       "label": "Annual payroll",
-      "value": "$5.85B",
-      "hint": "Genesee County, 2022"
+      "value": "$6.15B",
+      "hint": "Genesee County, 2023"
     },
     {
       "label": "Average annual wage",
-      "value": "$48.5K",
-      "hint": "payroll / employees, 2022"
+      "value": "$50.8K",
+      "hint": "payroll / employees, 2023"
     },
     {
       "label": "Unemployment rate",
       "value": "5.8%",
-      "hint": "Genesee County, December 2025"
+      "hint": "Genesee County, August 2026"
     }
   ],
   "charts": [
     {
       "type": "bars",
-      "title": "Jobs by industry (Genesee County, 2022)",
+      "title": "Jobs by industry (Genesee County, 2023)",
       "unit": "",
       "series": [
         {
           "label": "Health care & social assistance",
-          "value": 24006
+          "value": 25273
         },
         {
           "label": "Retail trade",
-          "value": 18578
-        },
-        {
-          "label": "Manufacturing",
-          "value": 14910
+          "value": 18788
         },
         {
           "label": "Accommodation & food service",
-          "value": 14135
+          "value": 14941
+        },
+        {
+          "label": "Manufacturing",
+          "value": 13047
         },
         {
           "label": "Administrative & waste services",
-          "value": 9928
-        },
-        {
-          "label": "Wholesale trade",
-          "value": 7172
+          "value": 9707
         },
         {
           "label": "Construction",
-          "value": 6343
+          "value": 6704
         },
         {
           "label": "Other services",
-          "value": 6308
+          "value": 6472
+        },
+        {
+          "label": "Wholesale trade",
+          "value": 6001
         },
         {
           "label": "Professional & technical",
-          "value": 4333
+          "value": 4409
         },
         {
           "label": "Finance & insurance",
-          "value": 3576
+          "value": 3765
         }
       ]
     },
@@ -83,43 +83,43 @@
       "series": [
         {
           "label": "Company management",
-          "value": 87389
+          "value": 88180
         },
         {
           "label": "Construction",
-          "value": 74082
-        },
-        {
-          "label": "Finance & insurance",
-          "value": 71933
+          "value": 76744
         },
         {
           "label": "Wholesale trade",
-          "value": 64995
+          "value": 76540
+        },
+        {
+          "label": "Finance & insurance",
+          "value": 73738
         },
         {
           "label": "Manufacturing",
-          "value": 60613
+          "value": 72555
         },
         {
           "label": "Professional & technical",
-          "value": 58047
+          "value": 63059
         },
         {
           "label": "Health care & social assistance",
-          "value": 57197
-        },
-        {
-          "label": "Transportation & warehousing",
-          "value": 45702
+          "value": 56722
         },
         {
           "label": "Real estate",
-          "value": 44305
+          "value": 46352
+        },
+        {
+          "label": "Transportation & warehousing",
+          "value": 45685
         },
         {
           "label": "Administrative & waste services",
-          "value": 38159
+          "value": 40634
         }
       ]
     },
@@ -128,10 +128,6 @@
       "title": "Unemployment rate (Genesee County, annual avg)",
       "unit": "%",
       "points": [
-        {
-          "x": "2016",
-          "y": 5.6
-        },
         {
           "x": "2017",
           "y": 5.6
@@ -171,7 +167,7 @@
       ]
     }
   ],
-  "source": "U.S. Census County Business Patterns 2022 (establishments, employment, payroll by NAICS sector) and U.S. Bureau of Labor Statistics Local Area Unemployment Statistics (county unemployment rate). Genesee County, MI (FIPS 26049).",
+  "source": "U.S. Census County Business Patterns 2023 (establishments, employment, payroll by NAICS sector) and U.S. Bureau of Labor Statistics Local Area Unemployment Statistics (county unemployment rate). Genesee County, MI (FIPS 26049).",
   "links": [
     {
       "text": "Census County Business Patterns",

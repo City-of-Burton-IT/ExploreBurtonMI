@@ -56,18 +56,19 @@
     </svg>
     <ul class="legend">
       {#each layout.segments as s, i (s.label)}
+        <!-- Keep the <li> a real list item; the accessible name carries the
+             value and the visual children are hidden so each entry reads once. -->
         <li
           class:active={active === i}
-          role="img"
           aria-label="{s.label}: {formatValue(s.value, unit)} ({Math.round(s.pct)}%)"
           onpointerenter={(e) => hover.atPointer(e, i)}
           onpointermove={(e) => hover.atPointer(e, i)}
           onpointerleave={() => hover.clear()}
           onpointerdown={(e) => hover.atPointer(e, i)}
         >
-          <span class="swatch" style:background={s.color}></span>
-          <span class="lbl">{s.label}</span>
-          <span class="val">{formatValue(s.value, unit)}{#if unit !== '%'} &middot; {Math.round(s.pct)}%{/if}</span>
+          <span class="swatch" style:background={s.color} aria-hidden="true"></span>
+          <span class="lbl" aria-hidden="true">{s.label}</span>
+          <span class="val" aria-hidden="true">{formatValue(s.value, unit)}{#if unit !== '%'} &middot; {Math.round(s.pct)}%{/if}</span>
         </li>
       {/each}
     </ul>

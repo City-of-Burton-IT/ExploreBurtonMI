@@ -224,7 +224,7 @@
       </main>
     </div>
     {#if isDashboard(ui.view)}
-      <div class="infowrap">
+      <main class="infowrap">
         <InfoView
           panel={activePanel}
           loading={activePanelLoading}
@@ -235,19 +235,19 @@
           prev={adjacent.prev}
           next={adjacent.next}
         />
-      </div>
+      </main>
     {:else if ui.view === 'guide'}
-      <div class="infowrap">
+      <main class="infowrap">
         <Guide />
-      </div>
+      </main>
     {:else if ui.view === 'opendata'}
-      <div class="infowrap">
+      <main class="infowrap">
         <OpenData panels={dashboardData.panels} loading={openDataLoading} />
-      </div>
+      </main>
     {:else if ui.view === 'status'}
-      <div class="infowrap">
+      <main class="infowrap">
         <StatusPage statusUrl={config.status?.url ?? ''} />
-      </div>
+      </main>
     {/if}
   {:else}
     <div class="status">Loading&hellip;</div>
