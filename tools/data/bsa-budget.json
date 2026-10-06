@@ -1,0 +1,421 @@
+{
+  "_source": "City of Burton BS&A General Ledger (D014BURTON), read-only aggregate export of BudgetInfoAdopted.originalBudget for fiscal year end 2027 (FY2026-27). Revenue = account category 3, expenditure = category 4; transfers out = expenditure lines described as TRANSFER.",
+  "extracted": "2026-10-06",
+  "fiscal_year_end": 2027,
+  "label": "FY2026-27",
+  "totals": {
+    "revenue": 51492256,
+    "expenditure": 63656789,
+    "transfers_out": 3381354
+  },
+  "funds": [
+    {
+      "fund": "202",
+      "name": "MAJOR STREETS",
+      "revenue": 4794075,
+      "expenditure": 13019218,
+      "transfers_out": 0
+    },
+    {
+      "fund": "207",
+      "name": "POLICE FUND",
+      "revenue": 8958169,
+      "expenditure": 10284924,
+      "transfers_out": 0
+    },
+    {
+      "fund": "101",
+      "name": "GENERAL FUND",
+      "revenue": 8853296,
+      "expenditure": 9961687,
+      "transfers_out": 2969000
+    },
+    {
+      "fund": "591",
+      "name": "WATER DEPARTMENT",
+      "revenue": 7934300,
+      "expenditure": 7909680,
+      "transfers_out": 0
+    },
+    {
+      "fund": "590",
+      "name": "SEWER FUND",
+      "revenue": 7625265,
+      "expenditure": 7623578,
+      "transfers_out": 0
+    },
+    {
+      "fund": "203",
+      "name": "LOCAL STREETS",
+      "revenue": 1880769,
+      "expenditure": 3933602,
+      "transfers_out": 0
+    },
+    {
+      "fund": "677",
+      "name": "BURTON SELF INSURANCE FUND",
+      "revenue": 2415000,
+      "expenditure": 2415000,
+      "transfers_out": 0
+    },
+    {
+      "fund": "206",
+      "name": "FIRE DEPARTMENT",
+      "revenue": 1835044,
+      "expenditure": 2219386,
+      "transfers_out": 250000
+    },
+    {
+      "fund": "226",
+      "name": "RUBBISH COLLECTION & DISPOSAL",
+      "revenue": 2168892,
+      "expenditure": 2158242,
+      "transfers_out": 0
+    },
+    {
+      "fund": "661",
+      "name": "MOTOR POOL",
+      "revenue": 2391900,
+      "expenditure": 1464601,
+      "transfers_out": 0
+    },
+    {
+      "fund": "636",
+      "name": "INFORMATION TECHNOLOGY FUND",
+      "revenue": 752882,
+      "expenditure": 748834,
+      "transfers_out": 0
+    },
+    {
+      "fund": "279",
+      "name": "SENIOR CITIZENS CENTER FUND",
+      "revenue": 573645,
+      "expenditure": 644745,
+      "transfers_out": 0
+    },
+    {
+      "fund": "249",
+      "name": "BUILDING DEPARTMENT FUND",
+      "revenue": 533500,
+      "expenditure": 528261,
+      "transfers_out": 0
+    },
+    {
+      "fund": "280",
+      "name": "SENIOR CENTER ACTIVITIES FUND",
+      "revenue": 154300,
+      "expenditure": 150000,
+      "transfers_out": 0
+    },
+    {
+      "fund": "406",
+      "name": "FIRE CAPITAL PROJECTS FUND",
+      "revenue": 260000,
+      "expenditure": 111087,
+      "transfers_out": 0
+    },
+    {
+      "fund": "273",
+      "name": "VETERAN'S MEMORIAL PARK FUND",
+      "revenue": 5200,
+      "expenditure": 65000,
+      "transfers_out": 0
+    },
+    {
+      "fund": "248",
+      "name": "DOWNTOWN DEVELOPMENT AUTHORITY",
+      "revenue": 49383,
+      "expenditure": 50500,
+      "transfers_out": 6000
+    },
+    {
+      "fund": "284",
+      "name": "OPIOID SETTLEMENT FUND",
+      "revenue": 2500,
+      "expenditure": 43000,
+      "transfers_out": 0
+    },
+    {
+      "fund": "351",
+      "name": "21-019-P MAPLEWOOD MEADOWS PAVING",
+      "revenue": 43050,
+      "expenditure": 43000,
+      "transfers_out": 43000
+    },
+    {
+      "fund": "287",
+      "name": "BURTON YOUTH LEAGUE",
+      "revenue": 31350,
+      "expenditure": 33200,
+      "transfers_out": 0
+    },
+    {
+      "fund": "266",
+      "name": "FEDERAL DRUG LAW ENFORCEMENT FUND",
+      "revenue": 525,
+      "expenditure": 33000,
+      "transfers_out": 0
+    },
+    {
+      "fund": "355",
+      "name": "23-015-P VINELAND PAVING",
+      "revenue": 38630,
+      "expenditure": 31705,
+      "transfers_out": 31705
+    },
+    {
+      "fund": "353",
+      "name": "23-012-P HIDDEN TRAILS PAVING",
+      "revenue": 35363,
+      "expenditure": 29024,
+      "transfers_out": 29024
+    },
+    {
+      "fund": "272",
+      "name": "POLICE/FIRE SCULPTURE FUND",
+      "revenue": 20,
+      "expenditure": 27855,
+      "transfers_out": 0
+    },
+    {
+      "fund": "356",
+      "name": "24-010-P MELODY/HARMONY PAVING",
+      "revenue": 34749,
+      "expenditure": 25838,
+      "transfers_out": 25838
+    },
+    {
+      "fund": "265",
+      "name": "STATE DRUG LAW ENFORCEMENT FUND",
+      "revenue": 525,
+      "expenditure": 20000,
+      "transfers_out": 0
+    },
+    {
+      "fund": "285",
+      "name": "PCB SETTLEMENT FUND",
+      "revenue": 400,
+      "expenditure": 18500,
+      "transfers_out": 0
+    },
+    {
+      "fund": "275",
+      "name": "MEMORIAL DAY RACE FUND",
+      "revenue": 14750,
+      "expenditure": 15000,
+      "transfers_out": 0
+    },
+    {
+      "fund": "276",
+      "name": "VETERAN HONOR RUN FUND",
+      "revenue": 11600,
+      "expenditure": 11500,
+      "transfers_out": 0
+    },
+    {
+      "fund": "350",
+      "name": "13-008-P AMY STREET PAVING",
+      "revenue": 11750,
+      "expenditure": 11500,
+      "transfers_out": 11500
+    },
+    {
+      "fund": "354",
+      "name": "23-014-P CALVERT PARK PAVING",
+      "revenue": 11559,
+      "expenditure": 9487,
+      "transfers_out": 9487
+    },
+    {
+      "fund": "352",
+      "name": "22-015-P MAPLE LEAF PAVING",
+      "revenue": 5800,
+      "expenditure": 5800,
+      "transfers_out": 5800
+    },
+    {
+      "fund": "451",
+      "name": "21-019-P MAPLEWOOD MEADOWS PAVING",
+      "revenue": 43000,
+      "expenditure": 4300,
+      "transfers_out": 0
+    },
+    {
+      "fund": "452",
+      "name": "22-015-P MAPLE LEAF PAVING",
+      "revenue": 5800,
+      "expenditure": 1450,
+      "transfers_out": 0
+    },
+    {
+      "fund": "278",
+      "name": "BURTON RACE SERIES FUND",
+      "revenue": 1075,
+      "expenditure": 1450,
+      "transfers_out": 0
+    },
+    {
+      "fund": "274",
+      "name": "CANCER SURVIVOR PARK",
+      "revenue": 40,
+      "expenditure": 1400,
+      "transfers_out": 0
+    },
+    {
+      "fund": "450",
+      "name": "AMY ST PAVING CAP PROJ 13-008-P",
+      "revenue": 11600,
+      "expenditure": 1385,
+      "transfers_out": 0
+    },
+    {
+      "fund": "267",
+      "name": "POLICE K9 FUND",
+      "revenue": 2025,
+      "expenditure": 50,
+      "transfers_out": 0
+    },
+    {
+      "fund": "281",
+      "name": "SENIOR CENTER CAPITAL PROJECTS",
+      "revenue": 350,
+      "expenditure": 0,
+      "transfers_out": 0
+    },
+    {
+      "fund": "244",
+      "name": "ECONOMIC DEVELOPMENT CORPORATION FUND",
+      "revenue": 50,
+      "expenditure": 0,
+      "transfers_out": 0
+    },
+    {
+      "fund": "369",
+      "name": "BUILDING AUTHORITY",
+      "revenue": 25,
+      "expenditure": 0,
+      "transfers_out": 0
+    },
+    {
+      "fund": "401",
+      "name": "CAPITAL IMPROVEMENT",
+      "revenue": 100,
+      "expenditure": 0,
+      "transfers_out": 0
+    }
+  ],
+  "general_fund": {
+    "revenue": 8853296,
+    "expenditure": 9961687,
+    "transfers_out": 2969000,
+    "departments": [
+      {
+        "code": "999",
+        "name": "",
+        "amount": 2969000
+      },
+      {
+        "code": "265",
+        "name": "CITY HALL",
+        "amount": 1686189
+      },
+      {
+        "code": "101",
+        "name": "COUNCIL",
+        "amount": 978131
+      },
+      {
+        "code": "751",
+        "name": "PARKS & RECREATION",
+        "amount": 889775
+      },
+      {
+        "code": "448",
+        "name": "PUBLIC SERVICE",
+        "amount": 701050
+      },
+      {
+        "code": "257",
+        "name": "ASSESSOR",
+        "amount": 632620
+      },
+      {
+        "code": "262",
+        "name": "ELECTION",
+        "amount": 581369
+      },
+      {
+        "code": "171",
+        "name": "MAYOR",
+        "amount": 502004
+      },
+      {
+        "code": "215",
+        "name": "CLERK",
+        "amount": 350958
+      },
+      {
+        "code": "191",
+        "name": "CONTROLLER",
+        "amount": 341232
+      },
+      {
+        "code": "253",
+        "name": "TREASURER",
+        "amount": 162138
+      },
+      {
+        "code": "701",
+        "name": "PLANNING",
+        "amount": 89080
+      },
+      {
+        "code": "702",
+        "name": "ZONING",
+        "amount": 78141
+      }
+    ],
+    "transfers": [
+      {
+        "account": "995.661",
+        "name": "TRANSFER TO MOTOR POOL",
+        "amount": 1000000
+      },
+      {
+        "account": "995.206",
+        "name": "TRANSFER TO FIRE DEPARTMENT FUND",
+        "amount": 800000
+      },
+      {
+        "account": "995.207",
+        "name": "TRANSFER TO POLICE FUND",
+        "amount": 500000
+      },
+      {
+        "account": "995.279",
+        "name": "TRANSFER TO SENIOR CITIZENS FUND",
+        "amount": 300000
+      },
+      {
+        "account": "995.203",
+        "name": "TRANSFER TO LOCAL STREETS",
+        "amount": 175000
+      },
+      {
+        "account": "995.202",
+        "name": "TRANSFER TO MAJOR STREETS",
+        "amount": 145000
+      },
+      {
+        "account": "995.249",
+        "name": "TRANSFER TO BUILDING FUND",
+        "amount": 34000
+      },
+      {
+        "account": "995.287",
+        "name": "TRANSFER TO BURTON YOUTH LEAGUE",
+        "amount": 15000
+      }
+    ]
+  }
+}

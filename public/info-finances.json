@@ -46,8 +46,13 @@
   "stats": [
     {
       "label": "Total budget",
-      "value": "$67.7M",
-      "hint": "all funds, FY2026-27 adopted"
+      "value": "$63.7M",
+      "hint": "all funds, FY2026-27 adopted, City General Ledger"
+    },
+    {
+      "label": "General Fund budget",
+      "value": "$10.0M",
+      "hint": "FY2026-27 adopted; includes $3.0M in transfers to other funds"
     },
     {
       "label": "Taxable value",
@@ -127,55 +132,55 @@
       "series": [
         {
           "label": "Major Streets",
-          "value": 21
+          "value": 20.5
         },
         {
           "label": "Police Fund",
-          "value": 17
-        },
-        {
-          "label": "Watermain",
-          "value": 13
-        },
-        {
-          "label": "Sanitary Sewer",
-          "value": 13
+          "value": 16.2
         },
         {
           "label": "General Fund",
-          "value": 13
+          "value": 15.6
+        },
+        {
+          "label": "Water Department",
+          "value": 12.4
+        },
+        {
+          "label": "Sewer Fund",
+          "value": 12.0
         },
         {
           "label": "Local Streets",
-          "value": 6
+          "value": 6.2
         },
         {
-          "label": "Fire Fund",
-          "value": 4
+          "label": "Burton Self Insurance Fund",
+          "value": 3.8
         },
         {
-          "label": "Self Insurance",
-          "value": 4
+          "label": "Fire Department",
+          "value": 3.5
+        },
+        {
+          "label": "Rubbish Collection & Disposal",
+          "value": 3.4
         },
         {
           "label": "Motor Pool",
-          "value": 3
+          "value": 2.3
         },
         {
-          "label": "Rubbish Collection",
-          "value": 3
+          "label": "Information Technology Fund",
+          "value": 1.2
         },
         {
-          "label": "Senior Citizens",
-          "value": 1
+          "label": "Senior Citizens Center Fund",
+          "value": 1.0
         },
         {
-          "label": "Building",
-          "value": 1
-        },
-        {
-          "label": "Information Technology",
-          "value": 1
+          "label": "All other funds",
+          "value": 2.0
         }
       ]
     },
@@ -185,28 +190,48 @@
       "unit": "%",
       "series": [
         {
-          "label": "Legacy cost payment",
-          "value": 29
+          "label": "City Hall",
+          "value": 16.9
         },
         {
-          "label": "Seniors & Library",
-          "value": 19
+          "label": "Transfer to Motor Pool",
+          "value": 10.0
         },
         {
-          "label": "Fire transfer",
-          "value": 18
-        },
-        {
-          "label": "Street lighting",
-          "value": 16
+          "label": "Council",
+          "value": 9.8
         },
         {
           "label": "Parks & Recreation",
-          "value": 11
+          "value": 8.9
         },
         {
-          "label": "Police transfer",
-          "value": 7
+          "label": "Transfer to Fire Department Fund",
+          "value": 8.0
+        },
+        {
+          "label": "Public Service",
+          "value": 7.0
+        },
+        {
+          "label": "Assessor",
+          "value": 6.4
+        },
+        {
+          "label": "Election",
+          "value": 5.8
+        },
+        {
+          "label": "Mayor",
+          "value": 5.0
+        },
+        {
+          "label": "Transfer to Police Fund",
+          "value": 5.0
+        },
+        {
+          "label": "Other departments and transfers",
+          "value": 17.0
         }
       ]
     },
@@ -562,7 +587,7 @@
       ]
     }
   ],
-  "source": "City of Burton FY 2026-2027 Approved Budget (Controller's Office) for the adopted-budget figures; State of Michigan Community Financials (audited F-65 actuals) for the historical trends.",
+  "source": "City of Burton General Ledger (BS&A) for the FY2026-27 adopted-budget figures (aggregates extracted 2026-10-06); City of Burton FY 2026-2027 Approved Budget (Controller's Office) for taxable value and staffing; State of Michigan Community Financials (audited F-65 actuals) for the historical trends.",
   "links": [
     {
       "text": "Michigan Community Financials dashboard",
@@ -574,7 +599,7 @@
     }
   ],
   "notes": [
-    "Two views: the FY2026-27 figures and fund/spending charts are the city's ADOPTED BUDGET (a plan, all funds unless noted General Fund). The dollar trends are AUDITED ACTUALS reported to the State of Michigan, which run about a year behind the adopted budget; the two are not the same measure.",
+    "Two views: the FY2026-27 figures and fund/spending charts are the city's ADOPTED BUDGET as recorded in the City's General Ledger (original appropriations before amendments; a plan, all funds unless noted General Fund). The dollar trends are AUDITED ACTUALS reported to the State of Michigan, which run about a year behind the adopted budget; the two are not the same measure.",
     "General Fund figures cover only the General Fund, not the city's total all-funds budget.",
     "Audited trends and fiscal-health figures come from the State of Michigan Community Financials program (audited F-65 annual financial reports)."
   ]
