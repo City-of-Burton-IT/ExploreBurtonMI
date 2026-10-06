@@ -164,6 +164,13 @@ def validate_city(raw: object, where: str = "city file") -> dict:
                 sys.exit(f"{where}: utility.{key} must be a positive integer")
         if "window" not in util:
             sys.exit(f"{where}: utility.window missing")
+        uq = util.get("usage_charge_quarterly")
+        if uq is not None:
+            for key in ("bills", "median", "p10", "p90"):
+                if not isinstance(uq.get(key), int) or uq[key] < 0:
+                    sys.exit(f"{where}: utility.usage_charge_quarterly.{key} must be a non-negative integer")
+            if not uq["p10"] <= uq["median"] <= uq["p90"]:
+                sys.exit(f"{where}: utility.usage_charge_quarterly percentiles are out of order")
     return raw
 
 
@@ -339,12 +346,17 @@ def build_panel(acs: dict[str, dict[str, str]], rpp: dict[str, dict[str, float]]
                     "own measure of owner-occupancy.",
         })
         if util:
+            uq = util.get("usage_charge_quarterly")
+            usage_text = ""
+            if uq:
+                usage_text = (f" The usage-based part of a quarterly bill was typically {_money(uq['median'])}, "
+                              f"ranging from about {_money(uq['p10'])} for low-use homes to {_money(uq['p90'])} "
+                              f"for the heaviest tenth of users; the rest is fixed service and debt charges.")
             explainer_items.append({
                 "term": "Water and sewer bills",
                 "body": "From the City's utility billing records: the median of the four quarterly bills in the past "
                         "year for active residential accounts, split by whether the home buys City water. About "
-                        "half of Burton homes are on private wells and pay only for sewer service. Usage-based "
-                        "charges mean your own bill depends on how much water you use.",
+                        "half of Burton homes are on private wells and pay only for sewer service." + usage_text,
             })
         source += (f" City of Burton assessing records, {city['assessment_year']} roll and sales through "
                    f"{latest['year']} (aggregates extracted {city['extracted']}).")

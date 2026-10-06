@@ -50,8 +50,8 @@
   <h3>Estimate your tax bill</h3>
   <p class="lead">
     Enter the <strong>taxable value</strong> from your assessment notice. The first result shows
-    the provisional City amount using the last supported rate. Its service rows use the
-    FY2026-27 Approved Budget and keep the L-4029 reconciliation difference visible.
+    the City amount at the rate billed on the current tax roll, with its service rows
+    (general operations, Police, Fire) as they appear on the roll.
   </p>
 
   <div class="controls">

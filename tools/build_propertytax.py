@@ -27,82 +27,115 @@ Uses the shared tools/lib helpers (repo paths, atomic writes).
 """
 from __future__ import annotations
 
+import json
+import os
 import sys
+from typing import Any
 
 from lib.iox import write_json
 from lib.paths import public_path
 
 OUT = public_path("info-propertytax.json")
 
-# --- Provisional City rate pending the current L-4029 ---------------------------
-CITY_RATE_PERIOD = "Provisional — current L-4029 pending"
+# --- City rate from the certified tax roll (BS&A Tax module) --------------------
+# Decision 2026-10-06: City records are the source of truth. tools/Export-BsaTaxRoll.ps1
+# writes tools/data/bsa-taxroll.json with the City millage lines as billed on the
+# roll (tax unit classification 7, DDA excluded), the levy by taxing unit, the
+# median City tax on a homestead residential parcel, and taxable value.
+TAXROLL_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "bsa-taxroll.json")
 FULL_BILL_RATE_PERIOD = "2025 published rates"
-
-# Retain the last supported exact rate underneath the resident-facing 13.4 display.
-# Do not substitute the Approved Budget's 13.2948 service-line sum for a certified
-# levy; update this value and replace the reconciliation row when the L-4029 arrives.
-CITY_TOTAL = 13.44
-
-# FY2026-27 Approved Budget service-line reference. These rows do not fully
-# reconcile to the provisional 13.44 total, so the difference remains explicit
-# rather than being assigned to a service without the certified L-4029.
-CITY_GENERAL = 4.0000
-CITY_POLICE = 8.3159
-CITY_FIRE = 0.9789
-BUDGET_SERVICE_TOTAL = round(CITY_GENERAL + CITY_POLICE + CITY_FIRE, 4)
-RECONCILIATION_DIFFERENCE = round(CITY_TOTAL - BUDGET_SERVICE_TOTAL, 4)
-
-BREAKDOWN_NOTE = (
-    "The provisional City estimate uses the last supported 13.44-mill rate, shown "
-    "as 13.4. The FY2026-27 Approved Budget lists General 4.0000, aggregate Police "
-    "8.3159, and Fire 0.9789 mills (13.2948 total), and those budget lines are "
-    "shown as budget-reference rows. Their 0.1452-mill difference from the "
-    "provisional total is not assigned to a service while the current L-4029 "
-    "is pending."
-)
-
-# The latest complete published district totals are still 2025. Use their City
-# component only for the 2025 authority chart; never subtract the adopted levy
-# from a 2025 complete-bill total.
+# The latest complete published district totals are still 2025; their City
+# component (13.44) is used only for the 2025 authority chart.
 PUBLISHED_2025_CITY_TOTAL = 13.44
 
-CITY_LEVIES = [
-    {
-        "id": "general-operating",
-        "service": "General city operations",
-        "authorization": "City Charter — budget reference",
-        "description": "FY2026-27 Approved Budget service line.",
-        "mills": CITY_GENERAL,
-        "voterApproved": False,
-    },
-    {
-        "id": "police",
-        "service": "Police services",
-        "authorization": "Voter approved — budget aggregate",
-        "description": "FY2026-27 Approved Budget aggregate Police Levies line.",
-        "mills": CITY_POLICE,
-        "voterApproved": True,
-    },
-    {
-        "id": "fire",
-        "service": "Fire services",
-        "authorization": "Voter approved — budget reference",
-        "description": "FY2026-27 Approved Budget service line.",
-        "mills": CITY_FIRE,
-        "voterApproved": True,
-    },
-    {
-        "id": "l4029-reconciliation",
-        "service": "Unassigned difference",
-        "authorization": "Pending L-4029",
-        "description": (
-            "Difference between the 13.44 provisional total and 13.2948 "
-            "budget service-line total."
-        ),
-        "mills": RECONCILIATION_DIFFERENCE,
-        "voterApproved": False,
-    },
+# Which roll line codes make up each City service levy.
+CITY_LINE_GROUPS = [
+    ("general-operating", "General city operations", "City Charter", ("UNIT OP",), False),
+    ("police", "Police services", "Voter approved", ("POLICE OP", "POLICE"), True),
+    ("fire", "Fire services", "Voter approved", ("FIRE",), True),
 ]
+
+# Taxing-unit classification codes on the roll -> public label (order = chart order).
+UNIT_GROUPS = [
+    (7, "City of Burton"),
+    (6, "Genesee County"),
+    (2, "Local school district operating"),
+    (3, "Local school district debt"),
+    (5, "Local school district sinking fund"),
+    (1, "State Education Tax"),
+    (9, "Genesee ISD"),
+    (8, "Mott Community College"),
+]
+
+
+def load_taxroll(path: str) -> dict:
+    with open(path, encoding="utf-8") as fh:
+        raw = json.load(fh)
+    return validate_taxroll(raw, path)
+
+
+def validate_taxroll(raw: Any, where: str = "tax-roll file") -> dict:
+    if not isinstance(raw, dict):
+        sys.exit(f"{where}: expected an object")
+    for key in ("_source", "extracted", "tax_year", "city_mills", "city_lines", "levy_by_unit", "homestead"):
+        if key not in raw:
+            sys.exit(f"{where}: missing '{key}'")
+    if not isinstance(raw["city_mills"], (int, float)) or not 5 <= raw["city_mills"] <= 25:
+        sys.exit(f"{where}: city_mills {raw['city_mills']!r} is outside the plausible 5-25 range")
+    lines = raw["city_lines"]
+    if not isinstance(lines, list) or len(lines) < 2:
+        sys.exit(f"{where}: city_lines must list at least two levies")
+    for ln in lines:
+        if not isinstance(ln.get("code"), str) or not isinstance(ln.get("mills"), (int, float)) or ln["mills"] <= 0:
+            sys.exit(f"{where}: city_lines entries need a code and positive mills")
+    if abs(sum(ln["mills"] for ln in lines) - raw["city_mills"]) > 0.0005:
+        sys.exit(f"{where}: city_lines do not add up to city_mills")
+    known = {code for _, _, _, codes, _ in CITY_LINE_GROUPS for code in codes}
+    unknown = [ln["code"] for ln in lines if ln["code"] not in known]
+    if unknown:
+        sys.exit(f"{where}: unmapped City levy codes {unknown}; add them to CITY_LINE_GROUPS")
+    for u in raw["levy_by_unit"]:
+        if not isinstance(u.get("levy"), int) or u["levy"] < 0 or not isinstance(u.get("classification"), int):
+            sys.exit(f"{where}: levy_by_unit entries need integer levy and classification")
+    hs = raw["homestead"]
+    if not isinstance(hs.get("parcels"), int) or hs["parcels"] < 1000 or not isinstance(hs.get("median_city_tax"), (int, float)):
+        sys.exit(f"{where}: homestead block implausible")
+    return raw
+
+
+def build_city_levies(taxroll: dict) -> list:
+    by_code = {ln["code"]: ln for ln in taxroll["city_lines"]}
+    year = taxroll["tax_year"]
+    levies = []
+    for lid, service, auth, codes, voter in CITY_LINE_GROUPS:
+        mills = round(sum(by_code[c]["mills"] for c in codes if c in by_code), 4)
+        if mills <= 0:
+            continue
+        levies.append({
+            "id": lid,
+            "service": service,
+            "authorization": auth,
+            "description": f"{year} tax roll line{'s' if len(codes) > 1 else ''} {', '.join(codes)} as billed.",
+            "mills": mills,
+            "voterApproved": voter,
+        })
+    return levies
+
+
+def build_levy_chart(taxroll: dict) -> dict:
+    totals: dict[int, int] = {}
+    for u in taxroll["levy_by_unit"]:
+        totals[u["classification"]] = totals.get(u["classification"], 0) + u["levy"]
+    series = []
+    for cls, label in UNIT_GROUPS:
+        amount = totals.pop(cls, 0)
+        if amount > 0:
+            series.append({"label": label, "value": round(amount / 1e6, 2)})
+    other = sum(totals.values())
+    if other > 0:
+        series.append({"label": "Other authorities", "value": round(other / 1e6, 2)})
+    return {"type": "bars", "title": f"{taxroll['tax_year']} property tax levy by taxing unit ($M)",
+            "unit": "$M", "series": series}
 
 # --- Overlapping authorities, homestead, uniform across Burton (ACFR p.118) ------
 COUNTY = 17.46       # Genesee County (operating, parks, library, health, paramedics, ...)
@@ -137,12 +170,12 @@ CITY_MILLAGE_HISTORY = [
 EXAMPLE_TAXABLE = 50_000  # a ~$100k market-value homesteaded home
 
 
-def build_estimator() -> dict:
+def build_estimator(taxroll: dict) -> dict:
     return {
-        "cityRatePeriod": CITY_RATE_PERIOD,
+        "cityRatePeriod": f"{taxroll['tax_year']} tax roll, certified levy",
         "fullBillRatePeriod": FULL_BILL_RATE_PERIOD,
-        "cityMills": CITY_TOTAL,
-        "cityLevies": CITY_LEVIES,
+        "cityMills": round(float(taxroll["city_mills"]), 4),
+        "cityLevies": build_city_levies(taxroll),
         "districts": [
             {"name": name, "homestead": hs, "nonHomestead": nhs}
             for name, hs, nhs in DISTRICT_RATES
@@ -151,33 +184,44 @@ def build_estimator() -> dict:
 
 
 def main() -> int:
+    taxroll = load_taxroll(TAXROLL_FILE)
+    year = taxroll["tax_year"]
+    city_total = round(float(taxroll["city_mills"]), 4)
+    levies = build_city_levies(taxroll)
+    by_id = {lv["id"]: lv["mills"] for lv in levies}
     uniform = PUBLISHED_2025_CITY_TOTAL + COUNTY + MOTT + ISD + MTA + AIRPORT
     schools_set = round(HOMESTEAD_TOTAL - uniform, 2)  # remainder = schools + State Ed
 
-    city_dollars = CITY_TOTAL * EXAMPLE_TAXABLE / 1000
+    city_dollars = city_total * EXAMPLE_TAXABLE / 1000
     lo_total = round(DISTRICT_HOMESTEAD[0][1] * EXAMPLE_TAXABLE / 1000)
     hi_total = round(DISTRICT_HOMESTEAD[-1][1] * EXAMPLE_TAXABLE / 1000)
 
     stats = [
         {
             "label": "City of Burton's rate",
-            "value": f"{CITY_TOTAL:.1f} mills",
-            "hint": "Provisional display; last supported exact rate is 13.44",
+            "value": f"{city_total:.2f} mills",
+            "hint": f"{year} tax roll as billed, City Treasurer (BS&A)",
         },
         {
             "label": "Rate status",
-            "value": "Provisional",
-            "hint": "Replace when the current certified L-4029 is available",
+            "value": "Certified",
+            "hint": f"{year} levy as billed on the tax roll",
         },
         {
             "label": "City tax on a $50k-taxable home",
             "value": f"${round(city_dollars):,}/yr",
-            "hint": "Provisional 13.44-mill rate; about a $100,000 market-value home",
+            "hint": f"{city_total:.4f} mills on $50,000 taxable; about a $100,000 market-value home",
         },
         {
             "label": "School districts in Burton",
             "value": "7",
             "hint": "2025 complete-bill rates vary by district",
+        },
+        {
+            "label": "Median City tax, homestead home",
+            "value": f"${round(taxroll['homestead']['median_city_tax']):,}/yr",
+            "hint": (f"{taxroll['homestead']['parcels']:,} owner-occupied homes with a full principal residence "
+                     f"exemption, {year} roll"),
         },
     ]
 
@@ -198,15 +242,17 @@ def main() -> int:
          "series": [{"label": lbl, "value": v} for lbl, v in DISTRICT_HOMESTEAD]},
         {"type": "trend", "title": "Reported City millage, FY2017-FY2026", "unit": "",
          "points": [{"x": yr, "y": v} for yr, v in CITY_MILLAGE_HISTORY]},
+        build_levy_chart(taxroll),
     ]
 
     summary = {
         "heading": "What this means for you",
         "body": [
             (
-                f"Burton's City rate is shown provisionally as {CITY_TOTAL:.1f} mills, "
-                f"using the last supported exact rate of {CITY_TOTAL:.2f}. The current "
-                "certified L-4029 is pending and will replace this figure when available."
+                f"Burton's City rate on the {year} tax roll is {city_total:.4f} mills, read directly "
+                "from the City's billing records: general operations "
+                f"{by_id.get('general-operating', 0):.4f}, Police {by_id.get('police', 0):.4f}, "
+                f"and Fire {by_id.get('fire', 0):.4f} mills."
             ),
             (
                 f"At ${EXAMPLE_TAXABLE:,} of taxable value, the City portion is about "
@@ -215,10 +261,9 @@ def main() -> int:
                 "taxable value, depending on school district."
             ),
             (
-                f"The estimator shows the Approved Budget's General ({CITY_GENERAL:.4f}), "
-                f"aggregate Police ({CITY_POLICE:.4f}), and Fire ({CITY_FIRE:.4f}) lines. "
-                f"Their {BUDGET_SERVICE_TOTAL:.4f}-mill subtotal leaves "
-                f"{RECONCILIATION_DIFFERENCE:.4f} mills unassigned pending the L-4029."
+                f"The median City tax on an owner-occupied home was "
+                f"${round(taxroll['homestead']['median_city_tax']):,} on the {year} roll, across "
+                f"{taxroll['homestead']['parcels']:,} homes with a full principal residence exemption."
             ),
             (
                 "County, schools, the State, ISD, college, transit, airport, and other "
@@ -227,7 +272,7 @@ def main() -> int:
         ],
     }
 
-    estimator = build_estimator()
+    estimator = build_estimator(taxroll)
 
     panel = {
         "title": "Property Taxes",
@@ -237,10 +282,10 @@ def main() -> int:
         "stats": stats,
         "charts": charts,
         "source": (
-            "City of Burton audited financial statements for the 13.44-mill historical "
-            "rate; Michigan Department of Treasury, 2025 Total Property Tax Rates in "
-            "Michigan; and City of Burton FY2026-27 Approved Budget, Tax Millage, as an "
-            "uncertified service-line reference pending the current L-4029."
+            f"City of Burton tax roll {year} (BS&A Tax module, aggregates extracted {taxroll['extracted']}) "
+            "for the City rate, levy by taxing unit and homestead median; City of Burton audited financial "
+            "statements for the FY2017-FY2026 reported millage; Michigan Department of Treasury, 2025 Total "
+            "Property Tax Rates in Michigan, for complete-bill district rates."
         ),
         "links": [
             {
@@ -262,10 +307,10 @@ def main() -> int:
                 "One mill is $1 per $1,000 of taxable value. Taxable value is shown on the "
                 "assessment notice and is not the same as market value."
             ),
-            BREAKDOWN_NOTE,
             (
-                "The complete-bill district estimate and authority chart use 2025 published "
-                "rates and are kept separately dated from the provisional City rate."
+                f"The City rate and levy chart come from the {year} tax roll as billed (summer levy; "
+                "winter lines are added once billed). The complete-bill district estimate and the 2025 "
+                "authority chart use 2025 published rates and are dated separately."
             ),
             (
                 "Estimate only. Actual bills can differ because of exact parcel values, exemptions, "
@@ -277,10 +322,8 @@ def main() -> int:
 
     write_json(OUT, panel)
     print(f"Wrote {OUT}")
-    print(
-        f"  Provisional City {CITY_TOTAL:.2f} mills (displayed {CITY_TOTAL:.1f}); "
-        "current L-4029 pending"
-    )
+    print(f"  City {city_total:.4f} mills on the {year} roll; homestead median City tax "
+          f"${round(taxroll['homestead']['median_city_tax']):,}")
     print(f"  2025 complete-bill districts: {len(DISTRICT_RATES)}")
     return 0
 
