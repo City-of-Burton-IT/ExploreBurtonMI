@@ -3254,24 +3254,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:03c5bfb5-d39b-43ca-bbca-7f028c58161e",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.594477,
-          43.023141
-        ]
-      },
-      "properties": {
-        "name": "Marathon Gas",
-        "category": "Automotive",
-        "address": "1138 N Belsay Rd, Burton, MI 48509-1600",
-        "phone": "+18107151439",
-        "website": "http://www.marathonpetroleum.com/"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:046e0e33-b1eb-478a-9d33-37444cc8cf8c",
       "geometry": {
         "type": "Point",
@@ -3781,24 +3763,6 @@
         "address": "6045 Davison Rd, Burton, MI 48509-1606",
         "phone": "+18102497060",
         "website": "http://www.firstteeeasternmichigan.org/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:0f9ed449-a204-48a3-b26c-0c03d10a66bc",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.63516,
-          43.032838
-        ]
-      },
-      "properties": {
-        "name": "Marathon Gas",
-        "category": "Automotive",
-        "address": "4012 Davison Rd, Burton, MI 48509-1457",
-        "phone": "+18104229818",
-        "website": "http://www.marathon.com"
       }
     },
     {
@@ -5872,24 +5836,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:303e2295-7e79-49e0-91f5-ea7d2b98381b",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.673924,
-          42.980361
-        ]
-      },
-      "properties": {
-        "name": "Marathon Gas",
-        "category": "Automotive",
-        "address": "G3311 S Saginaw St, Burton, MI 48529-1244",
-        "phone": "+18107430580",
-        "website": "http://www.marathon.com"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:3064c3a7-a2b6-43b2-95a0-97791d5f2932",
       "geometry": {
         "type": "Point",
@@ -7339,24 +7285,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:4554a9cb-7382-4a67-9761-4851153f57a5",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.633453,
-          42.990687
-        ]
-      },
-      "properties": {
-        "name": "Red Baron",
-        "category": "Dining",
-        "address": "2495 S Center Rd, Burton, MI 48519",
-        "phone": "(810) 744-1310",
-        "website": "http://www.baronburger.com"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:458e585d-8fd6-4fe5-b777-883e3e1a218c",
       "geometry": {
         "type": "Point",
@@ -7512,7 +7440,8 @@
         "name": "Dr. Sarah Lee",
         "category": "Health & Medical",
         "address": "4165 E Court Street, Burton, MI 48509",
-        "website": "https://eyedoctors.pearlevision.com/mi/burton/4165-e-court-street.html"
+        "website": "https://eyedoctors.pearlevision.com/mi/burton/4165-e-court-street.html",
+        "phone": "8107432084"
       }
     },
     {
@@ -8491,24 +8420,6 @@
         "address": "G3373 S Saginaw St, Burton, MI 48529-1244",
         "phone": "+18102374537",
         "website": "http://www.gchd.us/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:57907ce6-3958-4960-b735-d4b6b6813dd1",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.594718,
-          43.015882
-        ]
-      },
-      "properties": {
-        "name": "Sunoco Gas Station",
-        "category": "Automotive",
-        "address": "1117 S Belsay Rd, Burton, MI 48509",
-        "phone": "8107152979",
-        "website": "https://www.sunoco.com/find-a-station"
       }
     },
     {
@@ -12368,24 +12279,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:8ce0177a-94d7-4d09-bc83-a5d50becd1e9",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.672209,
-          42.96816
-        ]
-      },
-      "properties": {
-        "name": "Admiral Petroleum Co",
-        "category": "Automotive",
-        "address": "G4232 S Saginaw St, Burton, MI 48529-1673",
-        "phone": "+18107159066",
-        "website": "http://admiralpetroleum.com"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:8cefca83-87c6-4318-bdca-ec02b0b5a8ce",
       "geometry": {
         "type": "Point",
@@ -13148,24 +13041,6 @@
         "address": "G-4127 Saginaw Street, Burton, MI 48529",
         "phone": "8104104535",
         "website": "https://www.americanautoworksburton.com/"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:960eb219-e364-42bc-ba00-93ce8d11f6a5",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.672242,
-          42.967502
-        ]
-      },
-      "properties": {
-        "name": "All Weather Seal Co Inc",
-        "category": "Professional & Personal Services",
-        "address": "4258 Saginaw St, Burton, MI 48529",
-        "phone": "8006212828",
-        "website": "https://www.allweatherseal.com/"
       }
     },
     {
@@ -15157,23 +15032,6 @@
     },
     {
       "type": "Feature",
-      "id": "overture:b12d3933-a492-44f6-a663-283078afa4c7",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.668564,
-          42.960445
-        ]
-      },
-      "properties": {
-        "name": "MAPLE POINT GAS INC.",
-        "category": "Automotive",
-        "address": "4532 S. SAGINAW RD, BURTON, MI 48529",
-        "website": "https://www.exxon.com/en/find-station/mobil-burton-mi-maplepointgasinc-200322737"
-      }
-    },
-    {
-      "type": "Feature",
       "id": "overture:b13130b0-fa71-4668-8466-81ead0c6be6d",
       "geometry": {
         "type": "Point",
@@ -15669,24 +15527,6 @@
         "address": "Grand Blanc, MI 48439",
         "phone": "(810) 962-2433",
         "website": "http://www.lldancestudio.com"
-      }
-    },
-    {
-      "type": "Feature",
-      "id": "overture:ba089aa8-2228-4e65-a740-5d31c0cbac5c",
-      "geometry": {
-        "type": "Point",
-        "coordinates": [
-          -83.68308,
-          42.980989
-        ]
-      },
-      "properties": {
-        "name": "Parkside Dental Associates",
-        "category": "Health & Medical",
-        "address": "G3280 S Grand Traverse St, Burton, MI 48529-1122",
-        "phone": "+18107444400",
-        "website": "http://www.parksidedental.net/"
       }
     },
     {
