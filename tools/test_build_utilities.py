@@ -37,7 +37,9 @@ def test_panel_stats_and_charts():
     assert [ln["label"] for ln in water_trend["lines"]] == ["Revenue (bills and other)", "Spending"]
     assert water_trend["lines"][0]["points"][-1] == {"x": "FY2026", "y": 8.0}
     donut = panel["charts"][2]
-    assert donut["series"][0]["label"].startswith("Purchased water") and donut["series"][0]["value"] == 4.1
+    assert donut["series"][0] == {"label": "Purchased water", "value": 4.1}
+    sewer_donut = panel["charts"][3]
+    assert sewer_donut["series"][0]["label"] == "Sewage treatment"
     assert "enterprise funds" in panel["source"].lower() or "Water (591)" in panel["source"]
 
 
