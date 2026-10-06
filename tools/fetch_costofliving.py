@@ -154,6 +154,16 @@ def validate_city(raw: object, where: str = "city file") -> dict:
     for key in ("extracted", "assessment_year", "_source"):
         if key not in raw:
             sys.exit(f"{where}: missing '{key}'")
+    util = raw.get("utility")
+    if util is not None:
+        if not isinstance(util, dict):
+            sys.exit(f"{where}: 'utility' must be an object")
+        for key in ("accounts_sewer_only", "median_annual_sewer_only",
+                    "accounts_water_and_sewer", "median_annual_water_sewer"):
+            if not isinstance(util.get(key), int) or util[key] <= 0:
+                sys.exit(f"{where}: utility.{key} must be a positive integer")
+        if "window" not in util:
+            sys.exit(f"{where}: utility.window missing")
     return raw
 
 
@@ -306,6 +316,15 @@ def build_panel(acs: dict[str, dict[str, str]], rpp: dict[str, dict[str, float]]
             "type": "trend", "title": "What Burton homes sold for", "unit": "$",
             "points": [{"x": str(row["year"]), "y": row["median_price"]} for row in city["sales"]],
         })
+        util = city.get("utility")
+        if util:
+            stats.append({
+                "label": "Typical water and sewer bill",
+                "value": f"{_money(util['median_annual_water_sewer'])}/yr",
+                "hint": (f"Median for {util['accounts_water_and_sewer']:,} homes on City water and sewer; "
+                         f"{util['accounts_sewer_only']:,} homes on private wells pay sewer only, "
+                         f"median {_money(util['median_annual_sewer_only'])}/yr. Quarterly billing, last 12 months."),
+            })
         explainer_items.append({
             "term": "City records next to Census estimates",
             "body": "The Census home value is what owners say their home is worth, averaged over five years. The "
@@ -319,6 +338,14 @@ def build_panel(acs: dict[str, dict[str, str]], rpp: dict[str, dict[str, float]]
                     "school operating levy. The share of residential parcels with that exemption is the City's "
                     "own measure of owner-occupancy.",
         })
+        if util:
+            explainer_items.append({
+                "term": "Water and sewer bills",
+                "body": "From the City's utility billing records: the median of the four quarterly bills in the past "
+                        "year for active residential accounts, split by whether the home buys City water. About "
+                        "half of Burton homes are on private wells and pay only for sewer service. Usage-based "
+                        "charges mean your own bill depends on how much water you use.",
+            })
         source += (f" City of Burton assessing records, {city['assessment_year']} roll and sales through "
                    f"{latest['year']} (aggregates extracted {city['extracted']}).")
         notes.append(
@@ -326,6 +353,12 @@ def build_panel(acs: dict[str, dict[str, str]], rpp: dict[str, dict[str, float]]
             "City Assessor; they are not adjusted for inflation and exclude family transfers, foreclosures "
             "and other non-market sales. Only aggregates are published, never individual parcels."
         )
+        if util:
+            notes.append(
+                "Utility figures are medians of annual totals for residential accounts billed quarterly with four "
+                "bills in the window; penalties and one-time charges on those bills are included. Only aggregates "
+                "are published, never individual accounts."
+            )
 
     return {
         "title": "What it costs to live here",
