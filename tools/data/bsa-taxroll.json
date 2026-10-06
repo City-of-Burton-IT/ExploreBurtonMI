@@ -1,0 +1,276 @@
+{
+  "_source": "City of Burton BS&A Tax module (D004BURTON26) and Assessing module (D001City Of Burton 2026), read-only aggregate export. Levy = sum of billed tax lines by taxing unit; City millage = tax unit classification 7 excluding the DDA district levy; homestead median = class 401 parcels with a 100 percent principal residence exemption. Taxable value = March Board of Review taxable value on the roll; history from ParcelPreviousYearTotals.",
+  "extracted": "2026-10-06",
+  "tax_year": 2026,
+  "city_mills": 13.2394,
+  "city_lines": [
+    {
+      "code": "POLICE OP",
+      "mills": 6.3197,
+      "levy": 5541907,
+      "parcels": 16571
+    },
+    {
+      "code": "UNIT OP",
+      "mills": 4.0,
+      "levy": 3507700,
+      "parcels": 16571
+    },
+    {
+      "code": "POLICE",
+      "mills": 1.9475,
+      "levy": 1707765,
+      "parcels": 16571
+    },
+    {
+      "code": "FIRE",
+      "mills": 0.9722,
+      "levy": 852489,
+      "parcels": 16571
+    }
+  ],
+  "levy_by_unit": [
+    {
+      "code": "POLICE OP",
+      "classification": 7,
+      "season": 0,
+      "mills": 6.3197,
+      "levy": 5541907,
+      "parcels": 16571
+    },
+    {
+      "code": "SE TAX",
+      "classification": 1,
+      "season": 0,
+      "mills": 6.0,
+      "levy": 5201623,
+      "parcels": 16572
+    },
+    {
+      "code": "COUNTY OP",
+      "classification": 6,
+      "season": 0,
+      "mills": 5.3003,
+      "levy": 4647963,
+      "parcels": 16571
+    },
+    {
+      "code": "UNIT OP",
+      "classification": 7,
+      "season": 0,
+      "mills": 4.0,
+      "levy": 3507700,
+      "parcels": 16571
+    },
+    {
+      "code": "SO TAX",
+      "classification": 2,
+      "season": 0,
+      "mills": 18.0,
+      "levy": 2898348,
+      "parcels": 14033
+    },
+    {
+      "code": "SCH DT",
+      "classification": 3,
+      "season": 0,
+      "mills": 6.5,
+      "levy": 2703230,
+      "parcels": 14032
+    },
+    {
+      "code": "SPEC ED",
+      "classification": 9,
+      "season": 0,
+      "mills": 2.3103,
+      "levy": 2025918,
+      "parcels": 16571
+    },
+    {
+      "code": "POLICE",
+      "classification": 7,
+      "season": 0,
+      "mills": 1.9475,
+      "levy": 1707765,
+      "parcels": 16571
+    },
+    {
+      "code": "MOTT OP",
+      "classification": 8,
+      "season": 0,
+      "mills": 1.9099,
+      "levy": 1674793,
+      "parcels": 16571
+    },
+    {
+      "code": "FIRE",
+      "classification": 7,
+      "season": 0,
+      "mills": 0.9722,
+      "levy": 852489,
+      "parcels": 16571
+    },
+    {
+      "code": "VOC ED",
+      "classification": 9,
+      "season": 0,
+      "mills": 0.9234,
+      "levy": 809695,
+      "parcels": 16571
+    },
+    {
+      "code": "MOTT DT",
+      "classification": 8,
+      "season": 0,
+      "mills": 0.6,
+      "levy": 526105,
+      "parcels": 16571
+    },
+    {
+      "code": "ISD OP",
+      "classification": 9,
+      "season": 0,
+      "mills": 0.3964,
+      "levy": 347547,
+      "parcels": 16571
+    },
+    {
+      "code": "SCH B-S",
+      "classification": 5,
+      "season": 0,
+      "mills": 0.9915,
+      "levy": 232772,
+      "parcels": 5590
+    },
+    {
+      "code": "DDA",
+      "classification": 7,
+      "season": 0,
+      "mills": 1.8673,
+      "levy": 46090,
+      "parcels": 3606
+    }
+  ],
+  "homestead": {
+    "parcels": 8994,
+    "median_city_tax": 654.84
+  },
+  "taxable_value": {
+    "year": 2026,
+    "total": 895540516,
+    "sev": 1293714100,
+    "by_group": [
+      {
+        "group": "Personal property (business and utility)",
+        "parcels": 243,
+        "taxable": 75349400,
+        "sev": 75349400
+      },
+      {
+        "group": "Industrial",
+        "parcels": 206,
+        "taxable": 55590106,
+        "sev": 65030700
+      },
+      {
+        "group": "Commercial",
+        "parcels": 721,
+        "taxable": 159558091,
+        "sev": 202047100
+      },
+      {
+        "group": "Residential",
+        "parcels": 12703,
+        "taxable": 605042919,
+        "sev": 951286900
+      }
+    ],
+    "history": [
+      {
+        "year": 2010,
+        "taxable": 664438434,
+        "sev": 685856660
+      },
+      {
+        "year": 2011,
+        "taxable": 617971903,
+        "sev": 629214920
+      },
+      {
+        "year": 2012,
+        "taxable": 557861933,
+        "sev": 564521818
+      },
+      {
+        "year": 2013,
+        "taxable": 545213094,
+        "sev": 554049305
+      },
+      {
+        "year": 2014,
+        "taxable": 535211453,
+        "sev": 557529765
+      },
+      {
+        "year": 2015,
+        "taxable": 538994040,
+        "sev": 577435700
+      },
+      {
+        "year": 2016,
+        "taxable": 541834526,
+        "sev": 614064200
+      },
+      {
+        "year": 2017,
+        "taxable": 551922695,
+        "sev": 652657950
+      },
+      {
+        "year": 2018,
+        "taxable": 575821199,
+        "sev": 679758112
+      },
+      {
+        "year": 2019,
+        "taxable": 615583803,
+        "sev": 740499195
+      },
+      {
+        "year": 2020,
+        "taxable": 648000118,
+        "sev": 811781800
+      },
+      {
+        "year": 2021,
+        "taxable": 676163696,
+        "sev": 864799300
+      },
+      {
+        "year": 2022,
+        "taxable": 702361368,
+        "sev": 919172800
+      },
+      {
+        "year": 2023,
+        "taxable": 753545796,
+        "sev": 1041642200
+      },
+      {
+        "year": 2024,
+        "taxable": 813987953,
+        "sev": 1174609300
+      },
+      {
+        "year": 2025,
+        "taxable": 857669350,
+        "sev": 1228031600
+      },
+      {
+        "year": 2026,
+        "taxable": 895540516,
+        "sev": 1293714100
+      }
+    ]
+  }
+}

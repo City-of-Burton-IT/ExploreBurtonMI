@@ -416,6 +416,10 @@
       "Revenue by source (FY2025 audited, governmental funds, $M)": { "takeaway": "This audited chart covers governmental-fund revenue, not the $63.7 million all-funds plan." },
       "FY2026-27 adopted budget by fund (all funds)": { "takeaway": "Streets, Police, Water and Sewer funds carry most of the plan; the General Fund is about one-sixth of all-funds spending." },
       "General Fund spending mix, FY2026-27 (plan)": { "takeaway": "Nearly a third of the General Fund plan is transfers that support Motor Pool, Fire, Police and Seniors; City Hall is the largest department." },
+      "General Fund, FY2025-26: budget vs actual ($M)": { "takeaway": "Revenue came in slightly under budget and spending well under the amended budget, but spending still exceeded revenue; the gap was covered from reserves." },
+      "Spending by fund, FY2025-26: budget vs actual ($M)": { "takeaway": "Most funds spent less than budgeted; Major Streets spent about half its amended budget as projects carried over." },
+      "Taxable value by year, City assessment rolls ($M)": { "takeaway": "Taxable value fell for years after 2010 and has climbed since 2015, passing its 2010 level in 2021." },
+      "Taxable value by property class, 2026": { "takeaway": "Residential parcels carry about two-thirds of the City's taxable value." },
       "Total taxable value (audited, $M)": { "takeaway": "Taxable value increased across the displayed audited years." },
       "General Fund revenues (audited, $M)": { "takeaway": "Audited General Fund revenue changed over time and is separate from all-funds budget totals." },
       "General Fund expenditures (audited, $M)": { "takeaway": "Audited General Fund expenditures were below revenues in the latest displayed year." },
@@ -426,8 +430,13 @@
     "sections": [
       {
         "heading": "FY2026–27 adopted plan",
-        "stats": ["general-fund-budget", "taxable-value", "full-time-staff"],
-        "charts": ["fy2026-27-adopted-budget-by-fund-all-funds", "general-fund-spending-mix-fy2026-27-plan"]
+        "stats": ["general-fund-budget", "taxable-value", "full-time-staff", "general-fund-spending-so-far"],
+        "charts": ["fy2026-27-adopted-budget-by-fund-all-funds", "general-fund-spending-mix-fy2026-27-plan", "taxable-value-by-year-city-assessment-rolls-m", "taxable-value-by-property-class-2026"]
+      },
+      {
+        "heading": "FY2025–26: how last year turned out (General Ledger)",
+        "stats": ["general-fund-result-fy2025-26"],
+        "charts": ["general-fund-fy2025-26-budget-vs-actual-m", "spending-by-fund-fy2025-26-budget-vs-actual-m"]
       },
       {
         "heading": "FY2025 audited results and trends",

@@ -71,9 +71,56 @@ HAVING SUM(b.originalBudget) <> 0
 ORDER BY amount DESC
 "@
 
+# --- Actuals: prior fiscal year complete, current fiscal year to date ----------
+# GLPeriodDetails holds month-end activity per GL line. Revenue lines (category 3)
+# carry credits, so revenue = credits - debits; expenditure = debits - credits.
+# The prior year compares against the AMENDED budget (original + amendments);
+# the current year to date compares against the adopted original.
+$priorEnd = $FiscalYearEnd - 1
+$priorFrom = '{0}-07-01' -f ($priorEnd - 1)
+$priorTo = '{0}-06-30' -f $priorEnd
+$ytdFrom = '{0}-07-01' -f ($FiscalYearEnd - 1)
+$today = Get-Date
+$ytdThrough = (Get-Date -Year $today.Year -Month $today.Month -Day 1).AddDays(-1)   # last completed month
+if ($ytdThrough -lt [datetime]$ytdFrom) { $ytdThrough = $null }
+
+$actualSql = @"
+SELECT g.fund, MAX(f.description) AS name,
+  -SUM(CASE WHEN g.accountCategory = 3 AND p.monthEnd BETWEEN '$priorFrom' AND '$priorTo' THEN p.debitActivity - p.creditActivity ELSE 0 END) AS prior_rev_actual,
+   SUM(CASE WHEN g.accountCategory = 4 AND p.monthEnd BETWEEN '$priorFrom' AND '$priorTo' THEN p.debitActivity - p.creditActivity ELSE 0 END) AS prior_exp_actual
+FROM dbo.GLPeriodDetails p
+JOIN dbo.GL_GeneralLedger g ON g.id = p.generalLedgerID
+LEFT JOIN dbo.GL_Funds f ON f.fund = g.fund
+WHERE g.accountCategory IN (3, 4)
+GROUP BY g.fund
+"@
+
+$priorBudgetSql = @"
+SELECT b.fund,
+  -SUM(CASE WHEN g.accountCategory = 3 THEN b.originalBudget + b.budgetAmendments ELSE 0 END) AS prior_rev_budget,
+   SUM(CASE WHEN g.accountCategory = 4 THEN b.originalBudget + b.budgetAmendments ELSE 0 END) AS prior_exp_budget
+FROM dbo.BudgetInfoAdopted b
+JOIN dbo.GL_GeneralLedger g ON g.id = b.generalLedgerID
+WHERE b.year = $priorEnd AND g.accountCategory IN (3, 4)
+GROUP BY b.fund
+"@
+
+$ytdSql = if ($ytdThrough) { @"
+SELECT g.fund,
+  -SUM(CASE WHEN g.accountCategory = 3 THEN p.debitActivity - p.creditActivity ELSE 0 END) AS ytd_rev_actual,
+   SUM(CASE WHEN g.accountCategory = 4 THEN p.debitActivity - p.creditActivity ELSE 0 END) AS ytd_exp_actual
+FROM dbo.GLPeriodDetails p
+JOIN dbo.GL_GeneralLedger g ON g.id = p.generalLedgerID
+WHERE g.accountCategory IN (3, 4) AND p.monthEnd BETWEEN '$ytdFrom' AND '$($ytdThrough.ToString('yyyy-MM-dd'))'
+GROUP BY g.fund
+"@ } else { $null }
+
 $funds = @(Invoke-BsaQuery -Database $Database -Sql $fundSql)
 $depts = @(Invoke-BsaQuery -Database $Database -Sql $deptSql)
 $transfers = @(Invoke-BsaQuery -Database $Database -Sql $transferSql)
+$priorActual = @(Invoke-BsaQuery -Database $Database -Sql $actualSql)
+$priorBudget = @(Invoke-BsaQuery -Database $Database -Sql $priorBudgetSql)
+$ytdActual = if ($ytdSql) { @(Invoke-BsaQuery -Database $Database -Sql $ytdSql) } else { @() }
 
 if ($funds.Count -lt 10) { throw "Fund query returned only $($funds.Count) funds; refusing to write." }
 $gf = $funds | Where-Object { $_.fund -eq '101' } | Select-Object -First 1
@@ -102,6 +149,44 @@ $out = [ordered]@{
         transfers     = @($transfers | ForEach-Object { [ordered]@{ account = [string]$_.account; name = [string]$_.name; amount = ConvertTo-WholeNumber $_.amount } })
     }
 }
+
+# Prior-year budget vs actual per fund (amended budget), and current year to date.
+$budgetByFund = @{}
+foreach ($r in $priorBudget) { $budgetByFund[[string]$r.fund] = $r }
+$priorFunds = @($priorActual | Where-Object { $budgetByFund.ContainsKey([string]$_.fund) } | ForEach-Object {
+    $pb = $budgetByFund[[string]$_.fund]
+    [ordered]@{
+        fund                = [string]$_.fund
+        name                = [string]$_.name
+        revenue_budget      = ConvertTo-WholeNumber $pb.prior_rev_budget
+        expenditure_budget  = ConvertTo-WholeNumber $pb.prior_exp_budget
+        revenue_actual      = ConvertTo-WholeNumber $_.prior_rev_actual
+        expenditure_actual  = ConvertTo-WholeNumber $_.prior_exp_actual
+    }
+} | Sort-Object { $_.expenditure_budget } -Descending)
+if ($priorFunds.Count -lt 5) { throw 'Prior-year budget vs actual produced fewer than five funds; refusing to write.' }
+
+$actuals = [ordered]@{
+    prior_year = [ordered]@{
+        fiscal_year_end = $priorEnd
+        label           = "FY$($priorEnd - 1)-$($priorEnd.ToString().Substring(2))"
+        funds           = $priorFunds
+    }
+}
+if ($ytdThrough -and $ytdActual.Count -gt 0) {
+    $ytdStart = [datetime]$ytdFrom
+    $months = (($ytdThrough.Year - $ytdStart.Year) * 12 + $ytdThrough.Month - $ytdStart.Month) + 1
+    $actuals['year_to_date'] = [ordered]@{
+        fiscal_year_end = $FiscalYearEnd
+        through         = $ytdThrough.ToString('yyyy-MM-dd')
+        through_label   = $ytdThrough.ToString('MMMM yyyy')
+        months          = [int]$months
+        funds           = @($ytdActual | ForEach-Object {
+            [ordered]@{ fund = [string]$_.fund; revenue_actual = ConvertTo-WholeNumber $_.ytd_rev_actual; expenditure_actual = ConvertTo-WholeNumber $_.ytd_exp_actual }
+        })
+    }
+}
+$out['actuals'] = $actuals
 
 $json = $out | ConvertTo-Json -Depth 6
 $tmp = Join-Path $env:TEMP 'bsa-budget.json'

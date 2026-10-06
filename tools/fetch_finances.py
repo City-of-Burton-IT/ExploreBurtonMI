@@ -35,6 +35,7 @@ ENTITY_ID = "2612060"  # Burton city (Census GEOID; confirmed against the API)
 API = "https://micommunityfinancials.michigan.gov/api/component"
 OUT = public_path("info-finances.json")
 BUDGET_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "bsa-budget.json")
+TAXROLL_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "bsa-taxroll.json")
 
 # --- City ADOPTED BUDGET (plan): from the City's General Ledger ------------------
 # Decision 2026-10-06: the GL is the source of truth for adopted-budget figures.
@@ -44,7 +45,6 @@ BUDGET_YEAR = "FY 2026-2027"
 # Note: city millage lives on the Property Taxes dashboard, and pension/OPEB
 # funded ratios on Financial Health, so no figure is shown on two dashboards.
 CITY_STATS = [
-    {"label": "Taxable value", "value": "$895.5M", "hint": "2026, city assessor"},
     {"label": "Full-time staff", "value": "102", "hint": "FY2026-27"},
 ]
 FUND_CHART_SLICES = 12      # largest funds shown individually; the rest fold into one bar
@@ -95,7 +95,138 @@ def validate_budget(raw: Any, where: str = "budget file") -> dict:
                 sys.exit(f"{where}: general_fund.{key} amounts must be non-negative integers")
     if abs(sum(d["amount"] for d in gf["departments"]) - gf["expenditure"]) > 1:
         sys.exit(f"{where}: department amounts do not add up to general_fund.expenditure")
+    actuals = raw.get("actuals")
+    if actuals is not None:
+        if not isinstance(actuals, dict):
+            sys.exit(f"{where}: 'actuals' must be an object")
+        prior = actuals.get("prior_year")
+        if not isinstance(prior, dict) or not isinstance(prior.get("funds"), list) or not prior["funds"]:
+            sys.exit(f"{where}: actuals.prior_year.funds must be a non-empty list")
+        for key in ("fiscal_year_end", "label"):
+            if key not in prior:
+                sys.exit(f"{where}: actuals.prior_year.{key} missing")
+        for f in prior["funds"]:
+            for key in ("revenue_budget", "expenditure_budget", "revenue_actual", "expenditure_actual"):
+                if not isinstance(f.get(key), int):
+                    sys.exit(f"{where}: actuals.prior_year fund {f.get('fund')} {key} must be an integer")
+        ytd = actuals.get("year_to_date")
+        if ytd is not None:
+            for key in ("through", "months", "funds"):
+                if key not in ytd:
+                    sys.exit(f"{where}: actuals.year_to_date.{key} missing")
+            for f in ytd["funds"]:
+                for key in ("revenue_actual", "expenditure_actual"):
+                    if not isinstance(f.get(key), int):
+                        sys.exit(f"{where}: actuals.year_to_date fund {f.get('fund')} {key} must be an integer")
     return raw
+
+
+def load_taxroll_file(path: str) -> dict:
+    with open(path, encoding="utf-8") as fh:
+        raw = json.load(fh)
+    return validate_taxroll(raw, path)
+
+
+def validate_taxroll(raw: Any, where: str = "tax-roll file") -> dict:
+    if not isinstance(raw, dict):
+        sys.exit(f"{where}: expected an object")
+    for key in ("_source", "extracted", "tax_year", "taxable_value"):
+        if key not in raw:
+            sys.exit(f"{where}: missing '{key}'")
+    tv = raw["taxable_value"]
+    if not isinstance(tv.get("total"), int) or tv["total"] <= 0:
+        sys.exit(f"{where}: taxable_value.total must be a positive integer")
+    groups = tv.get("by_group")
+    if not isinstance(groups, list) or not groups:
+        sys.exit(f"{where}: taxable_value.by_group must be a non-empty list")
+    for g in groups:
+        if not isinstance(g.get("group"), str) or not isinstance(g.get("taxable"), int) or g["taxable"] < 0:
+            sys.exit(f"{where}: taxable_value.by_group entries need a group name and integer taxable")
+    if abs(sum(g["taxable"] for g in groups) - tv["total"]) > 1:
+        sys.exit(f"{where}: taxable_value groups do not add up to the total")
+    hist = tv.get("history")
+    if not isinstance(hist, list) or len(hist) < 2:
+        sys.exit(f"{where}: taxable_value.history must list at least two years")
+    years = [h.get("year") for h in hist]
+    if years != sorted(set(years)) or not all(isinstance(h.get("taxable"), int) for h in hist):
+        sys.exit(f"{where}: taxable_value.history must be ascending unique years with integer taxable")
+    return raw
+
+
+ACTUALS_FUND_SLICES = 8   # funds shown individually in the budget-vs-actual chart
+
+
+def build_actuals(budget: dict) -> tuple[list, list]:
+    """Stats and charts for 'how did last year turn out' and 'how is this year going'."""
+    actuals = budget.get("actuals")
+    if not actuals:
+        return [], []
+    prior = actuals["prior_year"]
+    label = prior["label"]
+    gf = next((f for f in prior["funds"] if f["fund"] == "101"), None)
+    stats: list = []
+    charts: list = []
+    if gf:
+        stats.append({
+            "label": f"General Fund result, {label}",
+            "value": _m(gf["revenue_actual"] - gf["expenditure_actual"]).replace("$-", "-$"),
+            "hint": (f"actual revenue {_m(gf['revenue_actual'])} minus spending {_m(gf['expenditure_actual'])}; "
+                     f"a negative figure was covered from reserves"),
+        })
+        charts.append({
+            "type": "compare",
+            "title": f"General Fund, {label}: budget vs actual ($M)",
+            "rows": [
+                {"label": "Revenue", "unit": "$M",
+                 "values": [{"name": "Budget", "value": round(gf["revenue_budget"] / 1e6, 2)},
+                            {"name": "Actual", "value": round(gf["revenue_actual"] / 1e6, 2)}]},
+                {"label": "Spending", "unit": "$M",
+                 "values": [{"name": "Budget", "value": round(gf["expenditure_budget"] / 1e6, 2)},
+                            {"name": "Actual", "value": round(gf["expenditure_actual"] / 1e6, 2)}]},
+            ],
+        })
+    top = sorted((f for f in prior["funds"] if f["expenditure_budget"] > 0),
+                 key=lambda f: f["expenditure_budget"], reverse=True)[:ACTUALS_FUND_SLICES]
+    if top:
+        charts.append({
+            "type": "compare",
+            "title": f"Spending by fund, {label}: budget vs actual ($M)",
+            "rows": [
+                {"label": _title(f["name"]), "unit": "$M",
+                 "values": [{"name": "Budget", "value": round(f["expenditure_budget"] / 1e6, 2)},
+                            {"name": "Actual", "value": round(f["expenditure_actual"] / 1e6, 2)}]}
+                for f in top
+            ],
+        })
+    ytd = actuals.get("year_to_date")
+    if ytd:
+        gf_ytd = next((f for f in ytd["funds"] if f["fund"] == "101"), None)
+        gf_plan = budget["general_fund"]
+        if gf_ytd and gf_plan["expenditure"] > 0:
+            pct = round(100 * gf_ytd["expenditure_actual"] / gf_plan["expenditure"])
+            elapsed = round(100 * int(ytd["months"]) / 12)
+            stats.append({
+                "label": "General Fund spending so far",
+                "value": f"{pct}% of plan",
+                "hint": (f"{budget['label']} through {ytd['through_label']}; {elapsed}% of the year elapsed; "
+                         f"revenue {_m(gf_ytd['revenue_actual'])} received so far"),
+            })
+    return stats, charts
+
+
+def build_taxable_value(taxroll: dict) -> tuple[list, list]:
+    tv = taxroll["taxable_value"]
+    year = tv["year"]
+    stats = [{"label": "Taxable value", "value": _m(tv["total"]),
+              "hint": f"{year} assessment roll, City Assessor (BS&A)"}]
+    charts = [
+        {"type": "trend", "title": "Taxable value by year, City assessment rolls ($M)", "unit": "$M",
+         "points": [{"x": str(h["year"]), "y": round(h["taxable"] / 1e6, 1)} for h in tv["history"]]},
+        {"type": "donut", "title": f"Taxable value by property class, {year}", "unit": "$M",
+         "series": [{"label": g["group"], "value": round(g["taxable"] / 1e6, 1)} for g in tv["by_group"]
+                    if g["taxable"] > 0]},
+    ]
+    return stats, charts
 
 
 def _m(v: int) -> str:
@@ -336,6 +467,9 @@ def main() -> int:
     ap = argparse.ArgumentParser(description="Build info-finances.json")
     ap.add_argument("--budget-file", default=BUDGET_FILE,
                     help="GL aggregate export from tools/Export-BsaBudget.ps1 (default: tools/data/bsa-budget.json)")
+    ap.add_argument("--taxroll-file", default=TAXROLL_FILE if os.path.exists(TAXROLL_FILE) else None,
+                    help="Tax/Assessing aggregate export from tools/Export-BsaTaxRoll.ps1 "
+                         "(default: tools/data/bsa-taxroll.json when present)")
     ap.add_argument("--offline", action="store_true",
                     help="reuse the audited stats and trends already in public/info-finances.json "
                          "instead of calling the State API")
@@ -351,6 +485,9 @@ def main() -> int:
         health = build_health_stats(snapshot, analytics, latest_year)
     budget_stats = build_budget_stats(budget)
     budget_charts = build_budget_charts(budget)
+    actual_stats, actual_charts = build_actuals(budget)
+    taxroll = load_taxroll_file(args.taxroll_file) if args.taxroll_file else None
+    tax_stats, tax_charts = build_taxable_value(taxroll) if taxroll else ([], [])
 
     revenue_chart = {
         "type": "bars",
@@ -379,13 +516,14 @@ def main() -> int:
         "subtitle": f"{BUDGET_YEAR} adopted budget + audited financial history",
         "summary": summary,
         "explainer": BUDGET_EXPLAINER,
-        "stats": budget_stats + CITY_STATS + health,
-        "charts": [revenue_chart] + budget_charts + trends,
+        "stats": budget_stats + tax_stats + CITY_STATS + actual_stats + health,
+        "charts": [revenue_chart] + budget_charts + actual_charts + tax_charts + trends,
         "source": (
             f"City of Burton General Ledger (BS&A) for the {budget['label']} adopted-budget figures "
-            f"(aggregates extracted {budget['extracted']}); City of Burton {BUDGET_YEAR} Approved Budget "
-            "(Controller's Office) for taxable value and staffing; State of Michigan Community Financials "
-            "(audited F-65 actuals) for the historical trends."
+            f"(aggregates extracted {budget['extracted']}) and for budget-vs-actual comparisons; City Assessor "
+            "(BS&A Assessing) for taxable value; City of Burton " + BUDGET_YEAR + " Approved Budget (Controller's "
+            "Office) for staffing; State of Michigan Community Financials (audited F-65 actuals) for the "
+            "historical trends."
         ),
         "links": [
             {
@@ -400,6 +538,11 @@ def main() -> int:
             "noted General Fund). The dollar trends are AUDITED ACTUALS reported to the State of Michigan, which "
             "run about a year behind the adopted budget; the two are not the same measure.",
             "General Fund figures cover only the General Fund, not the city's total all-funds budget.",
+            "Budget-vs-actual figures compare the amended budget with activity posted in the City's General "
+            "Ledger through fiscal year end (June 30); they are unaudited and can differ slightly from the "
+            "audited statements. Year-to-date figures cover completed months only.",
+            "Taxable value is the March Board of Review value on each year's assessment roll; the current "
+            "year's roll can still change with appeals and corrections.",
             "Audited trends and fiscal-health figures come from the State of Michigan Community Financials "
             "program (audited F-65 annual financial reports).",
         ],

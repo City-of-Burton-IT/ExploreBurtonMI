@@ -110,3 +110,75 @@ def test_title_case_keeps_short_acronyms():
     assert ff._title("PARKS & RECREATION") == "Parks & Recreation"
     assert ff._title("INFORMATION TECHNOLOGY FUND") == "Information Technology Fund"
     assert ff._title("POLICE K9 FUND") == "Police K9 Fund"
+
+
+ACTUALS = {
+    "prior_year": {
+        "fiscal_year_end": 2026, "label": "FY2025-26",
+        "funds": [
+            {"fund": "202", "name": "MAJOR STREETS", "revenue_budget": 6_455_550, "expenditure_budget": 12_920_873,
+             "revenue_actual": 6_644_277, "expenditure_actual": 6_403_297},
+            {"fund": "101", "name": "GENERAL FUND", "revenue_budget": 8_806_658, "expenditure_budget": 11_888_730,
+             "revenue_actual": 8_682_427, "expenditure_actual": 10_780_128},
+            {"fund": "207", "name": "POLICE FUND", "revenue_budget": 8_154_973, "expenditure_budget": 9_606_819,
+             "revenue_actual": 8_585_574, "expenditure_actual": 8_559_172},
+        ],
+    },
+    "year_to_date": {
+        "fiscal_year_end": 2027, "through": "2026-09-30", "through_label": "September 2026", "months": 3,
+        "funds": [{"fund": "101", "revenue_actual": 3_957_438, "expenditure_actual": 1_103_015}],
+    },
+}
+
+TAXROLL = {
+    "_source": "test", "extracted": "2026-10-06", "tax_year": 2026,
+    "taxable_value": {
+        "year": 2026, "total": 895_540_516, "sev": 1_293_714_100,
+        "by_group": [
+            {"group": "Residential", "parcels": 12703, "taxable": 605_042_919, "sev": 951_286_900},
+            {"group": "Commercial", "parcels": 721, "taxable": 159_558_091, "sev": 200_000_000},
+            {"group": "Personal property (business and utility)", "parcels": 243, "taxable": 75_349_400, "sev": 80_000_000},
+            {"group": "Industrial", "parcels": 206, "taxable": 55_590_106, "sev": 62_427_200},
+        ],
+        "history": [{"year": 2024, "taxable": 813_987_953, "sev": 1_174_609_300},
+                    {"year": 2025, "taxable": 857_669_350, "sev": 1_228_031_600},
+                    {"year": 2026, "taxable": 895_540_516, "sev": 1_293_714_100}],
+    },
+}
+
+
+def test_actuals_stats_and_charts():
+    budget = copy.deepcopy(BUDGET)
+    budget["actuals"] = ACTUALS
+    assert ff.validate_budget(copy.deepcopy(budget)) == budget
+    stats, charts = ff.build_actuals(budget)
+    assert [s["label"] for s in stats] == ["General Fund result, FY2025-26", "General Fund spending so far"]
+    assert stats[0]["value"] == "-$2.1M" and "reserves" in stats[0]["hint"]
+    assert stats[1]["value"] == "11% of plan" and "September 2026" in stats[1]["hint"] and "25% of the year" in stats[1]["hint"]
+    assert [c["title"] for c in charts] == [
+        "General Fund, FY2025-26: budget vs actual ($M)", "Spending by fund, FY2025-26: budget vs actual ($M)",
+    ]
+    gf = charts[0]["rows"]
+    assert gf[0]["values"] == [{"name": "Budget", "value": 8.81}, {"name": "Actual", "value": 8.68}]
+    assert gf[1]["values"] == [{"name": "Budget", "value": 11.89}, {"name": "Actual", "value": 10.78}]
+    assert [r["label"] for r in charts[1]["rows"]] == ["Major Streets", "General Fund", "Police Fund"]
+
+
+def test_actuals_absent_yields_nothing():
+    assert ff.build_actuals(copy.deepcopy(BUDGET)) == ([], [])
+
+
+def test_taxable_value_stat_and_charts():
+    assert ff.validate_taxroll(copy.deepcopy(TAXROLL)) == TAXROLL
+    stats, charts = ff.build_taxable_value(TAXROLL)
+    assert stats == [{"label": "Taxable value", "value": "$895.5M", "hint": "2026 assessment roll, City Assessor (BS&A)"}]
+    assert charts[0]["title"] == "Taxable value by year, City assessment rolls ($M)"
+    assert charts[0]["points"][-1] == {"x": "2026", "y": 895.5}
+    assert charts[1]["type"] == "donut" and charts[1]["series"][0] == {"label": "Residential", "value": 605.0}
+
+
+def test_validate_taxroll_rejects_mismatched_groups():
+    bad = copy.deepcopy(TAXROLL)
+    bad["taxable_value"]["by_group"][0]["taxable"] = 1
+    with pytest.raises(SystemExit):
+        ff.validate_taxroll(bad)
