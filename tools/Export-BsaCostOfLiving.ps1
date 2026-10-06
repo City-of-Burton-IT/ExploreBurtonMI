@@ -128,12 +128,41 @@ if ($UtilityDatabase) {
     if (-not $sewerOnly -or -not $waterSewer -or [int]$sewerOnly.accounts -lt 100 -or [int]$waterSewer.accounts -lt 100) {
         throw 'Utility query returned too few accounts in one of the groups; refusing to write.'
     }
+    # Usage-based share of a quarterly bill (WTR-USAGE + SWR-USAGE items), so the
+    # dashboard can say how much of the bill depends on how much water a home uses.
+    $usageSql = @"
+WITH u AS (
+    SELECT h.id AS bill, SUM(i.amount) AS usage_amt
+    FROM dbo.HistoryHeader h
+    JOIN dbo.Account a ON a.id = h.idAccount
+    JOIN dbo.HistoryItem i ON i.idHistoryHeader = h.id
+    JOIN dbo.BillItemAmt ba ON ba.id = i.idBillItemAmt
+    WHERE h.actionTrxType = 0 AND h.amount > 0
+      AND h.dateTimePosted >= DATEADD(year, -1, GETDATE())
+      AND ba.billItemName IN ('WTR-USAGE', 'SWR-USAGE')
+      AND a.class = 'RES' AND a.status = 'Active' AND a.cycle LIKE 'Q%'
+    GROUP BY h.id HAVING SUM(i.amount) > 0
+),
+r AS (SELECT usage_amt, ROW_NUMBER() OVER (ORDER BY usage_amt) AS rn, COUNT(*) OVER () AS n FROM u)
+SELECT (SELECT COUNT(*) FROM u) AS bills,
+       (SELECT TOP 1 usage_amt FROM r WHERE rn = (n + 1) / 2) AS median_q,
+       (SELECT TOP 1 usage_amt FROM r WHERE rn = (n + 9) / 10) AS p10_q,
+       (SELECT TOP 1 usage_amt FROM r WHERE rn = (n * 9) / 10) AS p90_q
+"@
+    $usage = Invoke-BsaQuery -Database $UtilityDatabase -Sql $usageSql
+    if (-not $usage -or [int]$usage.bills -lt 1000) { throw 'Usage-charge query returned too few bills; refusing to write.' }
     $utility = [ordered]@{
         window                    = 'four quarterly bills posted in the 12 months before extraction'
         accounts_sewer_only       = [int]$sewerOnly.accounts
         median_annual_sewer_only  = [int][math]::Round([double]$sewerOnly.median_annual)
         accounts_water_and_sewer  = [int]$waterSewer.accounts
         median_annual_water_sewer = [int][math]::Round([double]$waterSewer.median_annual)
+        usage_charge_quarterly    = [ordered]@{
+            bills  = [int]$usage.bills
+            median = [int][math]::Round([double]$usage.median_q)
+            p10    = [int][math]::Round([double]$usage.p10_q)
+            p90    = [int][math]::Round([double]$usage.p90_q)
+        }
     }
 }
 

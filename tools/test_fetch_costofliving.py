@@ -134,6 +134,7 @@ CITY = {
         "window": "four quarterly bills posted in the 12 months before extraction",
         "accounts_sewer_only": 5000, "median_annual_sewer_only": 520,
         "accounts_water_and_sewer": 5500, "median_annual_water_sewer": 860,
+        "usage_charge_quarterly": {"bills": 23010, "median": 96, "p10": 27, "p90": 218},
     },
 }
 
@@ -160,6 +161,7 @@ def test_city_records_add_sale_price_exemption_and_trend():
     assert "City of Burton assessing records" in panel["source"]
     assert any("Only aggregates are published" in n for n in panel["notes"])
     assert panel["explainer"]["items"][-1]["term"] == "Water and sewer bills"
+    assert "typically $96" in panel["explainer"]["items"][-1]["body"] and "$218" in panel["explainer"]["items"][-1]["body"]
     assert any("individual accounts" in n for n in panel["notes"])
 
 
@@ -188,6 +190,10 @@ def test_validate_city_rejects_bad_shapes():
         col.validate_city(bad)
     bad = copy.deepcopy(CITY)
     bad["sales"] = [bad["sales"][1], bad["sales"][0]]
+    with pytest.raises(SystemExit):
+        col.validate_city(bad)
+    bad = copy.deepcopy(CITY)
+    bad["utility"]["usage_charge_quarterly"]["p10"] = 500
     with pytest.raises(SystemExit):
         col.validate_city(bad)
     bad = copy.deepcopy(CITY)

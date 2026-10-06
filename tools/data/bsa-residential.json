@@ -51,6 +51,12 @@
     "accounts_sewer_only": 5058,
     "median_annual_sewer_only": 545,
     "accounts_water_and_sewer": 5538,
-    "median_annual_water_sewer": 974
+    "median_annual_water_sewer": 974,
+    "usage_charge_quarterly": {
+      "bills": 23010,
+      "median": 96,
+      "p10": 27,
+      "p90": 218
+    }
   }
 }
