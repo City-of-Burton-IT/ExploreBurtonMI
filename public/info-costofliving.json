@@ -1,0 +1,432 @@
+{
+  "title": "What it costs to live here",
+  "subtitle": "Housing costs, income, and prices: Census ACS 2024 five-year and BEA 2024",
+  "stats": [
+    {
+      "label": "Median home value",
+      "value": "$141,600",
+      "hint": "Margin of error ±$13,813 (90% confidence)",
+      "benchmarks": [
+        {
+          "name": "Flint metro",
+          "value": "$182,400"
+        },
+        {
+          "name": "Michigan",
+          "value": "$231,600"
+        },
+        {
+          "name": "United States",
+          "value": "$332,700"
+        }
+      ]
+    },
+    {
+      "label": "Median gross rent",
+      "value": "$1,009/mo",
+      "hint": "Margin of error ±$110/mo (90% confidence)",
+      "benchmarks": [
+        {
+          "name": "Flint metro",
+          "value": "$989/mo"
+        },
+        {
+          "name": "Michigan",
+          "value": "$1,129/mo"
+        },
+        {
+          "name": "United States",
+          "value": "$1,413/mo"
+        }
+      ]
+    },
+    {
+      "label": "Owner costs with a mortgage",
+      "value": "$1,268/mo",
+      "hint": "Margin of error ±$61/mo (90% confidence)",
+      "benchmarks": [
+        {
+          "name": "Flint metro",
+          "value": "$1,455/mo"
+        },
+        {
+          "name": "Michigan",
+          "value": "$1,569/mo"
+        },
+        {
+          "name": "United States",
+          "value": "$1,963/mo"
+        }
+      ]
+    },
+    {
+      "label": "Median household income",
+      "value": "$60,052",
+      "hint": "Margin of error ±$4,874 (90% confidence)",
+      "benchmarks": [
+        {
+          "name": "Flint metro",
+          "value": "$62,281"
+        },
+        {
+          "name": "Michigan",
+          "value": "$72,875"
+        },
+        {
+          "name": "United States",
+          "value": "$80,734"
+        }
+      ]
+    },
+    {
+      "label": "Renters spending 30% or more on rent",
+      "value": "50.6%",
+      "hint": "1,303 of 2,575 renter households",
+      "benchmarks": [
+        {
+          "name": "Flint metro",
+          "value": "52.6%"
+        },
+        {
+          "name": "Michigan",
+          "value": "50.4%"
+        },
+        {
+          "name": "United States",
+          "value": "51.1%"
+        }
+      ]
+    },
+    {
+      "label": "Flint metro price level",
+      "value": "93.0",
+      "hint": "US = 100; BEA 2024, all items. Metro-wide, not Burton-specific.",
+      "benchmarks": [
+        {
+          "name": "Michigan",
+          "value": "96.2"
+        },
+        {
+          "name": "United States",
+          "value": "100"
+        }
+      ]
+    }
+  ],
+  "charts": [
+    {
+      "type": "compare",
+      "title": "How Burton compares: housing costs and income",
+      "rows": [
+        {
+          "label": "Median home value",
+          "unit": "$",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 141600
+            },
+            {
+              "name": "Flint metro",
+              "value": 182400
+            },
+            {
+              "name": "Michigan",
+              "value": 231600
+            },
+            {
+              "name": "United States",
+              "value": 332700
+            }
+          ]
+        },
+        {
+          "label": "Median gross rent (monthly)",
+          "unit": "$",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 1009
+            },
+            {
+              "name": "Flint metro",
+              "value": 989
+            },
+            {
+              "name": "Michigan",
+              "value": 1129
+            },
+            {
+              "name": "United States",
+              "value": 1413
+            }
+          ]
+        },
+        {
+          "label": "Owner costs with a mortgage (monthly)",
+          "unit": "$",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 1268
+            },
+            {
+              "name": "Flint metro",
+              "value": 1455
+            },
+            {
+              "name": "Michigan",
+              "value": 1569
+            },
+            {
+              "name": "United States",
+              "value": 1963
+            }
+          ]
+        },
+        {
+          "label": "Median household income",
+          "unit": "$",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 60052
+            },
+            {
+              "name": "Flint metro",
+              "value": 62281
+            },
+            {
+              "name": "Michigan",
+              "value": 72875
+            },
+            {
+              "name": "United States",
+              "value": 80734
+            }
+          ]
+        },
+        {
+          "label": "Renters spending 30% or more on rent",
+          "unit": "%",
+          "values": [
+            {
+              "name": "Burton",
+              "value": 50.6
+            },
+            {
+              "name": "Flint metro",
+              "value": 52.6
+            },
+            {
+              "name": "Michigan",
+              "value": 50.4
+            },
+            {
+              "name": "United States",
+              "value": 51.1
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "Flint metro price level by category (US = 100)",
+      "rows": [
+        {
+          "label": "All items",
+          "unit": "",
+          "values": [
+            {
+              "name": "Flint metro",
+              "value": 93.034
+            },
+            {
+              "name": "Michigan",
+              "value": 96.217
+            },
+            {
+              "name": "United States",
+              "value": 100
+            }
+          ]
+        },
+        {
+          "label": "Goods",
+          "unit": "",
+          "values": [
+            {
+              "name": "Flint metro",
+              "value": 93.711
+            },
+            {
+              "name": "Michigan",
+              "value": 95.993
+            },
+            {
+              "name": "United States",
+              "value": 100
+            }
+          ]
+        },
+        {
+          "label": "Housing",
+          "unit": "",
+          "values": [
+            {
+              "name": "Flint metro",
+              "value": 74.039
+            },
+            {
+              "name": "Michigan",
+              "value": 82.332
+            },
+            {
+              "name": "United States",
+              "value": 100
+            }
+          ]
+        },
+        {
+          "label": "Other services",
+          "unit": "",
+          "values": [
+            {
+              "name": "Flint metro",
+              "value": 99.561
+            },
+            {
+              "name": "Michigan",
+              "value": 100.933
+            },
+            {
+              "name": "United States",
+              "value": 100
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Flint metro price level over time (US = 100)",
+      "unit": "",
+      "lines": [
+        {
+          "label": "Flint metro, all items",
+          "points": [
+            {
+              "x": "2020",
+              "y": 89.843
+            },
+            {
+              "x": "2021",
+              "y": 88.979
+            },
+            {
+              "x": "2022",
+              "y": 90.889
+            },
+            {
+              "x": "2023",
+              "y": 89.879
+            },
+            {
+              "x": "2024",
+              "y": 93.034
+            }
+          ]
+        },
+        {
+          "label": "Flint metro, housing",
+          "points": [
+            {
+              "x": "2020",
+              "y": 64.795
+            },
+            {
+              "x": "2021",
+              "y": 57.928
+            },
+            {
+              "x": "2022",
+              "y": 68.612
+            },
+            {
+              "x": "2023",
+              "y": 65.026
+            },
+            {
+              "x": "2024",
+              "y": 74.039
+            }
+          ]
+        },
+        {
+          "label": "Michigan, all items",
+          "points": [
+            {
+              "x": "2020",
+              "y": 94.431
+            },
+            {
+              "x": "2021",
+              "y": 94.281
+            },
+            {
+              "x": "2022",
+              "y": 93.589
+            },
+            {
+              "x": "2023",
+              "y": 94.296
+            },
+            {
+              "x": "2024",
+              "y": 96.217
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "explainer": {
+    "title": "How to read these numbers",
+    "intro": "Costs only mean something next to what people earn. This dashboard shows both.",
+    "items": [
+      {
+        "term": "Price level (RPP)",
+        "body": "The Bureau of Economic Analysis compares what goods, rents and services cost in each metro area with the national average, set to 100. A value of 93 means prices run about 7% below the national average. It exists only for metro areas and states, so the figure shown is for the whole Flint metro (Genesee County), not Burton alone."
+      },
+      {
+        "term": "Cost-burdened renters",
+        "body": "Households paying 30% or more of their income in gross rent (rent plus utilities). The Census treats that line as the point where housing starts to crowd out other needs."
+      },
+      {
+        "term": "Why income is on a cost dashboard",
+        "body": "Burton's rents and home values are far below the national median, but so is household income. Comparing costs without income would make the city look cheaper to live in than it is for the people who already live here."
+      },
+      {
+        "term": "Margins of error",
+        "body": "ACS figures are survey estimates averaged over five years. Each Burton figure shows its 90% margin of error; the gaps to Michigan and the nation are far larger than those margins, while the gap to the Flint metro usually is not."
+      }
+    ]
+  },
+  "source": "US Census Bureau, American Community Survey (ACS) 2024 5-year estimates (2020-2024) for Burton city, the Flint, MI metro area, Michigan and the United States; US Bureau of Economic Analysis, Regional Price Parities 2024 (via FRED).",
+  "links": [
+    {
+      "text": "Census QuickFacts: Burton",
+      "href": "https://www.census.gov/quickfacts/burtoncitymichigan"
+    },
+    {
+      "text": "BEA Regional Price Parities",
+      "href": "https://www.bea.gov/data/prices-inflation/regional-price-parities-state-and-metro-area"
+    }
+  ],
+  "notes": [
+    "Dollar figures are nominal (not inflation-adjusted) ACS five-year averages, not exact counts. Rent-burden shares exclude renter households whose burden the Census could not compute.",
+    "Regional Price Parities are metro-level and revise from year to year; the Flint metro series moved several points between recent years, so treat small differences as noise.",
+    "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau."
+  ]
+}
