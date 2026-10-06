@@ -12,7 +12,9 @@ decisions and final-domain acceptance testing.
 City Website (Revize) vault topic with publishing/verification lessons. Current
 reports are under `mayor-review/content-audit/launch-fixes/`; read
 `fixes-and-remaining.md`, `revize-request.md` and `city-verification-checklist.md`.
-The vendor request is prepared but has not been sent.
+The vendor request is prepared but has not been sent; it must be posted on the Revize
+support portal ticket (email replies are not accepted), see issue #124. The footer phone
+was decided and updated by the user on 2026-10-06 (verify on the anonymous page).
 
 **Current phase:** VERIFY / HANDOFF - editor remediation complete; launch
 acceptance remains open. The original 14 findings have four closed, two partial
@@ -40,55 +42,67 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-05 18:30 (git log, gh issue list, live probes).
+Last verified: 2026-10-06 17:00 (git log, gh issue list, live probes of the public site and the mirror).
 
-**Status:** Repo housekeeping and the dashboard clarity work are complete on protected
-`main`. Issues #111 (duplicate local commit) and #112 (branch and worktree hygiene) are
-closed. All thirteen Dependabot PRs plus a lockfile/overrides fix (PR #121) merged on
-2026-10-05; Dependabot shows zero open alerts (two dev-only `sharp` pins inside
-`@capacitor/assets` dismissed as tolerable risk with a written reason). PR #122 landed
-the July dashboard clarity and City millage breakdown work after a code review that
-found and fixed one real bug (transient overlay fetch failures were memoised as an empty
-clarity map); the public Pages deploy for `74a0da3` succeeded on the third attempt after
-a GitHub Actions incident. Low findings from that review are issue #123.
+**Status:** Public site and internal mirror both serve the day's work. Git range
+`2c93c43..14ffcb5` on `main` (see `git log 2c93c43..HEAD`): PRs #128 through #149,
+all squash-merged with auto-merge, Pages deploys green. Suites at HEAD: pytest tools
+plus pipeline 283 passed, vitest 515 passed, svelte-check clean. Working tree clean.
 
-**Mayor review page:** live on the internal mirror at `https://explore.burton.local/review/`
-(static folder `wwwroot\review`, excluded from the mirror deploy's robocopy with `/XD review`).
-It holds ten Revize staging captures (taken by a Codex session over CDP against the
-user's signed-in Chrome; `planning/mayor-review/capture.py` and `capture-log.md`),
-three live Explore buttons, the Revize preview link
-`https://builder1.revize.com/revize/cityofburtonmi/`, and an embedded Microsoft Form
-(two Likert grids, two comment boxes, three closing questions; org-only, resubmit allowed,
-email per response). Deploy with `C:\utils\Run-DeployMayorReviewAsAdmin.ps1` (stored
-admin credential, loopback session) or `planning/mayor-review/Deploy-MayorReview.ps1`
-from an admin shell. Spec: `planning/specs/2026-10-05-mayor-review-page.md`. The Mayor
-has NOT yet been sent the link; a fresh browser may see a Cloudflare interstitial on the
-Revize preview.
+**City-records feeds (new today):** read-only BS&A access now covers Assessing (2026,
+2027), Tax (2026), General Ledger, Utility Billing, HR/Payroll. Exporters under `tools/`
+(`Export-BsaCostOfLiving.ps1`, `Export-BsaBudget.ps1`, `Export-BsaTaxRoll.ps1`) write
+aggregates-only JSON under `tools/data/`; Python builders validate at the boundary;
+`tools/Refresh-CityRecords.ps1` runs the whole chain. Decision: the General Ledger is
+the source of truth for budget figures; budget-book totals are not used. Dashboards
+built or rebuilt from City records: What It Costs to Live Here (new; sales, PRE share,
+utility bills), City Finances (GL plan, budget vs actual, FY2026 revenue by source),
+City Finances over Time (new; FY2008 to FY2026 ledger history, revenue sources,
+departments, taxable value, audited trends), Water & Sewer Funds (new), Property
+Taxes (certified 2026 City rate 13.2394, homestead median, levy by unit, summer
+collection), Capital Projects (ledger street-capital trend). Registry is 24 dashboards.
+Schema facts and the anomalies explained on charts (FY2018 water/sewer asset entry,
+FY2022 ARPA, City Hall legacy costs from FY2016) are in the vault note `BS&A SQL Server.md`.
+
+**Other work today:** Census 2024 refresh (Housing, Demographics), CBP 2023 (Jobs), NCES
+2024 (Schools); recycling list replaced the vendor infographic (#17 half); pipeline
+dedup for same-business OSM/Overture twins (#83); dashboard section ids (#123);
+accessibility fixes (main landmark, legend list semantics, link targets; Lighthouse
+accessibility 100 on the three audited pages); robots.txt; Android 1.15 (version code
+29) on the Play internal track after two CI fixes (retired SDK "tools" package, target
+API 36). Internal mirror auto-syncs: scheduled task `ExploreBurton-MirrorSync` (per-user,
+every 30 minutes while logged on) deploys from its own clone when `origin/main` moves;
+logs at `C:\utils\Sync-ExploreMirror.log`.
+
+**Mayor review page:** still live at the internal mirror `/review/`; the Mayor has NOT
+been sent the link. Paste-ready message at `planning/mayor-review/MAYOR-EMAIL.md`
+(fill the `[DATE]`). No Form responses yet (#126).
 
 **Branches kept on purpose (local only):** `feature/crime-dashboard-hold` (sole copy,
-never push) and `feature/public-safety-combined` (reference for rebuilding #19; the FD
-review rules and data-script pointers are recorded on #19). Everything else merged or
-deleted; see the closing comment on #112.
+never push) and `feature/public-safety-combined` (reference for #19).
 
-**Current phase:** MAINTENANCE. Next product work is whichever open enhancement the user
-picks; the review page needs the Mayor's responses collected and turned into a punch
-list, then teardown with the mirror at public launch (#88).
+**Current phase:** MAINTENANCE plus City-records expansion. The site now shows
+ledger-level budget vs actual, department shares, a reserve draw and tax collection
+rates; the Controller and Mayor should review that material before Council or the
+press sees it (tracked as an issue).
 
 **Open work:** GitHub Issues are the single source of truth; run `gh issue list --state open`
-from this clone. Explore-side items as of this handoff: issue #126 (Mayor review page:
-send, collect, punch list), issue #123 (clarity follow-ups), issue #88 (staff preview
-window and mirror teardown, which now also hosts the Mayor review page), issue #94
-(deferred, needs a second maintainer), and the older enhancements numbered 19, 17, 23,
-44, 69, 70, 72, 80 and 83.
+from this clone. Explore-side: #126 (Mayor review), #88 (staff preview and mirror
+teardown), #139 (winter tax roll rerun, December), #140 (water lead query), #80 (capital
+data, partly done), #17 (City photos), #44 (zoning source), #19 (Fire export), #94
+(deferred), plus the accounts and messaging epics 69, 70, 72, and the three filed at this
+handoff (ledger-data review with the Controller and Mayor, HR headcount code map, water
+meter unit).
 
-**Blockers:** None on the application. The one-approval branch policy stays deferred
-until the City designates a second write-capable reviewer.
+**Blockers:** Headcount feed needs the HR status and employment-type code map; water
+usage in volume needs the meter unit confirmed; the rest wait on people outside IT.
+The one-approval branch policy stays deferred until a second maintainer exists.
 
 **Public summary:** Explore Burton is a public, static civic map, dashboard, and
-Resident Guide at <https://explore.burtonmi.gov>, with moderated resident submissions,
-installable web and Android apps, protected publication workflows, resident-first
-dashboard explanations with a City millage breakdown, and a fully reconciled dependency
-and branch baseline as of October 2026.
+Resident Guide at <https://explore.burtonmi.gov>, with twenty-four dashboards, several
+of them now built from the City's own financial, assessing, tax and utility records,
+moderated resident submissions, installable web and Android apps, and a reconciled
+dependency and branch baseline as of October 2026.
 
 ## Revize content migration audit
 
