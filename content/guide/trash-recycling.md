@@ -29,12 +29,36 @@ their contractor.
 
 ## Recycling
 
-![Emterra single-stream recycling: acceptable and unacceptable items](/emterra-recycling.png)
-
 Picked up the **same day** as trash, out by **6:00 a.m.** The City sells recycling
 containers for **$7.00** each, and offers **free stickers** to use your own lidded/handled
 container (35 gallons max, under 50 lbs). Place recycling on the opposite side of the
 driveway from the trash, label facing the road. **No plastic bags.**
+
+Burton has **single-stream** recycling: everything goes in one bin, no sorting. Rinse
+items so they are free of food and grease.
+
+### What goes in your bin
+
+- **Plastics marked #1 through #7:** bottles, lids, tubs and containers, take-out
+  containers, clamshells and trays, and #5 or #6 single-serve coffee pods.
+- **Glass:** bottles and jars.
+- **Cartons:** boxed milk, juice, broth and soup containers.
+- **Metal:** tin and steel food cans and lids, aluminum cans, foil and trays.
+- **Paper:** newspaper, magazines and printed paper. Shredded paper goes in a **clear
+  plastic bag**, the one item that should be bagged.
+- **Cardboard:** corrugated boxes, paperboard and cartons, flattened and no larger than
+  4 ft x 4 ft x 1 ft.
+
+### Keep these out
+
+- Napkins, paper towels and food-soiled cardboard (these go in the trash).
+- Clothing, textiles and other items that can be reused (donate them instead).
+- Plastics with no #1 to #7 mark, and large plastic items.
+- Diapers and personal hygiene products.
+- Ceramics, drinking glasses and housewares.
+- Hazardous waste, sharps and electronics (see Hazardous & Electronic Waste below).
+- Scrap metal, wires and cables, and home or construction debris.
+- Food, kitchen, yard and animal waste.
 
 ## Yard Waste
 
