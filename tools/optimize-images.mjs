@@ -21,14 +21,6 @@ const pub = (f) => join(ROOT, 'public', f);
 // sized correctly for its usage -- only re-encode, don't resize".
 const TARGETS = [
   {
-    // Guide markdown image (content/guide/trash-recycling.md), viewed inline
-    // (max-width: 100% of the content column) and full-size in the lightbox
-    // (up to 96vw x 82vh). 1008x1101 is a sensible lightbox size already --
-    // only the encoding was wasteful.
-    file: 'emterra-recycling.png',
-    format: 'png',
-  },
-  {
     // Panel header logo (src/lib/InfoView.svelte), rendered at height: 56px
     // only -- never shown larger or in a lightbox. 3000x3000 is ~50x more
     // resolution than needed even at 3x DPI; cap at 512 (2x a generous
@@ -48,9 +40,10 @@ const TARGETS = [
     format: 'png',
   },
   {
-    // Guide markdown image (content/guide/welcome.md), same inline/lightbox
-    // usage as emterra-recycling.png above. 1152x1334 is reasonable for a
-    // full-screen lightbox view -- only re-encode.
+    // Guide markdown image (content/guide/welcome.md), viewed inline
+    // (max-width: 100% of the content column) and full-size in the lightbox
+    // (up to 96vw x 82vh). 1152x1334 is reasonable for a full-screen
+    // lightbox view -- only re-encode.
     file: 'burton-historical-plat-map.jpg',
     format: 'jpeg',
   },
