@@ -28,10 +28,15 @@ OUT = public_path("info-utilities.json")
 FUND_NAMES = {"591": "Water", "590": "Sewer"}
 SPEND_GROUPS = [
     ("treatment_purchase", "Purchased water and sewage treatment"),
-    ("operations", "Operations (staff, repairs, supplies)"),
-    ("depreciation", "Depreciation of pipes and plant"),
+    ("operations", "Operations"),
+    ("depreciation", "Depreciation"),
     ("debt_and_transfers", "Debt interest and transfers"),
 ]
+# Short, fund-specific legend labels for the donuts (legend space is narrow).
+DONUT_LABELS = {
+    "591": {"treatment_purchase": "Purchased water", "operations": "Operations", "depreciation": "Depreciation", "debt_and_transfers": "Debt and transfers"},
+    "590": {"treatment_purchase": "Sewage treatment", "operations": "Operations", "depreciation": "Depreciation", "debt_and_transfers": "Debt and transfers"},
+}
 
 
 def load_json(path: str) -> dict:
@@ -112,7 +117,7 @@ def build_panel(enterprise: list, utility: dict | None, extracted: str) -> dict:
         r = latest[fund]
         charts.append({
             "type": "donut", "title": f"Where the {FUND_NAMES[fund].lower()} dollar went, {_fy(latest_year)}", "unit": "$M",
-            "series": [{"label": label, "value": round(r[key] / 1e6, 2)} for key, label in SPEND_GROUPS if r[key] > 0],
+            "series": [{"label": DONUT_LABELS[fund][key], "value": round(r[key] / 1e6, 2)} for key, _ in SPEND_GROUPS if r[key] > 0],
         })
     charts.append({
         "type": "trend", "title": f"Cost of purchased water and sewage treatment by year, {span} ($M)", "unit": "$M",

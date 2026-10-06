@@ -368,19 +368,19 @@
       "unit": "$M",
       "series": [
         {
-          "label": "Purchased water and sewage treatment",
+          "label": "Purchased water",
           "value": 4.12
         },
         {
-          "label": "Operations (staff, repairs, supplies)",
+          "label": "Operations",
           "value": 1.68
         },
         {
-          "label": "Depreciation of pipes and plant",
+          "label": "Depreciation",
           "value": 0.65
         },
         {
-          "label": "Debt interest and transfers",
+          "label": "Debt and transfers",
           "value": 0.27
         }
       ]
@@ -391,19 +391,19 @@
       "unit": "$M",
       "series": [
         {
-          "label": "Purchased water and sewage treatment",
+          "label": "Sewage treatment",
           "value": 4.16
         },
         {
-          "label": "Operations (staff, repairs, supplies)",
+          "label": "Operations",
           "value": 1.27
         },
         {
-          "label": "Depreciation of pipes and plant",
+          "label": "Depreciation",
           "value": 0.86
         },
         {
-          "label": "Debt interest and transfers",
+          "label": "Debt and transfers",
           "value": 0.19
         }
       ]
