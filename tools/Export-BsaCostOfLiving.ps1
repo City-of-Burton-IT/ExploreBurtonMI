@@ -31,6 +31,10 @@ param(
     [ValidateRange(2010, 2100)]
     [int]$FirstSaleYear = 2019,
 
+    # Live Utility Billing database (D010BURTON). Pass '' to skip the utility section.
+    [ValidatePattern('^(D010[A-Za-z0-9 ]+)?$')]
+    [string]$UtilityDatabase = 'D010BURTON',
+
     [string]$OutPath = (Join-Path $PSScriptRoot 'data\bsa-residential.json')
 )
 
@@ -76,8 +80,62 @@ GROUP BY yr
 ORDER BY yr
 "@
 
+# Typical residential utility bill: active residential accounts on quarterly
+# cycles with exactly four bills in the last 12 months. Accounts are split by
+# whether any water item was billed (many Burton homes are on private wells and
+# pay sewer only). Medians of the annual total per account; aggregates only.
+$utilitySql = @"
+WITH bills AS (
+    SELECT h.id, h.idAccount, h.amount
+    FROM dbo.HistoryHeader h
+    JOIN dbo.Account a ON a.id = h.idAccount
+    WHERE h.actionTrxType = 0 AND h.amount > 0
+      AND h.dateTimePosted >= DATEADD(year, -1, GETDATE())
+      AND a.class = 'RES' AND a.status = 'Active' AND a.cycle LIKE 'Q%'
+),
+water AS (
+    SELECT DISTINCT b.idAccount
+    FROM bills b
+    JOIN dbo.HistoryItem i ON i.idHistoryHeader = b.id
+    JOIN dbo.BillItemAmt ba ON ba.id = i.idBillItemAmt
+    WHERE ba.billItemName LIKE 'WTR%' OR ba.billItemName IN ('LAWNWTR', 'W-PDWV')
+),
+peracct AS (
+    SELECT b.idAccount, SUM(b.amount) AS annual, COUNT(*) AS bills,
+           CASE WHEN w.idAccount IS NULL THEN 0 ELSE 1 END AS hasWater
+    FROM bills b LEFT JOIN water w ON w.idAccount = b.idAccount
+    GROUP BY b.idAccount, w.idAccount
+    HAVING COUNT(*) = 4
+),
+ranked AS (
+    SELECT hasWater, annual,
+           ROW_NUMBER() OVER (PARTITION BY hasWater ORDER BY annual) AS rn,
+           COUNT(*) OVER (PARTITION BY hasWater) AS n
+    FROM peracct
+)
+SELECT hasWater, MAX(n) AS accounts,
+       MAX(CASE WHEN rn = (n + 1) / 2 THEN annual END) AS median_annual
+FROM ranked GROUP BY hasWater ORDER BY hasWater
+"@
+
 $parcel = Invoke-BsaQuery -Database $Database -Sql $parcelSql
 $sales = @(Invoke-BsaQuery -Database $Database -Sql $salesSql)
+$utility = $null
+if ($UtilityDatabase) {
+    $rows = @(Invoke-BsaQuery -Database $UtilityDatabase -Sql $utilitySql)
+    $sewerOnly = $rows | Where-Object { [int]$_.hasWater -eq 0 } | Select-Object -First 1
+    $waterSewer = $rows | Where-Object { [int]$_.hasWater -eq 1 } | Select-Object -First 1
+    if (-not $sewerOnly -or -not $waterSewer -or [int]$sewerOnly.accounts -lt 100 -or [int]$waterSewer.accounts -lt 100) {
+        throw 'Utility query returned too few accounts in one of the groups; refusing to write.'
+    }
+    $utility = [ordered]@{
+        window                    = 'four quarterly bills posted in the 12 months before extraction'
+        accounts_sewer_only       = [int]$sewerOnly.accounts
+        median_annual_sewer_only  = [int][math]::Round([double]$sewerOnly.median_annual)
+        accounts_water_and_sewer  = [int]$waterSewer.accounts
+        median_annual_water_sewer = [int][math]::Round([double]$waterSewer.median_annual)
+    }
+}
 
 if (-not $parcel -or [int]$parcel.parcels -lt 1000) {
     throw "Parcel query returned an implausible count ($($parcel.parcels)); refusing to write."
@@ -99,6 +157,10 @@ $out = [ordered]@{
     sales            = @($sales | ForEach-Object {
         [ordered]@{ year = [int]$_.yr; sales = [int]$_.sales; median_price = [int]$_.median_price }
     })
+}
+if ($utility) {
+    $out['_utility_source'] = "City of Burton BS&A Utility Billing database ($UtilityDatabase), read-only aggregate export. Residential active accounts on quarterly cycles with four bills in the window; split by whether any water item was billed."
+    $out['utility'] = $utility
 }
 
 $json = $out | ConvertTo-Json -Depth 5

@@ -44,5 +44,13 @@
       "sales": 466,
       "median_price": 158000
     }
-  ]
+  ],
+  "_utility_source": "City of Burton BS&A Utility Billing database (D010BURTON), read-only aggregate export. Residential active accounts on quarterly cycles with four bills in the window; split by whether any water item was billed.",
+  "utility": {
+    "window": "four quarterly bills posted in the 12 months before extraction",
+    "accounts_sewer_only": 5058,
+    "median_annual_sewer_only": 545,
+    "accounts_water_and_sewer": 5538,
+    "median_annual_water_sewer": 974
+  }
 }

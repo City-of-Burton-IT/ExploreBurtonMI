@@ -130,18 +130,27 @@ CITY = {
         {"year": 2024, "sales": 461, "median_price": 155000},
         {"year": 2025, "sales": 466, "median_price": 158000},
     ],
+    "utility": {
+        "window": "four quarterly bills posted in the 12 months before extraction",
+        "accounts_sewer_only": 5000, "median_annual_sewer_only": 520,
+        "accounts_water_and_sewer": 5500, "median_annual_water_sewer": 860,
+    },
 }
 
 
 def test_city_records_add_sale_price_exemption_and_trend():
     panel = col.build_panel(ACS, RPP, 2024, 2024, CITY)
     labels = [s["label"] for s in panel["stats"]]
-    assert labels[-2:] == ["Typical home sale price", "Homes with a principal residence exemption"]
-    sale = panel["stats"][-2]
+    assert labels[-3:] == [
+        "Typical home sale price", "Homes with a principal residence exemption", "Typical water and sewer bill",
+    ]
+    util = panel["stats"][-1]
+    assert util["value"] == "$860/yr" and "$520/yr" in util["hint"] and "5,000" in util["hint"]
+    sale = panel["stats"][-3]
     assert sale["value"] == "$158,000"
     assert "466" in sale["hint"] and "2025" in sale["hint"]
     assert sale["benchmarks"] == [{"name": "Census estimate, ACS 2024", "value": "$141,600"}]
-    pre = panel["stats"][-1]
+    pre = panel["stats"][-2]
     assert pre["value"] == "95.9%"
     trend = panel["charts"][-1]
     assert trend["type"] == "trend" and trend["title"] == "What Burton homes sold for"
@@ -150,6 +159,16 @@ def test_city_records_add_sale_price_exemption_and_trend():
     ]
     assert "City of Burton assessing records" in panel["source"]
     assert any("Only aggregates are published" in n for n in panel["notes"])
+    assert panel["explainer"]["items"][-1]["term"] == "Water and sewer bills"
+    assert any("individual accounts" in n for n in panel["notes"])
+
+
+def test_city_records_without_utility_block_still_build():
+    import copy
+    city = copy.deepcopy(CITY)
+    del city["utility"]
+    panel = col.build_panel(ACS, RPP, 2024, 2024, city)
+    assert [s["label"] for s in panel["stats"]][-1] == "Homes with a principal residence exemption"
     assert panel["explainer"]["items"][-1]["term"] == "Principal residence exemption"
 
 

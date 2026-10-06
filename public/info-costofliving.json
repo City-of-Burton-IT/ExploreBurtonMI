@@ -127,6 +127,11 @@
       "label": "Homes with a principal residence exemption",
       "value": "95.9%",
       "hint": "10,502 of 10,953 residential parcels on the 2026 roll"
+    },
+    {
+      "label": "Typical water and sewer bill",
+      "value": "$974/yr",
+      "hint": "Median for 5,538 homes on City water and sewer; 5,058 homes on private wells pay sewer only, median $545/yr. Quarterly billing, last 12 months."
     }
   ],
   "charts": [
@@ -469,6 +474,10 @@
       {
         "term": "Principal residence exemption",
         "body": "Michigan homeowners who live in their home as their main residence are exempt from the school operating levy. The share of residential parcels with that exemption is the City's own measure of owner-occupancy."
+      },
+      {
+        "term": "Water and sewer bills",
+        "body": "From the City's utility billing records: the median of the four quarterly bills in the past year for active residential accounts, split by whether the home buys City water. About half of Burton homes are on private wells and pay only for sewer service. Usage-based charges mean your own bill depends on how much water you use."
       }
     ]
   },
@@ -487,6 +496,7 @@
     "Dollar figures are nominal (not inflation-adjusted) ACS five-year averages, not exact counts. Rent-burden shares exclude renter households whose burden the Census could not compute.",
     "Regional Price Parities are metro-level and revise from year to year; the Flint metro series moved several points between recent years, so treat small differences as noise.",
     "This product uses the Census Bureau Data API but is not endorsed or certified by the Census Bureau.",
-    "City sale figures are medians of arm's-length residential sales over $10,000 recorded by the City Assessor; they are not adjusted for inflation and exclude family transfers, foreclosures and other non-market sales. Only aggregates are published, never individual parcels."
+    "City sale figures are medians of arm's-length residential sales over $10,000 recorded by the City Assessor; they are not adjusted for inflation and exclude family transfers, foreclosures and other non-market sales. Only aggregates are published, never individual parcels.",
+    "Utility figures are medians of annual totals for residential accounts billed quarterly with four bills in the window; penalties and one-time charges on those bills are included. Only aggregates are published, never individual accounts."
   ]
 }

@@ -356,7 +356,8 @@
         "heading": "What homes actually sold for",
         "stats": [
           "typical-home-sale-price",
-          "homes-with-a-principal-residence-exemption"
+          "homes-with-a-principal-residence-exemption",
+          "typical-water-and-sewer-bill"
         ],
         "charts": [
           "what-burton-homes-sold-for"
