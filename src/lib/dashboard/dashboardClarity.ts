@@ -9,17 +9,23 @@ import type {
   InfoStat,
   InfoTable,
 } from '../types';
+import { DASHBOARD_STATUSES, isDashboardStatus } from './dashboardContext';
 import { validateRawInfoPanel } from './infoPanel';
 
 type JsonObject = Record<string, unknown>;
 
-const DASHBOARD_STATUSES: readonly DashboardStatus[] = [
-  'current',
-  'historical',
-  'modeled',
-  'planned',
-  'reference',
-];
+/**
+ * DOM id for a dashboard section heading. Used for the section's
+ * `aria-labelledby` target, so two sections on one dashboard must never map to
+ * the same id; validateSections enforces that.
+ */
+export function sectionHeadingId(heading: string): string {
+  const slug = heading
+    .toLowerCase()
+    .replace(/[^a-z0-9]+/g, '-')
+    .replace(/^-+|-+$/g, '');
+  return `section-${slug}`;
+}
 
 function fail(context: string, path: string, expectation: string): never {
   throw new Error(`Invalid ${context} at ${path}: ${expectation}`);
@@ -94,11 +100,11 @@ function validateContext(value: unknown, context: string, path: string): Dashboa
   const item = objectValue(value, context, path);
   const scope = stringValue(item.scope, context, `${path}.scope`);
   const status = stringValue(item.status, context, `${path}.status`);
-  if (!DASHBOARD_STATUSES.includes(status as DashboardStatus)) {
+  if (!isDashboardStatus(status)) {
     fail(
       context,
       `${path}.status`,
-      `expected one of current, historical, modeled, planned, reference; received "${status}"`,
+      `expected one of ${DASHBOARD_STATUSES.join(', ')}; received "${status}"`,
     );
   }
   const asOf = stringValue(item.asOf, context, `${path}.asOf`);
@@ -196,13 +202,21 @@ function validateSections(value: unknown, context: string, path: string): InfoSe
   if (!Array.isArray(value) || value.length === 0) {
     fail(context, path, 'expected a non-empty array');
   }
-  const headings = new Set<string>();
+  const headingIds = new Map<string, string>();
   return value.map((rawSection, index) => {
     const sectionPath = `${path}[${index}]`;
     const section = objectValue(rawSection, context, sectionPath);
     const heading = stringValue(section.heading, context, `${sectionPath}.heading`);
-    if (headings.has(heading)) fail(context, `${sectionPath}.heading`, `duplicate value "${heading}"`);
-    headings.add(heading);
+    const headingId = sectionHeadingId(heading);
+    const clash = headingIds.get(headingId);
+    if (clash !== undefined) {
+      fail(
+        context,
+        `${sectionPath}.heading`,
+        `duplicate heading id "${headingId}" ("${heading}" collides with "${clash}")`,
+      );
+    }
+    headingIds.set(headingId, heading);
     const stats = stringArray(section.stats, context, `${sectionPath}.stats`);
     const charts = stringArray(section.charts, context, `${sectionPath}.charts`);
     const tables = stringArray(section.tables, context, `${sectionPath}.tables`);

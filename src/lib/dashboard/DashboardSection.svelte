@@ -3,6 +3,7 @@
   import StatCard from '../StatCard.svelte';
   import InfoTable from '../InfoTable.svelte';
   import DashboardChart from './DashboardChart.svelte';
+  import { sectionHeadingId } from './dashboardClarity';
 
   let {
     section,
@@ -17,8 +18,8 @@
   } = $props();
 </script>
 
-<section class="evidence" aria-labelledby="section-{section.heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}">
-  <h3 id="section-{section.heading.toLowerCase().replace(/[^a-z0-9]+/g, '-')}">{section.heading}</h3>
+<section class="evidence" aria-labelledby={sectionHeadingId(section.heading)}>
+  <h3 id={sectionHeadingId(section.heading)}>{section.heading}</h3>
   {#if stats.length}
     <div class="stats">
       {#each stats as stat (stat.id)}
