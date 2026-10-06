@@ -38,6 +38,8 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
       { id: 'finances', label: 'City Finances', description: 'How the city raises and spends money each year.' },
       { id: 'propertytax', label: 'Property Taxes', description: 'What makes up your property tax bill and where it goes.' },
       { id: 'fiscalhealth', label: 'Financial Health', description: "The city's debt, pensions, and long-term outlook." },
+      { id: 'financehistory', label: 'City Finances over Time', description: 'Nineteen years of revenue, spending, and budgets from the City ledger.' },
+      { id: 'utilities', label: 'Water & Sewer Funds', description: 'What water and sewer bills pay for, year by year.' },
       { id: 'capital', label: 'Capital Projects', description: 'Big one-time investments the city has funded: roads, equipment, and facilities.' },
     ],
   },

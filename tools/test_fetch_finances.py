@@ -221,3 +221,64 @@ def test_validate_budget_rejects_bad_history():
     bad["history"] = list(reversed(copy.deepcopy(HISTORY)))
     with pytest.raises(SystemExit):
         ff.validate_budget(bad)
+
+
+SOURCES = [
+    {"fiscal_year_end": y, "scope": sc, "taxes": 3_000_000 + i * 50_000, "licenses_permits": 300_000, "federal": 3_000_000 if y == 2022 else 0,
+     "state": 2_500_000 + i * 100_000, "local_units": 0, "charges": 300_000, "fines": 0, "interest": 20_000, "other": 100_000,
+     "transfers_in": 0, "unclassified": 0, "total": 6_220_000 + i * 150_000 + (3_000_000 if y == 2022 else 0)}
+    for i, y in enumerate(range(2016, 2027)) for sc in ("general_fund", "governmental")
+]
+DEPTS = []
+for y in range(2016, 2027):
+    DEPTS += [{"fiscal_year_end": y, "code": "999", "name": "", "amount": 3_000_000},
+              {"fiscal_year_end": y, "code": "265", "name": "CITY HALL", "amount": 1_400_000},
+              {"fiscal_year_end": y, "code": "448", "name": "PUBLIC SERVICE", "amount": 600_000},
+              {"fiscal_year_end": y, "code": "101", "name": "COUNCIL", "amount": 500_000},
+              {"fiscal_year_end": y, "code": "257", "name": "ASSESSOR", "amount": 400_000},
+              {"fiscal_year_end": y, "code": "171", "name": "MAYOR", "amount": 400_000},
+              {"fiscal_year_end": y, "code": "262", "name": "ELECTION", "amount": 300_000},
+              {"fiscal_year_end": y, "code": "702", "name": "ZONING", "amount": 80_000}]
+
+
+def test_revenue_source_chart_and_trend():
+    budget = copy.deepcopy(BUDGET)
+    budget["revenue_sources"] = SOURCES
+    chart = ff.build_revenue_source_chart(budget, "governmental", "governmental funds")
+    assert chart["title"] == "Revenue by source, governmental funds, FY2026 ($M, City ledger)"
+    labels = [s["label"] for s in chart["series"]]
+    assert labels[0] == "Property taxes" and "Federal grants" not in labels   # zero in FY2026
+    trend = ff.build_revenue_source_trend(budget)
+    assert trend["title"] == "General Fund revenue by source, FY2016–FY2026 ($M)"
+    fed = next(ln for ln in trend["lines"] if ln["label"] == "Federal grants")
+    assert next(p for p in fed["points"] if p["x"] == "FY2022")["y"] == 3.0
+    assert trend["markers"] == [{"x": "FY2022", "label": "American Rescue Plan funds"}]
+    assert ff.build_revenue_source_chart(copy.deepcopy(BUDGET), "governmental", "x") is None
+
+
+def test_department_trend_names_transfers_and_folds_small_departments():
+    budget = copy.deepcopy(BUDGET)
+    budget["department_history"] = DEPTS
+    trend = ff.build_department_trend(budget)
+    labels = [ln["label"] for ln in trend["lines"]]
+    assert labels[0] == "Transfers to other funds" and labels[1] == "City Hall"
+    assert labels[-1] == "All other departments" and len(labels) == ff.DEPT_LINES + 1
+    other = trend["lines"][-1]["points"][0]["y"]
+    assert other == round((300_000 + 80_000) / 1e6, 2)   # Election + Zoning folded
+
+
+def test_history_panel_assembles_sections():
+    budget = copy.deepcopy(BUDGET)
+    budget["history"] = copy.deepcopy(HISTORY)
+    budget["revenue_sources"] = SOURCES
+    budget["department_history"] = DEPTS
+    audited = [{"type": "trend", "title": "Long-term debt (audited, $M)", "unit": "$M", "points": [{"x": "2024", "y": 30.1}]}]
+    panel = ff.build_history_panel(budget, TAXROLL, audited, 2025)
+    assert panel["title"] == "City Finances over Time"
+    titles = [c["title"] for c in panel["charts"]]
+    assert titles[0].startswith("General Fund spending: amended budget vs actual")
+    assert "Taxable value by year, City assessment rolls ($M)" in titles
+    assert "Taxable value by property class, 2026" not in titles   # donut stays on City Finances
+    assert titles[-1] == "Long-term debt (audited, $M)"
+    assert [s["label"] for s in panel["stats"]][-1] == "Years the General Fund ended in surplus"
+    assert panel["stats"][-1]["value"] == "11 of 11"

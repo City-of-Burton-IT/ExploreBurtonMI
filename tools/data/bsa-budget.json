@@ -1377,5 +1377,2834 @@
         "expenditure_amended": 64440477
       }
     }
+  ],
+  "revenue_sources": [
+    {
+      "fiscal_year_end": 2008,
+      "scope": "general_fund",
+      "taxes": 3865501,
+      "licenses_permits": 310012,
+      "federal": 0,
+      "state": 2583397,
+      "local_units": 0,
+      "charges": 337034,
+      "fines": 0,
+      "interest": 70233,
+      "other": 85209,
+      "transfers_in": 30896,
+      "unclassified": 85220,
+      "total": 7367504
+    },
+    {
+      "fiscal_year_end": 2008,
+      "scope": "governmental",
+      "taxes": 5405115,
+      "licenses_permits": 1879837,
+      "federal": 87250,
+      "state": 6199630,
+      "local_units": 215943,
+      "charges": 554648,
+      "fines": 0,
+      "interest": 390793,
+      "other": 666660,
+      "transfers_in": 3844273,
+      "unclassified": 214479,
+      "total": 19458628
+    },
+    {
+      "fiscal_year_end": 2009,
+      "scope": "general_fund",
+      "taxes": 3680479,
+      "licenses_permits": 345300,
+      "federal": 0,
+      "state": 2465722,
+      "local_units": 0,
+      "charges": 319096,
+      "fines": 0,
+      "interest": 14625,
+      "other": 56220,
+      "transfers_in": 10187,
+      "unclassified": 72279,
+      "total": 6963908
+    },
+    {
+      "fiscal_year_end": 2009,
+      "scope": "governmental",
+      "taxes": 5219195,
+      "licenses_permits": 1882302,
+      "federal": 104200,
+      "state": 4947876,
+      "local_units": 216853,
+      "charges": 525300,
+      "fines": 0,
+      "interest": 253130,
+      "other": 625209,
+      "transfers_in": 3514150,
+      "unclassified": 421563,
+      "total": 17709778
+    },
+    {
+      "fiscal_year_end": 2010,
+      "scope": "general_fund",
+      "taxes": 3621572,
+      "licenses_permits": 373585,
+      "federal": 0,
+      "state": 2193827,
+      "local_units": 0,
+      "charges": 312060,
+      "fines": 0,
+      "interest": -226,
+      "other": 71671,
+      "transfers_in": 0,
+      "unclassified": 86377,
+      "total": 6658867
+    },
+    {
+      "fiscal_year_end": 2010,
+      "scope": "governmental",
+      "taxes": 5110038,
+      "licenses_permits": 1946904,
+      "federal": 121916,
+      "state": 4636440,
+      "local_units": 220776,
+      "charges": 561625,
+      "fines": 0,
+      "interest": 242095,
+      "other": 676067,
+      "transfers_in": 3517378,
+      "unclassified": 328060,
+      "total": 17361300
+    },
+    {
+      "fiscal_year_end": 2011,
+      "scope": "general_fund",
+      "taxes": 3144129,
+      "licenses_permits": 407539,
+      "federal": 0,
+      "state": 2177458,
+      "local_units": 0,
+      "charges": 277441,
+      "fines": 0,
+      "interest": -4855,
+      "other": 113522,
+      "transfers_in": 0,
+      "unclassified": 47586,
+      "total": 6162819
+    },
+    {
+      "fiscal_year_end": 2011,
+      "scope": "governmental",
+      "taxes": 4447248,
+      "licenses_permits": 1986366,
+      "federal": 130551,
+      "state": 4578686,
+      "local_units": 219965,
+      "charges": 480114,
+      "fines": 0,
+      "interest": 428724,
+      "other": 985694,
+      "transfers_in": 3504191,
+      "unclassified": 97835,
+      "total": 16859374
+    },
+    {
+      "fiscal_year_end": 2012,
+      "scope": "general_fund",
+      "taxes": 2311875,
+      "licenses_permits": 409242,
+      "federal": 0,
+      "state": 2341848,
+      "local_units": 0,
+      "charges": 263984,
+      "fines": 0,
+      "interest": -6292,
+      "other": 178726,
+      "transfers_in": 0,
+      "unclassified": 20668,
+      "total": 5520051
+    },
+    {
+      "fiscal_year_end": 2012,
+      "scope": "governmental",
+      "taxes": 3911859,
+      "licenses_permits": 1988606,
+      "federal": 252742,
+      "state": 4958544,
+      "local_units": 170084,
+      "charges": 458649,
+      "fines": 0,
+      "interest": 296828,
+      "other": 950868,
+      "transfers_in": 3687263,
+      "unclassified": 303183,
+      "total": 16978626
+    },
+    {
+      "fiscal_year_end": 2013,
+      "scope": "general_fund",
+      "taxes": 2424270,
+      "licenses_permits": 322578,
+      "federal": 0,
+      "state": 2398774,
+      "local_units": 0,
+      "charges": 313614,
+      "fines": 0,
+      "interest": 735,
+      "other": 175608,
+      "transfers_in": 0,
+      "unclassified": 19007,
+      "total": 5654587
+    },
+    {
+      "fiscal_year_end": 2013,
+      "scope": "governmental",
+      "taxes": 3986752,
+      "licenses_permits": 1934627,
+      "federal": 152522,
+      "state": 4921904,
+      "local_units": 160510,
+      "charges": 554830,
+      "fines": 0,
+      "interest": 311328,
+      "other": 911822,
+      "transfers_in": 3969429,
+      "unclassified": 364217,
+      "total": 17267942
+    },
+    {
+      "fiscal_year_end": 2014,
+      "scope": "general_fund",
+      "taxes": 2897739,
+      "licenses_permits": 543587,
+      "federal": 0,
+      "state": 2459085,
+      "local_units": 0,
+      "charges": 229521,
+      "fines": 0,
+      "interest": 1673,
+      "other": 123954,
+      "transfers_in": 0,
+      "unclassified": 120366,
+      "total": 6375925
+    },
+    {
+      "fiscal_year_end": 2014,
+      "scope": "governmental",
+      "taxes": 4761439,
+      "licenses_permits": 2194612,
+      "federal": 208833,
+      "state": 5116330,
+      "local_units": 167345,
+      "charges": 460263,
+      "fines": 0,
+      "interest": 423396,
+      "other": 584231,
+      "transfers_in": 4473417,
+      "unclassified": 601543,
+      "total": 18991409
+    },
+    {
+      "fiscal_year_end": 2015,
+      "scope": "general_fund",
+      "taxes": 2623414,
+      "licenses_permits": 549375,
+      "federal": 0,
+      "state": 2639519,
+      "local_units": 0,
+      "charges": 278977,
+      "fines": 0,
+      "interest": 10190,
+      "other": 284359,
+      "transfers_in": 0,
+      "unclassified": 1600,
+      "total": 6387434
+    },
+    {
+      "fiscal_year_end": 2015,
+      "scope": "governmental",
+      "taxes": 7662374,
+      "licenses_permits": 2233660,
+      "federal": 421853,
+      "state": 5521706,
+      "local_units": 170808,
+      "charges": 525205,
+      "fines": 0,
+      "interest": 238093,
+      "other": 782393,
+      "transfers_in": 1585080,
+      "unclassified": 231452,
+      "total": 19372625
+    },
+    {
+      "fiscal_year_end": 2016,
+      "scope": "general_fund",
+      "taxes": 2594023,
+      "licenses_permits": 473248,
+      "federal": 0,
+      "state": 2581278,
+      "local_units": 0,
+      "charges": 285954,
+      "fines": 0,
+      "interest": 10335,
+      "other": 400761,
+      "transfers_in": 0,
+      "unclassified": 15384,
+      "total": 6360983
+    },
+    {
+      "fiscal_year_end": 2016,
+      "scope": "governmental",
+      "taxes": 7650143,
+      "licenses_permits": 1927036,
+      "federal": 255087,
+      "state": 6583524,
+      "local_units": 179300,
+      "charges": 491687,
+      "fines": 0,
+      "interest": 363009,
+      "other": 942337,
+      "transfers_in": 4886002,
+      "unclassified": 2412732,
+      "total": 25690857
+    },
+    {
+      "fiscal_year_end": 2017,
+      "scope": "general_fund",
+      "taxes": 2144808,
+      "licenses_permits": 464900,
+      "federal": 0,
+      "state": 2662557,
+      "local_units": 0,
+      "charges": 279720,
+      "fines": 0,
+      "interest": 3237,
+      "other": 136258,
+      "transfers_in": 0,
+      "unclassified": -3000,
+      "total": 5688480
+    },
+    {
+      "fiscal_year_end": 2017,
+      "scope": "governmental",
+      "taxes": 7177733,
+      "licenses_permits": 1960704,
+      "federal": 590866,
+      "state": 6167826,
+      "local_units": 169732,
+      "charges": 507762,
+      "fines": 0,
+      "interest": 418943,
+      "other": 704966,
+      "transfers_in": 3545217,
+      "unclassified": 24808,
+      "total": 21268556
+    },
+    {
+      "fiscal_year_end": 2018,
+      "scope": "general_fund",
+      "taxes": 2287875,
+      "licenses_permits": 440888,
+      "federal": 0,
+      "state": 2757152,
+      "local_units": 0,
+      "charges": 292852,
+      "fines": 0,
+      "interest": 12275,
+      "other": 165436,
+      "transfers_in": 20000,
+      "unclassified": 0,
+      "total": 5976478
+    },
+    {
+      "fiscal_year_end": 2018,
+      "scope": "governmental",
+      "taxes": 7463293,
+      "licenses_permits": 2037256,
+      "federal": 221580,
+      "state": 8422934,
+      "local_units": 165847,
+      "charges": 624421,
+      "fines": 0,
+      "interest": 364605,
+      "other": 645624,
+      "transfers_in": 5561700,
+      "unclassified": 0,
+      "total": 25507261
+    },
+    {
+      "fiscal_year_end": 2019,
+      "scope": "general_fund",
+      "taxes": 2447079,
+      "licenses_permits": 432679,
+      "federal": 0,
+      "state": 2892935,
+      "local_units": 0,
+      "charges": 309202,
+      "fines": 0,
+      "interest": 28465,
+      "other": 164119,
+      "transfers_in": 0,
+      "unclassified": 0,
+      "total": 6274479
+    },
+    {
+      "fiscal_year_end": 2019,
+      "scope": "governmental",
+      "taxes": 7932187,
+      "licenses_permits": 2283079,
+      "federal": 100281,
+      "state": 7736649,
+      "local_units": 171390,
+      "charges": 558116,
+      "fines": 100,
+      "interest": 609355,
+      "other": 1155670,
+      "transfers_in": 4542886,
+      "unclassified": 0,
+      "total": 25089713
+    },
+    {
+      "fiscal_year_end": 2020,
+      "scope": "general_fund",
+      "taxes": 2540177,
+      "licenses_permits": 425410,
+      "federal": 0,
+      "state": 2883288,
+      "local_units": 0,
+      "charges": 317814,
+      "fines": 0,
+      "interest": 44593,
+      "other": 168089,
+      "transfers_in": 200205,
+      "unclassified": 0,
+      "total": 6579575
+    },
+    {
+      "fiscal_year_end": 2020,
+      "scope": "governmental",
+      "taxes": 8278716,
+      "licenses_permits": 2194885,
+      "federal": 90295,
+      "state": 9172371,
+      "local_units": 167591,
+      "charges": 519254,
+      "fines": 300,
+      "interest": 567633,
+      "other": 836176,
+      "transfers_in": 2734842,
+      "unclassified": 0,
+      "total": 24562062
+    },
+    {
+      "fiscal_year_end": 2021,
+      "scope": "general_fund",
+      "taxes": 2648043,
+      "licenses_permits": 427115,
+      "federal": 0,
+      "state": 3271093,
+      "local_units": 18866,
+      "charges": 348237,
+      "fines": 0,
+      "interest": 44044,
+      "other": 262175,
+      "transfers_in": 269600,
+      "unclassified": 0,
+      "total": 7289172
+    },
+    {
+      "fiscal_year_end": 2021,
+      "scope": "governmental",
+      "taxes": 8778983,
+      "licenses_permits": 2459615,
+      "federal": 792325,
+      "state": 8290682,
+      "local_units": 193844,
+      "charges": 633171,
+      "fines": 3930,
+      "interest": 937663,
+      "other": 1316396,
+      "transfers_in": 1967039,
+      "unclassified": 0,
+      "total": 25373649
+    },
+    {
+      "fiscal_year_end": 2022,
+      "scope": "general_fund",
+      "taxes": 3176194,
+      "licenses_permits": 421389,
+      "federal": 3002805,
+      "state": 3540285,
+      "local_units": 0,
+      "charges": 365417,
+      "fines": 0,
+      "interest": -329113,
+      "other": -1711,
+      "transfers_in": 2000,
+      "unclassified": 0,
+      "total": 10177266
+    },
+    {
+      "fiscal_year_end": 2022,
+      "scope": "governmental",
+      "taxes": 9397454,
+      "licenses_permits": 2555788,
+      "federal": 3102080,
+      "state": 8819099,
+      "local_units": 172719,
+      "charges": 584168,
+      "fines": 7225,
+      "interest": -1982641,
+      "other": 1057544,
+      "transfers_in": 3732750,
+      "unclassified": 0,
+      "total": 27446185
+    },
+    {
+      "fiscal_year_end": 2023,
+      "scope": "general_fund",
+      "taxes": 3437830,
+      "licenses_permits": 395482,
+      "federal": 0,
+      "state": 3566435,
+      "local_units": 0,
+      "charges": 388833,
+      "fines": 0,
+      "interest": -3160,
+      "other": 76920,
+      "transfers_in": 0,
+      "unclassified": 0,
+      "total": 7862340
+    },
+    {
+      "fiscal_year_end": 2023,
+      "scope": "governmental",
+      "taxes": 10126572,
+      "licenses_permits": 2488537,
+      "federal": 675701,
+      "state": 9129755,
+      "local_units": 197675,
+      "charges": 616255,
+      "fines": 5245,
+      "interest": 220449,
+      "other": 1337300,
+      "transfers_in": 5804947,
+      "unclassified": 0,
+      "total": 30602435
+    },
+    {
+      "fiscal_year_end": 2024,
+      "scope": "general_fund",
+      "taxes": 3688704,
+      "licenses_permits": 353752,
+      "federal": 0,
+      "state": 4146223,
+      "local_units": 0,
+      "charges": 414298,
+      "fines": 0,
+      "interest": 247281,
+      "other": 277485,
+      "transfers_in": 3000,
+      "unclassified": 0,
+      "total": 9130742
+    },
+    {
+      "fiscal_year_end": 2024,
+      "scope": "governmental",
+      "taxes": 10733496,
+      "licenses_permits": 2667014,
+      "federal": 127286,
+      "state": 13227814,
+      "local_units": 203183,
+      "charges": 609347,
+      "fines": 2275,
+      "interest": 1532277,
+      "other": 1572969,
+      "transfers_in": 3142736,
+      "unclassified": 10000,
+      "total": 33828396
+    },
+    {
+      "fiscal_year_end": 2025,
+      "scope": "general_fund",
+      "taxes": 3913404,
+      "licenses_permits": 328791,
+      "federal": 0,
+      "state": 3708757,
+      "local_units": 0,
+      "charges": 440179,
+      "fines": 0,
+      "interest": 239409,
+      "other": 201586,
+      "transfers_in": 0,
+      "unclassified": 0,
+      "total": 8832125
+    },
+    {
+      "fiscal_year_end": 2025,
+      "scope": "governmental",
+      "taxes": 11643802,
+      "licenses_permits": 2750209,
+      "federal": 227314,
+      "state": 9500434,
+      "local_units": 569019,
+      "charges": 738644,
+      "fines": 3550,
+      "interest": 1806236,
+      "other": 1646404,
+      "transfers_in": 2535132,
+      "unclassified": 2600,
+      "total": 31423343
+    },
+    {
+      "fiscal_year_end": 2026,
+      "scope": "general_fund",
+      "taxes": 3981928,
+      "licenses_permits": 293811,
+      "federal": 0,
+      "state": 3545459,
+      "local_units": 0,
+      "charges": 459971,
+      "fines": 0,
+      "interest": 115862,
+      "other": 285396,
+      "transfers_in": 0,
+      "unclassified": 0,
+      "total": 8682427
+    },
+    {
+      "fiscal_year_end": 2026,
+      "scope": "governmental",
+      "taxes": 11886022,
+      "licenses_permits": 2644117,
+      "federal": 445291,
+      "state": 9557171,
+      "local_units": 360513,
+      "charges": 730729,
+      "fines": 3725,
+      "interest": 1770127,
+      "other": 2268170,
+      "transfers_in": 4882583,
+      "unclassified": 101,
+      "total": 34548549
+    }
+  ],
+  "department_history": [
+    {
+      "fiscal_year_end": 2008,
+      "code": "999",
+      "name": "",
+      "amount": 3629853
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 487574
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 344920
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 313383
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 211721
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 210015
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 201332
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "071",
+      "name": "",
+      "amount": 177137
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 157906
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 155598
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 109494
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "023",
+      "name": "",
+      "amount": 71830
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 56345
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "009",
+      "name": "",
+      "amount": 53026
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 41690
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "091",
+      "name": "",
+      "amount": 36061
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 34836
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "015",
+      "name": "",
+      "amount": 32776
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "053",
+      "name": "",
+      "amount": 31252
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "065",
+      "name": "",
+      "amount": 23767
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "005",
+      "name": "",
+      "amount": 10452
+    },
+    {
+      "fiscal_year_end": 2008,
+      "code": "090",
+      "name": "",
+      "amount": 8117
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "999",
+      "name": "",
+      "amount": 3362080
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 508267
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 376389
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 307278
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 276549
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 243800
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 242791
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 189940
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 167038
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 138435
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 63020
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 42054
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 39762
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "009",
+      "name": "",
+      "amount": 38363
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "071",
+      "name": "",
+      "amount": 23213
+    },
+    {
+      "fiscal_year_end": 2009,
+      "code": "090",
+      "name": "",
+      "amount": 10000
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "999",
+      "name": "",
+      "amount": 3265654
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 576228
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 357878
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 288750
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 275930
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 267408
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 251490
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 185824
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 151976
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 145980
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "071",
+      "name": "",
+      "amount": 142231
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 53466
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 36629
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 35609
+    },
+    {
+      "fiscal_year_end": 2010,
+      "code": "009",
+      "name": "",
+      "amount": 225
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "999",
+      "name": "",
+      "amount": 3148879
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 588656
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 335217
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 284332
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 229479
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 183014
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 134091
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 118917
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 61712
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 56592
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 43318
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 12077
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "071",
+      "name": "",
+      "amount": 11638
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 9705
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "009",
+      "name": "",
+      "amount": 225
+    },
+    {
+      "fiscal_year_end": 2011,
+      "code": "000",
+      "name": "",
+      "amount": 96
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "999",
+      "name": "",
+      "amount": 3319001
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 584102
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 380536
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 289250
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 205320
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 202604
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 177642
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 139639
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "071",
+      "name": "",
+      "amount": 70911
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 69815
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 68641
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 35735
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 35226
+    },
+    {
+      "fiscal_year_end": 2012,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 32570
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "999",
+      "name": "",
+      "amount": 3644589
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 534431
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 412652
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 324866
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 259227
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 231241
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 172175
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 147099
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 122232
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 65118
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "090",
+      "name": "",
+      "amount": 63464
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 43834
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 37320
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 35110
+    },
+    {
+      "fiscal_year_end": 2013,
+      "code": "071",
+      "name": "",
+      "amount": 23465
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "999",
+      "name": "",
+      "amount": 4183278
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 553872
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 398462
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 294522
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 228509
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 200844
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 133684
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 130321
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 84886
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 81590
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 62962
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 41834
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 38940
+    },
+    {
+      "fiscal_year_end": 2014,
+      "code": "099",
+      "name": "",
+      "amount": 10290
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1701459
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "999",
+      "name": "",
+      "amount": 1207000
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 500857
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 306490
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 258220
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 245767
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 240626
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 155369
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 153375
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 131167
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 65633
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 44087
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "071",
+      "name": "",
+      "amount": 43563
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 42240
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "015",
+      "name": "",
+      "amount": 13539
+    },
+    {
+      "fiscal_year_end": 2015,
+      "code": "090",
+      "name": "",
+      "amount": 6092
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "999",
+      "name": "",
+      "amount": 4474334
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1431945
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 438717
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 402308
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 264189
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 260806
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 167705
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 165159
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 162500
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 118866
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 58833
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 45336
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 45311
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "090",
+      "name": "",
+      "amount": 27055
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "091",
+      "name": "",
+      "amount": 16573
+    },
+    {
+      "fiscal_year_end": 2016,
+      "code": "099",
+      "name": "",
+      "amount": 2067
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "999",
+      "name": "",
+      "amount": 2570771
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1397177
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 520556
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 447015
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 321287
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 248516
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 239485
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 166469
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 139871
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 111863
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 63328
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 47250
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 45349
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "071",
+      "name": "",
+      "amount": 12635
+    },
+    {
+      "fiscal_year_end": 2017,
+      "code": "090",
+      "name": "",
+      "amount": 5052
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "999",
+      "name": "",
+      "amount": 1869317
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1377020
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 531778
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 430364
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 319995
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 218200
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 170199
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 149504
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 124045
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 100950
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 59051
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 46606
+    },
+    {
+      "fiscal_year_end": 2018,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 45669
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "999",
+      "name": "",
+      "amount": 1833519
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1535125
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 555371
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 417360
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 338821
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 266785
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 181361
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 110697
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 103152
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 81694
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 74106
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 73569
+    },
+    {
+      "fiscal_year_end": 2019,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 63120
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "999",
+      "name": "",
+      "amount": 2032238
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1427776
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 545043
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 404756
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 385668
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 379729
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 147669
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 139771
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 113193
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 82875
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 75274
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 70416
+    },
+    {
+      "fiscal_year_end": 2020,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 52713
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1545304
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "999",
+      "name": "",
+      "amount": 1341200
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 556290
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 409838
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 387163
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 230600
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 212642
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 201125
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 169447
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 85666
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 78687
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 71849
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 69578
+    },
+    {
+      "fiscal_year_end": 2021,
+      "code": "901",
+      "name": "CAPITAL OUTLAY",
+      "amount": 58899
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "999",
+      "name": "",
+      "amount": 4157200
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1383923
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 562194
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 445966
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 354176
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 260416
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 209689
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 199491
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 184915
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 167010
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 94128
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 74637
+    },
+    {
+      "fiscal_year_end": 2022,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 74180
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "999",
+      "name": "",
+      "amount": 6025200
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1539248
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 505555
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 469098
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 458316
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 289251
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 232089
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 222025
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 174980
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 102392
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 98346
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 79876
+    },
+    {
+      "fiscal_year_end": 2023,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 78886
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "999",
+      "name": "",
+      "amount": 3354300
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1390082
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 679449
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 600116
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 580752
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 408999
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 352898
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 337818
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 226795
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 131063
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 104161
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 103037
+    },
+    {
+      "fiscal_year_end": 2024,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 99708
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "999",
+      "name": "",
+      "amount": 3360000
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1872644
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 710489
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 521764
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 513667
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 411525
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 354024
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 260038
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 241061
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 167197
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 114227
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 83301
+    },
+    {
+      "fiscal_year_end": 2025,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 79419
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "999",
+      "name": "",
+      "amount": 5583550
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "265",
+      "name": "CITY HALL",
+      "amount": 1428001
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "448",
+      "name": "PUBLIC SERVICE",
+      "amount": 650044
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "257",
+      "name": "ASSESSOR",
+      "amount": 556072
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "101",
+      "name": "COUNCIL",
+      "amount": 528894
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "751",
+      "name": "PARKS & RECREATION",
+      "amount": 462534
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "171",
+      "name": "MAYOR",
+      "amount": 425881
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "215",
+      "name": "CLERK",
+      "amount": 295129
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "262",
+      "name": "ELECTION",
+      "amount": 283582
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "191",
+      "name": "CONTROLLER",
+      "amount": 278400
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "253",
+      "name": "TREASURER",
+      "amount": 125262
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "701",
+      "name": "PLANNING",
+      "amount": 84841
+    },
+    {
+      "fiscal_year_end": 2026,
+      "code": "702",
+      "name": "ZONING",
+      "amount": 77937
+    }
+  ],
+  "enterprise_funds": [
+    {
+      "fiscal_year_end": 2008,
+      "fund": "590",
+      "usage_fees": 2993937,
+      "other_revenue": 638327,
+      "treatment_purchase": 2256136,
+      "operations": 741911,
+      "depreciation": 403846,
+      "debt_and_transfers": 0
+    },
+    {
+      "fiscal_year_end": 2009,
+      "fund": "590",
+      "usage_fees": 3054348,
+      "other_revenue": 285173,
+      "treatment_purchase": 2857076,
+      "operations": 937220,
+      "depreciation": 444774,
+      "debt_and_transfers": 0
+    },
+    {
+      "fiscal_year_end": 2010,
+      "fund": "590",
+      "usage_fees": 4199672,
+      "other_revenue": 207939,
+      "treatment_purchase": 3088540,
+      "operations": 934622,
+      "depreciation": 444916,
+      "debt_and_transfers": 84750
+    },
+    {
+      "fiscal_year_end": 2011,
+      "fund": "590",
+      "usage_fees": 4266141,
+      "other_revenue": 228656,
+      "treatment_purchase": 3090128,
+      "operations": 933450,
+      "depreciation": 439968,
+      "debt_and_transfers": 75339
+    },
+    {
+      "fiscal_year_end": 2012,
+      "fund": "590",
+      "usage_fees": 4195582,
+      "other_revenue": 94558,
+      "treatment_purchase": 3052392,
+      "operations": 856285,
+      "depreciation": 416357,
+      "debt_and_transfers": 81183
+    },
+    {
+      "fiscal_year_end": 2013,
+      "fund": "590",
+      "usage_fees": 4260745,
+      "other_revenue": 340066,
+      "treatment_purchase": 3038740,
+      "operations": 1263461,
+      "depreciation": 542848,
+      "debt_and_transfers": 0
+    },
+    {
+      "fiscal_year_end": 2014,
+      "fund": "590",
+      "usage_fees": 4244907,
+      "other_revenue": 788760,
+      "treatment_purchase": 3067300,
+      "operations": 1890312,
+      "depreciation": 546482,
+      "debt_and_transfers": 0
+    },
+    {
+      "fiscal_year_end": 2015,
+      "fund": "590",
+      "usage_fees": 4973799,
+      "other_revenue": 570345,
+      "treatment_purchase": 3436537,
+      "operations": 1376677,
+      "depreciation": 535522,
+      "debt_and_transfers": 0
+    },
+    {
+      "fiscal_year_end": 2016,
+      "fund": "590",
+      "usage_fees": 5583483,
+      "other_revenue": 1664426,
+      "treatment_purchase": 3418486,
+      "operations": 2830595,
+      "depreciation": 571219,
+      "debt_and_transfers": 17953
+    },
+    {
+      "fiscal_year_end": 2017,
+      "fund": "590",
+      "usage_fees": 5784281,
+      "other_revenue": 661802,
+      "treatment_purchase": 3420100,
+      "operations": 2092562,
+      "depreciation": 675463,
+      "debt_and_transfers": 135532
+    },
+    {
+      "fiscal_year_end": 2018,
+      "fund": "590",
+      "usage_fees": 6064076,
+      "other_revenue": 426713,
+      "treatment_purchase": 3385344,
+      "operations": 25055657,
+      "depreciation": 669108,
+      "debt_and_transfers": 181346
+    },
+    {
+      "fiscal_year_end": 2019,
+      "fund": "590",
+      "usage_fees": 5923973,
+      "other_revenue": 648873,
+      "treatment_purchase": 3387896,
+      "operations": 838880,
+      "depreciation": 639055,
+      "debt_and_transfers": 174384
+    },
+    {
+      "fiscal_year_end": 2020,
+      "fund": "590",
+      "usage_fees": 5888629,
+      "other_revenue": 651352,
+      "treatment_purchase": 3384980,
+      "operations": 833988,
+      "depreciation": 641490,
+      "debt_and_transfers": 166884
+    },
+    {
+      "fiscal_year_end": 2021,
+      "fund": "590",
+      "usage_fees": 6021741,
+      "other_revenue": 486002,
+      "treatment_purchase": 3457717,
+      "operations": 570974,
+      "depreciation": 628161,
+      "debt_and_transfers": 159082
+    },
+    {
+      "fiscal_year_end": 2022,
+      "fund": "590",
+      "usage_fees": 6459408,
+      "other_revenue": -284488,
+      "treatment_purchase": 3633048,
+      "operations": 699871,
+      "depreciation": 647995,
+      "debt_and_transfers": 166834
+    },
+    {
+      "fiscal_year_end": 2023,
+      "fund": "590",
+      "usage_fees": 6731969,
+      "other_revenue": 709461,
+      "treatment_purchase": 4146547,
+      "operations": 1138116,
+      "depreciation": 721493,
+      "debt_and_transfers": 232435
+    },
+    {
+      "fiscal_year_end": 2024,
+      "fund": "590",
+      "usage_fees": 6706221,
+      "other_revenue": 1489651,
+      "treatment_purchase": 4148191,
+      "operations": 1254684,
+      "depreciation": 727509,
+      "debt_and_transfers": 251588
+    },
+    {
+      "fiscal_year_end": 2025,
+      "fund": "590",
+      "usage_fees": 6709517,
+      "other_revenue": 1290359,
+      "treatment_purchase": 4146825,
+      "operations": 1034225,
+      "depreciation": 769728,
+      "debt_and_transfers": 159592
+    },
+    {
+      "fiscal_year_end": 2026,
+      "fund": "590",
+      "usage_fees": 6728434,
+      "other_revenue": 1086554,
+      "treatment_purchase": 4157402,
+      "operations": 1265588,
+      "depreciation": 855862,
+      "debt_and_transfers": 192766
+    },
+    {
+      "fiscal_year_end": 2008,
+      "fund": "591",
+      "usage_fees": 2802719,
+      "other_revenue": 286075,
+      "treatment_purchase": 1810276,
+      "operations": 1042632,
+      "depreciation": 330937,
+      "debt_and_transfers": 103875
+    },
+    {
+      "fiscal_year_end": 2009,
+      "fund": "591",
+      "usage_fees": 2941544,
+      "other_revenue": 552688,
+      "treatment_purchase": 2021671,
+      "operations": 1102284,
+      "depreciation": 355892,
+      "debt_and_transfers": 98875
+    },
+    {
+      "fiscal_year_end": 2010,
+      "fund": "591",
+      "usage_fees": 3135289,
+      "other_revenue": 204310,
+      "treatment_purchase": 1612679,
+      "operations": 1036477,
+      "depreciation": 363289,
+      "debt_and_transfers": 137538
+    },
+    {
+      "fiscal_year_end": 2011,
+      "fund": "591",
+      "usage_fees": 3332854,
+      "other_revenue": 232483,
+      "treatment_purchase": 1680428,
+      "operations": 1109290,
+      "depreciation": 357436,
+      "debt_and_transfers": 146949
+    },
+    {
+      "fiscal_year_end": 2012,
+      "fund": "591",
+      "usage_fees": 3478708,
+      "other_revenue": 541160,
+      "treatment_purchase": 2100253,
+      "operations": 1089136,
+      "depreciation": 353704,
+      "debt_and_transfers": 168445
+    },
+    {
+      "fiscal_year_end": 2013,
+      "fund": "591",
+      "usage_fees": 3524836,
+      "other_revenue": -328141,
+      "treatment_purchase": 2235069,
+      "operations": 1278233,
+      "depreciation": 347257,
+      "debt_and_transfers": 36607
+    },
+    {
+      "fiscal_year_end": 2014,
+      "fund": "591",
+      "usage_fees": 3878704,
+      "other_revenue": 247860,
+      "treatment_purchase": 2508432,
+      "operations": 1325452,
+      "depreciation": 337474,
+      "debt_and_transfers": 43967
+    },
+    {
+      "fiscal_year_end": 2015,
+      "fund": "591",
+      "usage_fees": 3940113,
+      "other_revenue": 601388,
+      "treatment_purchase": 2996264,
+      "operations": 1357917,
+      "depreciation": 350334,
+      "debt_and_transfers": 64120
+    },
+    {
+      "fiscal_year_end": 2016,
+      "fund": "591",
+      "usage_fees": 4788776,
+      "other_revenue": 1706052,
+      "treatment_purchase": 3035994,
+      "operations": 1615582,
+      "depreciation": 509398,
+      "debt_and_transfers": 183042
+    },
+    {
+      "fiscal_year_end": 2017,
+      "fund": "591",
+      "usage_fees": 5296291,
+      "other_revenue": 599478,
+      "treatment_purchase": 3104997,
+      "operations": 1788637,
+      "depreciation": 557911,
+      "debt_and_transfers": 305013
+    },
+    {
+      "fiscal_year_end": 2018,
+      "fund": "591",
+      "usage_fees": 5778207,
+      "other_revenue": 1425724,
+      "treatment_purchase": 3618254,
+      "operations": 13677594,
+      "depreciation": 598990,
+      "debt_and_transfers": 361968
+    },
+    {
+      "fiscal_year_end": 2019,
+      "fund": "591",
+      "usage_fees": 5888198,
+      "other_revenue": 996056,
+      "treatment_purchase": 4064677,
+      "operations": 1039692,
+      "depreciation": 654287,
+      "debt_and_transfers": 402473
+    },
+    {
+      "fiscal_year_end": 2020,
+      "fund": "591",
+      "usage_fees": 6619029,
+      "other_revenue": 1182392,
+      "treatment_purchase": 4069341,
+      "operations": 801351,
+      "depreciation": 669200,
+      "debt_and_transfers": 406149
+    },
+    {
+      "fiscal_year_end": 2021,
+      "fund": "591",
+      "usage_fees": 6742691,
+      "other_revenue": 912904,
+      "treatment_purchase": 4566319,
+      "operations": 350543,
+      "depreciation": 664470,
+      "debt_and_transfers": 388746
+    },
+    {
+      "fiscal_year_end": 2022,
+      "fund": "591",
+      "usage_fees": 6853407,
+      "other_revenue": 403231,
+      "treatment_purchase": 4264196,
+      "operations": 633516,
+      "depreciation": 656661,
+      "debt_and_transfers": 365016
+    },
+    {
+      "fiscal_year_end": 2023,
+      "fund": "591",
+      "usage_fees": 7114657,
+      "other_revenue": 1782157,
+      "treatment_purchase": 4157759,
+      "operations": 1142461,
+      "depreciation": 652783,
+      "debt_and_transfers": 375022
+    },
+    {
+      "fiscal_year_end": 2024,
+      "fund": "591",
+      "usage_fees": 7047326,
+      "other_revenue": 1233069,
+      "treatment_purchase": 3999336,
+      "operations": 1196296,
+      "depreciation": 640827,
+      "debt_and_transfers": 339003
+    },
+    {
+      "fiscal_year_end": 2025,
+      "fund": "591",
+      "usage_fees": 7081113,
+      "other_revenue": 1076774,
+      "treatment_purchase": 4026953,
+      "operations": 1593125,
+      "depreciation": 660625,
+      "debt_and_transfers": 286941
+    },
+    {
+      "fiscal_year_end": 2026,
+      "fund": "591",
+      "usage_fees": 7106712,
+      "other_revenue": 895692,
+      "treatment_purchase": 4119138,
+      "operations": 1678864,
+      "depreciation": 653630,
+      "debt_and_transfers": 270048
+    }
+  ],
+  "capital_history": [
+    {
+      "fiscal_year_end": 2008,
+      "total": 148232,
+      "streets": 1054,
+      "water_sewer": 0,
+      "police_fire": 6226,
+      "general": 115323,
+      "motor_pool": 16862
+    },
+    {
+      "fiscal_year_end": 2009,
+      "total": 160728,
+      "streets": 0,
+      "water_sewer": 0,
+      "police_fire": 7489,
+      "general": 131559,
+      "motor_pool": 18565
+    },
+    {
+      "fiscal_year_end": 2010,
+      "total": 152229,
+      "streets": 0,
+      "water_sewer": 0,
+      "police_fire": 0,
+      "general": 127186,
+      "motor_pool": 21287
+    },
+    {
+      "fiscal_year_end": 2011,
+      "total": 134695,
+      "streets": 0,
+      "water_sewer": 0,
+      "police_fire": -475,
+      "general": 123921,
+      "motor_pool": 11168
+    },
+    {
+      "fiscal_year_end": 2012,
+      "total": 181116,
+      "streets": 0,
+      "water_sewer": 0,
+      "police_fire": 37616,
+      "general": 130588,
+      "motor_pool": 7945
+    },
+    {
+      "fiscal_year_end": 2013,
+      "total": 171280,
+      "streets": 0,
+      "water_sewer": 0,
+      "police_fire": 38608,
+      "general": 127132,
+      "motor_pool": 5541
+    },
+    {
+      "fiscal_year_end": 2014,
+      "total": -805154,
+      "streets": 25308,
+      "water_sewer": 20000,
+      "police_fire": 26547,
+      "general": 125982,
+      "motor_pool": 23391
+    },
+    {
+      "fiscal_year_end": 2015,
+      "total": -1714082,
+      "streets": 442578,
+      "water_sewer": 9900,
+      "police_fire": 29900,
+      "general": 339036,
+      "motor_pool": 6112
+    },
+    {
+      "fiscal_year_end": 2016,
+      "total": -858615,
+      "streets": 1788211,
+      "water_sewer": 9975,
+      "police_fire": 195586,
+      "general": 162446,
+      "motor_pool": 9137
+    },
+    {
+      "fiscal_year_end": 2017,
+      "total": -44172,
+      "streets": 1789336,
+      "water_sewer": 0,
+      "police_fire": 461149,
+      "general": 157308,
+      "motor_pool": 12688
+    },
+    {
+      "fiscal_year_end": 2018,
+      "total": 230500,
+      "streets": 980654,
+      "water_sewer": 19924,
+      "police_fire": 729919,
+      "general": 152725,
+      "motor_pool": 2011
+    },
+    {
+      "fiscal_year_end": 2019,
+      "total": 760469,
+      "streets": 1691173,
+      "water_sewer": 0,
+      "police_fire": 386647,
+      "general": 142240,
+      "motor_pool": 6791
+    },
+    {
+      "fiscal_year_end": 2020,
+      "total": -79861,
+      "streets": 2488586,
+      "water_sewer": 0,
+      "police_fire": 1103520,
+      "general": 155172,
+      "motor_pool": 3856
+    },
+    {
+      "fiscal_year_end": 2021,
+      "total": 961517,
+      "streets": 1363134,
+      "water_sewer": 0,
+      "police_fire": 204870,
+      "general": 192716,
+      "motor_pool": 6301
+    },
+    {
+      "fiscal_year_end": 2022,
+      "total": 1599473,
+      "streets": 2543943,
+      "water_sewer": 0,
+      "police_fire": 269884,
+      "general": 2879,
+      "motor_pool": 4887
+    },
+    {
+      "fiscal_year_end": 2023,
+      "total": 727631,
+      "streets": 2930389,
+      "water_sewer": 0,
+      "police_fire": 65577,
+      "general": 45909,
+      "motor_pool": 9963
+    },
+    {
+      "fiscal_year_end": 2024,
+      "total": 823287,
+      "streets": 3255108,
+      "water_sewer": 0,
+      "police_fire": 15148,
+      "general": 26,
+      "motor_pool": 6247
+    },
+    {
+      "fiscal_year_end": 2025,
+      "total": -2114819,
+      "streets": 6185219,
+      "water_sewer": 0,
+      "police_fire": 54643,
+      "general": 389,
+      "motor_pool": 7254
+    },
+    {
+      "fiscal_year_end": 2026,
+      "total": -902037,
+      "streets": 5780506,
+      "water_sewer": 0,
+      "police_fire": 106886,
+      "general": 1224,
+      "motor_pool": 5142
+    }
   ]
 }

@@ -34,6 +34,7 @@ from lib.paths import public_path
 ENTITY_ID = "2612060"  # Burton city (Census GEOID; confirmed against the API)
 API = "https://micommunityfinancials.michigan.gov/api/component"
 OUT = public_path("info-finances.json")
+OUT_HISTORY = public_path("info-financehistory.json")
 BUDGET_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "bsa-budget.json")
 TAXROLL_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "bsa-taxroll.json")
 
@@ -267,6 +268,137 @@ def build_history_charts(budget: dict) -> list:
          "unit": "$M", "lines": [all_rev, all_exp], **({"markers": markers} if markers else {})},
     ]
     return charts
+
+
+SOURCE_GROUPS = [
+    ("taxes", "Property taxes"),
+    ("state", "State shared revenue and grants"),
+    ("federal", "Federal grants"),
+    ("charges", "Charges for services"),
+    ("licenses_permits", "Licenses, permits and franchise fees"),
+    ("interest", "Interest"),
+    ("other", "Other"),
+    ("transfers_in", "Transfers in"),
+    ("fines", "Fines"),
+    ("local_units", "Local contributions"),
+    ("unclassified", "Unclassified"),
+]
+DEPT_LINES = 6   # departments shown as separate lines; the rest fold into "all other"
+
+
+def _source_rows(budget: dict, scope: str) -> list:
+    return sorted((r for r in budget.get("revenue_sources", []) if r.get("scope") == scope),
+                  key=lambda r: r["fiscal_year_end"])
+
+
+def build_revenue_source_chart(budget: dict, scope: str, label: str) -> dict | None:
+    rows = _source_rows(budget, scope)
+    if not rows:
+        return None
+    latest = rows[-1]
+    series = [{"label": name, "value": round(latest[key] / 1e6, 2)} for key, name in SOURCE_GROUPS
+              if latest.get(key, 0) > 0]
+    return {"type": "bars", "title": f"Revenue by source, {label}, FY{latest['fiscal_year_end']} ($M, City ledger)",
+            "unit": "$M", "series": series}
+
+
+def build_revenue_source_trend(budget: dict) -> dict | None:
+    rows = _source_rows(budget, "general_fund")
+    if len(rows) < 2:
+        return None
+    keys = ["taxes", "state", "charges", "licenses_permits", "federal"]
+    names = dict(SOURCE_GROUPS)
+    lines = [{"label": names[k], "points": [{"x": f"FY{r['fiscal_year_end']}", "y": round(r[k] / 1e6, 2)} for r in rows]}
+             for k in keys]
+    span = f"FY{rows[0]['fiscal_year_end']}–FY{rows[-1]['fiscal_year_end']}"
+    return {"type": "trend", "title": f"General Fund revenue by source, {span} ($M)", "unit": "$M", "lines": lines,
+            "markers": [{"x": "FY2022", "label": "American Rescue Plan funds"}] if any(r["fiscal_year_end"] == 2022 for r in rows) else []}
+
+
+def build_department_trend(budget: dict) -> dict | None:
+    rows = budget.get("department_history") or []
+    if not rows:
+        return None
+    years = sorted({r["fiscal_year_end"] for r in rows})
+    totals: dict[str, int] = {}
+    names: dict[str, str] = {}
+    for r in rows:
+        code = r["code"]
+        totals[code] = totals.get(code, 0) + r["amount"]
+        if r.get("name"):
+            names[code] = r["name"]
+    names["999"] = "Transfers to other funds"
+    top = [c for c, _ in sorted(totals.items(), key=lambda kv: kv[1], reverse=True) if c in names][:DEPT_LINES]
+    by_year: dict[tuple, int] = {}
+    for r in rows:
+        by_year[(r["fiscal_year_end"], r["code"])] = by_year.get((r["fiscal_year_end"], r["code"]), 0) + r["amount"]
+    lines = []
+    for code in top:
+        lines.append({"label": _title(names[code]) if code != "999" else names[code],
+                      "points": [{"x": f"FY{y}", "y": round(by_year.get((y, code), 0) / 1e6, 2)} for y in years]})
+    other_pts = []
+    for y in years:
+        other = sum(v for (yy, c), v in by_year.items() if yy == y and c not in top)
+        other_pts.append({"x": f"FY{y}", "y": round(max(other, 0) / 1e6, 2)})
+    lines.append({"label": "All other departments", "points": other_pts})
+    span = f"FY{years[0]}–FY{years[-1]}"
+    return {"type": "trend", "title": f"General Fund spending by department, {span} ($M)", "unit": "$M", "lines": lines}
+
+
+def build_history_panel(budget: dict, taxroll: dict | None, audited_trends: list, latest_audited: int | None) -> dict:
+    """The 'City Finances over Time' dashboard: everything multi-year, City ledger first."""
+    charts = list(build_history_charts(budget))
+    src_trend = build_revenue_source_trend(budget)
+    if src_trend:
+        charts.append(src_trend)
+    dept_trend = build_department_trend(budget)
+    if dept_trend:
+        charts.append(dept_trend)
+    if taxroll:
+        _, tax_charts = build_taxable_value(taxroll)
+        charts.extend(c for c in tax_charts if c["type"] == "trend")
+    charts.extend(audited_trends)
+    history = budget.get("history") or []
+    first = history[0]["fiscal_year_end"] if history else None
+    last = history[-1]["fiscal_year_end"] if history else None
+    stats = []
+    if history:
+        gf_first, gf_last = history[0]["general_fund"], history[-1]["general_fund"]
+        stats.append({"label": f"General Fund spending, FY{first} to FY{last}",
+                      "value": f"{_m(gf_first['expenditure_actual'])} to {_m(gf_last['expenditure_actual'])}",
+                      "hint": "actual, nominal dollars, City ledger"})
+        all_first, all_last = history[0]["all_funds"], history[-1]["all_funds"]
+        stats.append({"label": f"All-funds spending, FY{first} to FY{last}",
+                      "value": f"{_m(all_first['expenditure_actual'])} to {_m(all_last['expenditure_actual'])}",
+                      "hint": "actual, all City funds including water and sewer"})
+        surplus_years = sum(1 for r in history if r["general_fund"]["revenue_actual"] >= r["general_fund"]["expenditure_actual"])
+        stats.append({"label": "Years the General Fund ended in surplus",
+                      "value": f"{surplus_years} of {len(history)}",
+                      "hint": "revenue at or above spending, FY%d to FY%d" % (first, last)})
+    yr = f"FY{latest_audited}" if latest_audited else "latest"
+    return {
+        "title": "City Finances over Time",
+        "subtitle": f"FY{first} to FY{last} from the City General Ledger, with State-audited trends",
+        "stats": stats,
+        "charts": charts,
+        "source": (f"City of Burton General Ledger (BS&A), posted activity by fiscal year FY{first} to FY{last} "
+                   f"(aggregates extracted {budget['extracted']}); City Assessor (BS&A Assessing) for taxable value; "
+                   f"State of Michigan Community Financials (audited F-65) for the audited trends through {yr}."),
+        "links": [
+            {"text": "City Finances (current plan)", "href": "#finances"},
+            {"text": "Michigan Community Financials dashboard",
+             "href": f"https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/{ENTITY_ID}"},
+        ],
+        "notes": [
+            "Ledger series are unaudited posted activity by fiscal year (July to June) in nominal dollars; the General "
+            "Fund figures match the State-reported audited totals in every overlapping year to within rounding.",
+            "FY2018 all-funds spending includes a bookkeeping entry recording water and sewer system assets, not cash "
+            "paid out. FY2022 General Fund revenue includes $3.0 million of one-time American Rescue Plan funds. "
+            "City Hall department spending includes retiree and legacy costs from FY2016 onward.",
+            "Revenue groups follow the Michigan uniform chart of accounts ranges (taxes, licenses and permits, "
+            "federal, state, charges for services, fines, interest, other, transfers in).",
+        ],
+    }
 
 
 def build_taxable_value(taxroll: dict) -> tuple[list, list]:
@@ -541,11 +673,13 @@ def main() -> int:
     budget_stats = build_budget_stats(budget)
     budget_charts = build_budget_charts(budget)
     actual_stats, actual_charts = build_actuals(budget)
-    history_charts = build_history_charts(budget)
     taxroll = load_taxroll_file(args.taxroll_file) if args.taxroll_file else None
     tax_stats, tax_charts = build_taxable_value(taxroll) if taxroll else ([], [])
+    tax_donuts = [c for c in tax_charts if c["type"] != "trend"]
+    gl_revenue_chart = build_revenue_source_chart(budget, "governmental", "governmental funds")
+    history_panel = build_history_panel(budget, taxroll, trends, latest_year)
 
-    revenue_chart = {
+    revenue_chart = gl_revenue_chart or {
         "type": "bars",
         "title": f"Revenue by source ({REVENUE_FY} audited, governmental funds, $M)",
         "unit": "$M",
@@ -573,7 +707,7 @@ def main() -> int:
         "summary": summary,
         "explainer": BUDGET_EXPLAINER,
         "stats": budget_stats + tax_stats + CITY_STATS + actual_stats + health,
-        "charts": [revenue_chart] + budget_charts + actual_charts + history_charts + tax_charts + trends,
+        "charts": [revenue_chart] + budget_charts + actual_charts + tax_donuts,
         "source": (
             f"City of Burton General Ledger (BS&A) for the {budget['label']} adopted-budget figures "
             f"(aggregates extracted {budget['extracted']}) and for budget-vs-actual comparisons; City Assessor "
@@ -609,7 +743,9 @@ def main() -> int:
     }
 
     write_json(OUT, panel)
+    write_json(OUT_HISTORY, history_panel)
     print(f"Wrote {OUT}")
+    print(f"Wrote {OUT_HISTORY}  ({len(history_panel['charts'])} charts)")
     print(f"  latest audited year: {latest_year}")
     print(f"  stats: {len(panel['stats'])}  charts: {len(panel['charts'])} ({len(trends)} state trends)")
     return 0

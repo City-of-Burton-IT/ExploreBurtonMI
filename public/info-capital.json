@@ -6,7 +6,7 @@
     "body": [
       "Capital projects are the big one-time investments the City makes: rebuilding roads, replacing major equipment, and improving public buildings, as opposed to day-to-day operating costs. This is the adopted plan of what is funded, not money already spent.",
       "For FY2026-27, the largest share is road work: the City has budgeted major reconstruction on Genesee Rd, Court St, Covert Rd and others, funded mainly by state gas-tax (Act 51) dollars rather than your city property taxes. Equipment and facility investments make up the rest.",
-      "This is a big road-building year: street capital is up to about $10.5M, from roughly $3.3M two years ago (see the trend below). At this year's total, capital investment works out to about $469 per resident."
+      "This is a big road-building year: the adopted street capital of about $10.5M is well above any year in the ledger since FY2008 (the trend below shows actual street capital by year, FY2007-08 to FY2026-27). At this year's total, capital investment works out to about $469 per resident."
     ]
   },
   "stats": [
@@ -139,16 +139,70 @@
       "unit": "$",
       "points": [
         {
+          "x": "FY2007-08",
+          "y": 1054
+        },
+        {
+          "x": "FY2013-14",
+          "y": 25308
+        },
+        {
+          "x": "FY2014-15",
+          "y": 442578
+        },
+        {
+          "x": "FY2015-16",
+          "y": 1788211
+        },
+        {
+          "x": "FY2016-17",
+          "y": 1789336
+        },
+        {
+          "x": "FY2017-18",
+          "y": 980654
+        },
+        {
+          "x": "FY2018-19",
+          "y": 1691173
+        },
+        {
+          "x": "FY2019-20",
+          "y": 2488586
+        },
+        {
+          "x": "FY2020-21",
+          "y": 1363134
+        },
+        {
+          "x": "FY2021-22",
+          "y": 2543943
+        },
+        {
+          "x": "FY2022-23",
+          "y": 2930389
+        },
+        {
+          "x": "FY2023-24",
+          "y": 3255108
+        },
+        {
           "x": "FY2024-25",
-          "y": 3254866
+          "y": 6185219
         },
         {
           "x": "FY2025-26",
-          "y": 2508831
+          "y": 5780506
         },
         {
           "x": "FY2026-27",
           "y": 10547313
+        }
+      ],
+      "markers": [
+        {
+          "x": "FY2026-27",
+          "label": "Adopted plan"
         }
       ]
     }
@@ -382,7 +436,7 @@
       ]
     }
   ],
-  "source": "City of Burton adopted FY2026-27 budget (capital sections) and Capital Asset Requests.",
+  "source": "City of Burton adopted FY2026-27 budget (capital sections) and Capital Asset Requests; City General Ledger (BS&A) for actual street capital by year.",
   "links": [
     {
       "text": "City Finances dashboard",
@@ -396,6 +450,7 @@
   "notes": [
     "This is the adopted capital PLAN, not actual expenditures, and is subject to change during the year.",
     "Street projects are funded by Act 51 (state gas and weight tax) and accumulated road-fund balance, plus about $375,000 in federal/state construction aid and a $145,000 General Fund transfer in FY2026-27, not city property taxes; the CDBG paving is a federal grant. Operating costs are shown on the City Finances dashboard; this dashboard is capital only.",
-    "Equipment and vehicle items are capital assets; some are prior-year approvals carried over (shown as In progress) that need no new funding this year."
+    "Equipment and vehicle items are capital assets; some are prior-year approvals carried over (shown as In progress) that need no new funding this year.",
+    "The street capital trend is posted spending in the Major and Local Streets funds on construction, road preservation and repaving accounts, by fiscal year, with the adopted plan as the last point; loan principal payments are not included."
   ]
 }

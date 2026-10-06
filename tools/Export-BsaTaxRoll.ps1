@@ -77,8 +77,37 @@ SELECT (SELECT COUNT(*) FROM city) AS parcels,
        (SELECT TOP 1 city_tax FROM ranked WHERE rn = (n + 1) / 2) AS median_city_tax
 "@
 
+# Collection to date for the current roll: what was billed per season, what is
+# still owed, how many parcels are unpaid, and the weekly flow of payments.
+# Season due dates come from the Units table (interest start date).
+$collectionSql = @"
+SELECT (SELECT MIN(intrst_duedate_0) FROM dbo.Units) AS summer_due,
+       (SELECT MIN(intrst_duedate_1) FROM dbo.Units) AS winter_due,
+       SUM(CASE WHEN tax_billed_0 > 0 THEN 1 ELSE 0 END) AS parcels_billed_summer,
+       SUM(tax_billed_0) AS billed_summer, SUM(CASE WHEN tax_billed_0 > 0 THEN base_tax_left_0 ELSE 0 END) AS owed_summer,
+       SUM(CASE WHEN tax_billed_0 > 0 AND base_tax_left_0 > 0 THEN 1 ELSE 0 END) AS parcels_unpaid_summer,
+       SUM(CASE WHEN tax_billed_1 > 0 AND base_tax_left_1 < tax_billed_1 THEN 1 ELSE 0 END) AS parcels_paid_winter,
+       SUM(tax_billed_1) AS billed_winter, SUM(CASE WHEN tax_billed_1 > 0 THEN base_tax_left_1 ELSE 0 END) AS owed_winter
+FROM dbo.Parcels
+"@
+$weeklySql = @"
+SELECT MIN(CAST(posting_date AS date)) AS week_start, SUM(amt) AS amount, COUNT(*) AS receipts
+FROM dbo.ReceiptHeaders
+WHERE billing_type = 0 AND transdesccode = 1
+GROUP BY DATEPART(year, posting_date), DATEPART(week, posting_date)
+ORDER BY week_start
+"@
+$sourceSql = @"
+SELECT payment_src AS src, SUM(amt) AS amount, COUNT(*) AS receipts
+FROM dbo.ReceiptHeaders WHERE billing_type = 0 AND transdesccode = 1 GROUP BY payment_src
+"@
+
 $levy = @(Invoke-BsaQuery -Database $TaxDatabase -Sql $levySql)
 $homestead = Invoke-BsaQuery -Database $TaxDatabase -Sql $homesteadSql
+$collection = Invoke-BsaQuery -Database $TaxDatabase -Sql $collectionSql
+$weekly = @(Invoke-BsaQuery -Database $TaxDatabase -Sql $weeklySql)
+$sources = @(Invoke-BsaQuery -Database $TaxDatabase -Sql $sourceSql)
+if (-not $collection -or [int]$collection.parcels_billed_summer -lt 1000) { throw 'Collection query returned an implausible parcel count; refusing to write.' }
 if ($levy.Count -lt 5) { throw "Levy query returned only $($levy.Count) rows; refusing to write." }
 if (-not $homestead -or [int]$homestead.parcels -lt 1000) { throw 'Homestead query returned an implausible parcel count; refusing to write.' }
 
@@ -135,6 +164,24 @@ $out = [ordered]@{
         [ordered]@{ code = [string]$_.code; classification = [int]$_.classification; season = [int]$_.season; mills = [double]$_.mills; levy = ConvertTo-WholeNumber $_.levy; parcels = [int]$_.parcels }
     })
     homestead      = [ordered]@{ parcels = [int]$homestead.parcels; median_city_tax = [math]::Round([double]$homestead.median_city_tax, 2) }
+    collection     = [ordered]@{
+        as_of                 = (Get-Date).ToString('yyyy-MM-dd')
+        summer_due            = ([datetime]$collection.summer_due).ToString('yyyy-MM-dd')
+        winter_due            = ([datetime]$collection.winter_due).ToString('yyyy-MM-dd')
+        summer                = [ordered]@{
+            parcels_billed = [int]$collection.parcels_billed_summer
+            billed         = ConvertTo-WholeNumber $collection.billed_summer
+            owed           = ConvertTo-WholeNumber $collection.owed_summer
+            parcels_unpaid = [int]$collection.parcels_unpaid_summer
+        }
+        winter                = [ordered]@{
+            billed       = ConvertTo-WholeNumber $collection.billed_winter
+            owed         = ConvertTo-WholeNumber $collection.owed_winter
+            parcels_paid = [int]$collection.parcels_paid_winter
+        }
+        weekly_receipts_summer = @($weekly | ForEach-Object { [ordered]@{ week_start = ([datetime]$_.week_start).ToString('yyyy-MM-dd'); amount = ConvertTo-WholeNumber $_.amount; receipts = [int]$_.receipts } })
+        payment_sources_summer = @($sources | ForEach-Object { [ordered]@{ source = [string]$_.src; amount = ConvertTo-WholeNumber $_.amount; receipts = [int]$_.receipts } })
+    }
     taxable_value  = [ordered]@{
         year     = $TaxYear
         total    = $totalTaxable

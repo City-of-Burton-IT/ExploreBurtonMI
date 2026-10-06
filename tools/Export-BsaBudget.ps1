@@ -153,8 +153,132 @@ WHERE fy BETWEEN 2008 AND $priorEnd
 GROUP BY fy ORDER BY fy
 "@
 
+# --- Revenue by source (uniform chart of accounts ranges), General Fund and all
+# governmental funds (fund types 0 general, 1 special revenue, 2 debt, 3 capital),
+# by fiscal year; and General Fund spending by department by fiscal year; and the
+# Water (591) and Sewer (590) enterprise funds by year in resident-facing groups.
+$sourcesSql = @"
+WITH hist AS (
+    SELECT YEAR(h.yearEnd) AS fy, h.fund, LEFT(h.account, 3) AS acct, -SUM(d.debitActivity - d.creditActivity) AS amt
+    FROM dbo.GLHistoryPeriodDetails d JOIN dbo.GLHistory h ON h.id = d.glHistoryID
+    WHERE h.accountCategory = 3 GROUP BY YEAR(h.yearEnd), h.fund, LEFT(h.account, 3)
+),
+cur AS (
+    SELECT CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END AS fy, g.fund, LEFT(g.account, 3) AS acct,
+           -SUM(p.debitActivity - p.creditActivity) AS amt
+    FROM dbo.GLPeriodDetails p JOIN dbo.GL_GeneralLedger g ON g.id = p.generalLedgerID
+    WHERE g.accountCategory = 3
+    GROUP BY CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END, g.fund, LEFT(g.account, 3)
+),
+a AS (SELECT * FROM hist WHERE fy <= (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory)
+      UNION ALL SELECT * FROM cur WHERE fy > (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory)),
+g AS (SELECT a.fy, a.acct, a.amt, CASE WHEN a.fund = '101' THEN 1 ELSE 0 END AS gf,
+             CASE WHEN f.type IN (0, 1, 2, 3) THEN 1 ELSE 0 END AS govt
+      FROM a LEFT JOIN dbo.GL_Funds f ON f.fund = a.fund)
+SELECT fy, scope,
+    SUM(CASE WHEN acct BETWEEN '400' AND '449' THEN amt ELSE 0 END) AS taxes,
+    SUM(CASE WHEN acct BETWEEN '450' AND '499' THEN amt ELSE 0 END) AS licenses_permits,
+    SUM(CASE WHEN acct BETWEEN '500' AND '539' THEN amt ELSE 0 END) AS federal,
+    SUM(CASE WHEN acct BETWEEN '540' AND '579' THEN amt ELSE 0 END) AS state_,
+    SUM(CASE WHEN acct BETWEEN '580' AND '599' THEN amt ELSE 0 END) AS local_units,
+    SUM(CASE WHEN acct BETWEEN '600' AND '654' THEN amt ELSE 0 END) AS charges,
+    SUM(CASE WHEN acct BETWEEN '655' AND '663' THEN amt ELSE 0 END) AS fines,
+    SUM(CASE WHEN acct BETWEEN '664' AND '669' THEN amt ELSE 0 END) AS interest,
+    SUM(CASE WHEN acct BETWEEN '670' AND '694' THEN amt ELSE 0 END) AS other_,
+    SUM(CASE WHEN acct BETWEEN '695' AND '699' THEN amt ELSE 0 END) AS transfers_in,
+    SUM(CASE WHEN acct < '400' OR acct > '699' THEN amt ELSE 0 END) AS unclassified,
+    SUM(amt) AS total
+FROM (SELECT fy, acct, amt, 'general_fund' AS scope FROM g WHERE gf = 1
+      UNION ALL SELECT fy, acct, amt, 'governmental' FROM g WHERE govt = 1) x
+WHERE fy BETWEEN 2008 AND $priorEnd
+GROUP BY fy, scope ORDER BY fy, scope
+"@
+
+$deptHistorySql = @"
+WITH hist AS (
+    SELECT YEAR(h.yearEnd) AS fy, h.department AS dept, SUM(d.debitActivity - d.creditActivity) AS amt
+    FROM dbo.GLHistoryPeriodDetails d JOIN dbo.GLHistory h ON h.id = d.glHistoryID
+    WHERE h.fund = '101' AND h.accountCategory = 4 GROUP BY YEAR(h.yearEnd), h.department
+),
+cur AS (
+    SELECT CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END AS fy, g.department AS dept,
+           SUM(p.debitActivity - p.creditActivity) AS amt
+    FROM dbo.GLPeriodDetails p JOIN dbo.GL_GeneralLedger g ON g.id = p.generalLedgerID
+    WHERE g.fund = '101' AND g.accountCategory = 4
+    GROUP BY CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END, g.department
+),
+a AS (SELECT * FROM hist WHERE fy <= (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory)
+      UNION ALL SELECT * FROM cur WHERE fy > (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory))
+SELECT a.fy, a.dept, MAX(n.d) AS name, SUM(a.amt) AS amt
+FROM a LEFT JOIN (SELECT department, MAX(departmentDescription) AS d FROM dbo.GL_GeneralLedger WHERE fund = '101' GROUP BY department) n ON n.department = a.dept
+WHERE a.fy BETWEEN 2008 AND $priorEnd
+GROUP BY a.fy, a.dept HAVING SUM(a.amt) <> 0 ORDER BY a.fy, amt DESC
+"@
+
+$enterpriseSql = @"
+WITH hist AS (
+    SELECT YEAR(h.yearEnd) AS fy, h.fund, h.accountCategory AS cat, LEFT(h.account, 3) AS acct, SUM(d.debitActivity - d.creditActivity) AS amt
+    FROM dbo.GLHistoryPeriodDetails d JOIN dbo.GLHistory h ON h.id = d.glHistoryID
+    WHERE h.fund IN ('590', '591') AND h.accountCategory IN (3, 4) GROUP BY YEAR(h.yearEnd), h.fund, h.accountCategory, LEFT(h.account, 3)
+),
+cur AS (
+    SELECT CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END AS fy, g.fund, g.accountCategory AS cat, LEFT(g.account, 3) AS acct,
+           SUM(p.debitActivity - p.creditActivity) AS amt
+    FROM dbo.GLPeriodDetails p JOIN dbo.GL_GeneralLedger g ON g.id = p.generalLedgerID
+    WHERE g.fund IN ('590', '591') AND g.accountCategory IN (3, 4)
+    GROUP BY CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END, g.fund, g.accountCategory, LEFT(g.account, 3)
+),
+a AS (SELECT * FROM hist WHERE fy <= (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory)
+      UNION ALL SELECT * FROM cur WHERE fy > (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory))
+SELECT fy, fund,
+    -SUM(CASE WHEN cat = 3 AND acct = '644' THEN amt ELSE 0 END) AS usage_fees,
+    -SUM(CASE WHEN cat = 3 AND acct <> '644' THEN amt ELSE 0 END) AS other_revenue,
+     SUM(CASE WHEN cat = 4 AND acct IN ('928', '816') THEN amt ELSE 0 END) AS treatment_purchase,
+     SUM(CASE WHEN cat = 4 AND acct = '968' THEN amt ELSE 0 END) AS depreciation,
+     SUM(CASE WHEN cat = 4 AND acct BETWEEN '990' AND '999' THEN amt ELSE 0 END) AS debt_and_transfers,
+     SUM(CASE WHEN cat = 4 AND acct NOT IN ('928', '816', '968') AND NOT (acct BETWEEN '990' AND '999') THEN amt ELSE 0 END) AS operations
+FROM a WHERE fy BETWEEN 2008 AND $priorEnd
+GROUP BY fy, fund ORDER BY fund, fy
+"@
+
 $funds = @(Invoke-BsaQuery -Database $Database -Sql $fundSql)
 $history = @(Invoke-BsaQuery -Database $Database -Sql $historySql -TimeoutSec 300)
+$sources = @(Invoke-BsaQuery -Database $Database -Sql $sourcesSql -TimeoutSec 300)
+$deptHistory = @(Invoke-BsaQuery -Database $Database -Sql $deptHistorySql -TimeoutSec 300)
+$enterprise = @(Invoke-BsaQuery -Database $Database -Sql $enterpriseSql -TimeoutSec 300)
+
+# Capital spending by year and fund group. Burton books construction in named
+# project accounts (802.xxx), road preservation and repaving (818.200/818.500),
+# CDBG paving (988.xxx) and capital outlay / equipment (700.xxx, 971, 977, 978).
+# Loan principal (991.xxx) is debt service, not capital, and is excluded.
+$capitalSql = @"
+WITH hist AS (
+    SELECT YEAR(h.yearEnd) AS fy, h.fund, h.account, SUM(d.debitActivity - d.creditActivity) AS amt
+    FROM dbo.GLHistoryPeriodDetails d JOIN dbo.GLHistory h ON h.id = d.glHistoryID
+    WHERE h.accountCategory = 4 GROUP BY YEAR(h.yearEnd), h.fund, h.account
+),
+cur AS (
+    SELECT CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END AS fy, g.fund, g.account, SUM(p.debitActivity - p.creditActivity) AS amt
+    FROM dbo.GLPeriodDetails p JOIN dbo.GL_GeneralLedger g ON g.id = p.generalLedgerID
+    WHERE g.accountCategory = 4
+    GROUP BY CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END, g.fund, g.account
+),
+a AS (SELECT * FROM hist WHERE fy <= (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory)
+      UNION ALL SELECT * FROM cur WHERE fy > (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory)),
+c AS (SELECT fy, fund, amt FROM a
+      WHERE LEFT(account, 3) IN ('802', '700', '971', '977', '978', '988') OR account IN ('818.200', '818.500'))
+SELECT fy,
+    SUM(amt) AS total,
+    SUM(CASE WHEN fund IN ('202', '203') OR fund LIKE '35%' OR fund LIKE '45%' THEN amt ELSE 0 END) AS streets,
+    SUM(CASE WHEN fund IN ('590', '591') THEN amt ELSE 0 END) AS water_sewer,
+    SUM(CASE WHEN fund IN ('206', '207', '406') THEN amt ELSE 0 END) AS police_fire,
+    SUM(CASE WHEN fund = '101' OR fund = '401' THEN amt ELSE 0 END) AS general,
+    SUM(CASE WHEN fund = '661' THEN amt ELSE 0 END) AS motor_pool
+FROM c WHERE fy BETWEEN 2008 AND $priorEnd GROUP BY fy ORDER BY fy
+"@
+$capital = @(Invoke-BsaQuery -Database $Database -Sql $capitalSql -TimeoutSec 300)
+if ($capital.Count -lt 5) { throw 'Capital history returned too few years; refusing to write.' }
+if ($sources.Count -lt 10 -or $deptHistory.Count -lt 20 -or $enterprise.Count -lt 10) { throw 'Revenue-source, department or enterprise history returned too few rows; refusing to write.' }
 if ($history.Count -lt 5) { throw "History query returned only $($history.Count) years; refusing to write." }
 $depts = @(Invoke-BsaQuery -Database $Database -Sql $deptSql)
 $transfers = @(Invoke-BsaQuery -Database $Database -Sql $transferSql)
@@ -241,6 +365,39 @@ $out['history'] = @($history | ForEach-Object {
             expenditure_actual  = ConvertTo-WholeNumber $_.exp_actual_all
             expenditure_amended = ConvertTo-WholeNumber $_.exp_amended_all
         }
+    }
+})
+
+$sourceKeys = @('taxes', 'licenses_permits', 'federal', 'state_', 'local_units', 'charges', 'fines', 'interest', 'other_', 'transfers_in', 'unclassified', 'total')
+$out['revenue_sources'] = @($sources | ForEach-Object {
+    $row = [ordered]@{ fiscal_year_end = [int]$_.fy; scope = [string]$_.scope }
+    foreach ($k in $sourceKeys) { $row[$k.TrimEnd('_')] = ConvertTo-WholeNumber $_.$k }
+    $row
+})
+$out['department_history'] = @($deptHistory | ForEach-Object {
+    [ordered]@{ fiscal_year_end = [int]$_.fy; code = [string]$_.dept; name = [string]$_.name; amount = ConvertTo-WholeNumber $_.amt }
+})
+$out['enterprise_funds'] = @($enterprise | ForEach-Object {
+    [ordered]@{
+        fiscal_year_end    = [int]$_.fy
+        fund               = [string]$_.fund
+        usage_fees         = ConvertTo-WholeNumber $_.usage_fees
+        other_revenue      = ConvertTo-WholeNumber $_.other_revenue
+        treatment_purchase = ConvertTo-WholeNumber $_.treatment_purchase
+        operations         = ConvertTo-WholeNumber $_.operations
+        depreciation       = ConvertTo-WholeNumber $_.depreciation
+        debt_and_transfers = ConvertTo-WholeNumber $_.debt_and_transfers
+    }
+})
+$out['capital_history'] = @($capital | ForEach-Object {
+    [ordered]@{
+        fiscal_year_end = [int]$_.fy
+        total           = ConvertTo-WholeNumber $_.total
+        streets         = ConvertTo-WholeNumber $_.streets
+        water_sewer     = ConvertTo-WholeNumber $_.water_sewer
+        police_fire     = ConvertTo-WholeNumber $_.police_fire
+        general         = ConvertTo-WholeNumber $_.general
+        motor_pool      = ConvertTo-WholeNumber $_.motor_pool
     }
 })
 

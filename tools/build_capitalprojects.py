@@ -16,6 +16,8 @@ Uses the shared tools/lib helpers (repo paths, atomic writes).
 from __future__ import annotations
 
 import csv
+import json
+import os
 import sys
 
 from lib.iox import write_json
@@ -23,6 +25,7 @@ from lib.paths import pipeline_data_path, public_path
 
 CSV_IN = pipeline_data_path("capital-projects.csv")
 OUT = public_path("info-capital.json")
+BUDGET_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "bsa-budget.json")
 
 VALID_CATEGORIES = {
     "Major Streets", "Local Streets", "Water & Sewer", "Parks & Recreation",
@@ -59,11 +62,34 @@ POPULATION = 29_529
 # Road & street capital by fiscal year (Major + Local Streets construction totals,
 # dept 451, City of Burton adopted FY2026-27 budget book). FY label = year ending
 # June; these reconcile to the printed fund construction totals each year.
-STREET_CAPITAL_HISTORY = [
-    (2025, 3_254_866),    # FY2024-25 actual    (2,531,403 major + 723,463 local)
-    (2026, 2_508_831),    # FY2025-26 projected (2,307,389 + 201,442)
-    (2027, 10_547_313),   # FY2026-27 adopted   (9,797,313 + 750,000)
-]
+# FY2026-27 adopted street capital (9,797,313 major + 750,000 local). The actual
+# history behind it now comes from the General Ledger (tools/data/bsa-budget.json
+# `capital_history`, streets column: construction, preservation and repaving
+# accounts in the Major and Local Streets funds); the FY2025 ledger figure
+# matched the former typed value (3,254,866) exactly.
+STREET_CAPITAL_ADOPTED = (2027, 10_547_313)
+
+
+def load_street_history(path: str) -> list:
+    """[(fiscal_year_end, streets_actual)] from the ledger export, or [] if absent."""
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as fh:
+        rows = json.load(fh).get("capital_history") or []
+    out = []
+    for r in rows:
+        if not isinstance(r.get("fiscal_year_end"), int) or not isinstance(r.get("streets"), int):
+            sys.exit(f"{path}: capital_history rows need integer fiscal_year_end and streets")
+        out.append((r["fiscal_year_end"], r["streets"]))
+    return sorted(out)
+
+
+def street_capital_series(history: list) -> list:
+    """Ledger actuals followed by the adopted year, for the trend chart."""
+    series = [(y, v) for y, v in history if v > 0]
+    if not series or series[-1][0] < STREET_CAPITAL_ADOPTED[0]:
+        series.append(STREET_CAPITAL_ADOPTED)
+    return series
 
 
 def normalize_rows(raw: list) -> list:
@@ -136,8 +162,10 @@ def _money(n: int) -> str:
     return f"${n:,}"
 
 
-def build_panel(rows: list) -> dict:
+def build_panel(rows: list, street_history: list | None = None) -> dict:
     agg = aggregate(rows)
+    streets = street_capital_series(street_history or [])
+    street_span = f"{_fy_label(streets[0][0])} to {_fy_label(streets[-1][0])}" if len(streets) > 1 else ""
     years = agg["years"]
     multi = len(years) >= 2
     if years:
@@ -168,9 +196,11 @@ def build_panel(rows: list) -> dict:
                     for f, v in agg["by_funding"]]},
         {"type": "bars", "title": "Largest projects", "unit": "$",
          "series": [{"label": r["project"], "value": r["amount"]} for r in agg["top"]]},
-        # Multi-year context: road & street capital has ramped up sharply this year.
+        # Multi-year context from the ledger: actual street capital by year, then
+        # the adopted FY2026-27 figure as the final point.
         {"type": "trend", "title": "Road & street capital by fiscal year", "unit": "$",
-         "points": [{"x": _fy_label(y), "y": v} for y, v in STREET_CAPITAL_HISTORY]},
+         "points": [{"x": _fy_label(y), "y": v} for y, v in streets],
+         "markers": [{"x": _fy_label(STREET_CAPITAL_ADOPTED[0]), "label": "Adopted plan"}]},
     ]
 
     table = {
@@ -192,9 +222,10 @@ def build_panel(rows: list) -> dict:
             "on Genesee Rd, Court St, Covert Rd and others, funded mainly by state gas-tax (Act 51) "
             "dollars rather than your city property taxes. Equipment and facility investments make up "
             "the rest.",
-            "This is a big road-building year: street capital is up to about $10.5M, from roughly "
-            "$3.3M two years ago (see the trend below). At this year's total, capital investment works "
-            f"out to about ${per_resident:,} per resident.",
+            "This is a big road-building year: the adopted street capital of about $10.5M is well above "
+            "any year in the ledger since FY2008 (the trend below shows actual street capital by year, "
+            f"{street_span}). At this year's total, capital investment works out to about "
+            f"${per_resident:,} per resident.",
         ],
     }
 
@@ -205,7 +236,8 @@ def build_panel(rows: list) -> dict:
         "stats": stats,
         "charts": charts,
         "tables": [table],
-        "source": "City of Burton adopted FY2026-27 budget (capital sections) and Capital Asset Requests.",
+        "source": "City of Burton adopted FY2026-27 budget (capital sections) and Capital Asset Requests; City "
+                  "General Ledger (BS&A) for actual street capital by year.",
         "links": [
             {"text": "City Finances dashboard", "href": "#finances"},
             {"text": "Roads & Pavement dashboard", "href": "#roads"},
@@ -219,6 +251,9 @@ def build_panel(rows: list) -> dict:
             "Operating costs are shown on the City Finances dashboard; this dashboard is capital only.",
             "Equipment and vehicle items are capital assets; some are prior-year approvals carried over "
             "(shown as In progress) that need no new funding this year.",
+            "The street capital trend is posted spending in the Major and Local Streets funds on construction, "
+            "road preservation and repaving accounts, by fiscal year, with the adopted plan as the last point; "
+            "loan principal payments are not included.",
         ],
     }
 
@@ -227,7 +262,7 @@ def main() -> int:
     with open(CSV_IN, encoding="utf-8") as fh:
         raw = list(csv.DictReader(fh))
     rows = normalize_rows(raw)
-    panel = build_panel(rows)
+    panel = build_panel(rows, load_street_history(BUDGET_FILE))
     write_json(OUT, panel)
     agg = aggregate(rows)
     print(f"Wrote {OUT}")
