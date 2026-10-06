@@ -417,5 +417,697 @@
         "amount": 15000
       }
     ]
+  },
+  "actuals": {
+    "prior_year": {
+      "fiscal_year_end": 2026,
+      "label": "FY2025-26",
+      "funds": [
+        {
+          "fund": "202",
+          "name": "MAJOR STREETS",
+          "revenue_budget": 6455550,
+          "expenditure_budget": 12920873,
+          "revenue_actual": 6644277,
+          "expenditure_actual": 6403297
+        },
+        {
+          "fund": "101",
+          "name": "GENERAL FUND",
+          "revenue_budget": 8806658,
+          "expenditure_budget": 11888730,
+          "revenue_actual": 8682427,
+          "expenditure_actual": 10780128
+        },
+        {
+          "fund": "207",
+          "name": "POLICE FUND",
+          "revenue_budget": 8154973,
+          "expenditure_budget": 9606819,
+          "revenue_actual": 8585574,
+          "expenditure_actual": 8559172
+        },
+        {
+          "fund": "591",
+          "name": "WATER DEPARTMENT",
+          "revenue_budget": 7699800,
+          "expenditure_budget": 7644600,
+          "revenue_actual": 8002404,
+          "expenditure_actual": 6721681
+        },
+        {
+          "fund": "590",
+          "name": "SEWER FUND",
+          "revenue_budget": 7500927,
+          "expenditure_budget": 7589006,
+          "revenue_actual": 7814988,
+          "expenditure_actual": 6471618
+        },
+        {
+          "fund": "203",
+          "name": "LOCAL STREETS",
+          "revenue_budget": 1763578,
+          "expenditure_budget": 3681023,
+          "revenue_actual": 1839628,
+          "expenditure_actual": 2845015
+        },
+        {
+          "fund": "206",
+          "name": "FIRE DEPARTMENT",
+          "revenue_budget": 2301267,
+          "expenditure_budget": 2395469,
+          "revenue_actual": 2308865,
+          "expenditure_actual": 2195788
+        },
+        {
+          "fund": "677",
+          "name": "BURTON SELF INSURANCE FUND",
+          "revenue_budget": 2262000,
+          "expenditure_budget": 2262000,
+          "revenue_actual": 1760239,
+          "expenditure_actual": 1760239
+        },
+        {
+          "fund": "226",
+          "name": "RUBBISH COLLECTION & DISPOSAL",
+          "revenue_budget": 1985765,
+          "expenditure_budget": 2015265,
+          "revenue_actual": 2031869,
+          "expenditure_actual": 2005131
+        },
+        {
+          "fund": "661",
+          "name": "MOTOR POOL",
+          "revenue_budget": 2226800,
+          "expenditure_budget": 1466591,
+          "revenue_actual": 2331511,
+          "expenditure_actual": 1226352
+        },
+        {
+          "fund": "636",
+          "name": "INFORMATION TECHNOLOGY FUND",
+          "revenue_budget": 779649,
+          "expenditure_budget": 761072,
+          "revenue_actual": 791356,
+          "expenditure_actual": 698877
+        },
+        {
+          "fund": "279",
+          "name": "SENIOR CITIZENS CENTER FUND",
+          "revenue_budget": 674545,
+          "expenditure_budget": 711514,
+          "revenue_actual": 695418,
+          "expenditure_actual": 648463
+        },
+        {
+          "fund": "249",
+          "name": "BUILDING DEPARTMENT FUND",
+          "revenue_budget": 455100,
+          "expenditure_budget": 626900,
+          "revenue_actual": 406372,
+          "expenditure_actual": 490500
+        },
+        {
+          "fund": "272",
+          "name": "POLICE/FIRE SCULPTURE FUND",
+          "revenue_budget": 243650,
+          "expenditure_budget": 278550,
+          "revenue_actual": 246690,
+          "expenditure_actual": 27512
+        },
+        {
+          "fund": "280",
+          "name": "SENIOR CENTER ACTIVITIES FUND",
+          "revenue_budget": 129300,
+          "expenditure_budget": 150000,
+          "revenue_actual": 118344,
+          "expenditure_actual": 122508
+        },
+        {
+          "fund": "406",
+          "name": "FIRE CAPITAL PROJECTS FUND",
+          "revenue_budget": 260000,
+          "expenditure_budget": 112320,
+          "revenue_actual": 263490,
+          "expenditure_actual": 112288
+        },
+        {
+          "fund": "248",
+          "name": "DOWNTOWN DEVELOPMENT AUTHORITY",
+          "revenue_budget": 47002,
+          "expenditure_budget": 99500,
+          "revenue_actual": 51611,
+          "expenditure_actual": 33007
+        },
+        {
+          "fund": "287",
+          "name": "BURTON YOUTH LEAGUE",
+          "revenue_budget": 36750,
+          "expenditure_budget": 35600,
+          "revenue_actual": 35049,
+          "expenditure_actual": 21410
+        },
+        {
+          "fund": "355",
+          "name": "23-015-P VINELAND PAVING",
+          "revenue_budget": 38628,
+          "expenditure_budget": 30176,
+          "revenue_actual": 15879,
+          "expenditure_actual": 8228
+        },
+        {
+          "fund": "266",
+          "name": "FEDERAL DRUG LAW ENFORCEMENT FUND",
+          "revenue_budget": 2200,
+          "expenditure_budget": 30000,
+          "revenue_actual": -646,
+          "expenditure_actual": 28185
+        },
+        {
+          "fund": "353",
+          "name": "23-012-P HIDDEN TRAILS PAVING",
+          "revenue_budget": 35362,
+          "expenditure_budget": 27625,
+          "revenue_actual": 30530,
+          "expenditure_actual": 19019
+        },
+        {
+          "fund": "351",
+          "name": "21-019-P MAPLEWOOD MEADOWS PAVING",
+          "revenue_budget": 22050,
+          "expenditure_budget": 22000,
+          "revenue_actual": 35450,
+          "expenditure_actual": 31562
+        },
+        {
+          "fund": "275",
+          "name": "MEMORIAL DAY RACE FUND",
+          "revenue_budget": 10600,
+          "expenditure_budget": 15000,
+          "revenue_actual": 13855,
+          "expenditure_actual": 14964
+        },
+        {
+          "fund": "350",
+          "name": "13-008-P AMY STREET PAVING",
+          "revenue_budget": 15250,
+          "expenditure_budget": 14500,
+          "revenue_actual": 7708,
+          "expenditure_actual": 7355
+        },
+        {
+          "fund": "276",
+          "name": "VETERAN HONOR RUN FUND",
+          "revenue_budget": 11550,
+          "expenditure_budget": 11000,
+          "revenue_actual": 10320,
+          "expenditure_actual": 10505
+        },
+        {
+          "fund": "265",
+          "name": "STATE DRUG LAW ENFORCEMENT FUND",
+          "revenue_budget": 2900,
+          "expenditure_budget": 10000,
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "354",
+          "name": "23-014-P CALVERT PARK PAVING",
+          "revenue_budget": 11557,
+          "expenditure_budget": 9029,
+          "revenue_actual": 9043,
+          "expenditure_actual": 9043
+        },
+        {
+          "fund": "450",
+          "name": "AMY ST PAVING CAP PROJ 13-008-P",
+          "revenue_budget": 15100,
+          "expenditure_budget": 8425,
+          "revenue_actual": 7421,
+          "expenditure_actual": 1902
+        },
+        {
+          "fund": "352",
+          "name": "22-015-P MAPLE LEAF PAVING",
+          "revenue_budget": 6480,
+          "expenditure_budget": 6430,
+          "revenue_actual": 7298,
+          "expenditure_actual": 5117
+        },
+        {
+          "fund": "451",
+          "name": "21-019-P MAPLEWOOD MEADOWS PAVING",
+          "revenue_budget": 22000,
+          "expenditure_budget": 5120,
+          "revenue_actual": 31562,
+          "expenditure_actual": 5816
+        },
+        {
+          "fund": "278",
+          "name": "BURTON RACE SERIES FUND",
+          "revenue_budget": 1070,
+          "expenditure_budget": 2500,
+          "revenue_actual": 796,
+          "expenditure_actual": 1731
+        },
+        {
+          "fund": "452",
+          "name": "22-015-P MAPLE LEAF PAVING",
+          "revenue_budget": 6430,
+          "expenditure_budget": 1440,
+          "revenue_actual": 5117,
+          "expenditure_actual": 998
+        },
+        {
+          "fund": "274",
+          "name": "CANCER SURVIVOR PARK",
+          "revenue_budget": 30,
+          "expenditure_budget": 1250,
+          "revenue_actual": 44,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "273",
+          "name": "VETERAN'S MEMORIAL PARK FUND",
+          "revenue_budget": 5200,
+          "expenditure_budget": 100,
+          "revenue_actual": 5604,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "267",
+          "name": "POLICE K9 FUND",
+          "revenue_budget": 2025,
+          "expenditure_budget": 50,
+          "revenue_actual": 37,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "277",
+          "name": "BURTON MILE FUND",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "469",
+          "name": "BURTON BUILDING AUTHORITY",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "703",
+          "name": "CURRENT TAX FUND",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "369",
+          "name": "BUILDING AUTHORITY",
+          "revenue_budget": 25,
+          "expenditure_budget": 0,
+          "revenue_actual": 97,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "230",
+          "name": "COMMUNITY DEVELOPMENT (CDBG)",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "401",
+          "name": "CAPITAL IMPROVEMENT",
+          "revenue_budget": 100,
+          "expenditure_budget": 0,
+          "revenue_actual": 1670,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "244",
+          "name": "ECONOMIC DEVELOPMENT CORPORATION FUND",
+          "revenue_budget": 50,
+          "expenditure_budget": 0,
+          "revenue_actual": 131,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "285",
+          "name": "PCB SETTLEMENT FUND",
+          "revenue_budget": 5150,
+          "expenditure_budget": 0,
+          "revenue_actual": 550,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "281",
+          "name": "SENIOR CENTER CAPITAL PROJECTS",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 385586,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "951",
+          "name": "GENERAL LONG TERM DEBT",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 0,
+          "expenditure_actual": -2802489
+        },
+        {
+          "fund": "701",
+          "name": "TRUST & AGENCY",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "284",
+          "name": "OPIOID SETTLEMENT FUND",
+          "revenue_budget": 2056,
+          "expenditure_budget": 0,
+          "revenue_actual": 9393,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "736",
+          "name": "RETIREE HEALTH CARE FUND",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 2087794,
+          "expenditure_actual": 728565
+        },
+        {
+          "fund": "426",
+          "name": "MAJOR ST DEB CONSTRUCTION",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "362",
+          "name": "MAJOR STREET DEBT FUND",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "901",
+          "name": "GENERAL FIXED ASSETS",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 1115880,
+          "expenditure_actual": -3108452
+        },
+        {
+          "fund": "356",
+          "name": "24-010-P MELODY/HARMONY PAVING",
+          "revenue_budget": 0,
+          "expenditure_budget": 0,
+          "revenue_actual": 25440,
+          "expenditure_actual": 25440
+        }
+      ]
+    },
+    "year_to_date": {
+      "fiscal_year_end": 2027,
+      "through": "2026-09-30",
+      "through_label": "September 2026",
+      "months": 3,
+      "funds": [
+        {
+          "fund": "351",
+          "revenue_actual": 28983,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "248",
+          "revenue_actual": 35780,
+          "expenditure_actual": 5979
+        },
+        {
+          "fund": "591",
+          "revenue_actual": 2042241,
+          "expenditure_actual": 1341962
+        },
+        {
+          "fund": "285",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "469",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "901",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "356",
+          "revenue_actual": 13311,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "277",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "202",
+          "revenue_actual": 776964,
+          "expenditure_actual": 1929508
+        },
+        {
+          "fund": "406",
+          "revenue_actual": 2582,
+          "expenditure_actual": 112288
+        },
+        {
+          "fund": "230",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "355",
+          "revenue_actual": 9514,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "661",
+          "revenue_actual": 163148,
+          "expenditure_actual": 152588
+        },
+        {
+          "fund": "353",
+          "revenue_actual": 20680,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "274",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "207",
+          "revenue_actual": 6516508,
+          "expenditure_actual": 1539415
+        },
+        {
+          "fund": "281",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "350",
+          "revenue_actual": 6642,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "701",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "677",
+          "revenue_actual": 302805,
+          "expenditure_actual": 302805
+        },
+        {
+          "fund": "249",
+          "revenue_actual": 124218,
+          "expenditure_actual": 105282
+        },
+        {
+          "fund": "736",
+          "revenue_actual": 439412,
+          "expenditure_actual": 142992
+        },
+        {
+          "fund": "362",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "276",
+          "revenue_actual": 2150,
+          "expenditure_actual": 2606
+        },
+        {
+          "fund": "450",
+          "revenue_actual": 10,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "203",
+          "revenue_actual": 261011,
+          "expenditure_actual": 432546
+        },
+        {
+          "fund": "244",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "279",
+          "revenue_actual": 50426,
+          "expenditure_actual": 114227
+        },
+        {
+          "fund": "352",
+          "revenue_actual": 4943,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "206",
+          "revenue_actual": 792538,
+          "expenditure_actual": 691126
+        },
+        {
+          "fund": "265",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "426",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "280",
+          "revenue_actual": 44757,
+          "expenditure_actual": 53875
+        },
+        {
+          "fund": "273",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "284",
+          "revenue_actual": 2991,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "278",
+          "revenue_actual": 75,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "266",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "951",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "287",
+          "revenue_actual": -60,
+          "expenditure_actual": 4545
+        },
+        {
+          "fund": "272",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "636",
+          "revenue_actual": 26,
+          "expenditure_actual": 133164
+        },
+        {
+          "fund": "401",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "267",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "354",
+          "revenue_actual": 8437,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "369",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "703",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "226",
+          "revenue_actual": 1805749,
+          "expenditure_actual": 507871
+        },
+        {
+          "fund": "275",
+          "revenue_actual": 1314,
+          "expenditure_actual": 850
+        },
+        {
+          "fund": "451",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "452",
+          "revenue_actual": 0,
+          "expenditure_actual": 0
+        },
+        {
+          "fund": "101",
+          "revenue_actual": 3957438,
+          "expenditure_actual": 1103015
+        },
+        {
+          "fund": "590",
+          "revenue_actual": 1844646,
+          "expenditure_actual": 821650
+        }
+      ]
+    }
   }
 }

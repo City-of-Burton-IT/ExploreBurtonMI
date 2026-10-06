@@ -57,12 +57,22 @@
     {
       "label": "Taxable value",
       "value": "$895.5M",
-      "hint": "2026, city assessor"
+      "hint": "2026 assessment roll, City Assessor (BS&A)"
     },
     {
       "label": "Full-time staff",
       "value": "102",
       "hint": "FY2026-27"
+    },
+    {
+      "label": "General Fund result, FY2025-26",
+      "value": "-$2.1M",
+      "hint": "actual revenue $8.7M minus spending $10.8M; a negative figure was covered from reserves"
+    },
+    {
+      "label": "General Fund spending so far",
+      "value": "11% of plan",
+      "hint": "FY2026-27 through September 2026; 25% of the year elapsed; revenue $4.0M received so far"
     },
     {
       "label": "General Fund revenues",
@@ -232,6 +242,256 @@
         {
           "label": "Other departments and transfers",
           "value": 17.0
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "General Fund, FY2025-26: budget vs actual ($M)",
+      "rows": [
+        {
+          "label": "Revenue",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 8.81
+            },
+            {
+              "name": "Actual",
+              "value": 8.68
+            }
+          ]
+        },
+        {
+          "label": "Spending",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 11.89
+            },
+            {
+              "name": "Actual",
+              "value": 10.78
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "compare",
+      "title": "Spending by fund, FY2025-26: budget vs actual ($M)",
+      "rows": [
+        {
+          "label": "Major Streets",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 12.92
+            },
+            {
+              "name": "Actual",
+              "value": 6.4
+            }
+          ]
+        },
+        {
+          "label": "General Fund",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 11.89
+            },
+            {
+              "name": "Actual",
+              "value": 10.78
+            }
+          ]
+        },
+        {
+          "label": "Police Fund",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 9.61
+            },
+            {
+              "name": "Actual",
+              "value": 8.56
+            }
+          ]
+        },
+        {
+          "label": "Water Department",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 7.64
+            },
+            {
+              "name": "Actual",
+              "value": 6.72
+            }
+          ]
+        },
+        {
+          "label": "Sewer Fund",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 7.59
+            },
+            {
+              "name": "Actual",
+              "value": 6.47
+            }
+          ]
+        },
+        {
+          "label": "Local Streets",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 3.68
+            },
+            {
+              "name": "Actual",
+              "value": 2.85
+            }
+          ]
+        },
+        {
+          "label": "Fire Department",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 2.4
+            },
+            {
+              "name": "Actual",
+              "value": 2.2
+            }
+          ]
+        },
+        {
+          "label": "Burton Self Insurance Fund",
+          "unit": "$M",
+          "values": [
+            {
+              "name": "Budget",
+              "value": 2.26
+            },
+            {
+              "name": "Actual",
+              "value": 1.76
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Taxable value by year, City assessment rolls ($M)",
+      "unit": "$M",
+      "points": [
+        {
+          "x": "2010",
+          "y": 664.4
+        },
+        {
+          "x": "2011",
+          "y": 618.0
+        },
+        {
+          "x": "2012",
+          "y": 557.9
+        },
+        {
+          "x": "2013",
+          "y": 545.2
+        },
+        {
+          "x": "2014",
+          "y": 535.2
+        },
+        {
+          "x": "2015",
+          "y": 539.0
+        },
+        {
+          "x": "2016",
+          "y": 541.8
+        },
+        {
+          "x": "2017",
+          "y": 551.9
+        },
+        {
+          "x": "2018",
+          "y": 575.8
+        },
+        {
+          "x": "2019",
+          "y": 615.6
+        },
+        {
+          "x": "2020",
+          "y": 648.0
+        },
+        {
+          "x": "2021",
+          "y": 676.2
+        },
+        {
+          "x": "2022",
+          "y": 702.4
+        },
+        {
+          "x": "2023",
+          "y": 753.5
+        },
+        {
+          "x": "2024",
+          "y": 814.0
+        },
+        {
+          "x": "2025",
+          "y": 857.7
+        },
+        {
+          "x": "2026",
+          "y": 895.5
+        }
+      ]
+    },
+    {
+      "type": "donut",
+      "title": "Taxable value by property class, 2026",
+      "unit": "$M",
+      "series": [
+        {
+          "label": "Personal property (business and utility)",
+          "value": 75.3
+        },
+        {
+          "label": "Industrial",
+          "value": 55.6
+        },
+        {
+          "label": "Commercial",
+          "value": 159.6
+        },
+        {
+          "label": "Residential",
+          "value": 605.0
         }
       ]
     },
@@ -587,7 +847,7 @@
       ]
     }
   ],
-  "source": "City of Burton General Ledger (BS&A) for the FY2026-27 adopted-budget figures (aggregates extracted 2026-10-06); City of Burton FY 2026-2027 Approved Budget (Controller's Office) for taxable value and staffing; State of Michigan Community Financials (audited F-65 actuals) for the historical trends.",
+  "source": "City of Burton General Ledger (BS&A) for the FY2026-27 adopted-budget figures (aggregates extracted 2026-10-06) and for budget-vs-actual comparisons; City Assessor (BS&A Assessing) for taxable value; City of Burton FY 2026-2027 Approved Budget (Controller's Office) for staffing; State of Michigan Community Financials (audited F-65 actuals) for the historical trends.",
   "links": [
     {
       "text": "Michigan Community Financials dashboard",
@@ -601,6 +861,8 @@
   "notes": [
     "Two views: the FY2026-27 figures and fund/spending charts are the city's ADOPTED BUDGET as recorded in the City's General Ledger (original appropriations before amendments; a plan, all funds unless noted General Fund). The dollar trends are AUDITED ACTUALS reported to the State of Michigan, which run about a year behind the adopted budget; the two are not the same measure.",
     "General Fund figures cover only the General Fund, not the city's total all-funds budget.",
+    "Budget-vs-actual figures compare the amended budget with activity posted in the City's General Ledger through fiscal year end (June 30); they are unaudited and can differ slightly from the audited statements. Year-to-date figures cover completed months only.",
+    "Taxable value is the March Board of Review value on each year's assessment roll; the current year's roll can still change with appeals and corrections.",
     "Audited trends and fiscal-health figures come from the State of Michigan Community Financials program (audited F-65 annual financial reports)."
   ]
 }
