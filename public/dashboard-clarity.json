@@ -291,6 +291,83 @@
       }
     ]
   },
+  "costofliving": {
+    "title": "What It Costs to Live Here",
+    "subtitle": "Home values, rents, and prices next to what households earn",
+    "context": {
+      "scope": "Burton, compared with the Flint metro, Michigan, and the United States",
+      "status": "current",
+      "asOf": "ACS 2024 five-year estimates; BEA 2024 price parities",
+      "sourceLinks": [
+        {
+          "text": "Census QuickFacts: Burton",
+          "href": "https://www.census.gov/quickfacts/burtoncitymichigan"
+        },
+        {
+          "text": "BEA Regional Price Parities",
+          "href": "https://www.bea.gov/data/prices-inflation/regional-price-parities-state-and-metro-area"
+        }
+      ]
+    },
+    "headline": "Burton's homes and rents cost far less than the national median, but incomes are lower too, and about half of renters spend 30% or more of income on rent.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "A typical Burton home is valued at less than half the national median and rent runs about 29% below it, while prices across the Flint metro are about 7% under the national average, driven by housing. Household income is about 26% below the national median, so the share of renters who are cost-burdened is roughly the same as the nation's. Dollar figures are nominal and not adjusted for inflation."
+      ]
+    },
+    "responsibility": "The Census Bureau and the Bureau of Economic Analysis produce these estimates. The City sets its own millage and fees but does not set home prices, rents, or wages.",
+    "action": {
+      "kind": "link",
+      "text": "Estimate your City property tax bill",
+      "href": "#propertytax"
+    },
+    "statOverrides": {
+      "Median home value": {
+        "priority": true
+      },
+      "Median gross rent": {
+        "priority": true
+      },
+      "Median household income": {
+        "priority": true
+      },
+      "Renters spending 30% or more on rent": {
+        "priority": true
+      }
+    },
+    "chartOverrides": {
+      "How Burton compares: housing costs and income": {
+        "takeaway": "Burton sits below the Flint metro on home value and income, and well below Michigan and the nation on every cost measure; the rent-burden share is close to all three."
+      },
+      "Flint metro price level by category (US = 100)": {
+        "takeaway": "Housing drives the metro's lower price level; goods are a little cheaper than the national average and other services cost about the same."
+      },
+      "Flint metro price level over time (US = 100)": {
+        "takeaway": "The metro price level moves several points from year to year, so read the direction, not any single year's figure."
+      }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "Costs and income compared",
+        "stats": [
+          "owner-costs-with-a-mortgage",
+          "flint-metro-price-level"
+        ],
+        "charts": [
+          "how-burton-compares-housing-costs-and-income"
+        ]
+      },
+      {
+        "heading": "Prices across the Flint metro",
+        "charts": [
+          "flint-metro-price-level-by-category-us-100",
+          "flint-metro-price-level-over-time-us-100"
+        ]
+      }
+    ]
+  },
   "finances": {
     "subtitle": "The adopted FY2026–27 plan alongside FY2025 audited results",
     "context": {

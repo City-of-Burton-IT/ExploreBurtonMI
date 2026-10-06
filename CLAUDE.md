@@ -1,6 +1,6 @@
 # Explore Burton MI -- Public Interactive City Map
 
-Public static site (Vite + Svelte + Leaflet) with 23 civic dashboards, Resident Guide, PWA + offline support, and native Android app (Google Play internal testing). Deployed at `https://explore.burtonmi.gov` (GitHub Pages).
+Public static site (Vite + Svelte + Leaflet) with 22 civic dashboards, Resident Guide, PWA + offline support, and native Android app (Google Play internal testing). Deployed at `https://explore.burtonmi.gov` (GitHub Pages).
 
 ## Status
 

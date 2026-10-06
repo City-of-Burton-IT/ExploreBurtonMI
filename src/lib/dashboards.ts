@@ -25,7 +25,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     items: [
       { id: 'demographics', label: 'Demographics', description: 'Population, age, and household trends from the U.S. Census.' },
       { id: 'jobs', label: 'Genesee County Jobs & Industries', description: 'Countywide industries, employment, wages, and unemployment.' },
-      { id: 'access', label: 'Affordability & Access', description: 'Cost of living, income, and transportation access.' },
+      { id: 'access', label: 'Affordability & Access', description: 'Modeled housing-plus-transportation burden, neighborhood incomes, and car access.' },
       { id: 'housing', label: 'Housing in Burton', description: 'Homes, occupancy, ownership, values, rents, and age.' },
       { id: 'zoning', label: 'Zoning', description: 'How land across the city is zoned and used.' },
       { id: 'schools', label: 'School Districts Serving Burton', description: 'District-wide enrollment and staffing context.' },
@@ -34,6 +34,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
   {
     label: 'Money & Taxes',
     items: [
+      { id: 'costofliving', label: 'What It Costs to Live Here', description: 'Home values, rents, and prices next to what households earn.' },
       { id: 'finances', label: 'City Finances', description: 'How the city raises and spends money each year.' },
       { id: 'propertytax', label: 'Property Taxes', description: 'What makes up your property tax bill and where it goes.' },
       { id: 'fiscalhealth', label: 'Financial Health', description: "The city's debt, pensions, and long-term outlook." },

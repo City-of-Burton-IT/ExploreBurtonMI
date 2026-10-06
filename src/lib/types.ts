@@ -226,7 +226,8 @@ export type InfoView =
   | 'access'
   | 'seniorcenter'
   | 'publicsafety'
-  | 'capital';
+  | 'capital'
+  | 'costofliving';
 export type AppView = 'map' | InfoView | 'guide' | 'opendata' | 'status';
 
 export interface InfoStat {
