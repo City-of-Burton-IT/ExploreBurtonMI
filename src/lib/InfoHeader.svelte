@@ -154,6 +154,10 @@
     list-style: none;
   }
   .source-row a {
+    /* Inline-block with vertical padding so each link is a 24px-tall touch
+       target (WCAG 2.5.8) without changing the visible text size. */
+    display: inline-block;
+    padding: 0.3rem 0;
     color: var(--civic-blue-link);
     font-weight: 600;
     text-underline-offset: 0.12em;

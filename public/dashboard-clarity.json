@@ -67,13 +67,13 @@
     "context": {
       "scope": "Genesee County",
       "status": "historical",
-      "asOf": "2022 industry data; December 2025 unemployment",
+      "asOf": "2023 industry data; December 2025 unemployment",
       "sourceLinks": [
         { "text": "Census County Business Patterns", "href": "https://www.census.gov/programs-surveys/cbp.html" },
         { "text": "BLS Local Area Unemployment", "href": "https://www.bls.gov/lau/" }
       ]
     },
-    "headline": "Genesee County reported 120,612 paid employees across 7,695 establishments in 2022.",
+    "headline": "Genesee County reported 121,033 paid employees across 7,733 establishments in 2023.",
     "summary": {
       "heading": "Why this matters",
       "body": [
@@ -93,7 +93,7 @@
       "Unemployment rate": { "priority": true, "hint": "Genesee County, December 2025" }
     },
     "chartOverrides": {
-      "Jobs by industry (Genesee County, 2022)": { "takeaway": "The largest industry bars account for the greatest shares of county employment." },
+      "Jobs by industry (Genesee County, 2023)": { "takeaway": "The largest industry bars account for the greatest shares of county employment." },
       "Average annual wage by industry": { "takeaway": "Average pay varies substantially by industry and is not an individual worker's wage." },
       "Unemployment rate (Genesee County, annual avg)": { "takeaway": "County unemployment changed over time and the latest monthly figure uses a different reference period." }
     },
@@ -102,7 +102,7 @@
       {
         "heading": "County employment base",
         "stats": ["annual-payroll"],
-        "charts": ["jobs-by-industry-genesee-county-2022", "average-annual-wage-by-industry"]
+        "charts": ["jobs-by-industry-genesee-county-2023", "average-annual-wage-by-industry"]
       },
       {
         "heading": "Labor-market trend",
@@ -249,7 +249,7 @@
     "context": {
       "scope": "Districts serving Burton",
       "status": "historical",
-      "asOf": "District-wide 2023 enrollment and staffing",
+      "asOf": "District-wide 2024 enrollment and staffing",
       "sourceLinks": [
         { "text": "NCES Common Core of Data", "href": "https://nces.ed.gov/ccd/" },
         { "text": "U.S. Census data", "href": "https://data.census.gov/" }
@@ -273,8 +273,8 @@
       "Bachelor's degree or higher": { "priority": true, "hint": "Burton adults age 25+; not a school outcome" }
     },
     "chartOverrides": {
-      "Enrollment by district (2023)": { "takeaway": "District sizes vary, and each bar includes enrollment outside Burton." },
-      "Students per teacher by district (2023)": { "takeaway": "This staffing ratio is not a class-size or performance measure." },
+      "Enrollment by district (2024)": { "takeaway": "District sizes vary, and each bar includes enrollment outside Burton." },
+      "Students per teacher by district (2024)": { "takeaway": "This staffing ratio is not a class-size or performance measure." },
       "Adults' education levels (citywide, age 25+)": { "takeaway": "This chart describes adult residents citywide, not current students or district performance." },
       "Bachelor's degree or higher (% age 25+)": { "takeaway": "The adult attainment trend is separate from the district enrollment data." },
       "Education levels: Burton vs. county & state": { "takeaway": "Burton's adult attainment profile differs from county and statewide estimates." }
@@ -283,7 +283,7 @@
     "sections": [
       {
         "heading": "District scale and staffing",
-        "charts": ["enrollment-by-district-2023", "students-per-teacher-by-district-2023"]
+        "charts": ["enrollment-by-district-2024", "students-per-teacher-by-district-2024"]
       },
       {
         "heading": "Adult education context",
@@ -389,15 +389,21 @@
       "status": "planned",
       "asOf": "FY2026–27 plan; FY2025 audited actuals",
       "sourceLinks": [
-        { "text": "2026-27 Approved Budget", "href": "https://www.burtonmi.gov/government/controller_s_office/budgets.php" },
-        { "text": "Michigan Community Financials", "href": "https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/2612060" }
+        {
+          "text": "2026-27 Approved Budget",
+          "href": "https://www.burtonmi.gov/government/controller_s_office/budgets.php"
+        },
+        {
+          "text": "Michigan Community Financials",
+          "href": "https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/2612060"
+        }
       ]
     },
     "headline": "Burton's General Ledger carries a $63.7 million all-funds adopted plan for FY2026–27; FY2025 audited General Fund revenues exceeded expenditures.",
     "summary": {
       "heading": "Why this matters",
       "body": [
-        "A budget is a plan, while audited figures show what actually occurred. The $63.7 million total is the sum of original appropriations across all City funds as entered in the City's General Ledger; General Fund figures cover the main operating fund and should not be compared as if they share the same boundary."
+        "A budget is a plan, while audited figures show what actually occurred. The top row pairs the FY2026–27 plan with last year's unaudited General Fund result and the audited reserve ratio; each section below is labelled with its source and whether it is a plan, ledger activity, or an audited statement. The $63.7 million total is the sum of original appropriations across all City funds."
       ]
     },
     "responsibility": "City Council adopts the budget, staff administers it, and independent audit reporting records actual results. Restricted funds cannot automatically be used for any purpose.",
@@ -407,41 +413,99 @@
       "href": "#fiscalhealth"
     },
     "statOverrides": {
-      "Total budget": { "priority": true, "label": "All-funds adopted plan" },
-      "General Fund revenues": { "priority": true },
-      "General Fund expenditures": { "priority": true },
-      "General Fund reserve": { "priority": true }
+      "Total budget": {
+        "priority": true,
+        "label": "All-funds plan, FY2026–27"
+      },
+      "General Fund budget": {
+        "priority": true,
+        "label": "General Fund plan, FY2026–27"
+      },
+      "General Fund result, FY2025-26": {
+        "priority": true,
+        "label": "Last year's General Fund result"
+      },
+      "General Fund reserve": {
+        "priority": true,
+        "label": "General Fund reserve (audited)"
+      }
     },
     "chartOverrides": {
-      "Revenue by source (FY2025 audited, governmental funds, $M)": { "takeaway": "This audited chart covers governmental-fund revenue, not the $63.7 million all-funds plan." },
-      "FY2026-27 adopted budget by fund (all funds)": { "takeaway": "Streets, Police, Water and Sewer funds carry most of the plan; the General Fund is about one-sixth of all-funds spending." },
-      "General Fund spending mix, FY2026-27 (plan)": { "takeaway": "Nearly a third of the General Fund plan is transfers that support Motor Pool, Fire, Police and Seniors; City Hall is the largest department." },
-      "General Fund, FY2025-26: budget vs actual ($M)": { "takeaway": "Revenue came in slightly under budget and spending well under the amended budget, but spending still exceeded revenue; the gap was covered from reserves." },
-      "Spending by fund, FY2025-26: budget vs actual ($M)": { "takeaway": "Most funds spent less than budgeted; Major Streets spent about half its amended budget as projects carried over." },
-      "Taxable value by year, City assessment rolls ($M)": { "takeaway": "Taxable value fell for years after 2010 and has climbed since 2015, passing its 2010 level in 2021." },
-      "Taxable value by property class, 2026": { "takeaway": "Residential parcels carry about two-thirds of the City's taxable value." },
-      "Total taxable value (audited, $M)": { "takeaway": "Taxable value increased across the displayed audited years." },
-      "General Fund revenues (audited, $M)": { "takeaway": "Audited General Fund revenue changed over time and is separate from all-funds budget totals." },
-      "General Fund expenditures (audited, $M)": { "takeaway": "Audited General Fund expenditures were below revenues in the latest displayed year." },
-      "Long-term debt (audited, $M)": { "takeaway": "Long-term debt includes obligations repaid over many years, much of it tied to utilities." },
-      "Unfunded pension liability (audited, $M)": { "takeaway": "The unfunded amount is the difference between pension obligations and assets set aside." }
+      "Revenue by source (FY2025 audited, governmental funds, $M)": {
+        "takeaway": "This audited chart covers governmental-fund revenue, not the $63.7 million all-funds plan."
+      },
+      "FY2026-27 adopted budget by fund (all funds)": {
+        "takeaway": "Streets, Police, Water and Sewer funds carry most of the plan; the General Fund is about one-sixth of all-funds spending."
+      },
+      "General Fund spending mix, FY2026-27 (plan)": {
+        "takeaway": "Nearly a third of the General Fund plan is transfers that support Motor Pool, Fire, Police and Seniors; City Hall is the largest department."
+      },
+      "General Fund, FY2025-26: budget vs actual ($M)": {
+        "takeaway": "Revenue came in slightly under budget and spending well under the amended budget, but spending still exceeded revenue; the gap was covered from reserves."
+      },
+      "Spending by fund, FY2025-26: budget vs actual ($M)": {
+        "takeaway": "Most funds spent less than budgeted; Major Streets spent about half its amended budget as projects carried over."
+      },
+      "Taxable value by year, City assessment rolls ($M)": {
+        "takeaway": "Taxable value fell for years after 2010 and has climbed since 2015, passing its 2010 level in 2021."
+      },
+      "Taxable value by property class, 2026": {
+        "takeaway": "Residential parcels carry about two-thirds of the City's taxable value."
+      },
+      "Total taxable value (audited, $M)": {
+        "takeaway": "Taxable value increased across the displayed audited years."
+      },
+      "General Fund revenues (audited, $M)": {
+        "takeaway": "Audited General Fund revenue changed over time and is separate from all-funds budget totals."
+      },
+      "General Fund expenditures (audited, $M)": {
+        "takeaway": "Audited General Fund expenditures were below revenues in the latest displayed year."
+      },
+      "Long-term debt (audited, $M)": {
+        "takeaway": "Long-term debt includes obligations repaid over many years, much of it tied to utilities."
+      },
+      "Unfunded pension liability (audited, $M)": {
+        "takeaway": "The unfunded amount is the difference between pension obligations and assets set aside."
+      }
     },
     "tableIds": {},
     "sections": [
       {
-        "heading": "FY2026–27 adopted plan",
-        "stats": ["general-fund-budget", "taxable-value", "full-time-staff", "general-fund-spending-so-far"],
-        "charts": ["fy2026-27-adopted-budget-by-fund-all-funds", "general-fund-spending-mix-fy2026-27-plan", "taxable-value-by-year-city-assessment-rolls-m", "taxable-value-by-property-class-2026"]
+        "heading": "FY2026–27 adopted plan (City General Ledger)",
+        "stats": [
+          "taxable-value",
+          "full-time-staff",
+          "general-fund-spending-so-far"
+        ],
+        "charts": [
+          "fy2026-27-adopted-budget-by-fund-all-funds",
+          "general-fund-spending-mix-fy2026-27-plan",
+          "taxable-value-by-year-city-assessment-rolls-m",
+          "taxable-value-by-property-class-2026"
+        ]
       },
       {
-        "heading": "FY2025–26: how last year turned out (General Ledger)",
-        "stats": ["general-fund-result-fy2025-26"],
-        "charts": ["general-fund-fy2025-26-budget-vs-actual-m", "spending-by-fund-fy2025-26-budget-vs-actual-m"]
+        "heading": "FY2025–26: how last year turned out (General Ledger, unaudited)",
+        "charts": [
+          "general-fund-fy2025-26-budget-vs-actual-m",
+          "spending-by-fund-fy2025-26-budget-vs-actual-m"
+        ]
       },
       {
-        "heading": "FY2025 audited results and trends",
-        "stats": ["long-term-debt"],
-        "charts": ["revenue-by-source-fy2025-audited-governmental-funds-m", "total-taxable-value-audited-m", "general-fund-revenues-audited-m", "general-fund-expenditures-audited-m", "long-term-debt-audited-m", "unfunded-pension-liability-audited-m"]
+        "heading": "FY2025 audited results and trends (State of Michigan)",
+        "stats": [
+          "general-fund-revenues",
+          "general-fund-expenditures",
+          "long-term-debt"
+        ],
+        "charts": [
+          "revenue-by-source-fy2025-audited-governmental-funds-m",
+          "total-taxable-value-audited-m",
+          "general-fund-revenues-audited-m",
+          "general-fund-expenditures-audited-m",
+          "long-term-debt-audited-m",
+          "unfunded-pension-liability-audited-m"
+        ]
       }
     ]
   },

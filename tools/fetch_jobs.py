@@ -27,7 +27,7 @@ from lib.httpio import get_json, post_json
 from lib.iox import write_json
 from lib.paths import public_path
 
-CBP_YEAR = 2022
+CBP_YEAR = 2023
 STATE_FIPS = "26"
 COUNTY_FIPS = "049"
 LAUS_SERIES = "LAUCN260490000000003"  # Genesee County, MI: unemployment rate
