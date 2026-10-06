@@ -1109,5 +1109,273 @@
         }
       ]
     }
-  }
+  },
+  "history": [
+    {
+      "fiscal_year_end": 2008,
+      "general_fund": {
+        "revenue_actual": 7367504,
+        "expenditure_actual": 6399085,
+        "revenue_amended": 7917633,
+        "expenditure_amended": 7106327
+      },
+      "all_funds": {
+        "revenue_actual": 28768295,
+        "expenditure_actual": 27954878,
+        "expenditure_amended": 32563800
+      }
+    },
+    {
+      "fiscal_year_end": 2009,
+      "general_fund": {
+        "revenue_actual": 6963908,
+        "expenditure_actual": 6028977,
+        "revenue_amended": 7475344,
+        "expenditure_amended": 6577694
+      },
+      "all_funds": {
+        "revenue_actual": 26984727,
+        "expenditure_actual": 26725218,
+        "expenditure_amended": 29531829
+      }
+    },
+    {
+      "fiscal_year_end": 2010,
+      "general_fund": {
+        "revenue_actual": 6658867,
+        "expenditure_actual": 6035279,
+        "revenue_amended": 7360888,
+        "expenditure_amended": 6533180
+      },
+      "all_funds": {
+        "revenue_actual": 27329530,
+        "expenditure_actual": 27039736,
+        "expenditure_amended": 31912782
+      }
+    },
+    {
+      "fiscal_year_end": 2011,
+      "general_fund": {
+        "revenue_actual": 6162819,
+        "expenditure_actual": 5217948,
+        "revenue_amended": 6201440,
+        "expenditure_amended": 5529155
+      },
+      "all_funds": {
+        "revenue_actual": 27159750,
+        "expenditure_actual": 25267023,
+        "expenditure_amended": 28971253
+      }
+    },
+    {
+      "fiscal_year_end": 2012,
+      "general_fund": {
+        "revenue_actual": 5520051,
+        "expenditure_actual": 5610993,
+        "revenue_amended": 5698305,
+        "expenditure_amended": 5698455
+      },
+      "all_funds": {
+        "revenue_actual": 27409142,
+        "expenditure_actual": 26761540,
+        "expenditure_amended": 29138301
+      }
+    },
+    {
+      "fiscal_year_end": 2013,
+      "general_fund": {
+        "revenue_actual": 5654587,
+        "expenditure_actual": 6116824,
+        "revenue_amended": 6303726,
+        "expenditure_amended": 6383087
+      },
+      "all_funds": {
+        "revenue_actual": 26975643,
+        "expenditure_actual": 28802430,
+        "expenditure_amended": 31883504
+      }
+    },
+    {
+      "fiscal_year_end": 2014,
+      "general_fund": {
+        "revenue_actual": 6375925,
+        "expenditure_actual": 6443992,
+        "revenue_amended": 6764385,
+        "expenditure_amended": 6800274
+      },
+      "all_funds": {
+        "revenue_actual": 32307907,
+        "expenditure_actual": 29929471,
+        "expenditure_amended": 30711203
+      }
+    },
+    {
+      "fiscal_year_end": 2015,
+      "general_fund": {
+        "revenue_actual": 6387434,
+        "expenditure_actual": 5115484,
+        "revenue_amended": 5977220,
+        "expenditure_amended": 5619720
+      },
+      "all_funds": {
+        "revenue_actual": 32734614,
+        "expenditure_actual": 31698443,
+        "expenditure_amended": 36508986
+      }
+    },
+    {
+      "fiscal_year_end": 2016,
+      "general_fund": {
+        "revenue_actual": 6360983,
+        "expenditure_actual": 8081704,
+        "revenue_amended": 8467386,
+        "expenditure_amended": 8502386
+      },
+      "all_funds": {
+        "revenue_actual": 43117830,
+        "expenditure_actual": 35362485,
+        "expenditure_amended": 44647008
+      }
+    },
+    {
+      "fiscal_year_end": 2017,
+      "general_fund": {
+        "revenue_actual": 5688480,
+        "expenditure_actual": 6336625,
+        "revenue_amended": 5834800,
+        "expenditure_amended": 6714940
+      },
+      "all_funds": {
+        "revenue_actual": 36344332,
+        "expenditure_actual": 35970122,
+        "expenditure_amended": 41130673
+      }
+    },
+    {
+      "fiscal_year_end": 2018,
+      "general_fund": {
+        "revenue_actual": 5976478,
+        "expenditure_actual": 5442698,
+        "revenue_amended": 5782900,
+        "expenditure_amended": 5682800
+      },
+      "all_funds": {
+        "revenue_actual": 39429255,
+        "expenditure_actual": 73438741,
+        "expenditure_amended": 37576635
+      }
+    },
+    {
+      "fiscal_year_end": 2019,
+      "general_fund": {
+        "revenue_actual": 6274479,
+        "expenditure_actual": 5634680,
+        "revenue_amended": 6067474,
+        "expenditure_amended": 6021375
+      },
+      "all_funds": {
+        "revenue_actual": 39509514,
+        "expenditure_actual": 34105847,
+        "expenditure_amended": 39605313
+      }
+    },
+    {
+      "fiscal_year_end": 2020,
+      "general_fund": {
+        "revenue_actual": 6579575,
+        "expenditure_actual": 5857122,
+        "revenue_amended": 6189500,
+        "expenditure_amended": 6578000
+      },
+      "all_funds": {
+        "revenue_actual": 41050644,
+        "expenditure_actual": 33526379,
+        "expenditure_amended": 42378050
+      }
+    },
+    {
+      "fiscal_year_end": 2021,
+      "general_fund": {
+        "revenue_actual": 7289172,
+        "expenditure_actual": 5418290,
+        "revenue_amended": 6459800,
+        "expenditure_amended": 5936400
+      },
+      "all_funds": {
+        "revenue_actual": 43015953,
+        "expenditure_actual": 33069973,
+        "expenditure_amended": 38112103
+      }
+    },
+    {
+      "fiscal_year_end": 2022,
+      "general_fund": {
+        "revenue_actual": 10177266,
+        "expenditure_actual": 8167924,
+        "revenue_amended": 6572192,
+        "expenditure_amended": 8817435
+      },
+      "all_funds": {
+        "revenue_actual": 46495380,
+        "expenditure_actual": 37268158,
+        "expenditure_amended": 46819017
+      }
+    },
+    {
+      "fiscal_year_end": 2023,
+      "general_fund": {
+        "revenue_actual": 7862340,
+        "expenditure_actual": 10275262,
+        "revenue_amended": 7171636,
+        "expenditure_amended": 10909903
+      },
+      "all_funds": {
+        "revenue_actual": 51782695,
+        "expenditure_actual": 43009223,
+        "expenditure_amended": 54004717
+      }
+    },
+    {
+      "fiscal_year_end": 2024,
+      "general_fund": {
+        "revenue_actual": 9130742,
+        "expenditure_actual": 8369178,
+        "revenue_amended": 8083172,
+        "expenditure_amended": 8975103
+      },
+      "all_funds": {
+        "revenue_actual": 57525786,
+        "expenditure_actual": 40019940,
+        "expenditure_amended": 55201119
+      }
+    },
+    {
+      "fiscal_year_end": 2025,
+      "general_fund": {
+        "revenue_actual": 8832125,
+        "expenditure_actual": 8689357,
+        "revenue_amended": 8488263,
+        "expenditure_amended": 9695061
+      },
+      "all_funds": {
+        "revenue_actual": 53268839,
+        "expenditure_actual": 40729160,
+        "expenditure_amended": 59867294
+      }
+    },
+    {
+      "fiscal_year_end": 2026,
+      "general_fund": {
+        "revenue_actual": 8682427,
+        "expenditure_actual": 10780128,
+        "revenue_amended": 8806658,
+        "expenditure_amended": 11888730
+      },
+      "all_funds": {
+        "revenue_actual": 56416669,
+        "expenditure_actual": 46110474,
+        "expenditure_amended": 64440477
+      }
+    }
+  ]
 }

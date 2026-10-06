@@ -115,7 +115,47 @@ WHERE g.accountCategory IN (3, 4) AND p.monthEnd BETWEEN '$ytdFrom' AND '$($ytdT
 GROUP BY g.fund
 "@ } else { $null }
 
+# --- Multi-year history: actual revenue and spending plus amended budgets ------
+# Closed years live in GLHistory/GLHistoryPeriodDetails (yearEnd = June 30 of the
+# fiscal year); the two most recent years are still in GLPeriodDetails. FY2007 is a
+# partial first year in the ledger and is excluded.
+$historySql = @"
+WITH hist AS (
+    SELECT YEAR(h.yearEnd) AS fy, h.fund, h.accountCategory AS cat, SUM(d.debitActivity - d.creditActivity) AS net
+    FROM dbo.GLHistoryPeriodDetails d JOIN dbo.GLHistory h ON h.id = d.glHistoryID
+    WHERE h.accountCategory IN (3, 4) GROUP BY YEAR(h.yearEnd), h.fund, h.accountCategory
+),
+cur AS (
+    SELECT CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END AS fy,
+           g.fund, g.accountCategory AS cat, SUM(p.debitActivity - p.creditActivity) AS net
+    FROM dbo.GLPeriodDetails p JOIN dbo.GL_GeneralLedger g ON g.id = p.generalLedgerID
+    WHERE g.accountCategory IN (3, 4)
+    GROUP BY CASE WHEN MONTH(p.monthEnd) >= 7 THEN YEAR(p.monthEnd) + 1 ELSE YEAR(p.monthEnd) END, g.fund, g.accountCategory
+),
+act AS (SELECT * FROM hist WHERE fy <= (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory)
+        UNION ALL SELECT * FROM cur WHERE fy > (SELECT MAX(YEAR(yearEnd)) FROM dbo.GLHistory)),
+bud AS (
+    SELECT b.year AS fy, b.fund, g.accountCategory AS cat, SUM(b.originalBudget + b.budgetAmendments) AS amended
+    FROM dbo.BudgetInfoAdopted b JOIN dbo.GL_GeneralLedger g ON g.id = b.generalLedgerID
+    WHERE g.accountCategory IN (3, 4) GROUP BY b.year, b.fund, g.accountCategory
+)
+SELECT fy,
+    -SUM(CASE WHEN src = 'a' AND cat = 3 THEN v ELSE 0 END) AS rev_actual_all,
+     SUM(CASE WHEN src = 'a' AND cat = 4 THEN v ELSE 0 END) AS exp_actual_all,
+    -SUM(CASE WHEN src = 'a' AND cat = 3 AND fund = '101' THEN v ELSE 0 END) AS rev_actual_gf,
+     SUM(CASE WHEN src = 'a' AND cat = 4 AND fund = '101' THEN v ELSE 0 END) AS exp_actual_gf,
+    -SUM(CASE WHEN src = 'b' AND cat = 3 AND fund = '101' THEN v ELSE 0 END) AS rev_amended_gf,
+     SUM(CASE WHEN src = 'b' AND cat = 4 AND fund = '101' THEN v ELSE 0 END) AS exp_amended_gf,
+     SUM(CASE WHEN src = 'b' AND cat = 4 THEN v ELSE 0 END) AS exp_amended_all
+FROM (SELECT fy, fund, cat, net AS v, 'a' AS src FROM act
+      UNION ALL SELECT fy, fund, cat, amended, 'b' FROM bud) x
+WHERE fy BETWEEN 2008 AND $priorEnd
+GROUP BY fy ORDER BY fy
+"@
+
 $funds = @(Invoke-BsaQuery -Database $Database -Sql $fundSql)
+$history = @(Invoke-BsaQuery -Database $Database -Sql $historySql -TimeoutSec 300)
+if ($history.Count -lt 5) { throw "History query returned only $($history.Count) years; refusing to write." }
 $depts = @(Invoke-BsaQuery -Database $Database -Sql $deptSql)
 $transfers = @(Invoke-BsaQuery -Database $Database -Sql $transferSql)
 $priorActual = @(Invoke-BsaQuery -Database $Database -Sql $actualSql)
@@ -187,6 +227,22 @@ if ($ytdThrough -and $ytdActual.Count -gt 0) {
     }
 }
 $out['actuals'] = $actuals
+$out['history'] = @($history | ForEach-Object {
+    [ordered]@{
+        fiscal_year_end = [int]$_.fy
+        general_fund    = [ordered]@{
+            revenue_actual      = ConvertTo-WholeNumber $_.rev_actual_gf
+            expenditure_actual  = ConvertTo-WholeNumber $_.exp_actual_gf
+            revenue_amended     = ConvertTo-WholeNumber $_.rev_amended_gf
+            expenditure_amended = ConvertTo-WholeNumber $_.exp_amended_gf
+        }
+        all_funds       = [ordered]@{
+            revenue_actual      = ConvertTo-WholeNumber $_.rev_actual_all
+            expenditure_actual  = ConvertTo-WholeNumber $_.exp_actual_all
+            expenditure_amended = ConvertTo-WholeNumber $_.exp_amended_all
+        }
+    }
+})
 
 $json = $out | ConvertTo-Json -Depth 6
 $tmp = Join-Path $env:TEMP 'bsa-budget.json'

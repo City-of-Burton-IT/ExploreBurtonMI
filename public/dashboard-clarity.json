@@ -446,6 +446,15 @@
       "Spending by fund, FY2025-26: budget vs actual ($M)": {
         "takeaway": "Most funds spent less than budgeted; Major Streets spent about half its amended budget as projects carried over."
       },
+      "General Fund spending: amended budget vs actual, FY2008–FY2026 ($M)": {
+        "takeaway": "Actual General Fund spending has tracked the amended budget for nearly two decades, usually finishing a little under it."
+      },
+      "General Fund revenue: amended budget vs actual, FY2008–FY2026 ($M)": {
+        "takeaway": "General Fund revenue fell after 2010 and recovered after 2020; FY2022 includes $3.0 million of one-time American Rescue Plan funds."
+      },
+      "All City funds: revenue and spending by year, FY2008–FY2026 ($M)": {
+        "takeaway": "Across all funds the City has taken in more than it spent in most recent years; the FY2018 spending spike is a bookkeeping entry for water and sewer system assets, not cash paid out."
+      },
       "Taxable value by year, City assessment rolls ($M)": {
         "takeaway": "Taxable value fell for years after 2010 and has climbed since 2015, passing its 2010 level in 2021."
       },
@@ -485,10 +494,13 @@
         ]
       },
       {
-        "heading": "FY2025–26: how last year turned out (General Ledger, unaudited)",
+        "heading": "Budget vs actual, last year and over time (General Ledger, unaudited)",
         "charts": [
           "general-fund-fy2025-26-budget-vs-actual-m",
-          "spending-by-fund-fy2025-26-budget-vs-actual-m"
+          "spending-by-fund-fy2025-26-budget-vs-actual-m",
+          "general-fund-spending-amended-budget-vs-actual-fy2008-fy2026-m",
+          "general-fund-revenue-amended-budget-vs-actual-fy2008-fy2026-m",
+          "all-city-funds-revenue-and-spending-by-year-fy2008-fy2026-m"
         ]
       },
       {

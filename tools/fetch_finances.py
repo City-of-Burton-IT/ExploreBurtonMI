@@ -118,6 +118,25 @@ def validate_budget(raw: Any, where: str = "budget file") -> dict:
                 for key in ("revenue_actual", "expenditure_actual"):
                     if not isinstance(f.get(key), int):
                         sys.exit(f"{where}: actuals.year_to_date fund {f.get('fund')} {key} must be an integer")
+    history = raw.get("history")
+    if history is not None:
+        if not isinstance(history, list) or len(history) < 5:
+            sys.exit(f"{where}: 'history' must list at least five fiscal years")
+        years = []
+        for row in history:
+            if not isinstance(row.get("fiscal_year_end"), int):
+                sys.exit(f"{where}: history rows need an integer fiscal_year_end")
+            years.append(row["fiscal_year_end"])
+            for block, keys in (("general_fund", ("revenue_actual", "expenditure_actual", "revenue_amended", "expenditure_amended")),
+                                ("all_funds", ("revenue_actual", "expenditure_actual", "expenditure_amended"))):
+                b = row.get(block)
+                if not isinstance(b, dict):
+                    sys.exit(f"{where}: history {row['fiscal_year_end']} missing {block}")
+                for key in keys:
+                    if not isinstance(b.get(key), int):
+                        sys.exit(f"{where}: history {row['fiscal_year_end']} {block}.{key} must be an integer")
+        if years != sorted(set(years)):
+            sys.exit(f"{where}: history years must be ascending and unique")
     return raw
 
 
@@ -212,6 +231,42 @@ def build_actuals(budget: dict) -> tuple[list, list]:
                          f"revenue {_m(gf_ytd['revenue_actual'])} received so far"),
             })
     return stats, charts
+
+
+# Known one-off events worth marking on the all-funds series. Keep this list
+# short and factual; each entry is checked against the ledger before it is added.
+HISTORY_MARKERS = [
+    {"x": "FY2018", "label": "Water and sewer capital contributions recorded (accounting entry, not cash spending)"},
+]
+
+
+def build_history_charts(budget: dict) -> list:
+    history = budget.get("history")
+    if not history:
+        return []
+    def fy(row: dict) -> str:
+        return f"FY{row['fiscal_year_end']}"
+    def m(v: int) -> float:
+        return round(v / 1e6, 2)
+    first, last = fy(history[0]), fy(history[-1])
+    gf_rev = {"label": "Amended budget", "points": [{"x": fy(r), "y": m(r["general_fund"]["revenue_amended"])} for r in history]}
+    gf_rev_a = {"label": "Actual", "points": [{"x": fy(r), "y": m(r["general_fund"]["revenue_actual"])} for r in history]}
+    gf_exp = {"label": "Amended budget", "points": [{"x": fy(r), "y": m(r["general_fund"]["expenditure_amended"])} for r in history]}
+    gf_exp_a = {"label": "Actual", "points": [{"x": fy(r), "y": m(r["general_fund"]["expenditure_actual"])} for r in history]}
+    all_rev = {"label": "Revenue", "points": [{"x": fy(r), "y": m(r["all_funds"]["revenue_actual"])} for r in history]}
+    all_exp = {"label": "Spending", "points": [{"x": fy(r), "y": m(r["all_funds"]["expenditure_actual"])} for r in history]}
+    span = f"{first}–{last}"
+    xs = {fy(r) for r in history}
+    markers = [mk for mk in HISTORY_MARKERS if mk["x"] in xs]
+    charts = [
+        {"type": "trend", "title": f"General Fund spending: amended budget vs actual, {span} ($M)",
+         "unit": "$M", "lines": [gf_exp, gf_exp_a]},
+        {"type": "trend", "title": f"General Fund revenue: amended budget vs actual, {span} ($M)",
+         "unit": "$M", "lines": [gf_rev, gf_rev_a]},
+        {"type": "trend", "title": f"All City funds: revenue and spending by year, {span} ($M)",
+         "unit": "$M", "lines": [all_rev, all_exp], **({"markers": markers} if markers else {})},
+    ]
+    return charts
 
 
 def build_taxable_value(taxroll: dict) -> tuple[list, list]:
@@ -486,6 +541,7 @@ def main() -> int:
     budget_stats = build_budget_stats(budget)
     budget_charts = build_budget_charts(budget)
     actual_stats, actual_charts = build_actuals(budget)
+    history_charts = build_history_charts(budget)
     taxroll = load_taxroll_file(args.taxroll_file) if args.taxroll_file else None
     tax_stats, tax_charts = build_taxable_value(taxroll) if taxroll else ([], [])
 
@@ -517,7 +573,7 @@ def main() -> int:
         "summary": summary,
         "explainer": BUDGET_EXPLAINER,
         "stats": budget_stats + tax_stats + CITY_STATS + actual_stats + health,
-        "charts": [revenue_chart] + budget_charts + actual_charts + tax_charts + trends,
+        "charts": [revenue_chart] + budget_charts + actual_charts + history_charts + tax_charts + trends,
         "source": (
             f"City of Burton General Ledger (BS&A) for the {budget['label']} adopted-budget figures "
             f"(aggregates extracted {budget['extracted']}) and for budget-vs-actual comparisons; City Assessor "
@@ -541,6 +597,10 @@ def main() -> int:
             "Budget-vs-actual figures compare the amended budget with activity posted in the City's General "
             "Ledger through fiscal year end (June 30); they are unaudited and can differ slightly from the "
             "audited statements. Year-to-date figures cover completed months only.",
+            "The multi-year ledger series start with FY2008, the first full year in the current ledger. The "
+            "General Fund figures match the State-reported audited totals in every overlapping year to within "
+            "rounding. All-funds spending includes enterprise funds (water and sewer) and one-off items such as "
+            "bond proceeds paid out, so single-year jumps are usually financing events, not operations.",
             "Taxable value is the March Board of Review value on each year's assessment roll; the current "
             "year's roll can still change with appeals and corrections.",
             "Audited trends and fiscal-health figures come from the State of Michigan Community Financials "
