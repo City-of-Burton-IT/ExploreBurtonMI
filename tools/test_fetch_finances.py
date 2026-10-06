@@ -182,3 +182,42 @@ def test_validate_taxroll_rejects_mismatched_groups():
     bad["taxable_value"]["by_group"][0]["taxable"] = 1
     with pytest.raises(SystemExit):
         ff.validate_taxroll(bad)
+
+
+HISTORY = [
+    {"fiscal_year_end": y,
+     "general_fund": {"revenue_actual": 6_000_000 + i * 100_000, "expenditure_actual": 5_900_000 + i * 100_000,
+                      "revenue_amended": 6_100_000 + i * 100_000, "expenditure_amended": 6_200_000 + i * 100_000},
+     "all_funds": {"revenue_actual": 30_000_000 + i * 1_000_000, "expenditure_actual": 29_000_000 + i * 1_000_000,
+                   "expenditure_amended": 31_000_000 + i * 1_000_000}}
+    for i, y in enumerate(range(2016, 2027))
+]
+
+
+def test_history_charts_span_years_and_mark_known_events():
+    budget = copy.deepcopy(BUDGET)
+    budget["history"] = copy.deepcopy(HISTORY)
+    assert ff.validate_budget(copy.deepcopy(budget)) == budget
+    charts = ff.build_history_charts(budget)
+    assert [c["title"] for c in charts] == [
+        "General Fund spending: amended budget vs actual, FY2016–FY2026 ($M)",
+        "General Fund revenue: amended budget vs actual, FY2016–FY2026 ($M)",
+        "All City funds: revenue and spending by year, FY2016–FY2026 ($M)",
+    ]
+    assert [ln["label"] for ln in charts[0]["lines"]] == ["Amended budget", "Actual"]
+    assert charts[0]["lines"][1]["points"][0] == {"x": "FY2016", "y": 5.9}
+    assert charts[0]["lines"][1]["points"][-1] == {"x": "FY2026", "y": 6.9}
+    assert charts[2]["markers"] == [m for m in ff.HISTORY_MARKERS if m["x"] == "FY2018"]
+    assert ff.build_history_charts(copy.deepcopy(BUDGET)) == []
+
+
+def test_validate_budget_rejects_bad_history():
+    bad = copy.deepcopy(BUDGET)
+    bad["history"] = copy.deepcopy(HISTORY)
+    bad["history"][3]["general_fund"]["revenue_actual"] = "x"
+    with pytest.raises(SystemExit):
+        ff.validate_budget(bad)
+    bad = copy.deepcopy(BUDGET)
+    bad["history"] = list(reversed(copy.deepcopy(HISTORY)))
+    with pytest.raises(SystemExit):
+        ff.validate_budget(bad)
