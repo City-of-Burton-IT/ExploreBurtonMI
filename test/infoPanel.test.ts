@@ -9,6 +9,7 @@ import {
 import {
   enrichInfoPanel,
   validateDashboardClarityMap,
+  sectionHeadingId,
 } from '../src/lib/dashboard/dashboardClarity';
 
 const dashboardIds = DASHBOARDS.map(({ id }) => id);
@@ -410,6 +411,30 @@ describe('dashboard clarity contract', () => {
     expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
       /example.*sections\[1\]\.heading.*duplicate/i,
     );
+  });
+
+  it('rejects section headings that differ only by punctuation or spacing (same DOM id)', () => {
+    const invalid = {
+      example: {
+        ...completeClarity,
+        sections: [
+          completeClarity.sections[0],
+          { ...completeClarity.sections[0], heading: `${completeClarity.sections[0].heading}!` },
+        ],
+      },
+    };
+
+    expect(() => validateDashboardClarityMap(invalid, ['example'])).toThrow(
+      /example.*sections\[1\]\.heading.*duplicate heading id "section-/i,
+    );
+  });
+
+  it('derives one DOM id per heading, stable across punctuation and case', () => {
+    expect(sectionHeadingId('Evidence')).toBe('section-evidence');
+    expect(sectionHeadingId('Evidence!')).toBe('section-evidence');
+    expect(sectionHeadingId(' Evidence ')).toBe('section-evidence');
+    expect(sectionHeadingId('What the City levies')).toBe('section-what-the-city-levies');
+    expect(sectionHeadingId('WHAT  the city   levies')).toBe('section-what-the-city-levies');
   });
 
   it('rejects section references that do not exist in the raw panel', () => {

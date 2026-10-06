@@ -18,6 +18,7 @@ import type {
   InfoTable,
   InfoTableRow,
 } from '../types';
+import { DASHBOARD_STATUSES, isDashboardStatus } from './dashboardContext';
 
 export type {
   CompareRow,
@@ -430,8 +431,8 @@ export function validateInfoPanel(value: unknown, id: string): InfoPanel {
   const dashboardContext = objectValue(raw.context, context, 'context');
   stringValue(dashboardContext.scope, context, 'context.scope');
   const status = stringValue(dashboardContext.status, context, 'context.status');
-  if (!['current', 'historical', 'modeled', 'planned', 'reference'].includes(status)) {
-    fail(context, 'context.status', 'expected current, historical, modeled, planned, or reference');
+  if (!isDashboardStatus(status)) {
+    fail(context, 'context.status', `expected one of ${DASHBOARD_STATUSES.join(', ')}`);
   }
   stringValue(dashboardContext.asOf, context, 'context.asOf');
   stringValue(raw.headline, context, 'headline');
