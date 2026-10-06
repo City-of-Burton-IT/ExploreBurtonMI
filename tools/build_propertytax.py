@@ -103,6 +103,54 @@ def validate_taxroll(raw: Any, where: str = "tax-roll file") -> dict:
     return raw
 
 
+def validate_collection(c: object, where: str = "tax-roll file") -> dict | None:
+    """The collection block is optional (older exports lack it) but strict when present."""
+    if c is None:
+        return None
+    if not isinstance(c, dict):
+        sys.exit(f"{where}: collection must be an object")
+    for key in ("as_of", "summer_due", "summer", "weekly_receipts_summer", "payment_sources_summer"):
+        if key not in c:
+            sys.exit(f"{where}: collection.{key} missing")
+    sm = c["summer"]
+    for key in ("parcels_billed", "billed", "owed", "parcels_unpaid"):
+        if not isinstance(sm.get(key), int) or sm[key] < 0:
+            sys.exit(f"{where}: collection.summer.{key} must be a non-negative integer")
+    if sm["billed"] <= 0 or sm["owed"] > sm["billed"] or sm["parcels_unpaid"] > sm["parcels_billed"]:
+        sys.exit(f"{where}: collection.summer figures are inconsistent")
+    for w in c["weekly_receipts_summer"]:
+        if not isinstance(w.get("amount"), int) or not isinstance(w.get("week_start"), str):
+            sys.exit(f"{where}: weekly receipts need week_start and integer amount")
+    return c
+
+
+def build_collection(c: dict, year: int) -> tuple[list, list]:
+    sm = c["summer"]
+    pct = round(100 * (sm["billed"] - sm["owed"]) / sm["billed"], 1)
+    unpaid_pct = round(100 * sm["parcels_unpaid"] / sm["parcels_billed"], 1) if sm["parcels_billed"] else 0
+    online = sum(x["amount"] for x in c["payment_sources_summer"] if x.get("source") == "IS")
+    paid_total = sum(x["amount"] for x in c["payment_sources_summer"])
+    online_pct = round(100 * online / paid_total) if paid_total else 0
+    stats = [{
+        "label": f"Summer {year} taxes collected",
+        "value": f"{pct}%",
+        "hint": (f"of ${sm['billed'] / 1e6:.1f}M billed, as of {c['as_of']} (due {c['summer_due']}); "
+                 f"{sm['parcels_unpaid']:,} parcels ({unpaid_pct}%) still owe; {online_pct}% of dollars paid online"),
+    }]
+    weeks = [w for w in c["weekly_receipts_summer"] if w["amount"] > 0]
+    running = 0
+    points = []
+    for w in weeks:
+        running += w["amount"]
+        points.append({"x": w["week_start"][5:], "y": round(100 * running / sm["billed"], 1)})
+    charts = [{
+        "type": "trend", "title": f"How the summer {year} levy came in (cumulative % of billed, by week)", "unit": "%",
+        "points": points,
+        "markers": [{"x": c["summer_due"][5:], "label": "Due date"}] if any(p["x"] <= c["summer_due"][5:] for p in points) else [],
+    }]
+    return stats, charts
+
+
 def build_city_levies(taxroll: dict) -> list:
     by_code = {ln["code"]: ln for ln in taxroll["city_lines"]}
     year = taxroll["tax_year"]
@@ -189,6 +237,8 @@ def main() -> int:
     city_total = round(float(taxroll["city_mills"]), 4)
     levies = build_city_levies(taxroll)
     by_id = {lv["id"]: lv["mills"] for lv in levies}
+    collection = validate_collection(taxroll.get("collection"), TAXROLL_FILE)
+    coll_stats, coll_charts = build_collection(collection, year) if collection else ([], [])
     uniform = PUBLISHED_2025_CITY_TOTAL + COUNTY + MOTT + ISD + MTA + AIRPORT
     schools_set = round(HOMESTEAD_TOTAL - uniform, 2)  # remainder = schools + State Ed
 
@@ -217,6 +267,7 @@ def main() -> int:
             "value": "7",
             "hint": "2025 complete-bill rates vary by district",
         },
+        *coll_stats,
         {
             "label": "Median City tax, homestead home",
             "value": f"${round(taxroll['homestead']['median_city_tax']):,}/yr",
@@ -243,6 +294,7 @@ def main() -> int:
         {"type": "trend", "title": "Reported City millage, FY2017-FY2026", "unit": "",
          "points": [{"x": yr, "y": v} for yr, v in CITY_MILLAGE_HISTORY]},
         build_levy_chart(taxroll),
+        *coll_charts,
     ]
 
     summary = {
@@ -311,6 +363,11 @@ def main() -> int:
                 f"The City rate and levy chart come from the {year} tax roll as billed (summer levy; "
                 "winter lines are added once billed). The complete-bill district estimate and the 2025 "
                 "authority chart use 2025 published rates and are dated separately."
+            ),
+            (
+                "Collection figures are the Treasurer's billed and outstanding amounts on the day of "
+                "extraction; the weekly line is cumulative payments received, including those posted after "
+                "the due date with interest. Only totals are published, never individual parcels."
             ),
             (
                 "Estimate only. Actual bills can differ because of exact parcel values, exemptions, "

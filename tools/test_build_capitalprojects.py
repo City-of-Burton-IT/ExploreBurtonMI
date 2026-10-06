@@ -51,12 +51,26 @@ def test_aggregate_funding_and_top_projects_order():
     assert [r["project"] for r in agg["top"]] == ["Big", "Mid", "Small"]
 
 
-def test_trend_shows_multi_year_street_history():
-    panel = cp.build_panel(cp.normalize_rows([_raw(fiscal_year="2027")]))
+def test_trend_shows_ledger_street_history_then_adopted_year():
+    history = [(2024, 3_255_108), (2025, 6_185_219), (2026, 5_780_506)]
+    panel = cp.build_panel(cp.normalize_rows([_raw(fiscal_year="2027")]), history)
     assert "FY2026-27" in panel["subtitle"]
     trend = next(c for c in panel["charts"] if c["type"] == "trend")
     xs = [p["x"] for p in trend["points"]]
-    assert xs == ["FY2024-25", "FY2025-26", "FY2026-27"]   # three years of context
+    assert xs == ["FY2023-24", "FY2024-25", "FY2025-26", "FY2026-27"]   # actuals, then the adopted plan
+    assert trend["points"][-1]["y"] == cp.STREET_CAPITAL_ADOPTED[1]
+    assert trend["markers"] == [{"x": "FY2026-27", "label": "Adopted plan"}]
+    assert "FY2023-24 to FY2026-27" in panel["summary"]["body"][2]
+
+
+def test_trend_without_ledger_history_falls_back_to_adopted_only():
+    panel = cp.build_panel(cp.normalize_rows([_raw(fiscal_year="2027")]))
+    trend = next(c for c in panel["charts"] if c["type"] == "trend")
+    assert [p["x"] for p in trend["points"]] == ["FY2026-27"]
+
+
+def test_street_series_skips_zero_years():
+    assert cp.street_capital_series([(2008, 0), (2009, 120_000)]) == [(2009, 120_000), cp.STREET_CAPITAL_ADOPTED]
 
 
 def test_per_resident_stat_present():

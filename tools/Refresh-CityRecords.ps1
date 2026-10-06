@@ -59,6 +59,10 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "fetch_finances.py exited $LASTEXITCODE" }
     & python build_propertytax.py
     if ($LASTEXITCODE -ne 0) { throw "build_propertytax.py exited $LASTEXITCODE" }
+    & python build_utilities.py
+    if ($LASTEXITCODE -ne 0) { throw "build_utilities.py exited $LASTEXITCODE" }
+    & python build_capitalprojects.py
+    if ($LASTEXITCODE -ne 0) { throw "build_capitalprojects.py exited $LASTEXITCODE" }
 } finally {
     Pop-Location
 }

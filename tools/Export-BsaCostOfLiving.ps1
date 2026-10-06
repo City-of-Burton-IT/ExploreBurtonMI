@@ -151,12 +151,18 @@ SELECT (SELECT COUNT(*) FROM u) AS bills,
 "@
     $usage = Invoke-BsaQuery -Database $UtilityDatabase -Sql $usageSql
     if (-not $usage -or [int]$usage.bills -lt 1000) { throw 'Usage-charge query returned too few bills; refusing to write.' }
+    $customers = @(Invoke-BsaQuery -Database $UtilityDatabase -Sql "SELECT class, COUNT(*) AS n FROM dbo.Account WHERE status LIKE 'Active%' OR status = 'First Bill' GROUP BY class")
+    $custRes = ($customers | Where-Object { $_.class -eq 'RES' } | Select-Object -First 1).n
+    $custComm = ($customers | Where-Object { $_.class -eq 'COMM' } | Select-Object -First 1).n
+    if (-not $custRes -or [int]$custRes -lt 1000) { throw 'Residential customer count implausible; refusing to write.' }
     $utility = [ordered]@{
         window                    = 'four quarterly bills posted in the 12 months before extraction'
         accounts_sewer_only       = [int]$sewerOnly.accounts
         median_annual_sewer_only  = [int][math]::Round([double]$sewerOnly.median_annual)
         accounts_water_and_sewer  = [int]$waterSewer.accounts
         median_annual_water_sewer = [int][math]::Round([double]$waterSewer.median_annual)
+        customers_residential     = [int]$custRes
+        customers_commercial      = [int]$custComm
         usage_charge_quarterly    = [ordered]@{
             bills  = [int]$usage.bills
             median = [int][math]::Round([double]$usage.median_q)

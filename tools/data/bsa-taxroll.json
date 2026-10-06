@@ -155,22 +155,132 @@
     "parcels": 8994,
     "median_city_tax": 654.84
   },
+  "collection": {
+    "as_of": "2026-10-06",
+    "summer_due": "2026-09-30",
+    "winter_due": "2027-03-01",
+    "summer": {
+      "parcels_billed": 13917,
+      "billed": 35404492,
+      "owed": 3802951,
+      "parcels_unpaid": 2074
+    },
+    "winter": {
+      "billed": 12861142,
+      "owed": 12861142,
+      "parcels_paid": 0
+    },
+    "weekly_receipts_summer": [
+      {
+        "week_start": "2026-07-01",
+        "amount": 91977,
+        "receipts": 79
+      },
+      {
+        "week_start": "2026-07-05",
+        "amount": 912670,
+        "receipts": 525
+      },
+      {
+        "week_start": "2026-07-12",
+        "amount": 937934,
+        "receipts": 422
+      },
+      {
+        "week_start": "2026-07-19",
+        "amount": 1081282,
+        "receipts": 328
+      },
+      {
+        "week_start": "2026-07-26",
+        "amount": 512594,
+        "receipts": 320
+      },
+      {
+        "week_start": "2026-08-02",
+        "amount": 412686,
+        "receipts": 229
+      },
+      {
+        "week_start": "2026-08-09",
+        "amount": 747009,
+        "receipts": 453
+      },
+      {
+        "week_start": "2026-08-16",
+        "amount": 1083564,
+        "receipts": 455
+      },
+      {
+        "week_start": "2026-08-24",
+        "amount": 1895389,
+        "receipts": 541
+      },
+      {
+        "week_start": "2026-08-30",
+        "amount": 1293447,
+        "receipts": 490
+      },
+      {
+        "week_start": "2026-09-06",
+        "amount": 1744613,
+        "receipts": 702
+      },
+      {
+        "week_start": "2026-09-13",
+        "amount": 2105731,
+        "receipts": 693
+      },
+      {
+        "week_start": "2026-09-20",
+        "amount": 5369551,
+        "receipts": 1285
+      },
+      {
+        "week_start": "2026-09-27",
+        "amount": 13442235,
+        "receipts": 5662
+      },
+      {
+        "week_start": "2026-10-04",
+        "amount": 62009,
+        "receipts": 36
+      }
+    ],
+    "payment_sources_summer": [
+      {
+        "source": "CR",
+        "amount": 28938988,
+        "receipts": 11089
+      },
+      {
+        "source": "",
+        "amount": 11033,
+        "receipts": 11
+      },
+      {
+        "source": "IS",
+        "amount": 2742668,
+        "receipts": 1120
+      }
+    ]
+  },
   "taxable_value": {
     "year": 2026,
     "total": 895540516,
     "sev": 1293714100,
     "by_group": [
       {
-        "group": "Personal property (business and utility)",
-        "parcels": 243,
-        "taxable": 75349400,
-        "sev": 75349400
-      },
-      {
         "group": "Industrial",
         "parcels": 206,
         "taxable": 55590106,
         "sev": 65030700
+      },
+      {
+        "group": "Personal property (business and utility)",
+        "parcels": 243,
+        "taxable": 75349400,
+        "sev": 75349400
       },
       {
         "group": "Commercial",

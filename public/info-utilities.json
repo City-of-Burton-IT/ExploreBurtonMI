@@ -1,0 +1,622 @@
+{
+  "title": "Water & Sewer Funds",
+  "subtitle": "What water and sewer bills pay for, FY2008–FY2026, from the City General Ledger",
+  "stats": [
+    {
+      "label": "Water fund: bills collected, FY2026",
+      "value": "$7.1M",
+      "hint": "usage fees; spending $6.7M, of which 61% was purchased water"
+    },
+    {
+      "label": "Sewer fund: bills collected, FY2026",
+      "value": "$6.7M",
+      "hint": "usage fees; spending $6.5M, of which 64% was sewage treatment"
+    },
+    {
+      "label": "Customer accounts",
+      "value": "11,242",
+      "hint": "active residential accounts; 890 commercial. About 5,058 homes are sewer-only (private wells)."
+    },
+    {
+      "label": "Typical water and sewer bill",
+      "value": "$974/yr",
+      "hint": "median for homes on City water and sewer; sewer-only homes $545/yr"
+    }
+  ],
+  "charts": [
+    {
+      "type": "trend",
+      "title": "Water fund: revenue and spending by year, FY2008–FY2026 ($M)",
+      "unit": "$M",
+      "lines": [
+        {
+          "label": "Revenue (bills and other)",
+          "points": [
+            {
+              "x": "FY2008",
+              "y": 3.09
+            },
+            {
+              "x": "FY2009",
+              "y": 3.49
+            },
+            {
+              "x": "FY2010",
+              "y": 3.34
+            },
+            {
+              "x": "FY2011",
+              "y": 3.57
+            },
+            {
+              "x": "FY2012",
+              "y": 4.02
+            },
+            {
+              "x": "FY2013",
+              "y": 3.2
+            },
+            {
+              "x": "FY2014",
+              "y": 4.13
+            },
+            {
+              "x": "FY2015",
+              "y": 4.54
+            },
+            {
+              "x": "FY2016",
+              "y": 6.49
+            },
+            {
+              "x": "FY2017",
+              "y": 5.9
+            },
+            {
+              "x": "FY2018",
+              "y": 7.2
+            },
+            {
+              "x": "FY2019",
+              "y": 6.88
+            },
+            {
+              "x": "FY2020",
+              "y": 7.8
+            },
+            {
+              "x": "FY2021",
+              "y": 7.66
+            },
+            {
+              "x": "FY2022",
+              "y": 7.26
+            },
+            {
+              "x": "FY2023",
+              "y": 8.9
+            },
+            {
+              "x": "FY2024",
+              "y": 8.28
+            },
+            {
+              "x": "FY2025",
+              "y": 8.16
+            },
+            {
+              "x": "FY2026",
+              "y": 8.0
+            }
+          ]
+        },
+        {
+          "label": "Spending",
+          "points": [
+            {
+              "x": "FY2008",
+              "y": 3.29
+            },
+            {
+              "x": "FY2009",
+              "y": 3.58
+            },
+            {
+              "x": "FY2010",
+              "y": 3.15
+            },
+            {
+              "x": "FY2011",
+              "y": 3.29
+            },
+            {
+              "x": "FY2012",
+              "y": 3.71
+            },
+            {
+              "x": "FY2013",
+              "y": 3.9
+            },
+            {
+              "x": "FY2014",
+              "y": 4.22
+            },
+            {
+              "x": "FY2015",
+              "y": 4.77
+            },
+            {
+              "x": "FY2016",
+              "y": 5.34
+            },
+            {
+              "x": "FY2017",
+              "y": 5.76
+            },
+            {
+              "x": "FY2018",
+              "y": 18.26
+            },
+            {
+              "x": "FY2019",
+              "y": 6.16
+            },
+            {
+              "x": "FY2020",
+              "y": 5.95
+            },
+            {
+              "x": "FY2021",
+              "y": 5.97
+            },
+            {
+              "x": "FY2022",
+              "y": 5.92
+            },
+            {
+              "x": "FY2023",
+              "y": 6.33
+            },
+            {
+              "x": "FY2024",
+              "y": 6.18
+            },
+            {
+              "x": "FY2025",
+              "y": 6.57
+            },
+            {
+              "x": "FY2026",
+              "y": 6.72
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Sewer fund: revenue and spending by year, FY2008–FY2026 ($M)",
+      "unit": "$M",
+      "lines": [
+        {
+          "label": "Revenue (bills and other)",
+          "points": [
+            {
+              "x": "FY2008",
+              "y": 3.63
+            },
+            {
+              "x": "FY2009",
+              "y": 3.34
+            },
+            {
+              "x": "FY2010",
+              "y": 4.41
+            },
+            {
+              "x": "FY2011",
+              "y": 4.49
+            },
+            {
+              "x": "FY2012",
+              "y": 4.29
+            },
+            {
+              "x": "FY2013",
+              "y": 4.6
+            },
+            {
+              "x": "FY2014",
+              "y": 5.03
+            },
+            {
+              "x": "FY2015",
+              "y": 5.54
+            },
+            {
+              "x": "FY2016",
+              "y": 7.25
+            },
+            {
+              "x": "FY2017",
+              "y": 6.45
+            },
+            {
+              "x": "FY2018",
+              "y": 6.49
+            },
+            {
+              "x": "FY2019",
+              "y": 6.57
+            },
+            {
+              "x": "FY2020",
+              "y": 6.54
+            },
+            {
+              "x": "FY2021",
+              "y": 6.51
+            },
+            {
+              "x": "FY2022",
+              "y": 6.17
+            },
+            {
+              "x": "FY2023",
+              "y": 7.44
+            },
+            {
+              "x": "FY2024",
+              "y": 8.2
+            },
+            {
+              "x": "FY2025",
+              "y": 8.0
+            },
+            {
+              "x": "FY2026",
+              "y": 7.81
+            }
+          ]
+        },
+        {
+          "label": "Spending",
+          "points": [
+            {
+              "x": "FY2008",
+              "y": 3.4
+            },
+            {
+              "x": "FY2009",
+              "y": 4.24
+            },
+            {
+              "x": "FY2010",
+              "y": 4.55
+            },
+            {
+              "x": "FY2011",
+              "y": 4.54
+            },
+            {
+              "x": "FY2012",
+              "y": 4.41
+            },
+            {
+              "x": "FY2013",
+              "y": 4.85
+            },
+            {
+              "x": "FY2014",
+              "y": 5.5
+            },
+            {
+              "x": "FY2015",
+              "y": 5.35
+            },
+            {
+              "x": "FY2016",
+              "y": 6.84
+            },
+            {
+              "x": "FY2017",
+              "y": 6.32
+            },
+            {
+              "x": "FY2018",
+              "y": 29.29
+            },
+            {
+              "x": "FY2019",
+              "y": 5.04
+            },
+            {
+              "x": "FY2020",
+              "y": 5.03
+            },
+            {
+              "x": "FY2021",
+              "y": 4.82
+            },
+            {
+              "x": "FY2022",
+              "y": 5.15
+            },
+            {
+              "x": "FY2023",
+              "y": 6.24
+            },
+            {
+              "x": "FY2024",
+              "y": 6.38
+            },
+            {
+              "x": "FY2025",
+              "y": 6.11
+            },
+            {
+              "x": "FY2026",
+              "y": 6.47
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "donut",
+      "title": "Where the water dollar went, FY2026",
+      "unit": "$M",
+      "series": [
+        {
+          "label": "Purchased water and sewage treatment",
+          "value": 4.12
+        },
+        {
+          "label": "Operations (staff, repairs, supplies)",
+          "value": 1.68
+        },
+        {
+          "label": "Depreciation of pipes and plant",
+          "value": 0.65
+        },
+        {
+          "label": "Debt interest and transfers",
+          "value": 0.27
+        }
+      ]
+    },
+    {
+      "type": "donut",
+      "title": "Where the sewer dollar went, FY2026",
+      "unit": "$M",
+      "series": [
+        {
+          "label": "Purchased water and sewage treatment",
+          "value": 4.16
+        },
+        {
+          "label": "Operations (staff, repairs, supplies)",
+          "value": 1.27
+        },
+        {
+          "label": "Depreciation of pipes and plant",
+          "value": 0.86
+        },
+        {
+          "label": "Debt interest and transfers",
+          "value": 0.19
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Cost of purchased water and sewage treatment by year, FY2008–FY2026 ($M)",
+      "unit": "$M",
+      "lines": [
+        {
+          "label": "Purchased water (Water fund)",
+          "points": [
+            {
+              "x": "FY2008",
+              "y": 1.81
+            },
+            {
+              "x": "FY2009",
+              "y": 2.02
+            },
+            {
+              "x": "FY2010",
+              "y": 1.61
+            },
+            {
+              "x": "FY2011",
+              "y": 1.68
+            },
+            {
+              "x": "FY2012",
+              "y": 2.1
+            },
+            {
+              "x": "FY2013",
+              "y": 2.24
+            },
+            {
+              "x": "FY2014",
+              "y": 2.51
+            },
+            {
+              "x": "FY2015",
+              "y": 3.0
+            },
+            {
+              "x": "FY2016",
+              "y": 3.04
+            },
+            {
+              "x": "FY2017",
+              "y": 3.1
+            },
+            {
+              "x": "FY2018",
+              "y": 3.62
+            },
+            {
+              "x": "FY2019",
+              "y": 4.06
+            },
+            {
+              "x": "FY2020",
+              "y": 4.07
+            },
+            {
+              "x": "FY2021",
+              "y": 4.57
+            },
+            {
+              "x": "FY2022",
+              "y": 4.26
+            },
+            {
+              "x": "FY2023",
+              "y": 4.16
+            },
+            {
+              "x": "FY2024",
+              "y": 4.0
+            },
+            {
+              "x": "FY2025",
+              "y": 4.03
+            },
+            {
+              "x": "FY2026",
+              "y": 4.12
+            }
+          ]
+        },
+        {
+          "label": "Sewage treatment (Sewer fund)",
+          "points": [
+            {
+              "x": "FY2008",
+              "y": 2.26
+            },
+            {
+              "x": "FY2009",
+              "y": 2.86
+            },
+            {
+              "x": "FY2010",
+              "y": 3.09
+            },
+            {
+              "x": "FY2011",
+              "y": 3.09
+            },
+            {
+              "x": "FY2012",
+              "y": 3.05
+            },
+            {
+              "x": "FY2013",
+              "y": 3.04
+            },
+            {
+              "x": "FY2014",
+              "y": 3.07
+            },
+            {
+              "x": "FY2015",
+              "y": 3.44
+            },
+            {
+              "x": "FY2016",
+              "y": 3.42
+            },
+            {
+              "x": "FY2017",
+              "y": 3.42
+            },
+            {
+              "x": "FY2018",
+              "y": 3.39
+            },
+            {
+              "x": "FY2019",
+              "y": 3.39
+            },
+            {
+              "x": "FY2020",
+              "y": 3.38
+            },
+            {
+              "x": "FY2021",
+              "y": 3.46
+            },
+            {
+              "x": "FY2022",
+              "y": 3.63
+            },
+            {
+              "x": "FY2023",
+              "y": 4.15
+            },
+            {
+              "x": "FY2024",
+              "y": 4.15
+            },
+            {
+              "x": "FY2025",
+              "y": 4.15
+            },
+            {
+              "x": "FY2026",
+              "y": 4.16
+            }
+          ]
+        }
+      ]
+    }
+  ],
+  "explainer": {
+    "title": "How to read these numbers",
+    "intro": "Water and sewer are run as separate businesses inside the City: your bill is their income.",
+    "items": [
+      {
+        "term": "Enterprise funds",
+        "body": "The Water and Sewer funds take in bill payments and pay their own costs. Property taxes do not fund them, and their money is not used for police, roads or City Hall."
+      },
+      {
+        "term": "Purchased water and treatment",
+        "body": "Burton buys treated drinking water from the regional system and pays Genesee County to treat its sewage. Those wholesale charges are the largest cost in each fund and the part the City controls least."
+      },
+      {
+        "term": "Depreciation",
+        "body": "An accounting charge that spreads the cost of pipes, pumps and plant over their useful life. It is not cash paid out in the year, but it shows how much of the system is wearing out and will need replacing."
+      },
+      {
+        "term": "Revenue above spending",
+        "body": "When bills collected exceed spending, the difference builds reserves for main replacements and debt payments, and covers years when a major repair hits."
+      }
+    ]
+  },
+  "source": "City of Burton General Ledger (BS&A), Water (591) and Sewer (590) enterprise funds, posted activity through FY2026 (aggregates extracted 2026-10-06); City of Burton Utility Billing (BS&A) for customer counts and typical bills.",
+  "links": [
+    {
+      "text": "What It Costs to Live Here",
+      "href": "#costofliving"
+    },
+    {
+      "text": "Drinking Water (EPA compliance)",
+      "href": "#water"
+    },
+    {
+      "text": "City Finances",
+      "href": "#finances"
+    }
+  ],
+  "notes": [
+    "Figures are posted ledger activity by fiscal year (July to June), unaudited; the audited statements can differ slightly. Revenue includes usage fees plus interest and other income. Spending groups follow the City's chart of accounts: purchased water and treatment, operations, depreciation, and debt interest and transfers.",
+    "Only fund-level aggregates are published, never individual accounts or bills."
+  ]
+}

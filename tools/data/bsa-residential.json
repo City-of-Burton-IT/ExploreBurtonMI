@@ -52,6 +52,8 @@
     "median_annual_sewer_only": 545,
     "accounts_water_and_sewer": 5538,
     "median_annual_water_sewer": 974,
+    "customers_residential": 11242,
+    "customers_commercial": 890,
     "usage_charge_quarterly": {
       "bills": 23010,
       "median": 96,
