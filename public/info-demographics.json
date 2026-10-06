@@ -1,10 +1,10 @@
 {
   "title": "Burton Demographics",
-  "subtitle": "U.S. Census ACS 2023 5-year estimates",
+  "subtitle": "U.S. Census ACS 2024 5-year estimates",
   "stats": [
     {
       "label": "Population",
-      "value": "29,529",
+      "value": "29,500",
       "spark": [
         {
           "x": "2000",
@@ -19,14 +19,14 @@
           "y": 29715
         },
         {
-          "x": "2023 (est.)",
-          "y": 29529
+          "x": "2024 (est.)",
+          "y": 29500
         }
       ]
     },
     {
       "label": "Median age",
-      "value": "42.5",
+      "value": "43.7",
       "benchmarks": [
         {
           "name": "Genesee Co.",
@@ -34,39 +34,39 @@
         },
         {
           "name": "Michigan",
-          "value": "40.1"
+          "value": "40.2"
         }
       ]
     },
     {
       "label": "Households",
-      "value": "12,505"
+      "value": "12,432"
     },
     {
       "label": "Median household income",
-      "value": "$57,767",
+      "value": "$60,052",
       "benchmarks": [
         {
           "name": "Genesee Co.",
-          "value": "$60,673"
+          "value": "$62,281"
         },
         {
           "name": "Michigan",
-          "value": "$71,149"
+          "value": "$72,875"
         }
       ]
     },
     {
       "label": "Median home value",
-      "value": "$131,200",
+      "value": "$141,600",
       "benchmarks": [
         {
           "name": "Genesee Co.",
-          "value": "$172,900"
+          "value": "$182,400"
         },
         {
           "name": "Michigan",
-          "value": "$217,600"
+          "value": "$231,600"
         }
       ]
     },
@@ -86,7 +86,7 @@
     },
     {
       "label": "Unemployment rate",
-      "value": "8%",
+      "value": "7%",
       "hint": "civilian labor force",
       "benchmarks": [
         {
@@ -101,7 +101,7 @@
     },
     {
       "label": "Below poverty line",
-      "value": "17%",
+      "value": "16%",
       "benchmarks": [
         {
           "name": "Genesee Co.",
@@ -126,11 +126,11 @@
       "series": [
         {
           "label": "Owner-occupied",
-          "value": 9478
+          "value": 9467
         },
         {
           "label": "Renter-occupied",
-          "value": 3027
+          "value": 2965
         }
       ]
     },
@@ -140,23 +140,23 @@
       "series": [
         {
           "label": "Under 18",
-          "value": 6260
+          "value": 5821
         },
         {
           "label": "18-34",
-          "value": 6261
+          "value": 6607
         },
         {
           "label": "35-54",
-          "value": 7275
+          "value": 7226
         },
         {
           "label": "55-64",
-          "value": 4177
+          "value": 4012
         },
         {
           "label": "65+",
-          "value": 5556
+          "value": 5834
         }
       ]
     },
@@ -166,27 +166,27 @@
       "series": [
         {
           "label": "White",
-          "value": 23473
+          "value": 22635
         },
         {
           "label": "Black or African American",
-          "value": 2814
+          "value": 3128
         },
         {
           "label": "Hispanic or Latino",
-          "value": 1333
+          "value": 1166
         },
         {
           "label": "Two or more races",
-          "value": 1578
+          "value": 2170
         },
         {
           "label": "Asian",
-          "value": 185
+          "value": 94
         },
         {
           "label": "Other",
-          "value": 146
+          "value": 307
         }
       ]
     },
@@ -196,23 +196,23 @@
       "series": [
         {
           "label": "< $25k",
-          "value": 2508
+          "value": 2308
         },
         {
           "label": "$25-50k",
-          "value": 3051
+          "value": 3045
         },
         {
           "label": "$50-75k",
-          "value": 2397
+          "value": 2286
         },
         {
           "label": "$75-100k",
-          "value": 1686
+          "value": 1513
         },
         {
           "label": "$100k+",
-          "value": 2863
+          "value": 3280
         }
       ]
     },
@@ -222,27 +222,27 @@
       "series": [
         {
           "label": "Drove alone",
-          "value": 10122
+          "value": 10357
         },
         {
           "label": "Carpooled",
-          "value": 1604
+          "value": 1769
         },
         {
           "label": "Public transit",
-          "value": 48
+          "value": 73
         },
         {
           "label": "Walked / bicycled",
-          "value": 100
+          "value": 72
         },
         {
           "label": "Worked from home",
-          "value": 842
+          "value": 878
         },
         {
           "label": "Other",
-          "value": 141
+          "value": 123
         }
       ]
     },
@@ -263,8 +263,8 @@
           "y": 29715
         },
         {
-          "x": "2023 (est.)",
-          "y": 29529
+          "x": "2024 (est.)",
+          "y": 29500
         }
       ]
     },
@@ -308,8 +308,8 @@
               "y": 78.5
             },
             {
-              "x": "2023 (est.)",
-              "y": 79.5
+              "x": "2024 (est.)",
+              "y": 76.7
             }
           ]
         },
@@ -329,8 +329,8 @@
               "y": 9.7
             },
             {
-              "x": "2023 (est.)",
-              "y": 9.5
+              "x": "2024 (est.)",
+              "y": 10.6
             }
           ]
         },
@@ -350,8 +350,8 @@
               "y": 5.0
             },
             {
-              "x": "2023 (est.)",
-              "y": 4.5
+              "x": "2024 (est.)",
+              "y": 4.0
             }
           ]
         },
@@ -371,8 +371,8 @@
               "y": 5.5
             },
             {
-              "x": "2023 (est.)",
-              "y": 5.3
+              "x": "2024 (est.)",
+              "y": 7.4
             }
           ]
         }
@@ -437,7 +437,7 @@
     },
     {
       "type": "compare",
-      "title": "How Burton compares (2023)",
+      "title": "How Burton compares (2024)",
       "rows": [
         {
           "label": "Median household income",
@@ -445,61 +445,61 @@
           "values": [
             {
               "name": "Burton",
-              "value": 57767
+              "value": 60052
             },
             {
               "name": "Genesee County",
-              "value": 60673
+              "value": 62281
             },
             {
               "name": "Michigan",
-              "value": 71149
+              "value": 72875
             }
           ],
           "cities": [
             {
+              "name": "Flushing",
+              "value": 80025
+            },
+            {
               "name": "Fenton",
-              "value": 82917
+              "value": 80000
             },
             {
               "name": "Linden",
-              "value": 77434
-            },
-            {
-              "name": "Flushing",
-              "value": 77372
+              "value": 79464
             },
             {
               "name": "Swartz Creek",
-              "value": 73862
+              "value": 71571
             },
             {
               "name": "Grand Blanc",
-              "value": 67284
+              "value": 68052
             },
             {
               "name": "Burton",
-              "value": 57767
+              "value": 60052
             },
             {
               "name": "Clio",
-              "value": 50678
+              "value": 52500
             },
             {
               "name": "Davison",
-              "value": 50450
-            },
-            {
-              "name": "Montrose",
-              "value": 44625
+              "value": 48814
             },
             {
               "name": "Mount Morris",
-              "value": 42886
+              "value": 48794
+            },
+            {
+              "name": "Montrose",
+              "value": 44151
             },
             {
               "name": "Flint",
-              "value": 36194
+              "value": 37646
             }
           ]
         },
@@ -509,61 +509,61 @@
           "values": [
             {
               "name": "Burton",
-              "value": 131200
+              "value": 141600
             },
             {
               "name": "Genesee County",
-              "value": 172900
+              "value": 182400
             },
             {
               "name": "Michigan",
-              "value": 217600
+              "value": 231600
             }
           ],
           "cities": [
             {
               "name": "Linden",
-              "value": 232300
-            },
-            {
-              "name": "Grand Blanc",
-              "value": 228000
+              "value": 239700
             },
             {
               "name": "Fenton",
-              "value": 211000
+              "value": 235900
+            },
+            {
+              "name": "Grand Blanc",
+              "value": 235500
             },
             {
               "name": "Flushing",
-              "value": 189500
-            },
-            {
-              "name": "Swartz Creek",
-              "value": 168900
+              "value": 204500
             },
             {
               "name": "Davison",
-              "value": 166100
+              "value": 181200
+            },
+            {
+              "name": "Swartz Creek",
+              "value": 174200
             },
             {
               "name": "Burton",
-              "value": 131200
+              "value": 141600
             },
             {
               "name": "Clio",
-              "value": 119100
+              "value": 138200
             },
             {
               "name": "Montrose",
-              "value": 109700
+              "value": 113300
             },
             {
               "name": "Mount Morris",
-              "value": 79500
+              "value": 86600
             },
             {
               "name": "Flint",
-              "value": 47600
+              "value": 53500
             }
           ]
         },
@@ -590,12 +590,12 @@
               "value": 91
             },
             {
-              "name": "Burton",
-              "value": 76
+              "name": "Flushing",
+              "value": 78
             },
             {
-              "name": "Flushing",
-              "value": 72
+              "name": "Burton",
+              "value": 76
             },
             {
               "name": "Swartz Creek",
@@ -603,27 +603,27 @@
             },
             {
               "name": "Fenton",
-              "value": 65
+              "value": 63
             },
             {
-              "name": "Mount Morris",
-              "value": 59
+              "name": "Grand Blanc",
+              "value": 60
             },
             {
               "name": "Montrose",
               "value": 58
             },
             {
-              "name": "Grand Blanc",
+              "name": "Mount Morris",
               "value": 56
             },
             {
-              "name": "Flint",
+              "name": "Clio",
               "value": 55
             },
             {
-              "name": "Clio",
-              "value": 50
+              "name": "Flint",
+              "value": 54
             },
             {
               "name": "Davison",
@@ -637,7 +637,7 @@
           "values": [
             {
               "name": "Burton",
-              "value": 17
+              "value": 16
             },
             {
               "name": "Genesee County",
@@ -654,20 +654,20 @@
               "value": 34
             },
             {
-              "name": "Mount Morris",
-              "value": 28
-            },
-            {
               "name": "Montrose",
-              "value": 26
+              "value": 29
             },
             {
-              "name": "Burton",
-              "value": 17
+              "name": "Mount Morris",
+              "value": 23
             },
             {
               "name": "Clio",
-              "value": 17
+              "value": 20
+            },
+            {
+              "name": "Burton",
+              "value": 16
             },
             {
               "name": "Davison",
@@ -675,23 +675,23 @@
             },
             {
               "name": "Swartz Creek",
+              "value": 11
+            },
+            {
+              "name": "Grand Blanc",
               "value": 9
+            },
+            {
+              "name": "Fenton",
+              "value": 7
             },
             {
               "name": "Flushing",
               "value": 7
             },
             {
-              "name": "Grand Blanc",
-              "value": 7
-            },
-            {
-              "name": "Fenton",
-              "value": 6
-            },
-            {
               "name": "Linden",
-              "value": 5
+              "value": 4
             }
           ]
         },
@@ -701,7 +701,7 @@
           "values": [
             {
               "name": "Burton",
-              "value": 8
+              "value": 7
             },
             {
               "name": "Genesee County",
@@ -715,11 +715,7 @@
           "cities": [
             {
               "name": "Flint",
-              "value": 17
-            },
-            {
-              "name": "Mount Morris",
-              "value": 12
+              "value": 15
             },
             {
               "name": "Davison",
@@ -730,32 +726,36 @@
               "value": 10
             },
             {
-              "name": "Burton",
-              "value": 8
-            },
-            {
               "name": "Fenton",
+              "value": 9
+            },
+            {
+              "name": "Mount Morris",
               "value": 8
             },
             {
-              "name": "Clio",
+              "name": "Burton",
               "value": 7
             },
             {
               "name": "Flushing",
-              "value": 6
+              "value": 7
             },
             {
-              "name": "Grand Blanc",
+              "name": "Clio",
               "value": 4
             },
             {
+              "name": "Grand Blanc",
+              "value": 3
+            },
+            {
               "name": "Montrose",
-              "value": 2
+              "value": 3
             },
             {
               "name": "Swartz Creek",
-              "value": 2
+              "value": 1
             }
           ]
         },
@@ -765,7 +765,7 @@
           "values": [
             {
               "name": "Burton",
-              "value": 42.5
+              "value": 43.7
             },
             {
               "name": "Genesee County",
@@ -773,60 +773,60 @@
             },
             {
               "name": "Michigan",
-              "value": 40.1
+              "value": 40.2
             }
           ],
           "cities": [
             {
-              "name": "Swartz Creek",
-              "value": 45.8
-            },
-            {
               "name": "Clio",
-              "value": 44.8
+              "value": 47.9
             },
             {
-              "name": "Davison",
-              "value": 43.3
+              "name": "Swartz Creek",
+              "value": 46.2
             },
             {
               "name": "Burton",
-              "value": 42.5
+              "value": 43.7
             },
             {
-              "name": "Linden",
-              "value": 39.7
+              "name": "Davison",
+              "value": 42.2
             },
             {
               "name": "Flushing",
-              "value": 39.5
-            },
-            {
-              "name": "Fenton",
-              "value": 38.2
-            },
-            {
-              "name": "Flint",
-              "value": 36.2
+              "value": 39.6
             },
             {
               "name": "Grand Blanc",
-              "value": 36.2
+              "value": 39.3
+            },
+            {
+              "name": "Fenton",
+              "value": 38.8
+            },
+            {
+              "name": "Linden",
+              "value": 37.7
+            },
+            {
+              "name": "Flint",
+              "value": 36.9
             },
             {
               "name": "Mount Morris",
-              "value": 32.8
+              "value": 33.0
             },
             {
               "name": "Montrose",
-              "value": 32.0
+              "value": 31.1
             }
           ]
         }
       ]
     }
   ],
-  "source": "U.S. Census Bureau, American Community Survey 2023 5-year estimates; Decennial Census (2010, 2020) for the population trend",
+  "source": "U.S. Census Bureau, American Community Survey 2024 5-year estimates; Decennial Census (2010, 2020) for the population trend",
   "links": [
     {
       "text": "Census QuickFacts: Burton city, MI",

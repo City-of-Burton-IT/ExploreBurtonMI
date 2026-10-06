@@ -84,16 +84,25 @@ sections, priorities) lives in `public/dashboard-clarity.json` under
 - Dev build: open `#costofliving`, check the compare chart renders four
   columns on a phone width and the explainer reads in order.
 
+## City records (v2, shipped 2026-10-06)
+
+`tools/Export-BsaCostOfLiving.ps1` runs on the IT workstation that holds the
+read-only BS&A credential (`C:\utils\BsaSql`, db_datareader on the Assessing
+database) and writes `tools/data/bsa-residential.json`: residential parcel
+count, median SEV and taxable value, principal-residence-exemption count, and
+the median arm's-length sale price per calendar year (assessor terms code 03,
+price over $10,000). The fetch tool reads it with `--city-file` (default when
+the file exists), validates the shape at the boundary, and adds two stats
+("Typical home sale price" benchmarked against the Census estimate, "Homes
+with a principal residence exemption"), a sales trend chart, two explainer
+items, and a note. Aggregates only, never parcel-level.
+
 ## Dependencies / open items
 
-- BS&A read-only access (`C:\utils\BsaSql`) could add City-sourced context in
-  v2: median taxable value and median City tax bill for residential parcels
-  (Assessing/Tax), typical water and sewer bill (Utility Billing), and
-  arm's-length sale prices as a cross-check on the ACS owner-estimated home
-  value. Aggregates only, never parcel-level, and framed as City records
-  beside Census estimates.
-- Refresh the Housing dashboard to the 2024 ACS vintage so the two panels
-  agree on median home value and rent.
+- Typical water and sewer bill needs a read-only grant on the Utility Billing
+  database before it can join the City-records section.
+- Housing and Demographics were refreshed to the 2024 ACS vintage alongside
+  this work so the three panels agree on home value and rent.
 
 ## Refresh recipe
 
@@ -101,5 +110,7 @@ sections, priorities) lives in `public/dashboard-clarity.json` under
 CENSUS_API_KEY=... python tools/fetch_costofliving.py --year 2025 --rpp-year 2025
 ```
 
-Update `tools/data/bea-rpp.json` first if FRED is still unreachable, then
-bump `public/freshness.json` and re-read the clarity copy for stale numbers.
+Update `tools/data/bea-rpp.json` first if FRED is still unreachable, re-run
+`tools/Export-BsaCostOfLiving.ps1 -Database 'D001City Of Burton <year>'` on the
+workstation with the BS&A credential, then bump `public/freshness.json` and
+re-read the clarity copy for stale numbers.
