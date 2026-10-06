@@ -393,11 +393,11 @@
         { "text": "Michigan Community Financials", "href": "https://micommunityfinancials.michigan.gov/#!/dashboard/CITY/2612060" }
       ]
     },
-    "headline": "Burton adopted a $67.7 million all-funds plan for FY2026–27; FY2025 General Fund revenues exceeded expenditures.",
+    "headline": "Burton's General Ledger carries a $63.7 million all-funds adopted plan for FY2026–27; FY2025 audited General Fund revenues exceeded expenditures.",
     "summary": {
       "heading": "Why this matters",
       "body": [
-        "A budget is a plan, while audited figures show what actually occurred. The $67.7 million total covers all City funds; General Fund figures cover the main operating fund and should not be compared as if they share the same boundary."
+        "A budget is a plan, while audited figures show what actually occurred. The $63.7 million total is the sum of original appropriations across all City funds as entered in the City's General Ledger; General Fund figures cover the main operating fund and should not be compared as if they share the same boundary."
       ]
     },
     "responsibility": "City Council adopts the budget, staff administers it, and independent audit reporting records actual results. Restricted funds cannot automatically be used for any purpose.",
@@ -413,9 +413,9 @@
       "General Fund reserve": { "priority": true }
     },
     "chartOverrides": {
-      "Revenue by source (FY2025 audited, governmental funds, $M)": { "takeaway": "This audited chart covers governmental-fund revenue, not the $67.7 million all-funds plan." },
-      "FY2026-27 adopted budget by fund (all funds)": { "takeaway": "The adopted plan distributes spending across funds with legally or operationally distinct purposes." },
-      "General Fund spending mix, FY2026-27 (plan)": { "takeaway": "This chart shows planned General Fund spending, not final audited expenditures." },
+      "Revenue by source (FY2025 audited, governmental funds, $M)": { "takeaway": "This audited chart covers governmental-fund revenue, not the $63.7 million all-funds plan." },
+      "FY2026-27 adopted budget by fund (all funds)": { "takeaway": "Streets, Police, Water and Sewer funds carry most of the plan; the General Fund is about one-sixth of all-funds spending." },
+      "General Fund spending mix, FY2026-27 (plan)": { "takeaway": "Nearly a third of the General Fund plan is transfers that support Motor Pool, Fire, Police and Seniors; City Hall is the largest department." },
       "Total taxable value (audited, $M)": { "takeaway": "Taxable value increased across the displayed audited years." },
       "General Fund revenues (audited, $M)": { "takeaway": "Audited General Fund revenue changed over time and is separate from all-funds budget totals." },
       "General Fund expenditures (audited, $M)": { "takeaway": "Audited General Fund expenditures were below revenues in the latest displayed year." },
@@ -426,7 +426,7 @@
     "sections": [
       {
         "heading": "FY2026–27 adopted plan",
-        "stats": ["taxable-value", "full-time-staff"],
+        "stats": ["general-fund-budget", "taxable-value", "full-time-staff"],
         "charts": ["fy2026-27-adopted-budget-by-fund-all-funds", "general-fund-spending-mix-fy2026-27-plan"]
       },
       {
