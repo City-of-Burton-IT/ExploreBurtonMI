@@ -42,15 +42,26 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-07 16:30 (git log, gh issue list, live Form read back, review page fetched).
+Last verified: 2026-10-07 17:30 (git log, gh issue list, PR #168 merged, review page fetched 200).
 
-**Status:** Git range `2c93c43..2de9e25` on `main`: PRs 128 through 163, all squash-merged
-with auto-merge, Pages deploys green. PR #164 (`feat/city-records-feeds`, two commits) has
-auto-merge on and carries the three #160 feeds; required checks are web, python, pin-editor
-(CodeQL can stall docs-only PRs, merge by hand once those pass). Suites at the PR head:
-pytest tools 325 plus pipeline 58 passed, vitest 524 passed, svelte-check clean, production
-build clean, browser check on `vite preview` passed for all three sections. The mirror
-auto-syncs within 30 minutes of a merge.
+**Status:** Git range `2c93c43..cf45683` on `main`: PRs 128 through 168, all squash-merged
+with auto-merge, Pages deploys green. Required checks are web, python, pin-editor (CodeQL
+can stall docs-only PRs, merge by hand once those pass). Suites at `cf45683`: pytest
+pipeline plus tools 396 passed; vitest, svelte-check and the production build were last run
+green at PR #164. The mirror auto-syncs within 30 minutes of a merge.
+
+**2026-10-07 evening (PR #168, #161):** the traffic overlay now names each MDOT segment
+from the nearest named road line within 40 m with a matching bearing, PASER lines first
+(`public/paser-roads.geojson`) then OpenStreetMap named highways from Overpass, with the
+county count points as the fallback. Named segments went from 61 to 341 of 342; I-69, I-475
+and the ramps read as such; the I-475 segment the county match called "Grand Traverse" is
+fixed, and 23 county-point mis-names on local streets with it. `tools/fetch_traffic.py
+--year` selects the MDOT layer; `extract_crashes.py` reads `mdot_year` from the summary;
+the Roadway Safety busiest road is now I-69 (76,430 a day). `FacilityType` is only 2 or 4
+in this layer, so it cannot identify freeways. Overpass answers 406 to the library's default
+browser User-Agent; the tool sends a project one. Still open on #161: crashes per corridor.
+Dependabot reported two critical Capacitor alerts (fixed in 8.4.3, needs an Android rebuild)
+and one high `sharp` alert; filed as #169, not bumped.
 
 **2026-10-07 afternoon (PR #164, the #160 feeds):** Property Taxes gained "How collections
 compare, 2021 to 2026" (summer paid by the due date 88.8 to 90.3 percent every year, within
@@ -154,6 +165,11 @@ by October 16, punch list October 17, Mayor decision October 20) with the Explor
 preview announcement folded in; HUMAN-REQUIRED: the user sends it. Project Report Form
 paragraph updated and the Word file re-exported. #150 prep: one-page
 `planning/mayor-review/CONTROLLER-MAYOR-REVIEW-SHEET.md`. No Form responses yet (#126).
+Evening session: nothing was sent or posted. The Revize ticket package is staged at
+`C:\utils\revize-ticket-151706\` (request text plus the four attachments, the redirect
+CSV renamed DRAFT) with `README-human-steps.md` listing the four human steps in order
+(City-PC certificate check, send the group message, post on ticket #151706 and record the
+date on #124 and #125, book the #150 walkthrough).
 
 **Leadership documents (2026-10-07, local only under `planning/mayor-review/`, never
 committed):** `Explore Burton City Data Briefing 2026-10-07.docx` (data provenance per data
@@ -177,14 +193,15 @@ teardown), #139 (winter tax roll rerun, December), #155 (DPW review of the 2026 
 violation before the panel refresh), #80 (capital data, partly done), #17 (City photos), issue
 44 (zoning source), #19 (Fire export), #94 (deferred), plus the accounts and messaging
 epics 69, 70, 72, and #150 (ledger-data review with the Controller and Mayor), #151 (HR
-headcount code map), #152 (water meter unit).
+headcount code map), #152 (water meter unit), #161 (crashes per corridor remains), #169
+(Dependabot: Capacitor 8.4.3 and sharp 0.35.5 bumps, Android rebuild).
 
 **Blockers:** Headcount feed needs the HR status and employment-type code map; water
 usage in volume needs the meter unit confirmed; the rest wait on people outside IT.
 The one-approval branch policy stays deferred until a second maintainer exists.
 
 **Public summary:** Explore Burton is a public, static civic map, dashboard, and
-Resident Guide at <https://explore.burtonmi.gov>, with twenty-four dashboards, several
+Resident Guide at <https://explore.burtonmi.gov>, with twenty-five dashboards, several
 of them now built from the City's own financial, assessing, tax and utility records,
 moderated resident submissions, installable web and Android apps, and a reconciled
 dependency and branch baseline as of October 2026.
