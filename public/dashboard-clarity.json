@@ -1090,7 +1090,7 @@
     "summary": {
       "heading": "Why this matters",
       "body": [
-        "Countywide monitors provide the best available local air-quality context but do not measure every Burton neighborhood. Unmonitored days are not counted as Good or unhealthy days."
+        "Countywide monitors provide the best available local air-quality context but do not measure every Burton neighborhood. Unmonitored days are not counted as Good or unhealthy days. Flood-insurance figures come from FEMA's National Flood Insurance Program and count only properties with a federal flood policy, so they understate how many homes are exposed."
       ]
     },
     "responsibility": "EPA and Michigan environmental agencies monitor and regulate air quality. Burton can reduce local emissions but does not operate the countywide monitoring network.",
@@ -1112,7 +1112,11 @@
       },
       "Unhealthy days": {
         "priority": true
-      }
+      },
+      "Flood insurance policies in force": {},
+      "Homes in high-risk zones with a policy": {},
+      "Flood claims paid since 1978": {},
+      "Typical annual premium": {}
     },
     "chartOverrides": {
       "Good air-quality days by year (higher is better)": {
@@ -1126,6 +1130,12 @@
       },
       "Days set by each pollutant (2025)": {
         "takeaway": "The pollutant named for a day is the one that determined that day's AQI."
+      },
+      "Flood insurance claims by decade": {
+        "takeaway": "The 1980s and 2000s account for the most federal flood-insurance claims on record in Burton, with 28 and 26 claims."
+      },
+      "Where flood policies sit": {
+        "takeaway": "Most current federal flood policies in Burton are in mapped high-risk (A and V) zones."
       }
     },
     "tableIds": {},
@@ -1142,6 +1152,19 @@
         "charts": [
           "air-quality-days-by-level-2025",
           "days-set-by-each-pollutant-2025"
+        ]
+      },
+      {
+        "heading": "Flood risk and insurance",
+        "stats": [
+          "flood-insurance-policies-in-force",
+          "homes-in-high-risk-zones-with-a-policy",
+          "flood-claims-paid-since-1978",
+          "typical-annual-premium"
+        ],
+        "charts": [
+          "flood-insurance-claims-by-decade",
+          "where-flood-policies-sit"
         ]
       }
     ]

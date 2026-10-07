@@ -21,6 +21,26 @@
       "label": "Unhealthy days",
       "value": "3",
       "hint": "any sensitive+ level, 2025"
+    },
+    {
+      "label": "Flood insurance policies in force",
+      "value": "31",
+      "hint": "FEMA NFIP, as of 2026-10-07"
+    },
+    {
+      "label": "Homes in high-risk zones with a policy",
+      "value": "28",
+      "hint": "90% of policies in force"
+    },
+    {
+      "label": "Flood claims paid since 1978",
+      "value": "82",
+      "hint": "$351,710 paid in total"
+    },
+    {
+      "label": "Typical annual premium",
+      "value": "$779",
+      "hint": "median of policies in force"
     }
   ],
   "charts": [
@@ -163,9 +183,55 @@
           "value": 83
         }
       ]
+    },
+    {
+      "type": "bars",
+      "title": "Flood insurance claims by decade",
+      "unit": "",
+      "series": [
+        {
+          "label": "1970s",
+          "value": 2
+        },
+        {
+          "label": "1980s",
+          "value": 28
+        },
+        {
+          "label": "1990s",
+          "value": 6
+        },
+        {
+          "label": "2000s",
+          "value": 26
+        },
+        {
+          "label": "2010s",
+          "value": 15
+        },
+        {
+          "label": "2020s",
+          "value": 5
+        }
+      ]
+    },
+    {
+      "type": "donut",
+      "title": "Where flood policies sit",
+      "unit": "",
+      "series": [
+        {
+          "label": "High risk (A and V zones)",
+          "value": 28
+        },
+        {
+          "label": "Moderate or low risk (B, C, X)",
+          "value": 3
+        }
+      ]
     }
   ],
-  "source": "U.S. EPA AirData, Annual Air Quality Index (AQI) by County, for Genesee County, MI. The AQI summarizes ground-level ozone and particle pollution into a 0-500 scale (0-50 good, 51-100 moderate, 101-150 unhealthy for sensitive groups).",
+  "source": "U.S. EPA AirData, Annual Air Quality Index (AQI) by County, for Genesee County, MI. The AQI summarizes ground-level ozone and particle pollution into a 0-500 scale (0-50 good, 51-100 moderate, 101-150 unhealthy for sensitive groups). Flood insurance: FEMA OpenFEMA NFIP Policies and Claims v3 for the City of Burton, aggregates only, as of 2026-10-07.",
   "links": [
     {
       "text": "Live air quality (AirNow)",
@@ -182,11 +248,17 @@
     {
       "text": "Michigan EGLE (environment)",
       "href": "https://www.michigan.gov/egle"
+    },
+    {
+      "text": "FEMA Flood Map Service Center",
+      "href": "https://msc.fema.gov/portal/home"
     }
   ],
   "notes": [
     "Air-quality figures are for Genesee County (air monitors are not sited per city); Burton is within the county.",
     "The AQI is a daily 0-500 index: 0-50 good, 51-100 moderate, 101-150 unhealthy for sensitive groups. 'Days set by each pollutant' shows what drove the daily index most often, usually fine particles (PM2.5) or ozone.",
-    "Drinking water, live air readings, and environmental-justice screening are linked above (live or detailed data lives better at the source than in a yearly snapshot)."
+    "Drinking water, live air readings, and environmental-justice screening are linked above (live or detailed data lives better at the source than in a yearly snapshot).",
+    "National Flood Insurance Program (NFIP) figures cover only properties with a federal flood policy, so these counts are not the number of homes at risk. The map's Flood zones (FEMA) overlay shows the mapped zones.",
+    "Flood claims are historical payments on record; amounts are not adjusted for inflation."
   ]
 }
