@@ -14,6 +14,7 @@
 # Uses the shared tools/lib helpers (HTTP retry, atomic writes).
 from __future__ import annotations
 
+import argparse
 import sys
 from collections import defaultdict
 
@@ -49,15 +50,26 @@ def _get(url: str):
     return get_json(url, timeout=60)
 
 
+class LeadUnavailable(RuntimeError):
+    """The lead (PB90) result could not be obtained: either the Envirofacts fetch
+    failed after retries, or it succeeded and returned no PB90 rows. Either way
+    the panel must not be rebuilt without the stat (issue #140): on 2026-10-06 a
+    transient failure was swallowed here and the regenerated panel silently
+    dropped the headline residents look for."""
+
+
 def fetch_lead():
     """Latest Lead & Copper Rule 90th-percentile LEAD result (PB90) for Burton, with
     the monitoring-period range and the peak across periods. Copper (CU90) is not
-    reported for Burton in SDWIS, so it is omitted rather than shown as missing."""
+    reported for Burton in SDWIS, so it is omitted rather than shown as missing.
+
+    Raises LeadUnavailable rather than returning None: a missing lead stat is a
+    build failure, not an optional extra."""
     try:
         samples = {s["sample_id"]: s for s in _get(f"{EF}/LCR_SAMPLE/PWSID/{PWSID}/JSON")}
         results = _get(f"{EF}/LCR_SAMPLE_RESULT/PWSID/{PWSID}/JSON")
-    except Exception:
-        return None
+    except Exception as exc:
+        raise LeadUnavailable(f"Envirofacts LCR fetch failed for {PWSID}: {exc}") from exc
     lead = []
     for r in results:
         if r.get("contaminant_code") != "PB90":
@@ -68,7 +80,10 @@ def fetch_lead():
         except (TypeError, ValueError):
             continue
     if not lead:
-        return None
+        raise LeadUnavailable(
+            f"Envirofacts returned {len(results)} LCR_SAMPLE_RESULT rows for {PWSID} "
+            f"but none with contaminant_code PB90 (checked "
+            f"{EF}/LCR_SAMPLE_RESULT/PWSID/{PWSID}/JSON)")
     lead.sort()
     date, value, unit = lead[-1]
     return {"value": value, "unit": unit, "last_year": date[:4],
@@ -76,7 +91,8 @@ def fetch_lead():
             "peak": max(v for _, v, _ in lead)}
 
 
-def main() -> None:
+def main(argv: list[str] | None = None) -> None:
+    args = _parse_args(sys.argv[1:] if argv is None else argv)
     ws = _get(f"{EF}/WATER_SYSTEM/PWSID/{PWSID}/JSON")
     if not ws:
         sys.exit(f"No WATER_SYSTEM record for {PWSID}")
@@ -119,7 +135,18 @@ def main() -> None:
 
     # Lead & Copper Rule: the 90th-percentile lead result, a headline residents
     # (especially Flint-adjacent) care about. Shown prominently after the source.
-    lead = fetch_lead()
+    try:
+        lead = fetch_lead()
+    except LeadUnavailable as exc:
+        if not args.allow_missing_lead:
+            # Stop before write_json: the committed panel (with its last lead
+            # result) stays in place and the caller sees why.
+            sys.exit(f"fetch_water: {exc}\n"
+                     f"Not writing {OUT}; the committed panel keeps its last lead result. "
+                     f"Pass --allow-missing-lead only if EPA has stopped reporting PB90.")
+        print(f"WARNING: {exc}; building without the lead stat (--allow-missing-lead)",
+              file=sys.stderr)
+        lead = None
     if lead:
         stats.insert(3, {
             "label": "Lead (90th percentile)",
@@ -183,6 +210,14 @@ def main() -> None:
     print(f"  violations: total={total} health-based={health} open={open_count}")
     print(f"  by year: {dict(sorted(by_year.items()))}")
     print(f"  by category: {dict(by_cat)}")
+
+
+def _parse_args(argv: list[str]) -> argparse.Namespace:
+    ap = argparse.ArgumentParser(description="Build public/info-water.json from EPA SDWIS.")
+    ap.add_argument("--allow-missing-lead", action="store_true",
+                    help="build the panel even if no PB90 lead result is available "
+                         "(default: exit non-zero and leave the committed file untouched)")
+    return ap.parse_args(argv)
 
 
 if __name__ == "__main__":
