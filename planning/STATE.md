@@ -42,7 +42,7 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-07 15:30 (git log, gh issue list, exporters run against the read-only login).
+Last verified: 2026-10-07 16:30 (git log, gh issue list, live Form read back, review page fetched).
 
 **Status:** Git range `2c93c43..2de9e25` on `main`: PRs 128 through 163, all squash-merged
 with auto-merge, Pages deploys green. PR #164 (`feat/city-records-feeds`, two commits) has
@@ -131,24 +131,29 @@ API 36). Internal mirror auto-syncs: scheduled task `ExploreBurton-MirrorSync` (
 every 30 minutes while logged on) deploys from its own clone when `origin/main` moves;
 logs at `C:\utils\Sync-ExploreMirror.log`.
 
-**Review page and feedback plan (changed 2026-10-07 afternoon):** the review page is still
+**Review page and feedback plan (ready to send, 2026-10-07 evening):** the review page is
 live at the internal mirror `/review/` and no link has gone out. Decision: one message to
 the Mayor AND all department heads with the single link and a one-week window, punch list
-from the Form, then the Mayor's go or no-go; the Mayor-only email in
-`planning/mayor-review/MAYOR-EMAIL.md` is superseded (rewrite it for the group and fill the
-date). The Form (Ryan's account, City sign-in, names recorded, multiple responses) is two
-Likert grids with Approve / Needs a change / I have a question columns, two comment boxes,
-two readiness questions and "Anything else?". Four edits are agreed but NOT yet made: a
-required "Which department are you with?" choice at the top; a row "Your department's page
-and contact details" in the website grid; the two comment boxes reworded to ask which area
-and what is needed, required, "type none if nothing"; a long-text "Your top three changes,
-in order (optional)" before the last question. The 2026-10-07 attempt through the Chrome
-extension failed because the Forms editor never reports idle (only javascript_tool works,
-no screenshots); the direct editor URL is `DesignPageV2.aspx?subpage=design&FormId=<the
-ResponsePage id in planning/mayor-review/set-form.py>`. Also before sending: the review
-page's "known issues" box still describes July and must be refreshed, and the page should
-be opened once on a standard City PC to confirm no certificate warning. No Form responses
-yet (#126).
+from the Form, then the Mayor's go or no-go. Done this session: the four Form edits are
+made and verified in the live Form (required "Which department are you with?" first, 13
+departments plus Other; row "Your department's page and contact details" in the website
+grid; both comment boxes reworded to "which area, and what is needed? Type none if
+nothing" and Required; long-text "Your top three changes, in order (optional)" before
+"Anything else?"; description line updated to match). `planning/mayor-review/FORM-QUESTIONS.md`
+mirrors the live form and records the editing recipe (Playwright `connect_over_cdp` to the
+signed-in Chrome via `DevToolsActivePort`; the claude-in-chrome extension and the
+chrome-devtools MCP both fail on this editor). The review page's "known issues" box now
+describes the October status and was redeployed with the new wrapper
+`C:\utils\Run-DeployMayorReviewAsAdmin.ps1` (the bare `Deploy-MayorReview.ps1` fails from
+the Claude shell with robocopy exit 16 on the admin share); `https://explore.burton.local/review/`
+serves it (200). Certificate check from the IT workstation: `CN=explore.burton.local`
+issued by `burton-BURSUBCA-CA`, chains to `BURCA-CA`, no policy errors, valid to
+2028-07-15. HUMAN-REQUIRED: open the page once on a standard City PC to confirm the same.
+`planning/mayor-review/MAYOR-EMAIL.md` is rewritten for the group (send October 9, feedback
+by October 16, punch list October 17, Mayor decision October 20) with the Explore Burton
+preview announcement folded in; HUMAN-REQUIRED: the user sends it. Project Report Form
+paragraph updated and the Word file re-exported. #150 prep: one-page
+`planning/mayor-review/CONTROLLER-MAYOR-REVIEW-SHEET.md`. No Form responses yet (#126).
 
 **Leadership documents (2026-10-07, local only under `planning/mayor-review/`, never
 committed):** `Explore Burton City Data Briefing 2026-10-07.docx` (data provenance per data
