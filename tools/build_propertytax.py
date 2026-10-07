@@ -30,6 +30,7 @@ from __future__ import annotations
 import json
 import os
 import sys
+from datetime import datetime
 from typing import Any
 
 from lib.iox import write_json
@@ -151,6 +152,118 @@ def build_collection(c: dict, year: int) -> tuple[list, list]:
     return stats, charts
 
 
+def validate_collection_history(h: object, where: str = "tax-roll file") -> dict | None:
+    """The collection-history block is optional; strict when present."""
+    if h is None:
+        return None
+    if not isinstance(h, dict):
+        sys.exit(f"{where}: collection_history must be an object")
+    for key in ("as_of", "from", "to", "years"):
+        if key not in h:
+            sys.exit(f"{where}: collection_history.{key} missing")
+    if not isinstance(h["as_of"], str):
+        sys.exit(f"{where}: collection_history.as_of must be a string")
+    if not isinstance(h["from"], int) or not isinstance(h["to"], int):
+        sys.exit(f"{where}: collection_history.from/to must be integers")
+    years = h["years"]
+    if not isinstance(years, list) or len(years) < 4:
+        sys.exit(f"{where}: collection_history.years must list at least four years")
+
+    def check_season(season: object, label: str) -> None:
+        if not isinstance(season, dict):
+            sys.exit(f"{where}: {label} must be an object")
+        if not isinstance(season.get("due"), str) or len(season["due"]) != 10:
+            sys.exit(f"{where}: {label}.due must be a 10-character date string")
+        if not isinstance(season.get("parcels_billed"), int) or season["parcels_billed"] < 1000:
+            sys.exit(f"{where}: {label}.parcels_billed must be an integer >= 1000")
+        if not isinstance(season.get("billed"), int) or season["billed"] <= 0:
+            sys.exit(f"{where}: {label}.billed must be a positive integer")
+        owed = season.get("owed")
+        if not isinstance(owed, int) or not 0 <= owed <= season["billed"]:
+            sys.exit(f"{where}: {label}.owed must be between 0 and billed")
+        paid_by_due = season.get("paid_by_due")
+        if not isinstance(paid_by_due, int) or not 0 <= paid_by_due <= 1.05 * season["billed"]:
+            sys.exit(f"{where}: {label}.paid_by_due out of plausible range")
+        within_90 = season.get("paid_within_90")
+        if within_90 is not None and (not isinstance(within_90, int) or within_90 < paid_by_due):
+            sys.exit(f"{where}: {label}.paid_within_90 must be None or >= paid_by_due")
+        to_date = season.get("paid_to_date")
+        if not isinstance(to_date, int) or to_date < paid_by_due:
+            sys.exit(f"{where}: {label}.paid_to_date must be an integer >= paid_by_due")
+
+    tax_years = []
+    for y in years:
+        if not isinstance(y, dict) or not isinstance(y.get("tax_year"), int):
+            sys.exit(f"{where}: collection_history.years entries need an integer tax_year")
+        tax_years.append(y["tax_year"])
+        check_season(y.get("summer"), f"collection_history.years[{y['tax_year']}].summer")
+        winter = y.get("winter")
+        if winter is not None:
+            check_season(winter, f"collection_history.years[{y['tax_year']}].winter")
+
+    if len(set(tax_years)) != len(tax_years) or tax_years != sorted(tax_years):
+        sys.exit(f"{where}: collection_history.years tax_years must be unique and ascending")
+    if tax_years != list(range(h["from"], h["to"] + 1)):
+        sys.exit(f"{where}: collection_history.years must run from 'from' to 'to' with no gap")
+    return h
+
+
+def _due_text(due: str) -> str:
+    rendered = datetime.strptime(due, "%Y-%m-%d").strftime("%B %d")
+    month, day = rendered.split(" ")
+    return f"{month} {day.lstrip('0')}"
+
+
+def build_collection_history(h: dict) -> tuple[list, list]:
+    def share(key: str, season: dict) -> float:
+        return round(100 * season[key] / season["billed"], 1)
+
+    years = h["years"]
+    l1 = {
+        "label": "Summer, paid by the due date",
+        "points": [{"x": str(y["tax_year"]), "y": share("paid_by_due", y["summer"])} for y in years],
+    }
+    l2 = {
+        "label": "Summer, paid within 90 days",
+        "points": [
+            {"x": str(y["tax_year"]), "y": share("paid_within_90", y["summer"])}
+            for y in years if y["summer"]["paid_within_90"] is not None
+        ],
+    }
+    l3 = {
+        "label": "Winter, paid by the due date",
+        "points": [
+            {"x": str(y["tax_year"]), "y": share("paid_by_due", y["winter"])}
+            for y in years if y["winter"] is not None
+        ],
+    }
+    lines = [l1, l2] + ([l3] if l3["points"] else [])
+    chart = {
+        "type": "trend",
+        "title": f"How collections compare, {h['from']} to {h['to']}",
+        "unit": "%",
+        "lines": lines,
+    }
+
+    complete = [y for y in years if y["summer"]["paid_within_90"] is not None]
+    shares = [share("paid_by_due", y["summer"]) for y in complete]
+    lo, hi = min(shares), max(shares)
+    value = f"{lo:.0f}%" if lo == hi else f"{lo:.0f}% to {hi:.0f}%"
+    latest = years[-1]
+    latest_share = share("paid_by_due", latest["summer"])
+    to_date_share = share("paid_to_date", latest["summer"])
+    stat = {
+        "label": "Summer levy paid by the due date",
+        "value": value,
+        "hint": (
+            f"range across the {complete[0]['tax_year']} to {complete[-1]['tax_year']} summers; "
+            f"{latest['tax_year']} came in at {latest_share}% by {_due_text(latest['summer']['due'])} "
+            f"and {to_date_share}% so far"
+        ),
+    }
+    return [stat], [chart]
+
+
 def build_city_levies(taxroll: dict) -> list:
     by_code = {ln["code"]: ln for ln in taxroll["city_lines"]}
     year = taxroll["tax_year"]
@@ -239,6 +352,8 @@ def main() -> int:
     by_id = {lv["id"]: lv["mills"] for lv in levies}
     collection = validate_collection(taxroll.get("collection"), TAXROLL_FILE)
     coll_stats, coll_charts = build_collection(collection, year) if collection else ([], [])
+    history = validate_collection_history(taxroll.get("collection_history"), TAXROLL_FILE)
+    hist_stats, hist_charts = build_collection_history(history) if history else ([], [])
     uniform = PUBLISHED_2025_CITY_TOTAL + COUNTY + MOTT + ISD + MTA + AIRPORT
     schools_set = round(HOMESTEAD_TOTAL - uniform, 2)  # remainder = schools + State Ed
 
@@ -268,6 +383,7 @@ def main() -> int:
             "hint": "2025 complete-bill rates vary by district",
         },
         *coll_stats,
+        *hist_stats,
         {
             "label": "Median City tax, homestead home",
             "value": f"${round(taxroll['homestead']['median_city_tax']):,}/yr",
@@ -295,6 +411,7 @@ def main() -> int:
          "points": [{"x": yr, "y": v} for yr, v in CITY_MILLAGE_HISTORY]},
         build_levy_chart(taxroll),
         *coll_charts,
+        *hist_charts,
     ]
 
     summary = {
@@ -373,6 +490,11 @@ def main() -> int:
                 "Estimate only. Actual bills can differ because of exact parcel values, exemptions, "
                 "special assessments, administrative fees, and a possible Downtown Development "
                 "Authority levy for affected parcels. Not a tax statement."
+            ),
+            (
+                "Collection history compares each roll year's summer and winter levy with the payments "
+                "received by the due date, within 90 days of it, and to date. Payments are net of "
+                "reversals and refunds, so a year's share can move slightly as bills are adjusted."
             ),
         ],
     }

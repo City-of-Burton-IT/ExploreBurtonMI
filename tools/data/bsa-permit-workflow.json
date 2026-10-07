@@ -1,0 +1,491 @@
+{
+  "_source": {
+    "server": "BURBSA01\\BSA",
+    "database": "D007BURFINAL",
+    "tables": "dbo.Permit, dbo.Inspection (LinkFromType 2 = permit inspections)",
+    "note": "aggregates only; status and result codes decoded from the vendor object model and checked against ResultString on every run"
+  },
+  "extracted": "2026-10-07",
+  "latest_complete_year": 2025,
+  "status_codes": {
+    "0": "Unknown",
+    "1": "Issued",
+    "2": "IssuedExtended",
+    "3": "IssuedInactive",
+    "4": "Denied",
+    "5": "Canceled",
+    "6": "Finaled",
+    "7": "Expired",
+    "8": "HoldFee",
+    "9": "HoldBond",
+    "10": "HoldPrereq",
+    "11": "HoldC404",
+    "12": "HoldDodge",
+    "13": "Hold",
+    "14": "Closed",
+    "15": "HoldIccInf",
+    "16": "HoldBuildingInf",
+    "17": "HoldDeficiency",
+    "18": "HoldContractor",
+    "19": "SuspendedFee",
+    "20": "ReadyToIssue",
+    "21": "HoldForReview",
+    "22": "HoldForInvoice",
+    "23": "HoldForIso",
+    "24": "HoldForProjectRequirement",
+    "25": "SuspendedReview",
+    "26": "HoldBondPayment"
+  },
+  "result_codes": {
+    "0": "None",
+    "1": "Approved",
+    "2": "Disapproved",
+    "3": "Partially Approved",
+    "4": "Not Ready",
+    "5": "Locked Out",
+    "6": "Canceled"
+  },
+  "inspections_by_year": [
+    {
+      "year": 2019,
+      "completed": 1141,
+      "approved": 984,
+      "disapproved": 122,
+      "partially_approved": 33,
+      "not_ready": 0,
+      "locked_out": 1,
+      "canceled": 1,
+      "none": 0
+    },
+    {
+      "year": 2020,
+      "completed": 1271,
+      "approved": 1066,
+      "disapproved": 116,
+      "partially_approved": 64,
+      "not_ready": 1,
+      "locked_out": 0,
+      "canceled": 24,
+      "none": 0
+    },
+    {
+      "year": 2021,
+      "completed": 1346,
+      "approved": 1062,
+      "disapproved": 159,
+      "partially_approved": 91,
+      "not_ready": 10,
+      "locked_out": 1,
+      "canceled": 23,
+      "none": 0
+    },
+    {
+      "year": 2022,
+      "completed": 1277,
+      "approved": 1004,
+      "disapproved": 162,
+      "partially_approved": 82,
+      "not_ready": 4,
+      "locked_out": 1,
+      "canceled": 24,
+      "none": 0
+    },
+    {
+      "year": 2023,
+      "completed": 1394,
+      "approved": 1125,
+      "disapproved": 174,
+      "partially_approved": 79,
+      "not_ready": 0,
+      "locked_out": 0,
+      "canceled": 16,
+      "none": 0
+    },
+    {
+      "year": 2024,
+      "completed": 1704,
+      "approved": 1425,
+      "disapproved": 185,
+      "partially_approved": 76,
+      "not_ready": 9,
+      "locked_out": 0,
+      "canceled": 9,
+      "none": 0
+    },
+    {
+      "year": 2025,
+      "completed": 1424,
+      "approved": 1187,
+      "disapproved": 151,
+      "partially_approved": 63,
+      "not_ready": 7,
+      "locked_out": 0,
+      "canceled": 16,
+      "none": 0
+    },
+    {
+      "year": 2026,
+      "completed": 1048,
+      "approved": 849,
+      "disapproved": 139,
+      "partially_approved": 34,
+      "not_ready": 2,
+      "locked_out": 1,
+      "canceled": 23,
+      "none": 0
+    }
+  ],
+  "inspection_types_latest": {
+    "year": 2025,
+    "minimum_count": 25,
+    "types": [
+      {
+        "type": "FINAL",
+        "completed": 772,
+        "approved": 690,
+        "disapproved": 58,
+        "partially_approved": 17
+      },
+      {
+        "type": "FRAMING",
+        "completed": 200,
+        "approved": 145,
+        "disapproved": 48,
+        "partially_approved": 3
+      },
+      {
+        "type": "FOOTING",
+        "completed": 128,
+        "approved": 113,
+        "disapproved": 8,
+        "partially_approved": 2
+      },
+      {
+        "type": "INSULATION",
+        "completed": 72,
+        "approved": 65,
+        "disapproved": 6,
+        "partially_approved": 1
+      },
+      {
+        "type": "STATUS",
+        "completed": 49,
+        "approved": 12,
+        "disapproved": 9,
+        "partially_approved": 28
+      },
+      {
+        "type": "BACKFILL",
+        "completed": 35,
+        "approved": 31,
+        "disapproved": 0,
+        "partially_approved": 3
+      },
+      {
+        "type": "VISQUEEN",
+        "completed": 31,
+        "approved": 26,
+        "disapproved": 3,
+        "partially_approved": 0
+      }
+    ]
+  },
+  "permits_by_issue_year": [
+    {
+      "year": 2019,
+      "permits": 780,
+      "building": {
+        "permits": 457,
+        "finaled": 370,
+        "closed": 68,
+        "expired": 15,
+        "open": 0,
+        "canceled": 4,
+        "other": 0
+      },
+      "site": {
+        "permits": 286,
+        "finaled": 42,
+        "closed": 229,
+        "expired": 14,
+        "open": 0,
+        "canceled": 1,
+        "other": 0
+      },
+      "other": {
+        "permits": 37,
+        "finaled": 27,
+        "closed": 1,
+        "expired": 8,
+        "open": 0,
+        "canceled": 1,
+        "other": 0
+      }
+    },
+    {
+      "year": 2020,
+      "permits": 578,
+      "building": {
+        "permits": 361,
+        "finaled": 299,
+        "closed": 22,
+        "expired": 30,
+        "open": 1,
+        "canceled": 9,
+        "other": 0
+      },
+      "site": {
+        "permits": 189,
+        "finaled": 18,
+        "closed": 168,
+        "expired": 3,
+        "open": 0,
+        "canceled": 0,
+        "other": 0
+      },
+      "other": {
+        "permits": 28,
+        "finaled": 22,
+        "closed": 0,
+        "expired": 4,
+        "open": 0,
+        "canceled": 2,
+        "other": 0
+      }
+    },
+    {
+      "year": 2021,
+      "permits": 671,
+      "building": {
+        "permits": 373,
+        "finaled": 309,
+        "closed": 16,
+        "expired": 34,
+        "open": 0,
+        "canceled": 14,
+        "other": 0
+      },
+      "site": {
+        "permits": 264,
+        "finaled": 87,
+        "closed": 170,
+        "expired": 4,
+        "open": 0,
+        "canceled": 3,
+        "other": 0
+      },
+      "other": {
+        "permits": 34,
+        "finaled": 24,
+        "closed": 0,
+        "expired": 7,
+        "open": 0,
+        "canceled": 2,
+        "other": 1
+      }
+    },
+    {
+      "year": 2022,
+      "permits": 613,
+      "building": {
+        "permits": 303,
+        "finaled": 264,
+        "closed": 12,
+        "expired": 19,
+        "open": 0,
+        "canceled": 8,
+        "other": 0
+      },
+      "site": {
+        "permits": 279,
+        "finaled": 117,
+        "closed": 141,
+        "expired": 17,
+        "open": 0,
+        "canceled": 4,
+        "other": 0
+      },
+      "other": {
+        "permits": 31,
+        "finaled": 27,
+        "closed": 0,
+        "expired": 0,
+        "open": 4,
+        "canceled": 0,
+        "other": 0
+      }
+    },
+    {
+      "year": 2023,
+      "permits": 1069,
+      "building": {
+        "permits": 335,
+        "finaled": 312,
+        "closed": 7,
+        "expired": 9,
+        "open": 0,
+        "canceled": 7,
+        "other": 0
+      },
+      "site": {
+        "permits": 708,
+        "finaled": 518,
+        "closed": 183,
+        "expired": 6,
+        "open": 0,
+        "canceled": 1,
+        "other": 0
+      },
+      "other": {
+        "permits": 26,
+        "finaled": 16,
+        "closed": 0,
+        "expired": 1,
+        "open": 9,
+        "canceled": 0,
+        "other": 0
+      }
+    },
+    {
+      "year": 2024,
+      "permits": 1022,
+      "building": {
+        "permits": 371,
+        "finaled": 334,
+        "closed": 2,
+        "expired": 28,
+        "open": 3,
+        "canceled": 4,
+        "other": 0
+      },
+      "site": {
+        "permits": 604,
+        "finaled": 410,
+        "closed": 180,
+        "expired": 10,
+        "open": 0,
+        "canceled": 4,
+        "other": 0
+      },
+      "other": {
+        "permits": 47,
+        "finaled": 32,
+        "closed": 0,
+        "expired": 5,
+        "open": 10,
+        "canceled": 0,
+        "other": 0
+      }
+    },
+    {
+      "year": 2025,
+      "permits": 825,
+      "building": {
+        "permits": 418,
+        "finaled": 318,
+        "closed": 15,
+        "expired": 61,
+        "open": 14,
+        "canceled": 7,
+        "other": 3
+      },
+      "site": {
+        "permits": 368,
+        "finaled": 223,
+        "closed": 126,
+        "expired": 15,
+        "open": 1,
+        "canceled": 3,
+        "other": 0
+      },
+      "other": {
+        "permits": 39,
+        "finaled": 14,
+        "closed": 0,
+        "expired": 9,
+        "open": 16,
+        "canceled": 0,
+        "other": 0
+      }
+    },
+    {
+      "year": 2026,
+      "permits": 623,
+      "building": {
+        "permits": 332,
+        "finaled": 144,
+        "closed": 0,
+        "expired": 20,
+        "open": 162,
+        "canceled": 2,
+        "other": 4
+      },
+      "site": {
+        "permits": 273,
+        "finaled": 76,
+        "closed": 13,
+        "expired": 21,
+        "open": 160,
+        "canceled": 3,
+        "other": 0
+      },
+      "other": {
+        "permits": 18,
+        "finaled": 3,
+        "closed": 0,
+        "expired": 0,
+        "open": 15,
+        "canceled": 0,
+        "other": 0
+      }
+    }
+  ],
+  "finished_within_year": {
+    "permit_type": "Building",
+    "through_year": 2024,
+    "years": [
+      {
+        "year": 2019,
+        "permits": 457,
+        "finaled_within_year": 306,
+        "finaled_ever": 373
+      },
+      {
+        "year": 2020,
+        "permits": 361,
+        "finaled_within_year": 230,
+        "finaled_ever": 299
+      },
+      {
+        "year": 2021,
+        "permits": 373,
+        "finaled_within_year": 195,
+        "finaled_ever": 309
+      },
+      {
+        "year": 2022,
+        "permits": 303,
+        "finaled_within_year": 207,
+        "finaled_ever": 265
+      },
+      {
+        "year": 2023,
+        "permits": 335,
+        "finaled_within_year": 261,
+        "finaled_ever": 312
+      },
+      {
+        "year": 2024,
+        "permits": 371,
+        "finaled_within_year": 273,
+        "finaled_ever": 335
+      }
+    ]
+  },
+  "inspections_per_permit": {
+    "year": 2025,
+    "permit_type": "Building",
+    "permits": 418,
+    "inspections": 969
+  }
+}

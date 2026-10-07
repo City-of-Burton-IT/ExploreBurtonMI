@@ -34,6 +34,42 @@ TAXROLL = {
     "homestead": {"parcels": 8994, "median_city_tax": 654.84},
 }
 
+HISTORY = {
+    "as_of": "2026-10-07", "from": 2021, "to": 2026,
+    "note": "test fixture",
+    "years": [
+        {"tax_year": 2021, "database": "D004BURTON21",
+         "summer": {"due": "2021-09-30", "parcels_billed": 13786, "billed": 27299642, "owed": 1711398,
+                    "paid_by_due": 24230848, "paid_within_90": 24972063, "paid_to_date": 25658960},
+         "winter": {"due": "2022-02-28", "parcels_billed": 13820, "billed": 10041630, "owed": 1134668,
+                    "paid_by_due": 8701210, "paid_within_90": 8884819, "paid_to_date": 8908598}},
+        {"tax_year": 2022, "database": "D004BURTON22",
+         "summer": {"due": "2022-09-30", "parcels_billed": 13800, "billed": 28411106, "owed": 1500000,
+                    "paid_by_due": 25266302, "paid_within_90": 26077678, "paid_to_date": 26660251},
+         "winter": {"due": "2023-02-28", "parcels_billed": 13830, "billed": 10200000, "owed": 1100000,
+                    "paid_by_due": 8800000, "paid_within_90": 8950000, "paid_to_date": 9000000}},
+        {"tax_year": 2023, "database": "D004BURTON23",
+         "summer": {"due": "2023-10-02", "parcels_billed": 13850, "billed": 30320886, "owed": 1400000,
+                    "paid_by_due": 27360350, "paid_within_90": 28124178, "paid_to_date": 28576469},
+         "winter": {"due": "2024-02-29", "parcels_billed": 13860, "billed": 10400000, "owed": 1050000,
+                    "paid_by_due": 9000000, "paid_within_90": 9100000, "paid_to_date": 9150000}},
+        {"tax_year": 2024, "database": "D004BURTON24",
+         "summer": {"due": "2024-09-30", "parcels_billed": 13880, "billed": 31598201, "owed": 1300000,
+                    "paid_by_due": 28527361, "paid_within_90": 29236040, "paid_to_date": 29770600},
+         "winter": {"due": "2025-02-28", "parcels_billed": 13890, "billed": 10600000, "owed": 1000000,
+                    "paid_by_due": 9200000, "paid_within_90": 9300000, "paid_to_date": 9350000}},
+        {"tax_year": 2025, "database": "D004BURTON25",
+         "summer": {"due": "2025-09-30", "parcels_billed": 13900, "billed": 33987711, "owed": 1250000,
+                    "paid_by_due": 30330032, "paid_within_90": 31066223, "paid_to_date": 31600586},
+         "winter": {"due": "2026-03-02", "parcels_billed": 13910, "billed": 10800000, "owed": 950000,
+                    "paid_by_due": 9500000, "paid_within_90": 9600000, "paid_to_date": 9650000}},
+        {"tax_year": 2026, "database": "D004BURTON26",
+         "summer": {"due": "2026-09-30", "parcels_billed": 13917, "billed": 35404492, "owed": 3791948,
+                    "paid_by_due": 31453310, "paid_within_90": None, "paid_to_date": 31619539},
+         "winter": None},
+    ],
+}
+
 
 def test_validate_taxroll_accepts_fixture_and_rejects_bad_sums():
     assert pt.validate_taxroll(copy.deepcopy(TAXROLL)) == TAXROLL
@@ -101,3 +137,71 @@ def test_city_millage_history_flat_or_declining():
     vals = [v for _, v in pt.CITY_MILLAGE_HISTORY]
     assert vals[0] >= vals[-1]  # rate has not risen over the decade
     assert len(vals) == 10
+
+
+def test_validate_collection_history_accepts_fixture_and_returns_it():
+    assert pt.validate_collection_history(copy.deepcopy(HISTORY)) == HISTORY
+
+
+def test_validate_collection_history_none_passes_through():
+    assert pt.validate_collection_history(None) is None
+
+
+def test_validate_collection_history_rejects_paid_by_due_over_cap():
+    bad = copy.deepcopy(HISTORY)
+    bad["years"][0]["summer"]["paid_by_due"] = int(bad["years"][0]["summer"]["billed"] * 1.2)
+    with pytest.raises(SystemExit):
+        pt.validate_collection_history(bad)
+
+
+def test_validate_collection_history_rejects_within_90_below_paid_by_due():
+    bad = copy.deepcopy(HISTORY)
+    bad["years"][0]["summer"]["paid_within_90"] = bad["years"][0]["summer"]["paid_by_due"] - 1
+    with pytest.raises(SystemExit):
+        pt.validate_collection_history(bad)
+
+
+def test_validate_collection_history_rejects_gap_in_tax_years():
+    bad = copy.deepcopy(HISTORY)
+    bad["years"][2]["tax_year"] = 2030
+    with pytest.raises(SystemExit):
+        pt.validate_collection_history(bad)
+
+
+def test_build_collection_history_chart_shape():
+    stats, charts = pt.build_collection_history(copy.deepcopy(HISTORY))
+    chart = charts[0]
+    assert chart["type"] == "trend"
+    assert chart["title"] == "How collections compare, 2021 to 2026"
+    assert chart["unit"] == "%"
+    labels = [line["label"] for line in chart["lines"]]
+    assert labels == [
+        "Summer, paid by the due date",
+        "Summer, paid within 90 days",
+        "Winter, paid by the due date",
+    ]
+    by_due, within_90, winter = chart["lines"]
+    assert len(by_due["points"]) == 6
+    assert [p["x"] for p in within_90["points"]] == ["2021", "2022", "2023", "2024", "2025"]
+    assert [p["x"] for p in winter["points"]] == ["2021", "2022", "2023", "2024", "2025"]
+
+
+def test_build_collection_history_stat_format():
+    stats, charts = pt.build_collection_history(copy.deepcopy(HISTORY))
+    stat = stats[0]
+    assert stat["label"] == "Summer levy paid by the due date"
+    assert stat["value"] == "89% to 90%"
+    assert "2021 to 2025 summers" in stat["hint"]
+    assert "2026 came in at" in stat["hint"]
+    assert "September 30" in stat["hint"]
+
+
+def test_build_collection_history_single_value_when_lo_equals_hi():
+    flat = copy.deepcopy(HISTORY)
+    for y in flat["years"]:
+        s = y["summer"]
+        s["paid_by_due"] = int(s["billed"] * 0.9)
+        if s["paid_within_90"] is not None:
+            s["paid_within_90"] = max(s["paid_within_90"], s["paid_by_due"])
+    stats, charts = pt.build_collection_history(flat)
+    assert stats[0]["value"] == "90%"

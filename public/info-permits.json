@@ -37,6 +37,26 @@
       "label": "Permits so far this year",
       "value": "580",
       "hint": "2026, through 2026-09-28; 54 new homes. A partial year, not comparable to full years."
+    },
+    {
+      "label": "Inspections completed last year",
+      "value": "1,424",
+      "hint": "2025: inspections on building and site permits; code-enforcement inspections are not counted"
+    },
+    {
+      "label": "Inspections passed last year",
+      "value": "85%",
+      "hint": "2025: approved share of the 1,401 inspections that were judged (approved, disapproved or partially approved); final inspections 90%"
+    },
+    {
+      "label": "Projects finished within a year",
+      "value": "74%",
+      "hint": "building permits issued in 2024 that reached a final inspection within 12 months; site permits for roofs, fences and sheds are not included"
+    },
+    {
+      "label": "Inspections per building permit",
+      "value": "2.3",
+      "hint": "completed inspections per building permit issued in 2025"
     }
   ],
   "charts": [
@@ -431,6 +451,176 @@
           "y": 42
         }
       ]
+    },
+    {
+      "type": "trend",
+      "title": "Inspection results per year since 2019",
+      "lines": [
+        {
+          "label": "Approved",
+          "points": [
+            {
+              "x": "2019",
+              "y": 984
+            },
+            {
+              "x": "2020",
+              "y": 1066
+            },
+            {
+              "x": "2021",
+              "y": 1062
+            },
+            {
+              "x": "2022",
+              "y": 1004
+            },
+            {
+              "x": "2023",
+              "y": 1125
+            },
+            {
+              "x": "2024",
+              "y": 1425
+            },
+            {
+              "x": "2025",
+              "y": 1187
+            }
+          ]
+        },
+        {
+          "label": "Disapproved",
+          "points": [
+            {
+              "x": "2019",
+              "y": 122
+            },
+            {
+              "x": "2020",
+              "y": 116
+            },
+            {
+              "x": "2021",
+              "y": 159
+            },
+            {
+              "x": "2022",
+              "y": 162
+            },
+            {
+              "x": "2023",
+              "y": 174
+            },
+            {
+              "x": "2024",
+              "y": 185
+            },
+            {
+              "x": "2025",
+              "y": 151
+            }
+          ]
+        },
+        {
+          "label": "Partially approved",
+          "points": [
+            {
+              "x": "2019",
+              "y": 33
+            },
+            {
+              "x": "2020",
+              "y": 64
+            },
+            {
+              "x": "2021",
+              "y": 91
+            },
+            {
+              "x": "2022",
+              "y": 82
+            },
+            {
+              "x": "2023",
+              "y": 79
+            },
+            {
+              "x": "2024",
+              "y": 76
+            },
+            {
+              "x": "2025",
+              "y": 63
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Building permits finished within a year of issue, 2019 to 2024",
+      "unit": "%",
+      "points": [
+        {
+          "x": "2019",
+          "y": 67.0
+        },
+        {
+          "x": "2020",
+          "y": 63.7
+        },
+        {
+          "x": "2021",
+          "y": 52.3
+        },
+        {
+          "x": "2022",
+          "y": 68.3
+        },
+        {
+          "x": "2023",
+          "y": 77.9
+        },
+        {
+          "x": "2024",
+          "y": 73.6
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Inspections completed by type, 2025",
+      "series": [
+        {
+          "label": "Final",
+          "value": 772
+        },
+        {
+          "label": "Framing",
+          "value": 200
+        },
+        {
+          "label": "Footing",
+          "value": 128
+        },
+        {
+          "label": "Insulation",
+          "value": 72
+        },
+        {
+          "label": "Status",
+          "value": 49
+        },
+        {
+          "label": "Backfill",
+          "value": 35
+        },
+        {
+          "label": "Visqueen",
+          "value": 31
+        }
+      ]
     }
   ],
   "source": "City of Burton Building Department permit records, as recorded by the City Assessor (BS&A). Aggregates extracted 2026-10-07.",
@@ -452,6 +642,8 @@
     "These are permits issued by the City's Building Department and recorded by the City Assessor. A permit is permission to do work, not proof the work was finished; the completion time counts only permits with a recorded final inspection.",
     "Site permits are counted too: roofing, siding, fences, sheds, decks and pools make up most of the home-improvement total, so a busy year is not always a year of large projects.",
     "Declared value is what the applicant states on the application and is often left blank. It is shown only where nearly every permit carries one, and it is an estimate, not a measured cost.",
-    "The current year is partial and is left out of the yearly charts. Only counts and totals are published, never addresses, owners, contractors or permit numbers. Years before 1999 are not shown because the records are incomplete."
+    "The current year is partial and is left out of the yearly charts. Only counts and totals are published, never addresses, owners, contractors or permit numbers. Years before 1999 are not shown because the records are incomplete.",
+    "Inspection and completion figures come from the Building Department's own permit system. An inspection is counted when it is completed; a project counts as finished when its permit reaches a final inspection within twelve months of issue.",
+    "Time from application to issue is not shown because the department records the application date when the permit is issued, so it measures nothing."
   ]
 }

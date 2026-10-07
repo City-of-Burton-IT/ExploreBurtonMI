@@ -102,7 +102,12 @@
     {
       "label": "Summer 2026 taxes collected",
       "value": "89.3%",
-      "hint": "of $35.4M billed, as of 2026-10-06 (due 2026-09-30); 2,074 parcels (14.9%) still owe; 9% of dollars paid online"
+      "hint": "of $35.4M billed, as of 2026-10-07 (due 2026-09-30); 2,071 parcels (14.9%) still owe; 9% of dollars paid online"
+    },
+    {
+      "label": "Summer levy paid by the due date",
+      "value": "89% to 90%",
+      "hint": "range across the 2021 to 2025 summers; 2026 came in at 88.8% by September 30 and 89.3% so far"
     },
     {
       "label": "Median City tax, homestead home",
@@ -346,9 +351,95 @@
           "label": "Due date"
         }
       ]
+    },
+    {
+      "type": "trend",
+      "title": "How collections compare, 2021 to 2026",
+      "unit": "%",
+      "lines": [
+        {
+          "label": "Summer, paid by the due date",
+          "points": [
+            {
+              "x": "2021",
+              "y": 88.8
+            },
+            {
+              "x": "2022",
+              "y": 88.9
+            },
+            {
+              "x": "2023",
+              "y": 90.2
+            },
+            {
+              "x": "2024",
+              "y": 90.3
+            },
+            {
+              "x": "2025",
+              "y": 89.2
+            },
+            {
+              "x": "2026",
+              "y": 88.8
+            }
+          ]
+        },
+        {
+          "label": "Summer, paid within 90 days",
+          "points": [
+            {
+              "x": "2021",
+              "y": 91.5
+            },
+            {
+              "x": "2022",
+              "y": 91.8
+            },
+            {
+              "x": "2023",
+              "y": 92.8
+            },
+            {
+              "x": "2024",
+              "y": 92.5
+            },
+            {
+              "x": "2025",
+              "y": 91.4
+            }
+          ]
+        },
+        {
+          "label": "Winter, paid by the due date",
+          "points": [
+            {
+              "x": "2021",
+              "y": 86.7
+            },
+            {
+              "x": "2022",
+              "y": 89.1
+            },
+            {
+              "x": "2023",
+              "y": 90.5
+            },
+            {
+              "x": "2024",
+              "y": 90.5
+            },
+            {
+              "x": "2025",
+              "y": 86.8
+            }
+          ]
+        }
+      ]
     }
   ],
-  "source": "City of Burton tax roll 2026 (BS&A Tax module, aggregates extracted 2026-10-06) for the City rate, levy by taxing unit and homestead median; City of Burton audited financial statements for the FY2017-FY2026 reported millage; Michigan Department of Treasury, 2025 Total Property Tax Rates in Michigan, for complete-bill district rates.",
+  "source": "City of Burton tax roll 2026 (BS&A Tax module, aggregates extracted 2026-10-07) for the City rate, levy by taxing unit and homestead median; City of Burton audited financial statements for the FY2017-FY2026 reported millage; Michigan Department of Treasury, 2025 Total Property Tax Rates in Michigan, for complete-bill district rates.",
   "links": [
     {
       "text": "City of Burton 2026-27 Approved Budget",
@@ -371,6 +462,7 @@
     "One mill is $1 per $1,000 of taxable value. Taxable value is shown on the assessment notice and is not the same as market value.",
     "The City rate and levy chart come from the 2026 tax roll as billed (summer levy; winter lines are added once billed). The complete-bill district estimate and the 2025 authority chart use 2025 published rates and are dated separately.",
     "Collection figures are the Treasurer's billed and outstanding amounts on the day of extraction; the weekly line is cumulative payments received, including those posted after the due date with interest. Only totals are published, never individual parcels.",
-    "Estimate only. Actual bills can differ because of exact parcel values, exemptions, special assessments, administrative fees, and a possible Downtown Development Authority levy for affected parcels. Not a tax statement."
+    "Estimate only. Actual bills can differ because of exact parcel values, exemptions, special assessments, administrative fees, and a possible Downtown Development Authority levy for affected parcels. Not a tax statement.",
+    "Collection history compares each roll year's summer and winter levy with the payments received by the due date, within 90 days of it, and to date. Payments are net of reversals and refunds, so a year's share can move slightly as bills are adjusted."
   ]
 }

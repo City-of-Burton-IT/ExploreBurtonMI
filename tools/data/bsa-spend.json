@@ -1,0 +1,3133 @@
+{
+  "_source": {
+    "server": "BURBSA01\\BSA",
+    "database": "D011BURTON",
+    "tables": "dbo.Invoices (voided = 0), dbo.InvoiceLineItemDistributions",
+    "note": "aggregates only; fiscal year from invoiceDate (July to June); fund 703 pass-through kept out of City totals; no payee is named"
+  },
+  "extracted": "2026-10-07",
+  "latest_complete_fy": 2026,
+  "category_labels": {
+    "passthrough": "Taxes collected for schools, the County and the State",
+    "water_purchase": "Water bought from the regional system",
+    "sewage_treatment": "Sewage treatment by the County",
+    "trash": "Trash and recycling pickup",
+    "streets": "Street and road projects",
+    "utility_projects": "Water and sewer system projects",
+    "debt": "Loan and bond payments",
+    "insurance_benefits": "Insurance, pensions and employee benefits",
+    "utilities": "Utilities and street lighting",
+    "vehicles_equipment": "Vehicles, equipment, buildings and parks",
+    "services": "Contracted and professional services",
+    "supplies": "Supplies and materials",
+    "other_operations": "Repairs, rentals, training and other operations",
+    "refunds_deposits": "Refunds, deposits returned and other payments",
+    "other": "Other"
+  },
+  "fund_groups": {
+    "101": "General Fund",
+    "202": "Streets",
+    "203": "Streets",
+    "206": "Fire",
+    "207": "Police",
+    "226": "Rubbish",
+    "590": "Sewer",
+    "591": "Water",
+    "661": "Motor Pool",
+    "636": "Information Technology"
+  },
+  "street_funds": [
+    "202",
+    "203",
+    "451"
+  ],
+  "utility_funds": [
+    "590",
+    "591"
+  ],
+  "malformed_gl_lines": {
+    "lines": 0,
+    "amount": 0
+  },
+  "by_fiscal_year": [
+    {
+      "fiscal_year": 2016,
+      "complete": true,
+      "invoices": 5407,
+      "invoice_total": 46846059,
+      "distribution_total": 46846059,
+      "passthrough": 18395230,
+      "city_total": 28450829,
+      "payees": 710,
+      "top10_share": 0.7137,
+      "categories": {
+        "water_purchase": 2970720,
+        "sewage_treatment": 3407653,
+        "trash": 1187973,
+        "streets": 1563961,
+        "utility_projects": 8607229,
+        "debt": 1052344,
+        "insurance_benefits": 1056552,
+        "utilities": 620356,
+        "vehicles_equipment": 1479385,
+        "services": 909589,
+        "supplies": 481312,
+        "other_operations": 2338051,
+        "refunds_deposits": 2758028,
+        "other": 17673
+      },
+      "fund_groups": {
+        "Water": 10115880,
+        "Sewer": 7711690,
+        "Streets": 3385709,
+        "General Fund": 2056499,
+        "Rubbish": 1187973,
+        "Other funds": 1153198,
+        "Fire": 886105,
+        "Motor Pool": 876611,
+        "Police": 779223,
+        "Information Technology": 210985,
+        "Capital projects": 86956
+      }
+    },
+    {
+      "fiscal_year": 2017,
+      "complete": true,
+      "invoices": 4985,
+      "invoice_total": 48317318,
+      "distribution_total": 48317318,
+      "passthrough": 18429445,
+      "city_total": 29887874,
+      "payees": 672,
+      "top10_share": 0.7033,
+      "categories": {
+        "water_purchase": 3190609,
+        "sewage_treatment": 3430781,
+        "trash": 1339470,
+        "streets": 2546671,
+        "utility_projects": 9891634,
+        "debt": 1623756,
+        "insurance_benefits": 1081660,
+        "utilities": 687197,
+        "vehicles_equipment": 1775348,
+        "services": 1444795,
+        "supplies": 440475,
+        "other_operations": 1258047,
+        "refunds_deposits": 1174468,
+        "other": 2963
+      },
+      "fund_groups": {
+        "Sewer": 9577994,
+        "Water": 9498266,
+        "Streets": 2885300,
+        "General Fund": 1977514,
+        "Rubbish": 1339470,
+        "Other funds": 1239188,
+        "Fire": 1173325,
+        "Motor Pool": 946522,
+        "Police": 862881,
+        "Information Technology": 225854,
+        "Capital projects": 161560
+      }
+    },
+    {
+      "fiscal_year": 2018,
+      "complete": true,
+      "invoices": 4508,
+      "invoice_total": 42562781,
+      "distribution_total": 42562781,
+      "passthrough": 18992402,
+      "city_total": 23570378,
+      "payees": 627,
+      "top10_share": 0.709,
+      "categories": {
+        "water_purchase": 3576769,
+        "sewage_treatment": 3387724,
+        "trash": 1382028,
+        "streets": 1217648,
+        "utility_projects": 4809294,
+        "debt": 1658413,
+        "insurance_benefits": 1060262,
+        "utilities": 707901,
+        "vehicles_equipment": 1307991,
+        "services": 1365945,
+        "supplies": 407509,
+        "other_operations": 541583,
+        "refunds_deposits": 2115489,
+        "other": 31824
+      },
+      "fund_groups": {
+        "Water": 9770377,
+        "Sewer": 4965890,
+        "General Fund": 2134067,
+        "Streets": 1564051,
+        "Rubbish": 1382035,
+        "Other funds": 1119821,
+        "Motor Pool": 838827,
+        "Police": 785296,
+        "Fire": 762265,
+        "Information Technology": 227397,
+        "Capital projects": 20354
+      }
+    },
+    {
+      "fiscal_year": 2019,
+      "complete": true,
+      "invoices": 4604,
+      "invoice_total": 45207663,
+      "distribution_total": 45207663,
+      "passthrough": 20195590,
+      "city_total": 25012073,
+      "payees": 699,
+      "top10_share": 0.6903,
+      "categories": {
+        "water_purchase": 4079972,
+        "sewage_treatment": 3390408,
+        "trash": 1423750,
+        "streets": 1332097,
+        "utility_projects": 2766520,
+        "debt": 4265181,
+        "insurance_benefits": 1781486,
+        "utilities": 746522,
+        "vehicles_equipment": 1505616,
+        "services": 1162100,
+        "supplies": 449318,
+        "other_operations": 469957,
+        "refunds_deposits": 1627603,
+        "other": 11542
+      },
+      "fund_groups": {
+        "Water": 8496089,
+        "Sewer": 4577115,
+        "Streets": 4100199,
+        "General Fund": 2188189,
+        "Rubbish": 1423750,
+        "Motor Pool": 1168331,
+        "Other funds": 1116283,
+        "Police": 837779,
+        "Fire": 779958,
+        "Information Technology": 251087,
+        "Capital projects": 73293
+      }
+    },
+    {
+      "fiscal_year": 2020,
+      "complete": true,
+      "invoices": 4305,
+      "invoice_total": 44708741,
+      "distribution_total": 44708741,
+      "passthrough": 21090350,
+      "city_total": 23618392,
+      "payees": 632,
+      "top10_share": 0.7254,
+      "categories": {
+        "water_purchase": 3682902,
+        "sewage_treatment": 3629696,
+        "trash": 1465471,
+        "streets": 2908289,
+        "utility_projects": 76716,
+        "debt": 4718171,
+        "insurance_benefits": 1194780,
+        "utilities": 800162,
+        "vehicles_equipment": 2463739,
+        "services": 957611,
+        "supplies": 546965,
+        "other_operations": 318409,
+        "refunds_deposits": 850643,
+        "other": 4837
+      },
+      "fund_groups": {
+        "Streets": 5552833,
+        "Water": 5217588,
+        "Sewer": 4575537,
+        "General Fund": 2360142,
+        "Rubbish": 1465471,
+        "Capital projects": 1059792,
+        "Motor Pool": 880916,
+        "Fire": 761756,
+        "Other funds": 748048,
+        "Police": 735758,
+        "Information Technology": 260552
+      }
+    },
+    {
+      "fiscal_year": 2021,
+      "complete": true,
+      "invoices": 4356,
+      "invoice_total": 41434539,
+      "distribution_total": 41434539,
+      "passthrough": 22388267,
+      "city_total": 19046273,
+      "payees": 597,
+      "top10_share": 0.7303,
+      "categories": {
+        "water_purchase": 4508875,
+        "sewage_treatment": 3437703,
+        "trash": 1690711,
+        "streets": 1375840,
+        "utility_projects": 278332,
+        "debt": 2041895,
+        "insurance_benefits": 1548166,
+        "utilities": 738904,
+        "vehicles_equipment": 1221747,
+        "services": 893498,
+        "supplies": 429974,
+        "other_operations": 417495,
+        "refunds_deposits": 456937,
+        "other": 6196
+      },
+      "fund_groups": {
+        "Water": 5832717,
+        "Sewer": 4448088,
+        "General Fund": 2552068,
+        "Rubbish": 1690866,
+        "Streets": 1561097,
+        "Fire": 701367,
+        "Motor Pool": 672815,
+        "Other funds": 632702,
+        "Police": 614964,
+        "Information Technology": 227300,
+        "Capital projects": 112288
+      }
+    },
+    {
+      "fiscal_year": 2022,
+      "complete": true,
+      "invoices": 4251,
+      "invoice_total": 47301220,
+      "distribution_total": 47301220,
+      "passthrough": 23912818,
+      "city_total": 23388402,
+      "payees": 538,
+      "top10_share": 0.7133,
+      "categories": {
+        "water_purchase": 3862360,
+        "sewage_treatment": 4215339,
+        "trash": 1721316,
+        "streets": 2784067,
+        "utility_projects": 2614029,
+        "debt": 2090550,
+        "insurance_benefits": 981887,
+        "utilities": 850292,
+        "vehicles_equipment": 1743956,
+        "services": 998374,
+        "supplies": 424249,
+        "other_operations": 427291,
+        "refunds_deposits": 669339,
+        "other": 5353
+      },
+      "fund_groups": {
+        "Sewer": 7387327,
+        "Water": 5316948,
+        "Streets": 2665279,
+        "General Fund": 2147074,
+        "Rubbish": 1721316,
+        "Police": 1106943,
+        "Motor Pool": 797865,
+        "Fire": 701834,
+        "Other funds": 693706,
+        "Capital projects": 465451,
+        "Information Technology": 384659
+      }
+    },
+    {
+      "fiscal_year": 2023,
+      "complete": true,
+      "invoices": 4254,
+      "invoice_total": 50355083,
+      "distribution_total": 50355083,
+      "passthrough": 24837067,
+      "city_total": 25518016,
+      "payees": 575,
+      "top10_share": 0.6988,
+      "categories": {
+        "water_purchase": 4559604,
+        "sewage_treatment": 4519386,
+        "trash": 1759887,
+        "streets": 3266024,
+        "utility_projects": 2628409,
+        "debt": 2119724,
+        "insurance_benefits": 747913,
+        "utilities": 695467,
+        "vehicles_equipment": 2436809,
+        "services": 1100963,
+        "supplies": 463930,
+        "other_operations": 339153,
+        "refunds_deposits": 872777,
+        "other": 7971
+      },
+      "fund_groups": {
+        "Sewer": 8011068,
+        "Water": 5876279,
+        "Streets": 2906332,
+        "General Fund": 2030233,
+        "Rubbish": 1759887,
+        "Fire": 1622442,
+        "Other funds": 870863,
+        "Motor Pool": 862679,
+        "Police": 677956,
+        "Capital projects": 642012,
+        "Information Technology": 258264
+      }
+    },
+    {
+      "fiscal_year": 2024,
+      "complete": true,
+      "invoices": 4208,
+      "invoice_total": 50939798,
+      "distribution_total": 50939798,
+      "passthrough": 26782978,
+      "city_total": 24156820,
+      "payees": 549,
+      "top10_share": 0.7153,
+      "categories": {
+        "water_purchase": 3994164,
+        "sewage_treatment": 4112125,
+        "trash": 1814258,
+        "streets": 2826434,
+        "utility_projects": 3436880,
+        "debt": 2378829,
+        "insurance_benefits": 933163,
+        "utilities": 845430,
+        "vehicles_equipment": 854537,
+        "services": 1491298,
+        "supplies": 627170,
+        "other_operations": 366074,
+        "refunds_deposits": 472942,
+        "other": 3518
+      },
+      "fund_groups": {
+        "Sewer": 8172874,
+        "Water": 5894172,
+        "Streets": 2999672,
+        "General Fund": 2241755,
+        "Rubbish": 1814258,
+        "Other funds": 739049,
+        "Fire": 708182,
+        "Motor Pool": 522595,
+        "Police": 494382,
+        "Capital projects": 287841,
+        "Information Technology": 282040
+      }
+    },
+    {
+      "fiscal_year": 2025,
+      "complete": true,
+      "invoices": 4297,
+      "invoice_total": 59551536,
+      "distribution_total": 59551536,
+      "passthrough": 28759849,
+      "city_total": 30791686,
+      "payees": 608,
+      "top10_share": 0.6667,
+      "categories": {
+        "water_purchase": 3657532,
+        "sewage_treatment": 3817320,
+        "trash": 1869315,
+        "streets": 8277488,
+        "utility_projects": 3546306,
+        "debt": 2332324,
+        "insurance_benefits": 1095733,
+        "utilities": 828152,
+        "vehicles_equipment": 2234922,
+        "services": 1399937,
+        "supplies": 576768,
+        "other_operations": 596582,
+        "refunds_deposits": 528257,
+        "other": 31051
+      },
+      "fund_groups": {
+        "Streets": 8454220,
+        "Sewer": 8375327,
+        "Water": 5200691,
+        "General Fund": 2937315,
+        "Rubbish": 1869315,
+        "Motor Pool": 939617,
+        "Police": 917285,
+        "Other funds": 875618,
+        "Fire": 804607,
+        "Information Technology": 305404,
+        "Capital projects": 112288
+      }
+    },
+    {
+      "fiscal_year": 2026,
+      "complete": true,
+      "invoices": 4300,
+      "invoice_total": 59476116,
+      "distribution_total": 59476116,
+      "passthrough": 29402336,
+      "city_total": 30073780,
+      "payees": 543,
+      "top10_share": 0.6474,
+      "categories": {
+        "water_purchase": 4487629,
+        "sewage_treatment": 3831343,
+        "trash": 1998981,
+        "streets": 5474674,
+        "utility_projects": 3737526,
+        "debt": 2520354,
+        "insurance_benefits": 1339194,
+        "utilities": 833946,
+        "vehicles_equipment": 2576105,
+        "services": 1285995,
+        "supplies": 726376,
+        "other_operations": 595489,
+        "refunds_deposits": 663691,
+        "other": 2477
+      },
+      "fund_groups": {
+        "Sewer": 8508729,
+        "Water": 6608734,
+        "Streets": 5657288,
+        "General Fund": 2824578,
+        "Rubbish": 1998981,
+        "Other funds": 1173552,
+        "Police": 1041152,
+        "Fire": 958533,
+        "Motor Pool": 883216,
+        "Information Technology": 306730,
+        "Capital projects": 112288
+      }
+    },
+    {
+      "fiscal_year": 2027,
+      "complete": false,
+      "invoices": 968,
+      "invoice_total": 28277279,
+      "distribution_total": 28277279,
+      "passthrough": 18659979,
+      "city_total": 9617300,
+      "payees": 271,
+      "top10_share": 0.831,
+      "categories": {
+        "water_purchase": 1162383,
+        "sewage_treatment": 1040876,
+        "trash": 514021,
+        "streets": 3375364,
+        "utility_projects": 159107,
+        "debt": 2097957,
+        "insurance_benefits": 63029,
+        "utilities": 137360,
+        "vehicles_equipment": 382049,
+        "services": 379296,
+        "supplies": 140466,
+        "other_operations": 116404,
+        "refunds_deposits": 46197,
+        "other": 2792
+      },
+      "fund_groups": {
+        "Streets": 3417501,
+        "Sewer": 2201298,
+        "Water": 2160415,
+        "Rubbish": 514021,
+        "Fire": 377879,
+        "General Fund": 261969,
+        "Police": 249411,
+        "Other funds": 226128,
+        "Motor Pool": 77334,
+        "Capital projects": 73032,
+        "Information Technology": 58314
+      }
+    }
+  ],
+  "cells": [
+    {
+      "fund": "703",
+      "object": "222",
+      "category": "passthrough",
+      "amount": 180611144,
+      "lines": 2435
+    },
+    {
+      "fund": "703",
+      "object": "225",
+      "category": "passthrough",
+      "amount": 90040466,
+      "lines": 1837
+    },
+    {
+      "fund": "591",
+      "object": "816",
+      "category": "water_purchase",
+      "amount": 43733518,
+      "lines": 262
+    },
+    {
+      "fund": "590",
+      "object": "928",
+      "category": "sewage_treatment",
+      "amount": 42220354,
+      "lines": 137
+    },
+    {
+      "fund": "202",
+      "object": "802",
+      "category": "streets",
+      "amount": 18757876,
+      "lines": 740
+    },
+    {
+      "fund": "226",
+      "object": "830",
+      "category": "trash",
+      "amount": 18167181,
+      "lines": 141
+    },
+    {
+      "fund": "591",
+      "object": "582",
+      "category": "utility_projects",
+      "amount": 15417610,
+      "lines": 145
+    },
+    {
+      "fund": "590",
+      "object": "158",
+      "category": "utility_projects",
+      "amount": 15077551,
+      "lines": 196
+    },
+    {
+      "fund": "202",
+      "object": "818",
+      "category": "streets",
+      "amount": 9947145,
+      "lines": 1610
+    },
+    {
+      "fund": "591",
+      "object": "300",
+      "category": "debt",
+      "amount": 8359937,
+      "lines": 66
+    },
+    {
+      "fund": "590",
+      "object": "582",
+      "category": "utility_projects",
+      "amount": 7355250,
+      "lines": 64
+    },
+    {
+      "fund": "101",
+      "object": "123",
+      "category": "insurance_benefits",
+      "amount": 5934756,
+      "lines": 38
+    },
+    {
+      "fund": "101",
+      "object": "926",
+      "category": "utilities",
+      "amount": 4782568,
+      "lines": 268
+    },
+    {
+      "fund": "202",
+      "object": "991",
+      "category": "debt",
+      "amount": 4437323,
+      "lines": 2
+    },
+    {
+      "fund": "203",
+      "object": "818",
+      "category": "streets",
+      "amount": 4376076,
+      "lines": 347
+    },
+    {
+      "fund": "590",
+      "object": "300",
+      "category": "debt",
+      "amount": 4276125,
+      "lines": 26
+    },
+    {
+      "fund": "591",
+      "object": "158",
+      "category": "utility_projects",
+      "amount": 3872770,
+      "lines": 82
+    },
+    {
+      "fund": "591",
+      "object": "993",
+      "category": "debt",
+      "amount": 3668569,
+      "lines": 127
+    },
+    {
+      "fund": "206",
+      "object": "991",
+      "category": "debt",
+      "amount": 3396729,
+      "lines": 27
+    },
+    {
+      "fund": "661",
+      "object": "101",
+      "category": "vehicles_equipment",
+      "amount": 3190506,
+      "lines": 552
+    },
+    {
+      "fund": "203",
+      "object": "802",
+      "category": "streets",
+      "amount": 2948093,
+      "lines": 57
+    },
+    {
+      "fund": "636",
+      "object": "818",
+      "category": "services",
+      "amount": 2410453,
+      "lines": 3154
+    },
+    {
+      "fund": "590",
+      "object": "818",
+      "category": "services",
+      "amount": 2185622,
+      "lines": 382
+    },
+    {
+      "fund": "590",
+      "object": "993",
+      "category": "debt",
+      "amount": 2083420,
+      "lines": 51
+    },
+    {
+      "fund": "590",
+      "object": "956",
+      "category": "other_operations",
+      "amount": 1970493,
+      "lines": 108
+    },
+    {
+      "fund": "661",
+      "object": "148",
+      "category": "vehicles_equipment",
+      "amount": 1945829,
+      "lines": 71
+    },
+    {
+      "fund": "101",
+      "object": "231",
+      "category": "insurance_benefits",
+      "amount": 1874635,
+      "lines": 420
+    },
+    {
+      "fund": "207",
+      "object": "985",
+      "category": "vehicles_equipment",
+      "amount": 1613307,
+      "lines": 406
+    },
+    {
+      "fund": "591",
+      "object": "818",
+      "category": "services",
+      "amount": 1551181,
+      "lines": 740
+    },
+    {
+      "fund": "101",
+      "object": "285",
+      "category": "refunds_deposits",
+      "amount": 1544205,
+      "lines": 357
+    },
+    {
+      "fund": "736",
+      "object": "874",
+      "category": "insurance_benefits",
+      "amount": 1489659,
+      "lines": 121
+    },
+    {
+      "fund": "202",
+      "object": "027",
+      "category": "refunds_deposits",
+      "amount": 1448966,
+      "lines": 27
+    },
+    {
+      "fund": "101",
+      "object": "082",
+      "category": "refunds_deposits",
+      "amount": 1404971,
+      "lines": 113
+    },
+    {
+      "fund": "206",
+      "object": "993",
+      "category": "debt",
+      "amount": 1377878,
+      "lines": 38
+    },
+    {
+      "fund": "206",
+      "object": "977",
+      "category": "vehicles_equipment",
+      "amount": 1278618,
+      "lines": 493
+    },
+    {
+      "fund": "661",
+      "object": "934",
+      "category": "vehicles_equipment",
+      "amount": 1203941,
+      "lines": 4250
+    },
+    {
+      "fund": "703",
+      "object": "275",
+      "category": "passthrough",
+      "amount": 1154735,
+      "lines": 944
+    },
+    {
+      "fund": "591",
+      "object": "101",
+      "category": "vehicles_equipment",
+      "amount": 1146065,
+      "lines": 583
+    },
+    {
+      "fund": "590",
+      "object": "154",
+      "category": "refunds_deposits",
+      "amount": 1108585,
+      "lines": 92
+    },
+    {
+      "fund": "207",
+      "object": "101",
+      "category": "vehicles_equipment",
+      "amount": 1102413,
+      "lines": 477
+    },
+    {
+      "fund": "101",
+      "object": "977",
+      "category": "vehicles_equipment",
+      "amount": 1027974,
+      "lines": 82
+    },
+    {
+      "fund": "207",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 1025148,
+      "lines": 921
+    },
+    {
+      "fund": "206",
+      "object": "985",
+      "category": "vehicles_equipment",
+      "amount": 1021578,
+      "lines": 35
+    },
+    {
+      "fund": "406",
+      "object": "971",
+      "category": "vehicles_equipment",
+      "amount": 1020000,
+      "lines": 1
+    },
+    {
+      "fund": "101",
+      "object": "826",
+      "category": "services",
+      "amount": 951769,
+      "lines": 856
+    },
+    {
+      "fund": "207",
+      "object": "826",
+      "category": "services",
+      "amount": 929301,
+      "lines": 470
+    },
+    {
+      "fund": "101",
+      "object": "922",
+      "category": "utilities",
+      "amount": 924634,
+      "lines": 25
+    },
+    {
+      "fund": "451",
+      "object": "802",
+      "category": "streets",
+      "amount": 882888,
+      "lines": 3
+    },
+    {
+      "fund": "661",
+      "object": "303",
+      "category": "refunds_deposits",
+      "amount": 857744,
+      "lines": 13
+    },
+    {
+      "fund": "249",
+      "object": "818",
+      "category": "services",
+      "amount": 844105,
+      "lines": 445
+    },
+    {
+      "fund": "207",
+      "object": "818",
+      "category": "services",
+      "amount": 806029,
+      "lines": 1083
+    },
+    {
+      "fund": "101",
+      "object": "818",
+      "category": "services",
+      "amount": 742591,
+      "lines": 654
+    },
+    {
+      "fund": "280",
+      "object": "241",
+      "category": "refunds_deposits",
+      "amount": 733879,
+      "lines": 1376
+    },
+    {
+      "fund": "406",
+      "object": "991",
+      "category": "debt",
+      "amount": 700416,
+      "lines": 17
+    },
+    {
+      "fund": "101",
+      "object": "975",
+      "category": "vehicles_equipment",
+      "amount": 677624,
+      "lines": 25
+    },
+    {
+      "fund": "249",
+      "object": "961",
+      "category": "other_operations",
+      "amount": 635672,
+      "lines": 320
+    },
+    {
+      "fund": "202",
+      "object": "123",
+      "category": "insurance_benefits",
+      "amount": 625119,
+      "lines": 26
+    },
+    {
+      "fund": "207",
+      "object": "863",
+      "category": "vehicles_equipment",
+      "amount": 596169,
+      "lines": 2536
+    },
+    {
+      "fund": "364",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 591954,
+      "lines": 21
+    },
+    {
+      "fund": "661",
+      "object": "140",
+      "category": "vehicles_equipment",
+      "amount": 551628,
+      "lines": 35
+    },
+    {
+      "fund": "101",
+      "object": "920",
+      "category": "utilities",
+      "amount": 525796,
+      "lines": 493
+    },
+    {
+      "fund": "206",
+      "object": "920",
+      "category": "utilities",
+      "amount": 517365,
+      "lines": 651
+    },
+    {
+      "fund": "206",
+      "object": "776",
+      "category": "supplies",
+      "amount": 505922,
+      "lines": 1290
+    },
+    {
+      "fund": "591",
+      "object": "132",
+      "category": "utility_projects",
+      "amount": 499905,
+      "lines": 25
+    },
+    {
+      "fund": "207",
+      "object": "920",
+      "category": "utilities",
+      "amount": 475482,
+      "lines": 576
+    },
+    {
+      "fund": "280",
+      "object": "721",
+      "category": "supplies",
+      "amount": 447801,
+      "lines": 170
+    },
+    {
+      "fund": "101",
+      "object": "808",
+      "category": "services",
+      "amount": 435754,
+      "lines": 85
+    },
+    {
+      "fund": "206",
+      "object": "863",
+      "category": "vehicles_equipment",
+      "amount": 428562,
+      "lines": 604
+    },
+    {
+      "fund": "101",
+      "object": "710",
+      "category": "supplies",
+      "amount": 426913,
+      "lines": 2453
+    },
+    {
+      "fund": "701",
+      "object": "274",
+      "category": "refunds_deposits",
+      "amount": 419447,
+      "lines": 697
+    },
+    {
+      "fund": "203",
+      "object": "750",
+      "category": "supplies",
+      "amount": 414889,
+      "lines": 77
+    },
+    {
+      "fund": "590",
+      "object": "929",
+      "category": "utilities",
+      "amount": 412573,
+      "lines": 993
+    },
+    {
+      "fund": "736",
+      "object": "722",
+      "category": "supplies",
+      "amount": 398500,
+      "lines": 208
+    },
+    {
+      "fund": "101",
+      "object": "571",
+      "category": "vehicles_equipment",
+      "amount": 392733,
+      "lines": 36
+    },
+    {
+      "fund": "207",
+      "object": "977",
+      "category": "vehicles_equipment",
+      "amount": 373543,
+      "lines": 253
+    },
+    {
+      "fund": "203",
+      "object": "959",
+      "category": "other_operations",
+      "amount": 371661,
+      "lines": 11
+    },
+    {
+      "fund": "661",
+      "object": "983",
+      "category": "vehicles_equipment",
+      "amount": 364741,
+      "lines": 41
+    },
+    {
+      "fund": "206",
+      "object": "744",
+      "category": "supplies",
+      "amount": 356738,
+      "lines": 668
+    },
+    {
+      "fund": "207",
+      "object": "975",
+      "category": "vehicles_equipment",
+      "amount": 355538,
+      "lines": 9
+    },
+    {
+      "fund": "207",
+      "object": "811",
+      "category": "services",
+      "amount": 349081,
+      "lines": 707
+    },
+    {
+      "fund": "367",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 344954,
+      "lines": 14
+    },
+    {
+      "fund": "101",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 328435,
+      "lines": 3406
+    },
+    {
+      "fund": "701",
+      "object": "273",
+      "category": "refunds_deposits",
+      "amount": 323294,
+      "lines": 275
+    },
+    {
+      "fund": "381",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 318334,
+      "lines": 22
+    },
+    {
+      "fund": "406",
+      "object": "993",
+      "category": "debt",
+      "amount": 314110,
+      "lines": 16
+    },
+    {
+      "fund": "661",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 301698,
+      "lines": 1341
+    },
+    {
+      "fund": "206",
+      "object": "818",
+      "category": "services",
+      "amount": 296034,
+      "lines": 567
+    },
+    {
+      "fund": "590",
+      "object": "935",
+      "category": "other_operations",
+      "amount": 276511,
+      "lines": 232
+    },
+    {
+      "fund": "101",
+      "object": "958",
+      "category": "other_operations",
+      "amount": 271035,
+      "lines": 396
+    },
+    {
+      "fund": "279",
+      "object": "920",
+      "category": "utilities",
+      "amount": 267456,
+      "lines": 512
+    },
+    {
+      "fund": "701",
+      "object": "028",
+      "category": "refunds_deposits",
+      "amount": 267349,
+      "lines": 1305
+    },
+    {
+      "fund": "249",
+      "object": "963",
+      "category": "other_operations",
+      "amount": 264548,
+      "lines": 239
+    },
+    {
+      "fund": "636",
+      "object": "984",
+      "category": "vehicles_equipment",
+      "amount": 263550,
+      "lines": 344
+    },
+    {
+      "fund": "661",
+      "object": "776",
+      "category": "supplies",
+      "amount": 261981,
+      "lines": 1269
+    },
+    {
+      "fund": "101",
+      "object": "776",
+      "category": "supplies",
+      "amount": 259650,
+      "lines": 855
+    },
+    {
+      "fund": "206",
+      "object": "123",
+      "category": "insurance_benefits",
+      "amount": 259223,
+      "lines": 7
+    },
+    {
+      "fund": "661",
+      "object": "920",
+      "category": "utilities",
+      "amount": 249851,
+      "lines": 394
+    },
+    {
+      "fund": "101",
+      "object": "883",
+      "category": "services",
+      "amount": 244737,
+      "lines": 919
+    },
+    {
+      "fund": "101",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 243996,
+      "lines": 618
+    },
+    {
+      "fund": "101",
+      "object": "111",
+      "category": "refunds_deposits",
+      "amount": 243243,
+      "lines": 26
+    },
+    {
+      "fund": "101",
+      "object": "229",
+      "category": "refunds_deposits",
+      "amount": 241969,
+      "lines": 7
+    },
+    {
+      "fund": "202",
+      "object": "751",
+      "category": "supplies",
+      "amount": 236840,
+      "lines": 398
+    },
+    {
+      "fund": "591",
+      "object": "562",
+      "category": "utility_projects",
+      "amount": 233415,
+      "lines": 5
+    },
+    {
+      "fund": "590",
+      "object": "140",
+      "category": "vehicles_equipment",
+      "amount": 226276,
+      "lines": 21
+    },
+    {
+      "fund": "207",
+      "object": "744",
+      "category": "supplies",
+      "amount": 225125,
+      "lines": 1145
+    },
+    {
+      "fund": "590",
+      "object": "148",
+      "category": "vehicles_equipment",
+      "amount": 223577,
+      "lines": 2
+    },
+    {
+      "fund": "202",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 220250,
+      "lines": 2257
+    },
+    {
+      "fund": "207",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 219614,
+      "lines": 211
+    },
+    {
+      "fund": "206",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 216353,
+      "lines": 459
+    },
+    {
+      "fund": "101",
+      "object": "731",
+      "category": "supplies",
+      "amount": 215087,
+      "lines": 91
+    },
+    {
+      "fund": "203",
+      "object": "751",
+      "category": "supplies",
+      "amount": 214637,
+      "lines": 398
+    },
+    {
+      "fund": "591",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 209657,
+      "lines": 773
+    },
+    {
+      "fund": "207",
+      "object": "931",
+      "category": "other_operations",
+      "amount": 208775,
+      "lines": 601
+    },
+    {
+      "fund": "591",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 200283,
+      "lines": 1435
+    },
+    {
+      "fund": "736",
+      "object": "123",
+      "category": "insurance_benefits",
+      "amount": 197543,
+      "lines": 14
+    },
+    {
+      "fund": "590",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 192329,
+      "lines": 761
+    },
+    {
+      "fund": "101",
+      "object": "676",
+      "category": "refunds_deposits",
+      "amount": 190559,
+      "lines": 12
+    },
+    {
+      "fund": "101",
+      "object": "693",
+      "category": "refunds_deposits",
+      "amount": 186242,
+      "lines": 7
+    },
+    {
+      "fund": "590",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 183567,
+      "lines": 1351
+    },
+    {
+      "fund": "101",
+      "object": "828",
+      "category": "services",
+      "amount": 183027,
+      "lines": 360
+    },
+    {
+      "fund": "279",
+      "object": "818",
+      "category": "services",
+      "amount": 179278,
+      "lines": 201
+    },
+    {
+      "fund": "591",
+      "object": "140",
+      "category": "vehicles_equipment",
+      "amount": 166659,
+      "lines": 26
+    },
+    {
+      "fund": "279",
+      "object": "977",
+      "category": "vehicles_equipment",
+      "amount": 165315,
+      "lines": 56
+    },
+    {
+      "fund": "203",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 164066,
+      "lines": 2217
+    },
+    {
+      "fund": "202",
+      "object": "993",
+      "category": "debt",
+      "amount": 159232,
+      "lines": 4
+    },
+    {
+      "fund": "101",
+      "object": "727",
+      "category": "supplies",
+      "amount": 158043,
+      "lines": 2021
+    },
+    {
+      "fund": "101",
+      "object": "825",
+      "category": "services",
+      "amount": 157397,
+      "lines": 140
+    },
+    {
+      "fund": "365",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 154439,
+      "lines": 20
+    },
+    {
+      "fund": "590",
+      "object": "808",
+      "category": "services",
+      "amount": 153244,
+      "lines": 48
+    },
+    {
+      "fund": "279",
+      "object": "935",
+      "category": "other_operations",
+      "amount": 151259,
+      "lines": 893
+    },
+    {
+      "fund": "591",
+      "object": "935",
+      "category": "other_operations",
+      "amount": 148484,
+      "lines": 135
+    },
+    {
+      "fund": "207",
+      "object": "706",
+      "category": "supplies",
+      "amount": 147780,
+      "lines": 4
+    },
+    {
+      "fund": "101",
+      "object": "964",
+      "category": "other_operations",
+      "amount": 147097,
+      "lines": 7
+    },
+    {
+      "fund": "202",
+      "object": "757",
+      "category": "supplies",
+      "amount": 146882,
+      "lines": 151
+    },
+    {
+      "fund": "202",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 146426,
+      "lines": 2238
+    },
+    {
+      "fund": "207",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 140422,
+      "lines": 1128
+    },
+    {
+      "fund": "452",
+      "object": "802",
+      "category": "services",
+      "amount": 136298,
+      "lines": 2
+    },
+    {
+      "fund": "206",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 133843,
+      "lines": 1027
+    },
+    {
+      "fund": "202",
+      "object": "939",
+      "category": "other_operations",
+      "amount": 131601,
+      "lines": 19
+    },
+    {
+      "fund": "279",
+      "object": "753",
+      "category": "supplies",
+      "amount": 128729,
+      "lines": 343
+    },
+    {
+      "fund": "661",
+      "object": "040",
+      "category": "refunds_deposits",
+      "amount": 125879,
+      "lines": 5
+    },
+    {
+      "fund": "591",
+      "object": "731",
+      "category": "supplies",
+      "amount": 125001,
+      "lines": 135
+    },
+    {
+      "fund": "590",
+      "object": "731",
+      "category": "supplies",
+      "amount": 124961,
+      "lines": 135
+    },
+    {
+      "fund": "207",
+      "object": "741",
+      "category": "supplies",
+      "amount": 122151,
+      "lines": 198
+    },
+    {
+      "fund": "380",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 118730,
+      "lines": 22
+    },
+    {
+      "fund": "203",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 115963,
+      "lines": 2060
+    },
+    {
+      "fund": "366",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 113998,
+      "lines": 20
+    },
+    {
+      "fund": "287",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 112054,
+      "lines": 228
+    },
+    {
+      "fund": "206",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 109909,
+      "lines": 503
+    },
+    {
+      "fund": "363",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 106498,
+      "lines": 13
+    },
+    {
+      "fund": "368",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 105379,
+      "lines": 14
+    },
+    {
+      "fund": "590",
+      "object": "959",
+      "category": "other_operations",
+      "amount": 103134,
+      "lines": 5
+    },
+    {
+      "fund": "101",
+      "object": "956",
+      "category": "other_operations",
+      "amount": 101167,
+      "lines": 181
+    },
+    {
+      "fund": "206",
+      "object": "921",
+      "category": "utilities",
+      "amount": 100336,
+      "lines": 227
+    },
+    {
+      "fund": "591",
+      "object": "808",
+      "category": "services",
+      "amount": 95480,
+      "lines": 48
+    },
+    {
+      "fund": "382",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 95213,
+      "lines": 22
+    },
+    {
+      "fund": "379",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 93417,
+      "lines": 14
+    },
+    {
+      "fund": "591",
+      "object": "040",
+      "category": "refunds_deposits",
+      "amount": 91458,
+      "lines": 1264
+    },
+    {
+      "fund": "591",
+      "object": "920",
+      "category": "utilities",
+      "amount": 90747,
+      "lines": 653
+    },
+    {
+      "fund": "661",
+      "object": "867",
+      "category": "vehicles_equipment",
+      "amount": 90747,
+      "lines": 138
+    },
+    {
+      "fund": "101",
+      "object": "757",
+      "category": "supplies",
+      "amount": 87774,
+      "lines": 166
+    },
+    {
+      "fund": "101",
+      "object": "827",
+      "category": "services",
+      "amount": 85641,
+      "lines": 34
+    },
+    {
+      "fund": "276",
+      "object": "753",
+      "category": "supplies",
+      "amount": 83410,
+      "lines": 174
+    },
+    {
+      "fund": "275",
+      "object": "753",
+      "category": "supplies",
+      "amount": 80714,
+      "lines": 204
+    },
+    {
+      "fund": "101",
+      "object": "985",
+      "category": "vehicles_equipment",
+      "amount": 79028,
+      "lines": 3
+    },
+    {
+      "fund": "248",
+      "object": "938",
+      "category": "other_operations",
+      "amount": 78519,
+      "lines": 70
+    },
+    {
+      "fund": "280",
+      "object": "681",
+      "category": "refunds_deposits",
+      "amount": 75969,
+      "lines": 621
+    },
+    {
+      "fund": "636",
+      "object": "123",
+      "category": "insurance_benefits",
+      "amount": 75231,
+      "lines": 29
+    },
+    {
+      "fund": "661",
+      "object": "978",
+      "category": "vehicles_equipment",
+      "amount": 74712,
+      "lines": 375
+    },
+    {
+      "fund": "591",
+      "object": "959",
+      "category": "other_operations",
+      "amount": 73981,
+      "lines": 5
+    },
+    {
+      "fund": "265",
+      "object": "955",
+      "category": "other_operations",
+      "amount": 68703,
+      "lines": 47
+    },
+    {
+      "fund": "249",
+      "object": "826",
+      "category": "services",
+      "amount": 68440,
+      "lines": 209
+    },
+    {
+      "fund": "661",
+      "object": "136",
+      "category": "refunds_deposits",
+      "amount": 68211,
+      "lines": 8
+    },
+    {
+      "fund": "101",
+      "object": "674",
+      "category": "refunds_deposits",
+      "amount": 67499,
+      "lines": 67
+    },
+    {
+      "fund": "101",
+      "object": "066",
+      "category": "refunds_deposits",
+      "amount": 66344,
+      "lines": 75
+    },
+    {
+      "fund": "279",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 65778,
+      "lines": 472
+    },
+    {
+      "fund": "249",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 65704,
+      "lines": 550
+    },
+    {
+      "fund": "591",
+      "object": "789",
+      "category": "supplies",
+      "amount": 63774,
+      "lines": 33
+    },
+    {
+      "fund": "401",
+      "object": "950",
+      "category": "debt",
+      "amount": 63745,
+      "lines": 3
+    },
+    {
+      "fund": "636",
+      "object": "727",
+      "category": "supplies",
+      "amount": 63362,
+      "lines": 425
+    },
+    {
+      "fund": "101",
+      "object": "128",
+      "category": "refunds_deposits",
+      "amount": 62622,
+      "lines": 46
+    },
+    {
+      "fund": "736",
+      "object": "956",
+      "category": "other_operations",
+      "amount": 62119,
+      "lines": 16
+    },
+    {
+      "fund": "206",
+      "object": "828",
+      "category": "services",
+      "amount": 61551,
+      "lines": 190
+    },
+    {
+      "fund": "248",
+      "object": "818",
+      "category": "services",
+      "amount": 61332,
+      "lines": 14
+    },
+    {
+      "fund": "203",
+      "object": "752",
+      "category": "supplies",
+      "amount": 58374,
+      "lines": 38
+    },
+    {
+      "fund": "101",
+      "object": "974",
+      "category": "vehicles_equipment",
+      "amount": 57697,
+      "lines": 2
+    },
+    {
+      "fund": "371",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 55510,
+      "lines": 13
+    },
+    {
+      "fund": "661",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 54185,
+      "lines": 531
+    },
+    {
+      "fund": "590",
+      "object": "040",
+      "category": "refunds_deposits",
+      "amount": 52941,
+      "lines": 781
+    },
+    {
+      "fund": "207",
+      "object": "275",
+      "category": "refunds_deposits",
+      "amount": 51937,
+      "lines": 95
+    },
+    {
+      "fund": "279",
+      "object": "974",
+      "category": "vehicles_equipment",
+      "amount": 51735,
+      "lines": 2
+    },
+    {
+      "fund": "207",
+      "object": "727",
+      "category": "supplies",
+      "amount": 49971,
+      "lines": 821
+    },
+    {
+      "fund": "207",
+      "object": "991",
+      "category": "debt",
+      "amount": 49735,
+      "lines": 3
+    },
+    {
+      "fund": "636",
+      "object": "820",
+      "category": "services",
+      "amount": 47446,
+      "lines": 50
+    },
+    {
+      "fund": "590",
+      "object": "901",
+      "category": "other_operations",
+      "amount": 47442,
+      "lines": 166
+    },
+    {
+      "fund": "591",
+      "object": "814",
+      "category": "services",
+      "amount": 47434,
+      "lines": 166
+    },
+    {
+      "fund": "207",
+      "object": "921",
+      "category": "utilities",
+      "amount": 46930,
+      "lines": 116
+    },
+    {
+      "fund": "101",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 46701,
+      "lines": 655
+    },
+    {
+      "fund": "661",
+      "object": "808",
+      "category": "services",
+      "amount": 46431,
+      "lines": 49
+    },
+    {
+      "fund": "249",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 45110,
+      "lines": 817
+    },
+    {
+      "fund": "101",
+      "object": "938",
+      "category": "other_operations",
+      "amount": 43946,
+      "lines": 216
+    },
+    {
+      "fund": "591",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 42836,
+      "lines": 163
+    },
+    {
+      "fund": "207",
+      "object": "868",
+      "category": "vehicles_equipment",
+      "amount": 42404,
+      "lines": 248
+    },
+    {
+      "fund": "202",
+      "object": "808",
+      "category": "services",
+      "amount": 40027,
+      "lines": 47
+    },
+    {
+      "fund": "636",
+      "object": "719",
+      "category": "insurance_benefits",
+      "amount": 39733,
+      "lines": 343
+    },
+    {
+      "fund": "279",
+      "object": "931",
+      "category": "other_operations",
+      "amount": 39164,
+      "lines": 30
+    },
+    {
+      "fund": "101",
+      "object": "900",
+      "category": "other_operations",
+      "amount": 38851,
+      "lines": 283
+    },
+    {
+      "fund": "206",
+      "object": "934",
+      "category": "vehicles_equipment",
+      "amount": 37040,
+      "lines": 136
+    },
+    {
+      "fund": "590",
+      "object": "058",
+      "category": "utility_projects",
+      "amount": 36794,
+      "lines": 1
+    },
+    {
+      "fund": "203",
+      "object": "988",
+      "category": "streets",
+      "amount": 36479,
+      "lines": 5
+    },
+    {
+      "fund": "279",
+      "object": "921",
+      "category": "utilities",
+      "amount": 35851,
+      "lines": 142
+    },
+    {
+      "fund": "591",
+      "object": "956",
+      "category": "other_operations",
+      "amount": 35782,
+      "lines": 51
+    },
+    {
+      "fund": "279",
+      "object": "985",
+      "category": "vehicles_equipment",
+      "amount": 35536,
+      "lines": 2
+    },
+    {
+      "fund": "636",
+      "object": "040",
+      "category": "refunds_deposits",
+      "amount": 35495,
+      "lines": 35
+    },
+    {
+      "fund": "272",
+      "object": "732",
+      "category": "supplies",
+      "amount": 34814,
+      "lines": 24
+    },
+    {
+      "fund": "703",
+      "object": "214",
+      "category": "passthrough",
+      "amount": 34620,
+      "lines": 195
+    },
+    {
+      "fund": "401",
+      "object": "975",
+      "category": "vehicles_equipment",
+      "amount": 34573,
+      "lines": 13
+    },
+    {
+      "fund": "206",
+      "object": "775",
+      "category": "supplies",
+      "amount": 34270,
+      "lines": 24
+    },
+    {
+      "fund": "267",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 34131,
+      "lines": 91
+    },
+    {
+      "fund": "359",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 33273,
+      "lines": 13
+    },
+    {
+      "fund": "661",
+      "object": "676",
+      "category": "refunds_deposits",
+      "amount": 33223,
+      "lines": 6
+    },
+    {
+      "fund": "273",
+      "object": "818",
+      "category": "services",
+      "amount": 31550,
+      "lines": 18
+    },
+    {
+      "fund": "636",
+      "object": "146",
+      "category": "vehicles_equipment",
+      "amount": 31125,
+      "lines": 17
+    },
+    {
+      "fund": "590",
+      "object": "920",
+      "category": "utilities",
+      "amount": 30584,
+      "lines": 223
+    },
+    {
+      "fund": "248",
+      "object": "997",
+      "category": "other",
+      "amount": 30517,
+      "lines": 3
+    },
+    {
+      "fund": "590",
+      "object": "943",
+      "category": "other_operations",
+      "amount": 30364,
+      "lines": 7
+    },
+    {
+      "fund": "701",
+      "object": "044",
+      "category": "refunds_deposits",
+      "amount": 29986,
+      "lines": 21
+    },
+    {
+      "fund": "591",
+      "object": "971",
+      "category": "utility_projects",
+      "amount": 29899,
+      "lines": 3
+    },
+    {
+      "fund": "249",
+      "object": "920",
+      "category": "utilities",
+      "amount": 29182,
+      "lines": 280
+    },
+    {
+      "fund": "207",
+      "object": "808",
+      "category": "services",
+      "amount": 29132,
+      "lines": 43
+    },
+    {
+      "fund": "101",
+      "object": "963",
+      "category": "other_operations",
+      "amount": 28958,
+      "lines": 45
+    },
+    {
+      "fund": "590",
+      "object": "562",
+      "category": "utility_projects",
+      "amount": 28787,
+      "lines": 1
+    },
+    {
+      "fund": "206",
+      "object": "808",
+      "category": "services",
+      "amount": 28563,
+      "lines": 44
+    },
+    {
+      "fund": "266",
+      "object": "955",
+      "category": "other_operations",
+      "amount": 28185,
+      "lines": 1
+    },
+    {
+      "fund": "101",
+      "object": "275",
+      "category": "refunds_deposits",
+      "amount": 28018,
+      "lines": 147
+    },
+    {
+      "fund": "207",
+      "object": "676",
+      "category": "refunds_deposits",
+      "amount": 26873,
+      "lines": 4
+    },
+    {
+      "fund": "401",
+      "object": "887",
+      "category": "services",
+      "amount": 24669,
+      "lines": 3
+    },
+    {
+      "fund": "202",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 23919,
+      "lines": 131
+    },
+    {
+      "fund": "279",
+      "object": "680",
+      "category": "refunds_deposits",
+      "amount": 23480,
+      "lines": 230
+    },
+    {
+      "fund": "207",
+      "object": "956",
+      "category": "other_operations",
+      "amount": 23391,
+      "lines": 123
+    },
+    {
+      "fund": "661",
+      "object": "818",
+      "category": "services",
+      "amount": 23059,
+      "lines": 130
+    },
+    {
+      "fund": "344",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 22370,
+      "lines": 22
+    },
+    {
+      "fund": "101",
+      "object": "400",
+      "category": "other",
+      "amount": 22325,
+      "lines": 1
+    },
+    {
+      "fund": "590",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 21063,
+      "lines": 112
+    },
+    {
+      "fund": "591",
+      "object": "642",
+      "category": "refunds_deposits",
+      "amount": 20614,
+      "lines": 3
+    },
+    {
+      "fund": "590",
+      "object": "101",
+      "category": "vehicles_equipment",
+      "amount": 20059,
+      "lines": 35
+    },
+    {
+      "fund": "248",
+      "object": "880",
+      "category": "services",
+      "amount": 20018,
+      "lines": 39
+    },
+    {
+      "fund": "361",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 19967,
+      "lines": 13
+    },
+    {
+      "fund": "287",
+      "object": "284",
+      "category": "refunds_deposits",
+      "amount": 19336,
+      "lines": 13
+    },
+    {
+      "fund": "206",
+      "object": "984",
+      "category": "vehicles_equipment",
+      "amount": 19213,
+      "lines": 99
+    },
+    {
+      "fund": "383",
+      "object": "000",
+      "category": "refunds_deposits",
+      "amount": 18928,
+      "lines": 22
+    },
+    {
+      "fund": "590",
+      "object": "643",
+      "category": "refunds_deposits",
+      "amount": 18550,
+      "lines": 13
+    },
+    {
+      "fund": "203",
+      "object": "808",
+      "category": "services",
+      "amount": 18343,
+      "lines": 47
+    },
+    {
+      "fund": "203",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 18057,
+      "lines": 106
+    },
+    {
+      "fund": "101",
+      "object": "720",
+      "category": "supplies",
+      "amount": 17327,
+      "lines": 9
+    },
+    {
+      "fund": "636",
+      "object": "934",
+      "category": "vehicles_equipment",
+      "amount": 17124,
+      "lines": 61
+    },
+    {
+      "fund": "101",
+      "object": "561",
+      "category": "other",
+      "amount": 16573,
+      "lines": 5
+    },
+    {
+      "fund": "203",
+      "object": "757",
+      "category": "supplies",
+      "amount": 15913,
+      "lines": 106
+    },
+    {
+      "fund": "101",
+      "object": "984",
+      "category": "vehicles_equipment",
+      "amount": 15828,
+      "lines": 54
+    },
+    {
+      "fund": "249",
+      "object": "476",
+      "category": "other",
+      "amount": 15792,
+      "lines": 23
+    },
+    {
+      "fund": "202",
+      "object": "748",
+      "category": "supplies",
+      "amount": 15781,
+      "lines": 43
+    },
+    {
+      "fund": "401",
+      "object": "070",
+      "category": "refunds_deposits",
+      "amount": 15405,
+      "lines": 1
+    },
+    {
+      "fund": "207",
+      "object": "775",
+      "category": "supplies",
+      "amount": 15175,
+      "lines": 19
+    },
+    {
+      "fund": "701",
+      "object": "288",
+      "category": "refunds_deposits",
+      "amount": 14991,
+      "lines": 36
+    },
+    {
+      "fund": "207",
+      "object": "910",
+      "category": "other_operations",
+      "amount": 14889,
+      "lines": 1
+    },
+    {
+      "fund": "207",
+      "object": "402",
+      "category": "other",
+      "amount": 14847,
+      "lines": 58
+    },
+    {
+      "fund": "206",
+      "object": "826",
+      "category": "services",
+      "amount": 14804,
+      "lines": 43
+    },
+    {
+      "fund": "590",
+      "object": "727",
+      "category": "supplies",
+      "amount": 14442,
+      "lines": 723
+    },
+    {
+      "fund": "101",
+      "object": "706",
+      "category": "supplies",
+      "amount": 13280,
+      "lines": 26
+    },
+    {
+      "fund": "401",
+      "object": "984",
+      "category": "vehicles_equipment",
+      "amount": 12775,
+      "lines": 12
+    },
+    {
+      "fund": "101",
+      "object": "747",
+      "category": "supplies",
+      "amount": 12761,
+      "lines": 12
+    },
+    {
+      "fund": "101",
+      "object": "200",
+      "category": "refunds_deposits",
+      "amount": 12670,
+      "lines": 1
+    },
+    {
+      "fund": "101",
+      "object": "270",
+      "category": "refunds_deposits",
+      "amount": 12592,
+      "lines": 5
+    },
+    {
+      "fund": "278",
+      "object": "753",
+      "category": "supplies",
+      "amount": 12054,
+      "lines": 44
+    },
+    {
+      "fund": "248",
+      "object": "956",
+      "category": "other_operations",
+      "amount": 12012,
+      "lines": 7
+    },
+    {
+      "fund": "591",
+      "object": "727",
+      "category": "supplies",
+      "amount": 11667,
+      "lines": 702
+    },
+    {
+      "fund": "591",
+      "object": "828",
+      "category": "services",
+      "amount": 11119,
+      "lines": 20
+    },
+    {
+      "fund": "249",
+      "object": "727",
+      "category": "supplies",
+      "amount": 10961,
+      "lines": 696
+    },
+    {
+      "fund": "591",
+      "object": "706",
+      "category": "supplies",
+      "amount": 10736,
+      "lines": 28
+    },
+    {
+      "fund": "206",
+      "object": "752",
+      "category": "supplies",
+      "amount": 10000,
+      "lines": 1
+    },
+    {
+      "fund": "101",
+      "object": "754",
+      "category": "supplies",
+      "amount": 9953,
+      "lines": 54
+    },
+    {
+      "fund": "202",
+      "object": "943",
+      "category": "other_operations",
+      "amount": 9880,
+      "lines": 15
+    },
+    {
+      "fund": "590",
+      "object": "826",
+      "category": "services",
+      "amount": 9434,
+      "lines": 90
+    },
+    {
+      "fund": "207",
+      "object": "123",
+      "category": "insurance_benefits",
+      "amount": 9320,
+      "lines": 5
+    },
+    {
+      "fund": "207",
+      "object": "828",
+      "category": "services",
+      "amount": 9273,
+      "lines": 82
+    },
+    {
+      "fund": "591",
+      "object": "643",
+      "category": "refunds_deposits",
+      "amount": 9254,
+      "lines": 5
+    },
+    {
+      "fund": "248",
+      "object": "230",
+      "category": "refunds_deposits",
+      "amount": 9224,
+      "lines": 2
+    },
+    {
+      "fund": "202",
+      "object": "676",
+      "category": "refunds_deposits",
+      "amount": 9204,
+      "lines": 3
+    },
+    {
+      "fund": "207",
+      "object": "993",
+      "category": "debt",
+      "amount": 9179,
+      "lines": 4
+    },
+    {
+      "fund": "273",
+      "object": "938",
+      "category": "other_operations",
+      "amount": 8256,
+      "lines": 51
+    },
+    {
+      "fund": "591",
+      "object": "782",
+      "category": "supplies",
+      "amount": 8107,
+      "lines": 13
+    },
+    {
+      "fund": "206",
+      "object": "727",
+      "category": "supplies",
+      "amount": 8092,
+      "lines": 201
+    },
+    {
+      "fund": "249",
+      "object": "478",
+      "category": "other",
+      "amount": 7732,
+      "lines": 2
+    },
+    {
+      "fund": "590",
+      "object": "123",
+      "category": "insurance_benefits",
+      "amount": 7500,
+      "lines": 1
+    },
+    {
+      "fund": "206",
+      "object": "728",
+      "category": "supplies",
+      "amount": 7447,
+      "lines": 3
+    },
+    {
+      "fund": "101",
+      "object": "264",
+      "category": "refunds_deposits",
+      "amount": 7312,
+      "lines": 2
+    },
+    {
+      "fund": "101",
+      "object": "881",
+      "category": "services",
+      "amount": 7275,
+      "lines": 31
+    },
+    {
+      "fund": "101",
+      "object": "402",
+      "category": "other",
+      "amount": 7069,
+      "lines": 53
+    },
+    {
+      "fund": "590",
+      "object": "680",
+      "category": "refunds_deposits",
+      "amount": 7021,
+      "lines": 1
+    },
+    {
+      "fund": "101",
+      "object": "861",
+      "category": "services",
+      "amount": 6770,
+      "lines": 103
+    },
+    {
+      "fund": "202",
+      "object": "581",
+      "category": "other",
+      "amount": 6762,
+      "lines": 2
+    },
+    {
+      "fund": "636",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 6554,
+      "lines": 49
+    },
+    {
+      "fund": "701",
+      "object": "275",
+      "category": "refunds_deposits",
+      "amount": 6498,
+      "lines": 1
+    },
+    {
+      "fund": "206",
+      "object": "275",
+      "category": "refunds_deposits",
+      "amount": 6239,
+      "lines": 95
+    },
+    {
+      "fund": "661",
+      "object": "706",
+      "category": "supplies",
+      "amount": 6036,
+      "lines": 26
+    },
+    {
+      "fund": "279",
+      "object": "956",
+      "category": "other_operations",
+      "amount": 6008,
+      "lines": 102
+    },
+    {
+      "fund": "101",
+      "object": "880",
+      "category": "services",
+      "amount": 6000,
+      "lines": 2
+    },
+    {
+      "fund": "101",
+      "object": "800",
+      "category": "services",
+      "amount": 6000,
+      "lines": 2
+    },
+    {
+      "fund": "661",
+      "object": "749",
+      "category": "supplies",
+      "amount": 5948,
+      "lines": 24
+    },
+    {
+      "fund": "207",
+      "object": "731",
+      "category": "supplies",
+      "amount": 5918,
+      "lines": 107
+    },
+    {
+      "fund": "249",
+      "object": "804",
+      "category": "services",
+      "amount": 5841,
+      "lines": 37
+    },
+    {
+      "fund": "101",
+      "object": "863",
+      "category": "vehicles_equipment",
+      "amount": 5618,
+      "lines": 34
+    },
+    {
+      "fund": "249",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 5519,
+      "lines": 69
+    },
+    {
+      "fund": "202",
+      "object": "752",
+      "category": "supplies",
+      "amount": 5452,
+      "lines": 8
+    },
+    {
+      "fund": "203",
+      "object": "748",
+      "category": "supplies",
+      "amount": 5299,
+      "lines": 52
+    },
+    {
+      "fund": "207",
+      "object": "831",
+      "category": "insurance_benefits",
+      "amount": 5194,
+      "lines": 2
+    },
+    {
+      "fund": "101",
+      "object": "241",
+      "category": "refunds_deposits",
+      "amount": 5089,
+      "lines": 70
+    },
+    {
+      "fund": "203",
+      "object": "676",
+      "category": "refunds_deposits",
+      "amount": 4933,
+      "lines": 1
+    },
+    {
+      "fund": "590",
+      "object": "789",
+      "category": "supplies",
+      "amount": 4861,
+      "lines": 17
+    },
+    {
+      "fund": "677",
+      "object": "082",
+      "category": "refunds_deposits",
+      "amount": 4678,
+      "lines": 7
+    },
+    {
+      "fund": "703",
+      "object": "040",
+      "category": "passthrough",
+      "amount": 4600,
+      "lines": 1
+    },
+    {
+      "fund": "207",
+      "object": "934",
+      "category": "vehicles_equipment",
+      "amount": 4523,
+      "lines": 38
+    },
+    {
+      "fund": "249",
+      "object": "687",
+      "category": "refunds_deposits",
+      "amount": 4470,
+      "lines": 1
+    },
+    {
+      "fund": "248",
+      "object": "808",
+      "category": "services",
+      "amount": 4443,
+      "lines": 45
+    },
+    {
+      "fund": "661",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 4377,
+      "lines": 58
+    },
+    {
+      "fund": "249",
+      "object": "984",
+      "category": "vehicles_equipment",
+      "amount": 4344,
+      "lines": 15
+    },
+    {
+      "fund": "248",
+      "object": "881",
+      "category": "services",
+      "amount": 4299,
+      "lines": 25
+    },
+    {
+      "fund": "202",
+      "object": "706",
+      "category": "supplies",
+      "amount": 4167,
+      "lines": 51
+    },
+    {
+      "fund": "265",
+      "object": "678",
+      "category": "refunds_deposits",
+      "amount": 4104,
+      "lines": 1
+    },
+    {
+      "fund": "101",
+      "object": "867",
+      "category": "vehicles_equipment",
+      "amount": 4014,
+      "lines": 57
+    },
+    {
+      "fund": "207",
+      "object": "867",
+      "category": "vehicles_equipment",
+      "amount": 3686,
+      "lines": 28
+    },
+    {
+      "fund": "206",
+      "object": "956",
+      "category": "other_operations",
+      "amount": 3465,
+      "lines": 21
+    },
+    {
+      "fund": "590",
+      "object": "130",
+      "category": "refunds_deposits",
+      "amount": 3454,
+      "lines": 2
+    },
+    {
+      "fund": "636",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 3435,
+      "lines": 15
+    },
+    {
+      "fund": "101",
+      "object": "202",
+      "category": "refunds_deposits",
+      "amount": 3359,
+      "lines": 6
+    },
+    {
+      "fund": "287",
+      "object": "681",
+      "category": "refunds_deposits",
+      "amount": 3243,
+      "lines": 47
+    },
+    {
+      "fund": "701",
+      "object": "082",
+      "category": "refunds_deposits",
+      "amount": 3151,
+      "lines": 2
+    },
+    {
+      "fund": "636",
+      "object": "808",
+      "category": "services",
+      "amount": 3150,
+      "lines": 1
+    },
+    {
+      "fund": "206",
+      "object": "707",
+      "category": "supplies",
+      "amount": 3147,
+      "lines": 8
+    },
+    {
+      "fund": "661",
+      "object": "979",
+      "category": "vehicles_equipment",
+      "amount": 3117,
+      "lines": 40
+    },
+    {
+      "fund": "591",
+      "object": "826",
+      "category": "services",
+      "amount": 2990,
+      "lines": 36
+    },
+    {
+      "fund": "591",
+      "object": "680",
+      "category": "refunds_deposits",
+      "amount": 2888,
+      "lines": 3
+    },
+    {
+      "fund": "202",
+      "object": "826",
+      "category": "services",
+      "amount": 2761,
+      "lines": 31
+    },
+    {
+      "fund": "203",
+      "object": "706",
+      "category": "supplies",
+      "amount": 2574,
+      "lines": 45
+    },
+    {
+      "fund": "101",
+      "object": "619",
+      "category": "refunds_deposits",
+      "amount": 2420,
+      "lines": 9
+    },
+    {
+      "fund": "401",
+      "object": "990",
+      "category": "other",
+      "amount": 2275,
+      "lines": 1
+    },
+    {
+      "fund": "249",
+      "object": "832",
+      "category": "services",
+      "amount": 2249,
+      "lines": 9
+    },
+    {
+      "fund": "101",
+      "object": "680",
+      "category": "refunds_deposits",
+      "amount": 2201,
+      "lines": 16
+    },
+    {
+      "fund": "279",
+      "object": "123",
+      "category": "insurance_benefits",
+      "amount": 2106,
+      "lines": 6
+    },
+    {
+      "fund": "273",
+      "object": "200",
+      "category": "refunds_deposits",
+      "amount": 2089,
+      "lines": 7
+    },
+    {
+      "fund": "661",
+      "object": "673",
+      "category": "refunds_deposits",
+      "amount": 2000,
+      "lines": 1
+    },
+    {
+      "fund": "591",
+      "object": "994",
+      "category": "debt",
+      "amount": 1975,
+      "lines": 29
+    },
+    {
+      "fund": "277",
+      "object": "753",
+      "category": "supplies",
+      "amount": 1862,
+      "lines": 8
+    },
+    {
+      "fund": "677",
+      "object": "956",
+      "category": "other_operations",
+      "amount": 1800,
+      "lines": 4
+    },
+    {
+      "fund": "203",
+      "object": "828",
+      "category": "services",
+      "amount": 1767,
+      "lines": 7
+    },
+    {
+      "fund": "206",
+      "object": "402",
+      "category": "other",
+      "amount": 1731,
+      "lines": 52
+    },
+    {
+      "fund": "203",
+      "object": "943",
+      "category": "other_operations",
+      "amount": 1701,
+      "lines": 7
+    },
+    {
+      "fund": "591",
+      "object": "627",
+      "category": "refunds_deposits",
+      "amount": 1675,
+      "lines": 3
+    },
+    {
+      "fund": "249",
+      "object": "693",
+      "category": "refunds_deposits",
+      "amount": 1635,
+      "lines": 1
+    },
+    {
+      "fund": "202",
+      "object": "920",
+      "category": "utilities",
+      "amount": 1509,
+      "lines": 88
+    },
+    {
+      "fund": "590",
+      "object": "063",
+      "category": "refunds_deposits",
+      "amount": 1500,
+      "lines": 1
+    },
+    {
+      "fund": "249",
+      "object": "828",
+      "category": "services",
+      "amount": 1487,
+      "lines": 15
+    },
+    {
+      "fund": "636",
+      "object": "828",
+      "category": "services",
+      "amount": 1483,
+      "lines": 2
+    },
+    {
+      "fund": "279",
+      "object": "960",
+      "category": "other_operations",
+      "amount": 1431,
+      "lines": 42
+    },
+    {
+      "fund": "279",
+      "object": "957",
+      "category": "other_operations",
+      "amount": 1334,
+      "lines": 33
+    },
+    {
+      "fund": "590",
+      "object": "644",
+      "category": "refunds_deposits",
+      "amount": 1292,
+      "lines": 8
+    },
+    {
+      "fund": "590",
+      "object": "202",
+      "category": "refunds_deposits",
+      "amount": 1266,
+      "lines": 6
+    },
+    {
+      "fund": "101",
+      "object": "442",
+      "category": "other",
+      "amount": 1242,
+      "lines": 4
+    },
+    {
+      "fund": "202",
+      "object": "828",
+      "category": "services",
+      "amount": 1219,
+      "lines": 7
+    },
+    {
+      "fund": "206",
+      "object": "994",
+      "category": "debt",
+      "amount": 1125,
+      "lines": 9
+    },
+    {
+      "fund": "280",
+      "object": "618",
+      "category": "refunds_deposits",
+      "amount": -1161,
+      "lines": 324
+    }
+  ]
+}

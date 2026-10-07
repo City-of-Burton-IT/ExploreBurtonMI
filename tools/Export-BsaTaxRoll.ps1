@@ -19,6 +19,12 @@
     From the Assessing module (D001City Of Burton <year>):
       * Taxable value total and by property class group on the current roll.
       * Taxable value and SEV history by year from ParcelPreviousYearTotals.
+    Collection history (one Tax database per roll year, CollectionHistoryFrom
+    through TaxYear): per season, what was billed (Parcels.tax_billed_x), what
+    is still owed (base_tax_left_x), and net receipts (ReceiptHeaders.amt, all
+    transaction codes so reversals and refunds net out) posted by the due date,
+    within 90 days of it, and to date. A season is included only once its due
+    date has passed; the 90-day figure is null until 90 days have passed.
 
 .EXAMPLE
     .\tools\Export-BsaTaxRoll.ps1 -TaxYear 2026
@@ -34,6 +40,9 @@ param(
 
     [ValidateRange(2000, 2100)]
     [int]$HistoryFrom = 2010,
+
+    [ValidateRange(2000, 2100)]
+    [int]$CollectionHistoryFrom = 2021,
 
     [string]$OutPath = (Join-Path $PSScriptRoot 'data\bsa-taxroll.json')
 )
@@ -152,6 +161,65 @@ foreach ($c in $classes) {
 $totalTaxable = ConvertTo-WholeNumber (($classes | Measure-Object taxable -Sum).Sum)
 $totalSev = ConvertTo-WholeNumber (($classes | Measure-Object sev -Sum).Sum)
 
+# --- Collection history, one Tax database per roll year ----------------------------
+# Net receipts (all transaction codes; reversals and refunds are negative rows) posted
+# by the due date, within 90 days of it, and to date, against what the roll billed.
+# Receipts before June 1 of the roll year are stray postings and are excluded.
+$asOf = (Get-Date).Date
+if ($CollectionHistoryFrom -gt $TaxYear) { throw 'CollectionHistoryFrom must not be after TaxYear.' }
+function Get-SeasonCollection([string]$Db, [int]$Season, [datetime]$Due, [int]$RollYear, [object]$Totals) {
+    $billed = ConvertTo-WholeNumber $Totals."billed_$Season"
+    if ($billed -le 0) { return $null }
+    if ($Due -gt $asOf) { return $null }
+    $dueLit = $Due.AddDays(1).ToString('yyyy-MM-dd')
+    $ninetyDate = $Due.AddDays(90)
+    $ninetyLit = $ninetyDate.AddDays(1).ToString('yyyy-MM-dd')
+    $sql = @"
+SELECT SUM(CASE WHEN posting_date < '$dueLit' THEN amt ELSE 0 END) AS by_due,
+       SUM(CASE WHEN posting_date < '$ninetyLit' THEN amt ELSE 0 END) AS within_90,
+       SUM(amt) AS to_date, COUNT(*) AS receipts
+FROM dbo.ReceiptHeaders
+WHERE billing_type = $Season AND posting_date >= '$RollYear-06-01'
+"@
+    $r = Invoke-BsaQuery -Database $Db -Sql $sql
+    if (-not $r -or [int]$r.receipts -lt 1000) { throw "Receipt query for $Db season $Season returned too few receipts; refusing to write." }
+    $byDue = ConvertTo-WholeNumber $r.by_due
+    $toDate = ConvertTo-WholeNumber $r.to_date
+    if ($byDue -lt 0.5 * $billed -or $byDue -gt 1.05 * $billed) { throw "$Db season ${Season}: paid by due date ($byDue) is implausible against billed ($billed); refusing to write." }
+    if ($toDate -lt $byDue) { throw "$Db season ${Season}: receipts to date are below receipts by the due date; refusing to write." }
+    $within90 = $null
+    if ($ninetyDate -le $asOf) { $within90 = ConvertTo-WholeNumber $r.within_90 }
+    return [ordered]@{
+        due            = $Due.ToString('yyyy-MM-dd')
+        parcels_billed = [int]$Totals."parcels_$Season"
+        billed         = $billed
+        owed           = ConvertTo-WholeNumber $Totals."owed_$Season"
+        paid_by_due    = $byDue
+        paid_within_90 = $within90
+        paid_to_date   = $toDate
+    }
+}
+$historyYears = @()
+foreach ($y in $CollectionHistoryFrom..$TaxYear) {
+    $db = 'D004BURTON{0}' -f $y.ToString().Substring(2)
+    if ($db -notmatch '^D004BURTON\d{2}$') { throw "Unexpected Tax database name: $db" }
+    $totalsSql = @"
+SELECT (SELECT MIN(intrst_duedate_0) FROM dbo.Units) AS due_0, (SELECT MIN(intrst_duedate_1) FROM dbo.Units) AS due_1,
+       SUM(tax_billed_0) AS billed_0, SUM(CASE WHEN tax_billed_0 > 0 THEN base_tax_left_0 ELSE 0 END) AS owed_0,
+       SUM(CASE WHEN tax_billed_0 > 0 THEN 1 ELSE 0 END) AS parcels_0,
+       SUM(tax_billed_1) AS billed_1, SUM(CASE WHEN tax_billed_1 > 0 THEN base_tax_left_1 ELSE 0 END) AS owed_1,
+       SUM(CASE WHEN tax_billed_1 > 0 THEN 1 ELSE 0 END) AS parcels_1
+FROM dbo.Parcels
+"@
+    $t = Invoke-BsaQuery -Database $db -Sql $totalsSql
+    if (-not $t -or [int]$t.parcels_0 -lt 10000) { throw "Collection totals for $db returned an implausible parcel count; refusing to write." }
+    $summer = Get-SeasonCollection -Db $db -Season 0 -Due ([datetime]$t.due_0) -RollYear $y -Totals $t
+    $winter = Get-SeasonCollection -Db $db -Season 1 -Due ([datetime]$t.due_1) -RollYear $y -Totals $t
+    if (-not $summer) { throw "No summer collection for $db (due $($t.due_0)); refusing to write." }
+    $historyYears += [ordered]@{ tax_year = $y; database = $db; summer = $summer; winter = $winter }
+}
+if ($historyYears.Count -lt 4) { throw "Collection history covers only $($historyYears.Count) years; need at least 4. Refusing to write." }
+
 $out = [ordered]@{
     _source        = "City of Burton BS&A Tax module ($TaxDatabase) and Assessing module ($AssessingDatabase), read-only aggregate export. Levy = sum of billed tax lines by taxing unit; City millage = tax unit classification 7 excluding the DDA district levy; homestead median = class 401 parcels with a 100 percent principal residence exemption. Taxable value = March Board of Review taxable value on the roll; history from ParcelPreviousYearTotals."
     extracted      = (Get-Date).ToString('yyyy-MM-dd')
@@ -189,6 +257,13 @@ $out = [ordered]@{
         by_group = @($groups.Values | Sort-Object taxable -Descending)
         history  = @($history | ForEach-Object { [ordered]@{ year = [int]$_.year; taxable = ConvertTo-WholeNumber $_.taxable; sev = ConvertTo-WholeNumber $_.sev } }) + @([ordered]@{ year = $TaxYear; taxable = $totalTaxable; sev = $totalSev })
     }
+    collection_history = [ordered]@{
+        as_of = $asOf.ToString('yyyy-MM-dd')
+        from  = $CollectionHistoryFrom
+        to    = $TaxYear
+        note  = 'Per roll year and season: billed and still owed from Parcels (tax_billed, base_tax_left); paid_by_due, paid_within_90 and paid_to_date are net ReceiptHeaders.amt (all transaction codes) posted by the due date, within 90 days of it, and to date. A season appears only after its due date; paid_within_90 is null until 90 days have passed.'
+        years = $historyYears
+    }
 }
 
 $json = $out | ConvertTo-Json -Depth 6
@@ -198,3 +273,11 @@ Copy-Item -Path $tmp -Destination $OutPath -Force
 Write-Host "Wrote $OutPath"
 Write-Host ("  {0} roll: City {1} mills ({2}); homestead median City tax {3:N2} over {4:N0} parcels" -f $TaxYear, $cityMills, (($cityLines | ForEach-Object { "$($_.code) $($_.mills)" }) -join ', '), $out.homestead.median_city_tax, $out.homestead.parcels)
 Write-Host ("  taxable value {0:N0} (SEV {1:N0}); history {2}-{3}" -f $totalTaxable, $totalSev, $HistoryFrom, $TaxYear)
+foreach ($h in $historyYears) {
+    $s = $h.summer
+    $w = 'winter not yet due'
+    if ($h.winter) { $w = ('winter by due {0:P1}' -f ($h.winter.paid_by_due / $h.winter.billed)) }
+    $n90 = 'n/a'
+    if ($null -ne $s.paid_within_90) { $n90 = ('{0:P1}' -f ($s.paid_within_90 / $s.billed)) }
+    Write-Host ("  {0}: summer by due {1:P1}, within 90 days {2}, to date {3:P1}; {4}" -f $h.tax_year, ($s.paid_by_due / $s.billed), $n90, (($s.billed - $s.owed) / $s.billed), $w)
+}

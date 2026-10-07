@@ -75,6 +75,26 @@
       "hint": "FY2026-27 through September 2026; 25% of the year elapsed; revenue $4.0M received so far"
     },
     {
+      "label": "Paid to vendors last fiscal year",
+      "value": "$30.1M",
+      "hint": "FY2026, July 2025 to June 2026: 4,300 invoices to 543 payees through Accounts Payable; wages and benefits paid through payroll are not included"
+    },
+    {
+      "label": "Collected for other governments",
+      "value": "$29.4M",
+      "hint": "FY2026: property taxes the Treasurer collected and passed on to the schools, Genesee County and the State; not City spending"
+    },
+    {
+      "label": "Largest spending category",
+      "value": "Street and road projects",
+      "hint": "FY2026: $5.5M, 18% of vendor payments"
+    },
+    {
+      "label": "Paid to the ten largest payees",
+      "value": "65%",
+      "hint": "share of FY2026 vendor payments; no payee is named on this site"
+    },
+    {
       "label": "General Fund revenues",
       "value": "$8.9M",
       "hint": "audited FY2025"
@@ -410,18 +430,225 @@
       ]
     },
     {
+      "type": "bars",
+      "title": "What the City bought, FY2026 ($M)",
+      "unit": "$M",
+      "series": [
+        {
+          "label": "Street and road projects",
+          "value": 5.47
+        },
+        {
+          "label": "Water bought from the regional system",
+          "value": 4.49
+        },
+        {
+          "label": "Sewage treatment by the County",
+          "value": 3.83
+        },
+        {
+          "label": "Water and sewer system projects",
+          "value": 3.74
+        },
+        {
+          "label": "Vehicles, equipment, buildings and parks",
+          "value": 2.58
+        },
+        {
+          "label": "Loan and bond payments",
+          "value": 2.52
+        },
+        {
+          "label": "Trash and recycling pickup",
+          "value": 2.0
+        },
+        {
+          "label": "Insurance, pensions and employee benefits",
+          "value": 1.34
+        },
+        {
+          "label": "Contracted and professional services",
+          "value": 1.29
+        },
+        {
+          "label": "Utilities and street lighting",
+          "value": 0.83
+        },
+        {
+          "label": "Supplies and materials",
+          "value": 0.73
+        },
+        {
+          "label": "Refunds, deposits returned and other payments",
+          "value": 0.66
+        },
+        {
+          "label": "Repairs, rentals, training and other operations",
+          "value": 0.6
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Vendor payments by year, FY2016 to FY2026 ($M)",
+      "unit": "$M",
+      "lines": [
+        {
+          "label": "City spending",
+          "points": [
+            {
+              "x": "FY2016",
+              "y": 28.45
+            },
+            {
+              "x": "FY2017",
+              "y": 29.89
+            },
+            {
+              "x": "FY2018",
+              "y": 23.57
+            },
+            {
+              "x": "FY2019",
+              "y": 25.01
+            },
+            {
+              "x": "FY2020",
+              "y": 23.62
+            },
+            {
+              "x": "FY2021",
+              "y": 19.05
+            },
+            {
+              "x": "FY2022",
+              "y": 23.39
+            },
+            {
+              "x": "FY2023",
+              "y": 25.52
+            },
+            {
+              "x": "FY2024",
+              "y": 24.16
+            },
+            {
+              "x": "FY2025",
+              "y": 30.79
+            },
+            {
+              "x": "FY2026",
+              "y": 30.07
+            }
+          ]
+        },
+        {
+          "label": "Passed through to other governments",
+          "points": [
+            {
+              "x": "FY2016",
+              "y": 18.4
+            },
+            {
+              "x": "FY2017",
+              "y": 18.43
+            },
+            {
+              "x": "FY2018",
+              "y": 18.99
+            },
+            {
+              "x": "FY2019",
+              "y": 20.2
+            },
+            {
+              "x": "FY2020",
+              "y": 21.09
+            },
+            {
+              "x": "FY2021",
+              "y": 22.39
+            },
+            {
+              "x": "FY2022",
+              "y": 23.91
+            },
+            {
+              "x": "FY2023",
+              "y": 24.84
+            },
+            {
+              "x": "FY2024",
+              "y": 26.78
+            },
+            {
+              "x": "FY2025",
+              "y": 28.76
+            },
+            {
+              "x": "FY2026",
+              "y": 29.4
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Vendor payments by fund, FY2026 ($M)",
+      "unit": "$M",
+      "series": [
+        {
+          "label": "Sewer",
+          "value": 8.51
+        },
+        {
+          "label": "Water",
+          "value": 6.61
+        },
+        {
+          "label": "Streets",
+          "value": 5.66
+        },
+        {
+          "label": "General Fund",
+          "value": 2.82
+        },
+        {
+          "label": "Rubbish",
+          "value": 2.0
+        },
+        {
+          "label": "Other funds",
+          "value": 1.17
+        },
+        {
+          "label": "Police",
+          "value": 1.04
+        },
+        {
+          "label": "Fire",
+          "value": 0.96
+        },
+        {
+          "label": "Motor Pool",
+          "value": 0.88
+        },
+        {
+          "label": "Information Technology",
+          "value": 0.31
+        },
+        {
+          "label": "Capital projects",
+          "value": 0.11
+        }
+      ]
+    },
+    {
       "type": "donut",
       "title": "Taxable value by property class, 2026",
       "unit": "$M",
       "series": [
-        {
-          "label": "Industrial",
-          "value": 55.6
-        },
-        {
-          "label": "Personal property (business and utility)",
-          "value": 75.3
-        },
         {
           "label": "Commercial",
           "value": 159.6
@@ -429,6 +656,14 @@
         {
           "label": "Residential",
           "value": 605.0
+        },
+        {
+          "label": "Industrial",
+          "value": 55.6
+        },
+        {
+          "label": "Personal property (business and utility)",
+          "value": 75.3
         }
       ]
     }
@@ -450,6 +685,7 @@
     "Budget-vs-actual figures compare the amended budget with activity posted in the City's General Ledger through fiscal year end (June 30); they are unaudited and can differ slightly from the audited statements. Year-to-date figures cover completed months only.",
     "The multi-year ledger series start with FY2008, the first full year in the current ledger. The General Fund figures match the State-reported audited totals in every overlapping year to within rounding. All-funds spending includes enterprise funds (water and sewer) and one-off items such as bond proceeds paid out, so single-year jumps are usually financing events, not operations.",
     "Taxable value is the March Board of Review value on each year's assessment roll; the current year's roll can still change with appeals and corrections.",
-    "Audited trends and fiscal-health figures come from the State of Michigan Community Financials program (audited F-65 annual financial reports)."
+    "Audited trends and fiscal-health figures come from the State of Michigan Community Financials program (audited F-65 annual financial reports).",
+    "Vendor payments come from the City's Accounts Payable records and cover invoices paid, not payroll. Property taxes collected for the schools, the County and the State pass through the City's books and are shown separately, never as City spending. Categories group the ledger's object codes; no vendor is named."
   ]
 }
