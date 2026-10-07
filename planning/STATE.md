@@ -42,7 +42,7 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-07 11:05 (git log, gh issue list, vite preview browser pass).
+Last verified: 2026-10-07 12:40 (git log, gh issue list, HAS_DBACCESS from the read-only login).
 
 **Status:** Git range `2c93c43..6a44d99` on `main` (see `git log 2c93c43..HEAD`): PRs 128
 through 158, all squash-merged with auto-merge, Pages deploys green. Suites at
@@ -62,6 +62,16 @@ regular titles, 1.65 line height, 12px action buttons, dashed section rules, Con
 footer). Follow-ups filed: #159 (monthly cash needs the Controller's pooled-cash
 framing), #160 (Building Department and Accounts Payable grants), #161 (traffic
 segment labels and MDOT year parameter).
+
+**2026-10-07 grants (afternoon, user-approved, dry run then commit):** the read-only
+BS&A login now also reads Accounts Payable, Tax 2021 through 2025, and the Building
+Department permit module (the real one is the D007 database; the department-named
+D012 database is cash receipting and its grant was revoked). All grants on #160 are in
+place; the three feeds are next-session work. Findings recorded on #160 and in the vault
+note `BS&A SQL Server.md`: AP fund 703 is pass-through to other taxing units and must be
+kept out of City spending; permit time-to-issue is meaningless (applied date is stamped
+at issue), use issue-to-final and inspections; inspection results and permit status are
+numeric codes to decode from the module's setup tables before publishing a pass rate.
 
 **2026-10-07 follow-ups:** #140 closed by PR #154: `tools/fetch_water.py` now raises
 `LeadUnavailable` and exits non-zero before writing when the lead (PB90) result is
