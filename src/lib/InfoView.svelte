@@ -125,6 +125,8 @@
       </InfoExplainer>
     {/if}
 
+    <button class="print-btn" type="button" onclick={() => window.print()}>Print this page</button>
+
     <DashboardFooter {panel} />
 
     <DashboardNav {prev} {next} />
@@ -160,6 +162,22 @@
     background: var(--civic-accent-bg-hover);
   }
   .error-state .retry:focus-visible {
+    outline: none;
+    box-shadow: var(--pub-focus-ring);
+  }
+  .print-btn {
+    margin: 0 0 1rem;
+    border: 1px solid var(--civic-blue);
+    background: var(--pub-surface);
+    color: var(--civic-blue);
+    border-radius: var(--pub-btn-radius, 12px);
+    padding: 0.45rem 1.1rem;
+    font-family: var(--font-body, sans-serif);
+    font-size: 0.9rem;
+    font-weight: 700;
+    cursor: pointer;
+  }
+  .print-btn:focus-visible {
     outline: none;
     box-shadow: var(--pub-focus-ring);
   }
