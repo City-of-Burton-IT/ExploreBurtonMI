@@ -26,6 +26,16 @@
       "label": "Typical crashes / year",
       "value": "602",
       "hint": "full years on record"
+    },
+    {
+      "label": "Busiest road counted",
+      "value": "Grand Traverse",
+      "hint": "33,222 vehicles a day"
+    },
+    {
+      "label": "Miles of road with traffic counts",
+      "value": "141.2",
+      "hint": "MDOT 2025 counts"
     }
   ],
   "charts": [
@@ -105,6 +115,33 @@
         {
           "label": "Head-On Left-Turn Not Associated with Driveway",
           "value": 149
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Road miles by daily traffic",
+      "unit": " mi",
+      "series": [
+        {
+          "label": "<2k",
+          "value": 76.7
+        },
+        {
+          "label": "2k-5k",
+          "value": 18.3
+        },
+        {
+          "label": "5k-10k",
+          "value": 25.0
+        },
+        {
+          "label": "10k-20k",
+          "value": 11.5
+        },
+        {
+          "label": "20k+",
+          "value": 9.7
         }
       ]
     }
@@ -192,7 +229,7 @@
       ]
     }
   ],
-  "source": "Genesee County (GCMPC) crash records (Michigan State Police UD-10 / RoadSoft), City of Burton, 2014-2018.",
+  "source": "Genesee County (GCMPC) crash records (Michigan State Police UD-10 / RoadSoft), City of Burton, 2014-2018. Traffic volumes: MDOT statewide AADT 2025; road names from the Genesee County Metropolitan Planning Commission.",
   "links": [
     {
       "text": "Michigan Traffic Crash Facts",
@@ -206,6 +243,7 @@
   "notes": [
     "This is HISTORICAL data (2014-2018): a multi-year summary and trend, not a live or current crash map. Road and intersection changes since then (new signals, the Bristol/Belsay roundabout, resurfacing) mean today's pattern can differ.",
     "Counts are crash reports where the recorded city is Burton; most crashes are property-damage-only. \"Fatal\" and \"injury\" count crashes in which someone was killed or injured.",
+    "Traffic counts are MDOT's 2025 annual average daily traffic for state and federal-aid roads only, so most residential streets are not counted. The map overlay \"Traffic volume\" shows every counted segment.",
     "Source: Genesee County (GCMPC) / Michigan State Police UD-10 crash data; provided for public awareness, not endorsed by the City of Burton."
   ]
 }

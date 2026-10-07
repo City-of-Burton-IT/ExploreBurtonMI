@@ -1712,6 +1712,13 @@
         "priority": true,
         "label": "Most recorded crash type",
         "hint": "Rear-end, straight movement; 22% of records"
+      },
+      "Busiest road counted": {
+        "label": "Busiest counted road",
+        "hint": "Daily vehicles on the highest-volume named segment, MDOT 2025"
+      },
+      "Miles of road with traffic counts": {
+        "hint": "MDOT 2025 counts; state and federal-aid roads only"
       }
     },
     "chartOverrides": {
@@ -1723,6 +1730,9 @@
       },
       "Most common crash types": {
         "takeaway": "Rear-end crashes during straight movement were the most common recorded type."
+      },
+      "Road miles by daily traffic": {
+        "takeaway": "Most counted road-miles carry under 2,000 vehicles a day; only a short stretch carries 20,000 or more."
       }
     },
     "tableIds": {
@@ -1742,6 +1752,17 @@
         "tables": [
           "most-frequent-crash-locations"
         ]
+      },
+      {
+        "heading": "Traffic volume (MDOT 2025)",
+        "stats": [
+          "busiest-road-counted",
+          "miles-of-road-with-traffic-counts"
+        ],
+        "charts": [
+          "road-miles-by-daily-traffic"
+        ],
+        "tables": []
       }
     ]
   },
