@@ -267,6 +267,190 @@ def test_department_trend_names_transfers_and_folds_small_departments():
     assert other == round((300_000 + 80_000) / 1e6, 2)   # Election + Zoning folded
 
 
+SPEND_CATEGORY_LABELS = {
+    "passthrough": "Taxes collected for schools, the County and the State",
+    "water_purchase": "Water bought from the regional system",
+    "sewage_treatment": "Sewage treatment by the County",
+    "trash": "Trash and recycling pickup",
+    "streets": "Street and road projects",
+    "utility_projects": "Water and sewer system projects",
+    "debt": "Loan and bond payments",
+    "insurance_benefits": "Insurance, pensions and employee benefits",
+    "utilities": "Utilities and street lighting",
+    "vehicles_equipment": "Vehicles, equipment, buildings and parks",
+    "services": "Contracted and professional services",
+    "supplies": "Supplies and materials",
+    "other_operations": "Repairs, rentals, training and other operations",
+    "refunds_deposits": "Refunds, deposits returned and other payments",
+    "other": "Other",
+}
+
+SPEND_CELLS = [
+    {"fund": "703", "object": "222", "category": "passthrough", "amount": 18_000_000, "lines": 400},
+    {"fund": "591", "object": "816", "category": "water_purchase", "amount": 2_900_000, "lines": 300},
+    {"fund": "590", "object": "928", "category": "sewage_treatment", "amount": 2_500_000, "lines": 200},
+    {"fund": "226", "object": "830", "category": "trash", "amount": 2_100_000, "lines": 150},
+    {"fund": "202", "object": "818", "category": "streets", "amount": 2_000_000, "lines": 180},
+    {"fund": "590", "object": "582", "category": "utility_projects", "amount": 1_000_000, "lines": 50},
+    {"fund": "591", "object": "300", "category": "debt", "amount": 900_000, "lines": 40},
+    {"fund": "101", "object": "231", "category": "insurance_benefits", "amount": 1_600_000, "lines": 90},
+    {"fund": "101", "object": "926", "category": "utilities", "amount": 500_000, "lines": 60},
+    {"fund": "661", "object": "101", "category": "vehicles_equipment", "amount": 700_000, "lines": 30},
+    {"fund": "101", "object": "975", "category": "vehicles_equipment", "amount": 300_000, "lines": 20},
+    {"fund": "101", "object": "826", "category": "services", "amount": 1_300_000, "lines": 70},
+    {"fund": "101", "object": "740", "category": "supplies", "amount": 600_000, "lines": 50},
+    {"fund": "101", "object": "957", "category": "other_operations", "amount": 400_000, "lines": 25},
+    {"fund": "101", "object": "285", "category": "refunds_deposits", "amount": 150_000, "lines": 10},
+    {"fund": "101", "object": "676", "category": "refunds_deposits", "amount": 50_000, "lines": 5},
+    {"fund": "101", "object": "442", "category": "other", "amount": 100_000, "lines": 5},
+]
+
+_SPEND_CATEGORIES_NO_PASSTHROUGH = {
+    "water_purchase": 2_900_000,
+    "sewage_treatment": 2_500_000,
+    "trash": 2_100_000,
+    "streets": 2_000_000,
+    "utility_projects": 1_000_000,
+    "debt": 900_000,
+    "insurance_benefits": 1_600_000,
+    "utilities": 500_000,
+    "vehicles_equipment": 1_000_000,
+    "services": 1_300_000,
+    "supplies": 600_000,
+    "other_operations": 400_000,
+    "refunds_deposits": 200_000,
+    "other": 100_000,
+}
+_SPEND_CITY_TOTAL = sum(_SPEND_CATEGORIES_NO_PASSTHROUGH.values())
+_SPEND_FUND_GROUPS = {
+    "General Fund": 1_600_000 + 500_000 + 1_300_000 + 600_000 + 400_000 + 200_000 + 100_000,
+    "Streets": 2_000_000,
+    "Sewer": 2_500_000 + 1_000_000,
+    "Water": 2_900_000 + 900_000,
+    "Rubbish": 2_100_000,
+    "Motor Pool": 700_000 + 300_000,
+}
+
+
+def _spend_fixture(num_complete_years=9, add_partial=True):
+    labels = dict(SPEND_CATEGORY_LABELS)
+    base_year = 2017
+    years = []
+    for i in range(num_complete_years):
+        fy = base_year + i
+        years.append({
+            "fiscal_year": fy, "complete": True,
+            "invoices": 5000 + i, "invoice_total": 18_000_000 + _SPEND_CITY_TOTAL,
+            "distribution_total": 18_000_000 + _SPEND_CITY_TOTAL,
+            "passthrough": 18_000_000, "city_total": _SPEND_CITY_TOTAL,
+            "payees": 600 + i, "top10_share": 0.55,
+            "categories": dict(_SPEND_CATEGORIES_NO_PASSTHROUGH),
+            "fund_groups": dict(_SPEND_FUND_GROUPS),
+        })
+    latest_complete_fy = years[-1]["fiscal_year"]
+    if add_partial:
+        partial_fy = latest_complete_fy + 1
+        years.append({
+            "fiscal_year": partial_fy, "complete": False,
+            "invoices": 1200, "invoice_total": 9_000_000 + _SPEND_CITY_TOTAL // 2,
+            "distribution_total": 9_000_000 + _SPEND_CITY_TOTAL // 2,
+            "passthrough": 9_000_000, "city_total": _SPEND_CITY_TOTAL // 2,
+            "payees": 300, "top10_share": 0.5,
+            "categories": {k: v // 2 for k, v in _SPEND_CATEGORIES_NO_PASSTHROUGH.items()},
+            "fund_groups": {k: v // 2 for k, v in _SPEND_FUND_GROUPS.items()},
+        })
+    return {
+        "_source": "test", "extracted": "2026-10-07", "latest_complete_fy": latest_complete_fy,
+        "category_labels": labels,
+        "fund_groups": {"101": "General Fund", "202": "Streets", "203": "Streets", "206": "Fire", "207": "Police",
+                        "226": "Rubbish", "590": "Sewer", "591": "Water", "661": "Motor Pool", "636": "Information Technology"},
+        "street_funds": ["202", "203", "451"], "utility_funds": ["590", "591"],
+        "malformed_gl_lines": {"lines": 0, "amount": 0},
+        "by_fiscal_year": years,
+        "cells": copy.deepcopy(SPEND_CELLS),
+    }
+
+
+SPEND = _spend_fixture()
+
+
+@pytest.mark.parametrize("fund,obj,expected", [
+    ("703", "222", "passthrough"),
+    ("591", "816", "water_purchase"),
+    ("590", "928", "sewage_treatment"),
+    ("226", "830", "trash"),
+    ("202", "818", "streets"),
+    ("590", "582", "utility_projects"),
+    ("591", "300", "debt"),
+    ("101", "231", "insurance_benefits"),
+    ("101", "926", "utilities"),
+    ("661", "101", "vehicles_equipment"),
+    ("101", "975", "vehicles_equipment"),
+    ("101", "826", "services"),
+    ("101", "740", "supplies"),
+    ("101", "957", "other_operations"),
+    ("101", "285", "refunds_deposits"),
+    ("101", "676", "refunds_deposits"),
+    ("101", "442", "other"),
+])
+def test_classify_spend(fund, obj, expected):
+    assert ff.classify_spend(fund, obj) == expected
+
+
+def test_validate_spend_accepts_fixture():
+    assert ff.validate_spend(copy.deepcopy(SPEND)) == SPEND
+
+
+def test_validate_spend_rejects_category_mismatch():
+    bad = copy.deepcopy(SPEND)
+    bad["by_fiscal_year"][0]["categories"]["other"] += 1_000_000
+    with pytest.raises(SystemExit):
+        ff.validate_spend(bad)
+
+
+def test_validate_spend_tolerates_small_rounding_drift():
+    # The exporter rounds each category independently, which on a real year can
+    # drift the sum a few dollars from the (separately rounded) city_total.
+    ok = copy.deepcopy(SPEND)
+    ok["by_fiscal_year"][0]["categories"]["other"] += 3
+    assert ff.validate_spend(ok) == ok
+
+
+def test_validate_spend_rejects_too_few_complete_years():
+    bad = _spend_fixture(num_complete_years=7, add_partial=False)
+    with pytest.raises(SystemExit):
+        ff.validate_spend(bad)
+
+
+def test_validate_spend_rejects_cell_category_disagreement():
+    bad = copy.deepcopy(SPEND)
+    bad["cells"][0]["category"] = "other"
+    with pytest.raises(SystemExit):
+        ff.validate_spend(bad)
+
+
+def test_build_spend_stats_and_charts():
+    stats, charts = ff.build_spend(copy.deepcopy(SPEND))
+    assert [s["label"] for s in stats] == [
+        "Paid to vendors last fiscal year",
+        "Collected for other governments",
+        "Largest spending category",
+        "Paid to the ten largest payees",
+    ]
+    assert [c["title"] for c in charts] == [
+        f"What the City bought, FY{SPEND['latest_complete_fy']} ($M)",
+        f"Vendor payments by year, FY{SPEND['by_fiscal_year'][0]['fiscal_year']} to FY{SPEND['latest_complete_fy']} ($M)",
+        f"Vendor payments by fund, FY{SPEND['latest_complete_fy']} ($M)",
+    ]
+    cat_chart = charts[0]
+    assert all(s["value"] != 0.0 for s in cat_chart["series"])
+    trend = charts[1]
+    assert len(trend["lines"]) == 2
+    complete_count = sum(1 for r in SPEND["by_fiscal_year"] if r["complete"])
+    assert len(trend["lines"][0]["points"]) == complete_count
+    assert len(trend["lines"][1]["points"]) == complete_count
+
+
 def test_history_panel_assembles_sections():
     budget = copy.deepcopy(BUDGET)
     budget["history"] = copy.deepcopy(HISTORY)

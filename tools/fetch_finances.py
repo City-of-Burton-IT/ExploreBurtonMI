@@ -37,6 +37,8 @@ OUT = public_path("info-finances.json")
 OUT_HISTORY = public_path("info-financehistory.json")
 BUDGET_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "bsa-budget.json")
 TAXROLL_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "bsa-taxroll.json")
+HERE = os.path.dirname(os.path.abspath(__file__))
+SPEND_FILE = os.path.join(HERE, "data", "bsa-spend.json")
 
 # --- City ADOPTED BUDGET (plan): from the City's General Ledger ------------------
 # Decision 2026-10-06: the GL is the source of truth for adopted-budget figures.
@@ -437,6 +439,189 @@ def _title(name: str) -> str:
     return " ".join(words)
 
 
+STREET_FUNDS = {"202", "203", "451"}
+UTILITY_FUNDS = {"590", "591"}
+
+
+def classify_spend(fund: str, obj: str) -> str:
+    """Reference copy of Get-SpendCategory in Export-BsaSpend.ps1"""
+    o = int(obj)
+    if fund == "703":
+        return "passthrough"
+    if fund == "591" and o == 816:
+        return "water_purchase"
+    if fund == "590" and o == 928:
+        return "sewage_treatment"
+    if fund == "226" and o == 830:
+        return "trash"
+    if fund in STREET_FUNDS and (o in (802, 818, 988) or (970 <= o <= 989)):
+        return "streets"
+    if fund in UTILITY_FUNDS and o in (58, 132, 136, 158, 562, 582, 971, 975, 977, 985):
+        return "utility_projects"
+    if fund in UTILITY_FUNDS and o == 300:
+        return "debt"
+    if o in (950, 952, 991, 993, 994, 999):
+        return "debt"
+    if o in (123, 231, 237, 238, 239, 719, 831, 874, 875):
+        return "insurance_benefits"
+    if 920 <= o <= 929:
+        return "utilities"
+    if o in (101, 140, 146, 148, 571, 850, 863, 867, 868, 934, 974, 983) or (970 <= o <= 989):
+        return "vehicles_equipment"
+    if 800 <= o <= 899:
+        return "services"
+    if 700 <= o <= 799:
+        return "supplies"
+    if 900 <= o <= 969:
+        return "other_operations"
+    if o < 400 or (600 <= o <= 699):
+        return "refunds_deposits"
+    return "other"
+
+
+def load_spend_file(path: str) -> dict:
+    with open(path, encoding="utf-8") as fh:
+        raw = json.load(fh)
+    return validate_spend(raw, path)
+
+
+def validate_spend(data: Any, where: str = "spend file") -> dict:
+    if not isinstance(data, dict):
+        sys.exit(f"{where}: expected an object")
+    for key in ("_source", "extracted", "latest_complete_fy", "category_labels", "by_fiscal_year", "cells"):
+        if key not in data:
+            sys.exit(f"{where}: missing '{key}'")
+    if not isinstance(data["extracted"], str) or len(data["extracted"]) != 10:
+        sys.exit(f"{where}: 'extracted' must be a 10-character date string")
+    if not isinstance(data["latest_complete_fy"], int):
+        sys.exit(f"{where}: 'latest_complete_fy' must be an integer")
+    labels = data["category_labels"]
+    if not isinstance(labels, dict) or len(labels) < 10 or not all(isinstance(k, str) for k in labels):
+        sys.exit(f"{where}: 'category_labels' must have at least 10 string keys")
+    if "passthrough" not in labels or "other" not in labels:
+        sys.exit(f"{where}: category_labels must include 'passthrough' and 'other'")
+    rows = data["by_fiscal_year"]
+    if not isinstance(rows, list) or not rows:
+        sys.exit(f"{where}: 'by_fiscal_year' must be a non-empty list")
+    cat_keys = set(labels.keys()) - {"passthrough"}
+    years = []
+    complete_years = []
+    for row in rows:
+        fy = row.get("fiscal_year")
+        if not isinstance(fy, int):
+            sys.exit(f"{where}: by_fiscal_year row missing integer fiscal_year")
+        years.append(fy)
+        if row.get("complete") is True:
+            complete_years.append(fy)
+        if not isinstance(row.get("invoices"), int):
+            sys.exit(f"{where}: FY{fy} invoices must be an integer")
+        for key in ("invoice_total", "distribution_total", "passthrough", "city_total"):
+            if not isinstance(row.get(key), int) or row[key] < 0:
+                sys.exit(f"{where}: FY{fy} {key} must be a non-negative integer")
+        if not isinstance(row.get("payees"), int) or row["payees"] < 1:
+            sys.exit(f"{where}: FY{fy} payees must be an integer >= 1")
+        top10 = row.get("top10_share")
+        if not isinstance(top10, (int, float)) or not (0 <= top10 <= 1):
+            sys.exit(f"{where}: FY{fy} top10_share must be a float between 0 and 1")
+        cats = row.get("categories")
+        if not isinstance(cats, dict) or set(cats.keys()) != cat_keys:
+            sys.exit(f"{where}: FY{fy} categories keys must match category_labels minus 'passthrough'")
+        for k, v in cats.items():
+            if not isinstance(v, int) or v < 0:
+                sys.exit(f"{where}: FY{fy} categories.{k} must be a non-negative integer")
+        # Tolerance of 5, not 2: the exporter rounds each of the ~14 categories to a
+        # whole dollar independently, which can drift the sum a few dollars from the
+        # separately-rounded city_total (observed up to 3 in the real FY2016 data).
+        # Each category is rounded to whole dollars separately from city_total, so the
+        # sums can drift by up to half a dollar per category.
+        if abs(sum(cats.values()) - row["city_total"]) > len(cats):
+            sys.exit(f"{where}: FY{fy} categories do not sum to city_total")
+        groups = row.get("fund_groups")
+        if not isinstance(groups, dict):
+            sys.exit(f"{where}: FY{fy} fund_groups must be an object")
+        for k, v in groups.items():
+            if not isinstance(v, int) or v < 0:
+                sys.exit(f"{where}: FY{fy} fund_groups.{k} must be a non-negative integer")
+        if abs(sum(groups.values()) - row["city_total"]) > max(len(groups), 5):
+            sys.exit(f"{where}: FY{fy} fund_groups do not sum to city_total")
+        if row.get("complete") is True:
+            if not (2000 <= row["invoices"] <= 20000):
+                sys.exit(f"{where}: FY{fy} invoices out of plausible range")
+            if not (10_000_000 <= row["city_total"] <= 150_000_000):
+                sys.exit(f"{where}: FY{fy} city_total out of plausible range")
+    if years != sorted(set(years)):
+        sys.exit(f"{where}: by_fiscal_year years must be ascending and unique")
+    if len(complete_years) < 8:
+        sys.exit(f"{where}: fewer than 8 complete fiscal years")
+    if data["latest_complete_fy"] not in complete_years:
+        sys.exit(f"{where}: latest_complete_fy is not among the complete years")
+    for cell in data["cells"]:
+        fund, obj, cat = cell.get("fund"), cell.get("object"), cell.get("category")
+        if classify_spend(fund, obj) != cat:
+            sys.exit(f"{where}: cell {fund}-{obj} classifies as {classify_spend(fund, obj)!r}, not {cat!r}")
+    return data
+
+
+def build_spend(spend: dict) -> tuple[list, list]:
+    labels = spend["category_labels"]
+    rows = spend["by_fiscal_year"]
+    fy = spend["latest_complete_fy"]
+    last = next(r for r in rows if r["fiscal_year"] == fy)
+    complete = sorted((r for r in rows if r["complete"]), key=lambda r: r["fiscal_year"])
+
+    top_key = max((k for k in last["categories"] if k != "other"), key=lambda k: last["categories"][k])
+    top_amount = last["categories"][top_key]
+    top_pct = round(100 * top_amount / last["city_total"]) if last["city_total"] else 0
+
+    stats = [
+        {"label": "Paid to vendors last fiscal year", "value": _m(last["city_total"]),
+         "hint": (f"FY{fy}, July {fy - 1} to June {fy}: {last['invoices']:,} invoices to {last['payees']:,} payees "
+                  f"through Accounts Payable; wages and benefits paid through payroll are not included")},
+        {"label": "Collected for other governments", "value": _m(last["passthrough"]),
+         "hint": (f"FY{fy}: property taxes the Treasurer collected and passed on to the schools, Genesee County "
+                  f"and the State; not City spending")},
+        {"label": "Largest spending category", "value": labels[top_key],
+         "hint": f"FY{fy}: {_m(top_amount)}, {top_pct}% of vendor payments"},
+        {"label": "Paid to the ten largest payees", "value": f"{round(100 * last['top10_share'])}%",
+         "hint": f"share of FY{fy} vendor payments; no payee is named on this site"},
+    ]
+
+    def _bars(amounts: dict[str, int], title: str) -> dict:
+        series = []
+        for key, amt in sorted(amounts.items(), key=lambda kv: kv[1], reverse=True):
+            val = round(amt / 1e6, 2)
+            if val == 0.0:
+                continue
+            series.append({"label": labels.get(key, key), "value": val})
+        return {"type": "bars", "title": title, "unit": "$M", "series": series}
+
+    cat_chart = _bars(last["categories"], f"What the City bought, FY{fy} ($M)")
+    # fund_groups keys are already display names, not category keys
+    fund_series = []
+    for key, amt in sorted(last["fund_groups"].items(), key=lambda kv: kv[1], reverse=True):
+        val = round(amt / 1e6, 2)
+        if val == 0.0:
+            continue
+        fund_series.append({"label": key, "value": val})
+    fund_chart = {"type": "bars", "title": f"Vendor payments by fund, FY{fy} ($M)", "unit": "$M", "series": fund_series}
+
+    first_complete = complete[0]["fiscal_year"]
+    trend = {
+        "type": "trend",
+        "title": f"Vendor payments by year, FY{first_complete} to FY{fy} ($M)",
+        "unit": "$M",
+        "lines": [
+            {"label": "City spending",
+             "points": [{"x": f"FY{r['fiscal_year']}", "y": round(r["city_total"] / 1e6, 2)} for r in complete]},
+            {"label": "Passed through to other governments",
+             "points": [{"x": f"FY{r['fiscal_year']}", "y": round(r["passthrough"] / 1e6, 2)} for r in complete]},
+        ],
+    }
+
+    charts = [cat_chart, trend, fund_chart]
+    return stats, charts
+
+
 def build_budget_stats(budget: dict) -> list:
     t, gf, label = budget["totals"], budget["general_fund"], budget["label"]
     return [
@@ -629,13 +814,19 @@ def build_health_stats(snapshot: dict, analytics: list, year: int | None) -> lis
 AUDITED_STAT_LABELS = ("General Fund revenues", "General Fund expenditures", "Long-term debt", "General Fund reserve")
 
 
-def reuse_audited(existing_path: str) -> tuple[list, list, int | None]:
+def reuse_audited(existing_path: str, existing_history_path: str) -> tuple[list, list, int | None]:
     """Offline mode: keep the committed audited stats and trend charts untouched
-    when the State API is unreachable, so a GL refresh never erases them."""
+    when the State API is unreachable, so a GL refresh never erases them.
+
+    The health stats live in the Finances panel (existing_path); the audited
+    trend charts live in the History panel (existing_history_path) -- see
+    build_history_panel, which is the only place `trends` is ever written."""
     with open(existing_path, encoding="utf-8") as fh:
         panel = json.load(fh)
+    with open(existing_history_path, encoding="utf-8") as fh:
+        history_panel = json.load(fh)
     health = [st for st in panel.get("stats", []) if st.get("label") in AUDITED_STAT_LABELS]
-    trends = [c for c in panel.get("charts", []) if c.get("type") == "trend" and "audited" in c.get("title", "")]
+    trends = [c for c in history_panel.get("charts", []) if c.get("type") == "trend" and "audited" in c.get("title", "")]
     year = None
     for st in health:
         hint = st.get("hint", "")
@@ -663,8 +854,9 @@ def main() -> int:
     args = ap.parse_args()
 
     budget = load_budget_file(args.budget_file)
+    spend = load_spend_file(SPEND_FILE)
     if args.offline:
-        health, trends, latest_year = reuse_audited(OUT)
+        health, trends, latest_year = reuse_audited(OUT, OUT_HISTORY)
     else:
         snapshot = fetch_snapshot()
         analytics = fetch_analytics()
@@ -673,6 +865,7 @@ def main() -> int:
     budget_stats = build_budget_stats(budget)
     budget_charts = build_budget_charts(budget)
     actual_stats, actual_charts = build_actuals(budget)
+    spend_stats, spend_charts = build_spend(spend)
     taxroll = load_taxroll_file(args.taxroll_file) if args.taxroll_file else None
     tax_stats, tax_charts = build_taxable_value(taxroll) if taxroll else ([], [])
     tax_donuts = [c for c in tax_charts if c["type"] != "trend"]
@@ -706,8 +899,8 @@ def main() -> int:
         "subtitle": f"{BUDGET_YEAR} adopted budget + audited financial history",
         "summary": summary,
         "explainer": BUDGET_EXPLAINER,
-        "stats": budget_stats + tax_stats + CITY_STATS + actual_stats + health,
-        "charts": [revenue_chart] + budget_charts + actual_charts + tax_donuts,
+        "stats": budget_stats + tax_stats + CITY_STATS + actual_stats + spend_stats + health,
+        "charts": [revenue_chart] + budget_charts + actual_charts + spend_charts + tax_donuts,
         "source": (
             f"City of Burton General Ledger (BS&A) for the {budget['label']} adopted-budget figures "
             f"(aggregates extracted {budget['extracted']}) and for budget-vs-actual comparisons; City Assessor "
@@ -739,6 +932,10 @@ def main() -> int:
             "year's roll can still change with appeals and corrections.",
             "Audited trends and fiscal-health figures come from the State of Michigan Community Financials "
             "program (audited F-65 annual financial reports).",
+            "Vendor payments come from the City's Accounts Payable records and cover invoices paid, not payroll. "
+            "Property taxes collected for the schools, the County and the State pass through the City's books and "
+            "are shown separately, never as City spending. Categories group the ledger's object codes; no vendor "
+            "is named.",
         ],
     }
 

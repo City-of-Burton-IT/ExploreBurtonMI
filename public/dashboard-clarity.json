@@ -632,6 +632,15 @@
       },
       "Revenue by source, governmental funds, FY2026 ($M, City ledger)": {
         "takeaway": "Property taxes and state shared revenue each bring in a similar amount; together with road money from the State they are most of what runs the City's governmental funds."
+      },
+      "What the City bought, FY2026 ($M)": {
+        "takeaway": "Street projects, water bought from the regional system and County sewage treatment were the three largest vendor costs; most vendor spending is infrastructure and utilities, not office costs."
+      },
+      "Vendor payments by year, FY2016 to FY2026 ($M)": {
+        "takeaway": "City vendor spending has grown only modestly over ten years, while the taxes passed through to schools, the County and the State have grown much faster and now nearly match it."
+      },
+      "Vendor payments by fund, FY2026 ($M)": {
+        "takeaway": "The Sewer, Water and Streets funds paid the most to vendors; the General Fund, which runs day-to-day services, ranks fourth because most of its cost is payroll."
       }
     },
     "tableIds": {},
@@ -655,6 +664,20 @@
           "revenue-by-source-governmental-funds-fy2026-m-city-ledger",
           "general-fund-fy2025-26-budget-vs-actual-m",
           "spending-by-fund-fy2025-26-budget-vs-actual-m"
+        ]
+      },
+      {
+        "heading": "What the City bought (Accounts Payable, FY2026)",
+        "stats": [
+          "paid-to-vendors-last-fiscal-year",
+          "collected-for-other-governments",
+          "largest-spending-category",
+          "paid-to-the-ten-largest-payees"
+        ],
+        "charts": [
+          "what-the-city-bought-fy2026-m",
+          "vendor-payments-by-year-fy2016-to-fy2026-m",
+          "vendor-payments-by-fund-fy2026-m"
         ]
       },
       {
@@ -730,6 +753,9 @@
       },
       "How the summer 2026 levy came in (cumulative % of billed, by week)": {
         "takeaway": "Most of the summer levy arrives in the two weeks before the September 30 due date; about nine in ten dollars were in within a week after it."
+      },
+      "How collections compare, 2021 to 2026": {
+        "takeaway": "About nine in ten summer tax dollars arrive by the due date every year since 2021, and the pattern has barely moved; winter collections run a few points behind summer."
       }
     },
     "tableIds": {},
@@ -745,12 +771,14 @@
         "heading": "City rate and collections",
         "stats": [
           "median-city-tax-homestead-home",
-          "summer-2026-taxes-collected"
+          "summer-2026-taxes-collected",
+          "summer-levy-paid-by-the-due-date"
         ],
         "charts": [
           "reported-city-millage-fy2017-fy2026",
           "2026-property-tax-levy-by-taxing-unit-m",
-          "how-the-summer-2026-levy-came-in-cumulative-of-billed-by-week"
+          "how-the-summer-2026-levy-came-in-cumulative-of-billed-by-week",
+          "how-collections-compare-2021-to-2026"
         ]
       }
     ]
@@ -2012,6 +2040,15 @@
       },
       "New-home permits per year since 2015": {
         "takeaway": "New-home permits have varied from year to year and have been well below the mid-2010s level since 2022."
+      },
+      "Inspection results per year since 2019": {
+        "takeaway": "Inspections rose with the 2023 and 2024 permit surge and eased in 2025; about five in six inspections are approved, and disapprovals have grown a little with the volume."
+      },
+      "Building permits finished within a year of issue, 2019 to 2024": {
+        "takeaway": "Between half and three quarters of building permits reach a final inspection within a year; the share swings from year to year rather than trending one way."
+      },
+      "Inspections completed by type, 2025": {
+        "takeaway": "Final inspections make up more than half of all inspections; framing and footing checks on new construction come next, and specialised checks are far fewer."
       }
     },
     "tableIds": {},
@@ -2033,6 +2070,20 @@
         "charts": [
           "permits-by-type-last-full-year",
           "new-home-permits-per-year-since-2015"
+        ]
+      },
+      {
+        "heading": "Inspections and completion",
+        "stats": [
+          "inspections-completed-last-year",
+          "inspections-passed-last-year",
+          "projects-finished-within-a-year",
+          "inspections-per-building-permit"
+        ],
+        "charts": [
+          "inspection-results-per-year-since-2019",
+          "building-permits-finished-within-a-year-of-issue-2019-to-2024",
+          "inspections-completed-by-type-2025"
         ]
       }
     ]
