@@ -1,0 +1,76 @@
+{
+  "policies_in_force": {
+    "count": 31,
+    "building_coverage": 4457000,
+    "contents_coverage": 916000,
+    "annual_premium": 26780,
+    "median_premium": 779
+  },
+  "policies_in_force_by_zone": [
+    {
+      "zone_group": "High risk (A and V zones)",
+      "count": 28
+    },
+    {
+      "zone_group": "Moderate or low risk (B, C, X)",
+      "count": 3
+    }
+  ],
+  "policies_by_occupancy": [
+    {
+      "occupancy": "Single family",
+      "count": 28
+    },
+    {
+      "occupancy": "Other",
+      "count": 3
+    }
+  ],
+  "claims_total": {
+    "count": 82,
+    "paid": 351710
+  },
+  "claims_by_decade": [
+    {
+      "decade": "1970s",
+      "count": 2,
+      "paid": 1247
+    },
+    {
+      "decade": "1980s",
+      "count": 28,
+      "paid": 122440
+    },
+    {
+      "decade": "1990s",
+      "count": 6,
+      "paid": 10700
+    },
+    {
+      "decade": "2000s",
+      "count": 26,
+      "paid": 96166
+    },
+    {
+      "decade": "2010s",
+      "count": 15,
+      "paid": 79479
+    },
+    {
+      "decade": "2020s",
+      "count": 5,
+      "paid": 41678
+    }
+  ],
+  "largest_claim_year": {
+    "year": 1985,
+    "paid": 84776
+  },
+  "as_of": "2026-10-07",
+  "extracted": "2026-10-07",
+  "_source": {
+    "policies": "https://www.fema.gov/api/open/v3/NfipPolicies",
+    "claims": "https://www.fema.gov/api/open/v3/NfipClaims",
+    "note": "aggregates only; FEMA redacted dataset, no policyholder identity"
+  }
+}

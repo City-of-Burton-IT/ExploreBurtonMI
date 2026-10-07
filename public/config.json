@@ -43,7 +43,8 @@
     { "source": "zoning.geojson", "label": "Zoning", "nameField": "name" },
     { "source": "parks.geojson", "label": "Parks", "nameField": "name" },
     { "source": "bus-stops.geojson", "label": "Bus stops", "nameField": "name" },
-    { "source": "fire-stations.geojson", "label": "Fire call volume (by station)", "nameField": "station" }
+    { "source": "fire-stations.geojson", "label": "Fire call volume (by station)", "nameField": "station" },
+    { "source": "traffic-aadt.geojson", "label": "Traffic volume (daily vehicles)", "nameField": "name" }
   ],
   "imageOverlays": [],
   "categoryField": "category",

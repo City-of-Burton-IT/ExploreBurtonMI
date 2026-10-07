@@ -1,0 +1,49 @@
+{
+  "segments": 342,
+  "miles_by_band": {
+    "<2k": 76.7,
+    "2k-5k": 18.3,
+    "5k-10k": 25.0,
+    "10k-20k": 11.5,
+    "20k+": 9.7
+  },
+  "busiest": [
+    {
+      "name": "Grand Traverse",
+      "aadt": 33222,
+      "trucks_pct": 5,
+      "year": 2025
+    },
+    {
+      "name": "S Center Rd",
+      "aadt": 20913,
+      "trucks_pct": 2,
+      "year": 2025
+    },
+    {
+      "name": "S Center Rd",
+      "aadt": 20838,
+      "trucks_pct": 3,
+      "year": 2025
+    },
+    {
+      "name": "S Belsay Rd",
+      "aadt": 16153,
+      "trucks_pct": 2,
+      "year": 2025
+    },
+    {
+      "name": "E Bristol Rd",
+      "aadt": 14411,
+      "trucks_pct": 5,
+      "year": 2025
+    }
+  ],
+  "median_aadt": 740,
+  "years": {
+    "min": 2025,
+    "max": 2025
+  },
+  "extracted": "2026-10-07",
+  "_source": "MDOT statewide AADT 2025 (state and federal-aid roads); road names from Genesee County Metropolitan Planning Commission traffic-count points"
+}

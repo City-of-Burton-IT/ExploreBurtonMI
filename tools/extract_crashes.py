@@ -15,14 +15,19 @@
 # Stdlib only (tools/lib helpers over urllib/json).
 from __future__ import annotations
 
+import json
+import os
 import sys
 from collections import Counter
 
 from lib.arcgis import paged_query
 from lib.iox import write_json
-from lib.paths import public_path
+from lib.paths import REPO_ROOT, public_path
 
 OUT_INFO = public_path("info-roadsafety.json")
+# Written by tools/fetch_traffic.py (MDOT AADT 2025); optional here.
+TRAFFIC_SUMMARY = os.path.join(REPO_ROOT, "tools", "data", "traffic-summary.json")
+TRAFFIC_BANDS = ["<2k", "2k-5k", "5k-10k", "10k-20k", "20k+"]
 
 LAYER = ("https://services2.arcgis.com/5ckbIY7K9TUKoseK/ArcGIS/rest/services/"
          "Crash_Locations_2014_2018/FeatureServer/0/query")
@@ -49,6 +54,52 @@ def fetch() -> list:
 
 def _yes(v) -> bool:
     return str(v).strip().lower() == "yes"
+
+
+def load_traffic(path: str = TRAFFIC_SUMMARY) -> dict | None:
+    """Read and validate tools/data/traffic-summary.json; None when the file is absent.
+
+    Exits on a malformed file rather than publishing a half-built panel.
+    """
+    if not os.path.exists(path):
+        return None
+    try:
+        with open(path, encoding="utf-8") as fh:
+            t = json.load(fh)
+    except (OSError, ValueError) as exc:
+        raise SystemExit(f"traffic summary unreadable ({path}): {exc}")
+    if not isinstance(t, dict):
+        raise SystemExit("traffic summary: expected a JSON object")
+    miles = t.get("miles_by_band")
+    if not isinstance(miles, dict) or set(miles) != set(TRAFFIC_BANDS) or not all(
+            isinstance(miles[b], (int, float)) and miles[b] >= 0 for b in TRAFFIC_BANDS):
+        raise SystemExit(f"traffic summary: miles_by_band must hold exactly {TRAFFIC_BANDS}")
+    busiest = t.get("busiest")
+    if (not isinstance(busiest, list) or not busiest or not isinstance(busiest[0], dict)
+            or not busiest[0].get("name") or not isinstance(busiest[0].get("aadt"), int)):
+        raise SystemExit("traffic summary: busiest[0] needs a name and integer aadt")
+    return t
+
+
+def merge_traffic(panel: dict, t: dict) -> None:
+    """Append the traffic stats, chart, note and source credit to the panel (in place)."""
+    top = t["busiest"][0]
+    total = round(sum(t["miles_by_band"][b] for b in TRAFFIC_BANDS), 1)
+    panel["stats"] += [
+        {"label": "Busiest road counted", "value": top["name"],
+         "hint": f"{top['aadt']:,} vehicles a day"},
+        {"label": "Miles of road with traffic counts", "value": f"{total:,}",
+         "hint": "MDOT 2025 counts"},
+    ]
+    panel["charts"].append(
+        {"type": "bars", "title": "Road miles by daily traffic", "unit": " mi",
+         "series": [{"label": b, "value": t["miles_by_band"][b]} for b in TRAFFIC_BANDS]})
+    panel["notes"].insert(-1, (
+        "Traffic counts are MDOT's 2025 annual average daily traffic for state and federal-aid "
+        "roads only, so most residential streets are not counted. The map overlay "
+        "\"Traffic volume\" shows every counted segment."))
+    panel["source"] += (" Traffic volumes: MDOT statewide AADT 2025; road names from the Genesee "
+                        "County Metropolitan Planning Commission.")
 
 
 def main() -> int:
@@ -133,6 +184,9 @@ def main() -> int:
             "public awareness, not endorsed by the City of Burton.",
         ],
     }
+    traffic = load_traffic()
+    if traffic:
+        merge_traffic(panel, traffic)
     write_json(OUT_INFO, panel)
 
     print(f"Wrote {OUT_INFO}")

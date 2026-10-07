@@ -568,3 +568,80 @@ body,
   text-align: left;
   font-size: 0.85rem;
 }
+
+/* ---------- Print: any dashboard prints as one clean document ---------- */
+@media print {
+  @page {
+    margin: 14mm 12mm 18mm;
+    @bottom-center {
+      content: 'explore.burtonmi.gov';
+      font-size: 9pt;
+      color: #555;
+    }
+  }
+  html,
+  body {
+    background: #fff;
+    color: #000;
+  }
+  .app,
+  .infowrap,
+  .info {
+    display: block;
+    height: auto;
+    min-height: 0;
+    overflow: visible;
+    padding-top: 0;
+    padding-bottom: 0;
+  }
+  .infowrap {
+    width: 100%;
+  }
+  .alerts,
+  .viewnav,
+  .view-toggle,
+  .topbar .cog,
+  .install,
+  .quick-actions,
+  .dashnav,
+  .workspace,
+  .sidebar,
+  .map-credit,
+  .print-btn {
+    display: none;
+  }
+  .topbar {
+    position: static;
+    box-shadow: none;
+    border-bottom: 1px solid #999;
+  }
+  .reveal-init {
+    opacity: 1;
+    transform: none;
+  }
+  * {
+    box-shadow: none;
+    text-shadow: none;
+  }
+  .stat,
+  .info figure,
+  .chart,
+  .info svg,
+  .info canvas,
+  .info table,
+  .info tr {
+    break-inside: avoid;
+  }
+  .info svg,
+  .info canvas,
+  .info img {
+    max-width: 100%;
+    height: auto;
+  }
+  .info footer a[href^='http']::after {
+    content: ' (' attr(href) ')';
+    font-size: 0.75em;
+    color: #555;
+    word-break: break-all;
+  }
+}

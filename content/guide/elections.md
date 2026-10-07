@@ -1,3 +1,7 @@
+## Find my voting precinct
+
+Type your Burton street address below to see which City of Burton precinct you live in, then use the official Michigan Voter Information Center for your polling place and sample ballot.
+
 ## Register, check your status, and find where to vote
 
 Michigan's official **Voter Information Center** is the one place to handle almost everything about

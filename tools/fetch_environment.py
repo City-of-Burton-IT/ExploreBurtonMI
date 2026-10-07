@@ -20,6 +20,8 @@ from __future__ import annotations
 
 import csv
 import io
+import json
+import os
 import sys
 import zipfile
 
@@ -32,6 +34,8 @@ COUNTY = "Genesee"
 YEARS = list(range(2015, 2026))  # 2025 may not exist yet -> skipped gracefully
 BASE = "https://aqs.epa.gov/aqsweb/airdata/annual_aqi_by_county_{}.zip"
 OUT = public_path("info-environment.json")
+NFIP_FILE = os.path.join(os.path.dirname(os.path.abspath(__file__)), "data", "nfip-burton.json")
+HIGH_ZONE = "High risk (A and V zones)"
 
 
 def fetch_year(year: int) -> dict | None:
@@ -57,6 +61,67 @@ def _i(row: dict, key: str) -> int:
         return int(row.get(key, 0) or 0)
     except ValueError:
         return 0
+
+
+def load_nfip(path: str = NFIP_FILE) -> dict | None:
+    """Read the committed NFIP aggregates; None if absent, sys.exit on shape errors."""
+    if not os.path.exists(path):
+        return None
+    with open(path, encoding="utf-8") as fh:
+        d = json.load(fh)
+    where = "nfip-burton.json"
+    pif = d.get("policies_in_force")
+    if not isinstance(pif, dict) or not all(isinstance(pif.get(k), (int, float)) for k in ("count", "median_premium")):
+        sys.exit(f"{where}: policies_in_force needs numeric count and median_premium")
+    zones = d.get("policies_in_force_by_zone")
+    if not isinstance(zones, list) or not all(
+        isinstance(z, dict) and isinstance(z.get("count"), int) and z.get("zone_group") for z in zones
+    ):
+        sys.exit(f"{where}: policies_in_force_by_zone must list zone_group/count rows")
+    ct = d.get("claims_total")
+    if not isinstance(ct, dict) or not isinstance(ct.get("count"), int) or not isinstance(ct.get("paid"), (int, float)):
+        sys.exit(f"{where}: claims_total needs integer count and numeric paid")
+    dec = d.get("claims_by_decade")
+    if not isinstance(dec, list) or len(dec) < 3 or not all(
+        isinstance(r, dict) and r.get("decade") and isinstance(r.get("count"), int) for r in dec
+    ):
+        sys.exit(f"{where}: claims_by_decade needs at least three decade/count rows")
+    if not isinstance(d.get("as_of"), str) or not d["as_of"]:
+        sys.exit(f"{where}: as_of must be a non-empty string")
+    return d
+
+
+def add_flood(panel: dict, nfip: dict) -> None:
+    """Append NFIP flood-insurance stats, charts, notes, source and link to the panel."""
+    pif, ct = nfip["policies_in_force"], nfip["claims_total"]
+    zones = {z["zone_group"]: z["count"] for z in nfip["policies_in_force_by_zone"]}
+    n = pif["count"]
+    high = zones.get(HIGH_ZONE, 0)
+    share = round(high / n * 100) if n else 0
+    as_of = nfip["as_of"]
+    panel["stats"] += [
+        {"label": "Flood insurance policies in force", "value": f"{n:,}", "hint": f"FEMA NFIP, as of {as_of}"},
+        {"label": "Homes in high-risk zones with a policy", "value": f"{high:,}", "hint": f"{share}% of policies in force"},
+        {"label": "Flood claims paid since 1978", "value": f"{ct['count']:,}", "hint": f"${ct['paid']:,.0f} paid in total"},
+        {"label": "Typical annual premium", "value": f"${pif['median_premium']:,.0f}", "hint": "median of policies in force"},
+    ]
+    panel["charts"] += [
+        {"type": "bars", "title": "Flood insurance claims by decade", "unit": "",
+         "series": [{"label": r["decade"], "value": r["count"]} for r in nfip["claims_by_decade"]]},
+        {"type": "donut", "title": "Where flood policies sit", "unit": "",
+         "series": [{"label": z["zone_group"], "value": z["count"]} for z in nfip["policies_in_force_by_zone"]]},
+    ]
+    panel["notes"] += [
+        "National Flood Insurance Program (NFIP) figures cover only properties with a federal flood "
+        "policy, so these counts are not the number of homes at risk. The map's Flood zones (FEMA) "
+        "overlay shows the mapped zones.",
+        "Flood claims are historical payments on record; amounts are not adjusted for inflation.",
+    ]
+    panel["source"] += (
+        f" Flood insurance: FEMA OpenFEMA NFIP Policies and Claims v3 for the City of Burton, "
+        f"aggregates only, as of {as_of}."
+    )
+    panel["links"].append({"text": "FEMA Flood Map Service Center", "href": "https://msc.fema.gov/portal/home"})
 
 
 def main() -> int:
@@ -156,9 +221,17 @@ def main() -> int:
         ],
     }
 
+    nfip = load_nfip()
+    if nfip:
+        add_flood(panel, nfip)
+        print(f"  flood insurance: {nfip['policies_in_force']['count']} policies in force, "
+              f"{nfip['claims_total']['count']} claims (as of {nfip['as_of']})")
+    else:
+        print("  flood insurance: tools/data/nfip-burton.json absent, skipped")
+
     write_json(OUT, panel)
     print(f"Wrote {OUT}")
-    print(f"  years: {len(rows)} ({min(rows)}-{max(rows)})  stats: {len(stats)}  charts: {len(charts)}")
+    print(f"  years: {len(rows)} ({min(rows)}-{max(rows)})  stats: {len(panel['stats'])}  charts: {len(panel['charts'])}")
     return 0
 
 

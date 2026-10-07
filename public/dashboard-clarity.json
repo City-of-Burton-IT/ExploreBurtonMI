@@ -1090,7 +1090,7 @@
     "summary": {
       "heading": "Why this matters",
       "body": [
-        "Countywide monitors provide the best available local air-quality context but do not measure every Burton neighborhood. Unmonitored days are not counted as Good or unhealthy days."
+        "Countywide monitors provide the best available local air-quality context but do not measure every Burton neighborhood. Unmonitored days are not counted as Good or unhealthy days. Flood-insurance figures come from FEMA's National Flood Insurance Program and count only properties with a federal flood policy, so they understate how many homes are exposed."
       ]
     },
     "responsibility": "EPA and Michigan environmental agencies monitor and regulate air quality. Burton can reduce local emissions but does not operate the countywide monitoring network.",
@@ -1112,7 +1112,11 @@
       },
       "Unhealthy days": {
         "priority": true
-      }
+      },
+      "Flood insurance policies in force": {},
+      "Homes in high-risk zones with a policy": {},
+      "Flood claims paid since 1978": {},
+      "Typical annual premium": {}
     },
     "chartOverrides": {
       "Good air-quality days by year (higher is better)": {
@@ -1126,6 +1130,12 @@
       },
       "Days set by each pollutant (2025)": {
         "takeaway": "The pollutant named for a day is the one that determined that day's AQI."
+      },
+      "Flood insurance claims by decade": {
+        "takeaway": "The 1980s and 2000s account for the most federal flood-insurance claims on record in Burton, with 28 and 26 claims."
+      },
+      "Where flood policies sit": {
+        "takeaway": "Most current federal flood policies in Burton are in mapped high-risk (A and V) zones."
       }
     },
     "tableIds": {},
@@ -1142,6 +1152,19 @@
         "charts": [
           "air-quality-days-by-level-2025",
           "days-set-by-each-pollutant-2025"
+        ]
+      },
+      {
+        "heading": "Flood risk and insurance",
+        "stats": [
+          "flood-insurance-policies-in-force",
+          "homes-in-high-risk-zones-with-a-policy",
+          "flood-claims-paid-since-1978",
+          "typical-annual-premium"
+        ],
+        "charts": [
+          "flood-insurance-claims-by-decade",
+          "where-flood-policies-sit"
         ]
       }
     ]
@@ -1689,6 +1712,13 @@
         "priority": true,
         "label": "Most recorded crash type",
         "hint": "Rear-end, straight movement; 22% of records"
+      },
+      "Busiest road counted": {
+        "label": "Busiest counted road",
+        "hint": "Daily vehicles on the highest-volume named segment, MDOT 2025"
+      },
+      "Miles of road with traffic counts": {
+        "hint": "MDOT 2025 counts; state and federal-aid roads only"
       }
     },
     "chartOverrides": {
@@ -1700,6 +1730,9 @@
       },
       "Most common crash types": {
         "takeaway": "Rear-end crashes during straight movement were the most common recorded type."
+      },
+      "Road miles by daily traffic": {
+        "takeaway": "Most counted road-miles carry under 2,000 vehicles a day; only a short stretch carries 20,000 or more."
       }
     },
     "tableIds": {
@@ -1719,6 +1752,17 @@
         "tables": [
           "most-frequent-crash-locations"
         ]
+      },
+      {
+        "heading": "Traffic volume (MDOT 2025)",
+        "stats": [
+          "busiest-road-counted",
+          "miles-of-road-with-traffic-counts"
+        ],
+        "charts": [
+          "road-miles-by-daily-traffic"
+        ],
+        "tables": []
       }
     ]
   },
@@ -1911,6 +1955,84 @@
           "where-the-water-dollar-went-fy2026",
           "where-the-sewer-dollar-went-fy2026",
           "cost-of-purchased-water-and-sewage-treatment-by-year-fy2008-fy2026-m"
+        ]
+      }
+    ]
+  },
+  "permits": {
+    "title": "Building Permits",
+    "subtitle": "Homes built, repaired and demolished, from City permit records",
+    "context": {
+      "scope": "City of Burton",
+      "status": "current",
+      "asOf": "Permits issued 1999 through September 2026; 2026 is a partial year",
+      "sourceLinks": [
+        {
+          "text": "Burton property and building records (BS&A Online)",
+          "href": "https://bsaonline.com/?uid=209"
+        }
+      ]
+    },
+    "headline": "Burton issued 778 building permits in 2025, including 42 for new homes; most of the rest were repairs, roofing, fences and other work on existing homes.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Permits show where the City is changing: new homes being added, existing homes being fixed up, and buildings coming down. Most permits are small jobs such as roofs, fences and sheds, so the count measures activity, not the size of projects. Counts are reliable, but the value an applicant declares is often blank, so dollar figures are shown only where nearly every permit has one."
+      ]
+    },
+    "responsibility": "The City's Building Department reviews applications and issues permits, and the Assessor records them. Whether to build or repair is a private decision by owners and builders; the City sets the rules.",
+    "action": {
+      "kind": "link",
+      "text": "Check Burton zoning information",
+      "href": "#zoning"
+    },
+    "statOverrides": {
+      "Permits issued last year": {
+        "priority": true
+      },
+      "New homes permitted last year": {
+        "priority": true
+      },
+      "Home-improvement permits last year": {
+        "priority": true
+      },
+      "Demolition permits last year": {
+        "priority": true
+      }
+    },
+    "chartOverrides": {
+      "Permits issued per year since 1999": {
+        "takeaway": "Permits peaked in 2001, settled at roughly 500 to 700 a year through the 2010s, and have been higher since 2023."
+      },
+      "Permits by type, per year since 2015": {
+        "takeaway": "Home improvements make up most permits every year; new homes, commercial work and demolitions are far smaller."
+      },
+      "Permits by type, last full year": {
+        "takeaway": "In the latest full year, most permits were for work on existing homes."
+      },
+      "New-home permits per year since 2015": {
+        "takeaway": "New-home permits have varied from year to year and have been well below the mid-2010s level since 2022."
+      }
+    },
+    "tableIds": {},
+    "sections": [
+      {
+        "heading": "Permits over time",
+        "stats": [
+          "typical-time-to-finish-a-project",
+          "stated-construction-value-last-year",
+          "permits-so-far-this-year"
+        ],
+        "charts": [
+          "permits-issued-per-year-since-1999",
+          "permits-by-type-per-year-since-2015"
+        ]
+      },
+      {
+        "heading": "What was permitted",
+        "charts": [
+          "permits-by-type-last-full-year",
+          "new-home-permits-per-year-since-2015"
         ]
       }
     ]
