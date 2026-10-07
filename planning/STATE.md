@@ -42,13 +42,26 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-07 09:05 (git log, gh issue list, Lighthouse on the HTTPS mirror).
+Last verified: 2026-10-07 11:05 (git log, gh issue list, vite preview browser pass).
 
-**Status:** Public site and internal mirror both serve the City-records work. Git range
-`2c93c43..a5b8d2e` on `main` (see `git log 2c93c43..HEAD`): PRs #128 through #154,
-all squash-merged with auto-merge, Pages deploys green. Suites at a5b8d2e: pytest tools
-plus pipeline 292 passed (2026-10-07); vitest 515 and svelte-check clean as of fe65e35
-(no frontend change since). Working tree clean.
+**Status:** Git range `2c93c43..6a44d99` on `main` (see `git log 2c93c43..HEAD`): PRs 128
+through 158, all squash-merged with auto-merge, Pages deploys green. Suites at
+6a44d99: pytest tools plus pipeline 344 passed, vitest 524 passed, svelte-check clean.
+Working tree clean. The mirror auto-syncs within 30 minutes of a merge.
+
+**2026-10-07 batch (PR #158, six commits):** Building Permits dashboard (25th; from the
+Assessor's permit table via `tools/Export-BsaPermits.ps1`, 1999 onward, 778 permits and
+42 new homes in 2025, in the refresh chain); Find my voting precinct on the Elections
+guide section (address points plus SOS precinct polygons, links MVIC, states no polling
+places or dates); Flood risk and insurance section on Environment (OpenFEMA NFIP v3,
+31 policies in force, 82 claims since 1978); Traffic volume map overlay from MDOT AADT
+2025 (342 segments, names only where county and MDOT counts agree) plus a Roadway
+Safety section; Print this page on every dashboard; chart data-table toggle touch
+target. Style alignment with the new website landed earlier as PR #157 (Poppins
+regular titles, 1.65 line height, 12px action buttons, dashed section rules, Contact
+footer). Follow-ups filed: #159 (monthly cash needs the Controller's pooled-cash
+framing), #160 (Building Department and Accounts Payable grants), #161 (traffic
+segment labels and MDOT year parameter).
 
 **2026-10-07 follow-ups:** #140 closed by PR #154: `tools/fetch_water.py` now raises
 `LeadUnavailable` and exits non-zero before writing when the lead (PB90) result is
@@ -73,7 +86,8 @@ utility bills), City Finances (GL plan, budget vs actual, FY2026 revenue by sour
 City Finances over Time (new; FY2008 to FY2026 ledger history, revenue sources,
 departments, taxable value, audited trends), Water & Sewer Funds (new), Property
 Taxes (certified 2026 City rate 13.2394, homestead median, levy by unit, summer
-collection), Capital Projects (ledger street-capital trend). Registry is 24 dashboards.
+collection), Capital Projects (ledger street-capital trend). Registry is 25 dashboards
+(Building Permits added 2026-10-07).
 Schema facts and the anomalies explained on charts (FY2018 water/sewer asset entry,
 FY2022 ARPA, City Hall legacy costs from FY2016) are in the vault note `BS&A SQL Server.md`.
 
