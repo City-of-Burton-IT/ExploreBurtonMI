@@ -42,12 +42,25 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-06 17:00 (git log, gh issue list, live probes of the public site and the mirror).
+Last verified: 2026-10-07 09:05 (git log, gh issue list, Lighthouse on the HTTPS mirror).
 
-**Status:** Public site and internal mirror both serve the day's work. Git range
-`2c93c43..14ffcb5` on `main` (see `git log 2c93c43..HEAD`): PRs #128 through #149,
-all squash-merged with auto-merge, Pages deploys green. Suites at HEAD: pytest tools
-plus pipeline 283 passed, vitest 515 passed, svelte-check clean. Working tree clean.
+**Status:** Public site and internal mirror both serve the City-records work. Git range
+`2c93c43..a5b8d2e` on `main` (see `git log 2c93c43..HEAD`): PRs #128 through #154,
+all squash-merged with auto-merge, Pages deploys green. Suites at a5b8d2e: pytest tools
+plus pipeline 292 passed (2026-10-07); vitest 515 and svelte-check clean as of fe65e35
+(no frontend change since). Working tree clean.
+
+**2026-10-07 follow-ups:** #140 closed by PR #154: `tools/fetch_water.py` now raises
+`LeadUnavailable` and exits non-zero before writing when the lead (PB90) result is
+missing (`--allow-missing-lead` is the opt-out); `tools/test_fetch_water.py` covers it.
+The Envirofacts endpoint is unchanged (eleven PB90 periods, latest 2023), so the
+water panel and `freshness.json` were not refreshed. A rerun would also add a new
+2026 Lead and Copper Rule treatment-technique violation (code 59, status K) to the
+panel; that refresh is held for DPW review as #155. Lighthouse snapshot audits on the
+HTTPS mirror: City Finances over Time and Water & Sewer Funds both accessibility 100,
+best practices 100, SEO 100. The public site is behind the "Coming soon" gate during
+the staff preview, so browser checks run against the mirror over HTTPS (plain HTTP
+returns 403).
 
 **City-records feeds (new today):** read-only BS&A access now covers Assessing (2026,
 2027), Tax (2026), General Ledger, Utility Billing, HR/Payroll. Exporters under `tools/`
@@ -88,11 +101,11 @@ press sees it (tracked as an issue).
 
 **Open work:** GitHub Issues are the single source of truth; run `gh issue list --state open`
 from this clone. Explore-side: #126 (Mayor review), #88 (staff preview and mirror
-teardown), #139 (winter tax roll rerun, December), #140 (water lead query), #80 (capital
-data, partly done), #17 (City photos), #44 (zoning source), #19 (Fire export), #94
-(deferred), plus the accounts and messaging epics 69, 70, 72, and the three filed at this
-handoff (ledger-data review with the Controller and Mayor, HR headcount code map, water
-meter unit).
+teardown), #139 (winter tax roll rerun, December), #155 (DPW review of the 2026 water
+violation before the panel refresh), #80 (capital data, partly done), #17 (City photos), issue
+44 (zoning source), #19 (Fire export), #94 (deferred), plus the accounts and messaging
+epics 69, 70, 72, and #150 (ledger-data review with the Controller and Mayor), #151 (HR
+headcount code map), #152 (water meter unit).
 
 **Blockers:** Headcount feed needs the HR status and employment-type code map; water
 usage in volume needs the meter unit confirmed; the rest wait on people outside IT.
