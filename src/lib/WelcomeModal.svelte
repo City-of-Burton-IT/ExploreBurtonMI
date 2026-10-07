@@ -109,7 +109,7 @@
     border: none;
     background: var(--civic-accent-bg);
     color: #fff;
-    border-radius: 999px;
+    border-radius: var(--pub-btn-radius, 12px);
     padding: 0.6rem 1rem;
     font-family: var(--font-body, sans-serif);
     font-size: 0.95rem;

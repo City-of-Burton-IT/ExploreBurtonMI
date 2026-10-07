@@ -88,9 +88,10 @@
   h2 {
     margin: 0 0 0.4rem;
     font-family: var(--font-head);
-    font-weight: 700;
+    font-weight: 400;
+    line-height: 1.25;
     color: var(--civic-blue);
-    font-size: 1.5rem;
+    font-size: 1.6rem;
   }
   .intro p {
     margin: 0;
@@ -142,7 +143,7 @@
     align-items: center;
     gap: 0.35rem;
     border: 1px solid var(--civic-blue);
-    border-radius: 999px;
+    border-radius: var(--pub-btn-radius, 12px);
     background: none;
     color: var(--civic-blue);
     font-family: var(--font-body);

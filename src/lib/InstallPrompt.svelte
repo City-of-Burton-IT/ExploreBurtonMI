@@ -89,7 +89,7 @@
     font-weight: 700;
     font-size: 0.86rem;
     padding: 0.45rem 0.9rem;
-    border-radius: 999px;
+    border-radius: var(--pub-btn-radius, 12px);
     cursor: pointer;
   }
   .go:hover {

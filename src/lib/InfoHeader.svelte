@@ -90,8 +90,11 @@
   h2 {
     margin: 0;
     font-family: var(--font-head, sans-serif);
-    font-weight: 700;
-    font-size: 1.5rem;
+    /* Page titles use Poppins regular like burtonmi.gov's headings; small
+       section headings stay bold where regular weight would read thin. */
+    font-weight: 400;
+    font-size: 1.6rem;
+    line-height: 1.25;
     color: var(--civic-blue, #2c57a0);
   }
   .subtitle {

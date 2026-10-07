@@ -89,8 +89,9 @@
   h1 {
     margin: 0.1rem 0 0.7rem;
     font-family: var(--font-head);
-    font-weight: 700;
-    font-size: 2rem;
+    font-weight: 400;
+    font-size: 2.1rem;
+    line-height: 1.2;
     color: var(--civic-blue);
   }
   .lead {

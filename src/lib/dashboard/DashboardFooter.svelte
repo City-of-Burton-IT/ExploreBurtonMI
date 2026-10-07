@@ -27,6 +27,15 @@
   <p class="report">
     <a href={reportOutdatedMailto(panel.title)}>Report outdated information</a>
   </p>
+  <!-- Mirrors the Contact column of the burtonmi.gov footer so the two feel like
+       one property. The address and main line are the City Hall values the
+       website publishes; change both places together. -->
+  <address class="city">
+    <span class="city-name">City of Burton</span>
+    <span>4303 S Center Rd, Burton, MI 48519</span>
+    <a href="tel:+18107431500">(810) 743-1500</a>
+    <a href="https://www.burtonmi.gov" target="_blank" rel="noopener noreferrer">burtonmi.gov</a>
+  </address>
 </footer>
 
 <style>
@@ -70,5 +79,24 @@
   .links a {
     color: var(--civic-blue-link, #1a4b8f);
     font-size: 0.9rem;
+  }
+  .city {
+    margin: 1rem 0 0;
+    padding-top: 0.7rem;
+    border-top: 1px solid var(--pub-border, #e3e3e3);
+    font-style: normal;
+    font-size: 0.8rem;
+    color: var(--pub-muted, #5c5c5c);
+    display: flex;
+    flex-wrap: wrap;
+    gap: 0.25rem 1rem;
+  }
+  .city-name {
+    font-family: var(--font-head, sans-serif);
+    font-weight: 700;
+    color: var(--civic-blue, #2c57a0);
+  }
+  .city a {
+    color: var(--civic-blue-link, #386fc5);
   }
 </style>

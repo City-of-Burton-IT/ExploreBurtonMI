@@ -57,7 +57,7 @@
     border: 1px solid var(--civic-blue);
     background: var(--pub-surface);
     color: var(--civic-blue);
-    border-radius: 999px;
+    border-radius: var(--pub-btn-radius, 12px);
     padding: 0.35rem 0.9rem;
     font: inherit;
     font-size: 0.82rem;
