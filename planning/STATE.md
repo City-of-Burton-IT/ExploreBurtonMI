@@ -42,7 +42,7 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-07 13:40 (git log, gh issue list, exporters run against the read-only login).
+Last verified: 2026-10-07 15:30 (git log, gh issue list, exporters run against the read-only login).
 
 **Status:** Git range `2c93c43..2de9e25` on `main`: PRs 128 through 163, all squash-merged
 with auto-merge, Pages deploys green. PR #164 (`feat/city-records-feeds`, two commits) has
@@ -131,9 +131,32 @@ API 36). Internal mirror auto-syncs: scheduled task `ExploreBurton-MirrorSync` (
 every 30 minutes while logged on) deploys from its own clone when `origin/main` moves;
 logs at `C:\utils\Sync-ExploreMirror.log`.
 
-**Mayor review page:** still live at the internal mirror `/review/`; the Mayor has NOT
-been sent the link. Paste-ready message at `planning/mayor-review/MAYOR-EMAIL.md`
-(fill the `[DATE]`). No Form responses yet (#126).
+**Review page and feedback plan (changed 2026-10-07 afternoon):** the review page is still
+live at the internal mirror `/review/` and no link has gone out. Decision: one message to
+the Mayor AND all department heads with the single link and a one-week window, punch list
+from the Form, then the Mayor's go or no-go; the Mayor-only email in
+`planning/mayor-review/MAYOR-EMAIL.md` is superseded (rewrite it for the group and fill the
+date). The Form (Ryan's account, City sign-in, names recorded, multiple responses) is two
+Likert grids with Approve / Needs a change / I have a question columns, two comment boxes,
+two readiness questions and "Anything else?". Four edits are agreed but NOT yet made: a
+required "Which department are you with?" choice at the top; a row "Your department's page
+and contact details" in the website grid; the two comment boxes reworded to ask which area
+and what is needed, required, "type none if nothing"; a long-text "Your top three changes,
+in order (optional)" before the last question. The 2026-10-07 attempt through the Chrome
+extension failed because the Forms editor never reports idle (only javascript_tool works,
+no screenshots); the direct editor URL is `DesignPageV2.aspx?subpage=design&FormId=<the
+ResponsePage id in planning/mayor-review/set-form.py>`. Also before sending: the review
+page's "known issues" box still describes July and must be refreshed, and the page should
+be opened once on a standard City PC to confirm no certificate warning. No Form responses
+yet (#126).
+
+**Leadership documents (2026-10-07, local only under `planning/mayor-review/`, never
+committed):** `Explore Burton City Data Briefing 2026-10-07.docx` (data provenance per data
+point, safeguards, questions for review) and `Explore Burton Project Report 2026-10-07.docx`
+(19 pages: at a glance, what the site offers, public and open data catalogue, City records,
+computed figures, accuracy, progress chart and phases, milestones, decisions, open work,
+Revize website status, feedback plan, decisions needed, risks and costs, what comes next).
+Both are exported from editable Claude Docs masters owned by Ryan; re-export after edits.
 
 **Branches kept on purpose (local only):** `feature/crime-dashboard-hold` (sole copy,
 never push) and `feature/public-safety-combined` (reference for #19).
