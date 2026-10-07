@@ -101,6 +101,10 @@
     color: var(--civic-blue-link, #1a4b8f);
     cursor: pointer;
     width: fit-content;
+    /* 24px minimum touch target (Lighthouse target-size); the text alone is 21px. */
+    min-height: 24px;
+    padding: 0.15rem 0.1rem;
+    box-sizing: border-box;
   }
   .data-table > summary:focus-visible {
     outline: none;
