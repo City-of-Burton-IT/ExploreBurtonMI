@@ -44,7 +44,10 @@ def test_merge_traffic_adds_stats_chart_note_source():
     assert ch["title"] == "Road miles by daily traffic" and ch["type"] == "bars"
     assert [x["label"] for x in ch["series"]] == ec.TRAFFIC_BANDS
     assert "residential" in p["notes"][-2] and p["notes"][-1] == "last"
-    assert "MDOT" in p["source"]
+    assert "MDOT" in p["source"] and "OpenStreetMap" in p["source"]
+    q = _panel()
+    ec.merge_traffic(q, _traffic(mdot_year=2026))
+    assert q["stats"][1]["hint"] == "MDOT 2026 counts" and "2026 annual" in q["notes"][-2]
 
 
 def test_load_traffic_absent_is_none(tmp_path):
