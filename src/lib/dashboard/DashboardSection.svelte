@@ -51,6 +51,9 @@
   }
   h3 {
     margin: 0 0 0.9rem;
+    /* Section titles carry the site's dashed green rule beneath them. */
+    padding-bottom: 0.35rem;
+    border-bottom: 2px dashed var(--civic-green, #4ea735);
     color: var(--civic-blue-deep);
     font-family: var(--font-head, sans-serif);
     font-size: 1.08rem;

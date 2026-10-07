@@ -37,8 +37,11 @@
      --civic-blue so the dark theme can keep white text >=4.5:1 (AA) on buttons
      while --civic-blue itself lightens for text/icons. Light values == the old
      civic-blue / -deep, so light rendering is unchanged. */
-  --civic-accent-bg: #2c57a0;
-  --civic-accent-bg-hover: #1e437e;
+  /* Primary action buttons: the new burtonmi.gov (Revize T40) uses the link blue
+     with white text (4.9:1) and 12px corners for calls to action; the deeper blue
+     is its hover. Dark mode keeps its own pair below. */
+  --civic-accent-bg: #386fc5;
+  --civic-accent-bg-hover: #2c57a0;
   --civic-green: #4ea735;
   --civic-green-deep: #1d7f2b;
   --civic-green-soft: #d9f1dd;
@@ -52,6 +55,11 @@
   --pub-border-soft: #f0f0f0; /* lighter inner dividers */
   --pub-radius: 12px;
   --pub-radius-sm: 8px;
+  /* Action buttons share the site's 12px corners; pills (999px) are reserved for
+     chips, badges, toasts and the top-bar controls. Body copy runs at the site's
+     1.65 line height. */
+  --pub-btn-radius: 12px;
+  --pub-line-height: 1.65;
   --pub-focus-ring: 0 0 0 0.2rem rgba(44, 87, 160, 0.25);
 
   /* Semantic status colours (one source of truth; the dark-mode layer in #61
@@ -114,6 +122,12 @@
 html,
 body {
   background: var(--pub-bg);
+}
+
+/* Reading rhythm matches burtonmi.gov (16px / 1.65). Form controls keep the
+   browser's own line height, so the header pills and toggles do not grow. */
+body {
+  line-height: var(--pub-line-height, 1.65);
 }
 
 /* Respect users who ask for less motion: near-instant transitions/animations and
@@ -200,6 +214,7 @@ body,
   flex-shrink: 0;
   line-height: 0;
   border-radius: 50%;
+  color: var(--civic-blue); /* was the only unstyled (browser-blue) link on the page */
 }
 .topbar .seal-link:focus-visible {
   outline: none;
