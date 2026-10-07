@@ -60,8 +60,12 @@ fixed, and 23 county-point mis-names on local streets with it. `tools/fetch_traf
 the Roadway Safety busiest road is now I-69 (76,430 a day). `FacilityType` is only 2 or 4
 in this layer, so it cannot identify freeways. Overpass answers 406 to the library's default
 browser User-Agent; the tool sends a project one. Still open on #161: crashes per corridor.
-Dependabot reported two critical Capacitor alerts (fixed in 8.4.3, needs an Android rebuild)
-and one high `sharp` alert; filed as #169, not bumped.
+Dependabot reported two critical Capacitor alerts and one high `sharp` alert (#169). PR #171
+(`417365a`) bumped Capacitor to 8.5.3 (messaging 8.5.2 as peer) and sharp to 0.35.5; build,
+vitest 524 and svelte-check green; `cap sync android` made no tracked change. HUMAN-REQUIRED
+(the session's deploy guard blocks `gh workflow run`): dispatch `android-release.yml` with
+versionName 1.16 (exact command on #169), confirm the upload, confirm the alerts closed, then
+close #169. The nested sharp 0.32.6 under `@capacitor/assets` has no upstream fix.
 
 **2026-10-07 afternoon (PR #164, the #160 feeds):** Property Taxes gained "How collections
 compare, 2021 to 2026" (summer paid by the due date 88.8 to 90.3 percent every year, within
