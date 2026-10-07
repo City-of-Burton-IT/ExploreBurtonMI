@@ -42,12 +42,32 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-07 12:40 (git log, gh issue list, HAS_DBACCESS from the read-only login).
+Last verified: 2026-10-07 13:40 (git log, gh issue list, exporters run against the read-only login).
 
-**Status:** Git range `2c93c43..6a44d99` on `main` (see `git log 2c93c43..HEAD`): PRs 128
-through 158, all squash-merged with auto-merge, Pages deploys green. Suites at
-6a44d99: pytest tools plus pipeline 344 passed, vitest 524 passed, svelte-check clean.
-Working tree clean. The mirror auto-syncs within 30 minutes of a merge.
+**Status:** Git range `2c93c43..2de9e25` on `main`: PRs 128 through 163, all squash-merged
+with auto-merge, Pages deploys green. PR #164 (`feat/city-records-feeds`, two commits) has
+auto-merge on and carries the three #160 feeds; required checks are web, python, pin-editor
+(CodeQL can stall docs-only PRs, merge by hand once those pass). Suites at the PR head:
+pytest tools 325 plus pipeline 58 passed, vitest 524 passed, svelte-check clean, production
+build clean, browser check on `vite preview` passed for all three sections. The mirror
+auto-syncs within 30 minutes of a merge.
+
+**2026-10-07 afternoon (PR #164, the #160 feeds):** Property Taxes gained "How collections
+compare, 2021 to 2026" (summer paid by the due date 88.8 to 90.3 percent every year, within
+90 days 91.4 to 92.8, winter by due date 86.7 to 90.5) from `Export-BsaTaxRoll.ps1` looping
+`D004BURTON21..26`. City Finances gained "What the City bought (Accounts Payable, FY2026)"
+from the new `Export-BsaSpend.ps1` over `D011BURTON`: $30.1M City vendor spending in
+fourteen categories, fund 703 pass-through ($29.4M) kept out and shown as its own line, no
+payee named. Building Permits gained "Inspections and completion" from the new
+`Export-BsaPermitWorkflow.ps1` over `D007BURFINAL`: 1,424 permit inspections in 2025, 85
+percent approved, 74 percent of 2024 building permits finaled within a year. Status and
+result codes were decoded from the vendor object model (`BSA.Cd.Shared.Objects` enums
+`PermitStatus` and `InspectionResult` in `BSASoftware.Cd.Shared.Objects.dll`; the
+module-named Objects DLL is a stub) and the exporter checks the decode against
+`ResultString` on every run. Not published on purpose: application-to-issue timing (applied
+date stamped at issue) and inspection scheduling lag (scheduled date filled at entry).
+`fetch_finances.py --offline` was fixed to read audited trends from the history panel.
+Details on #160; schema notes in the vault note `BS&A SQL Server.md`.
 
 **2026-10-07 batch (PR #158, six commits):** Building Permits dashboard (25th; from the
 Assessor's permit table via `tools/Export-BsaPermits.ps1`, 1999 onward, 778 permits and
@@ -67,7 +87,7 @@ segment labels and MDOT year parameter).
 BS&A login now also reads Accounts Payable, Tax 2021 through 2025, and the Building
 Department permit module (the real one is the D007 database; the department-named
 D012 database is cash receipting and its grant was revoked). All grants on #160 are in
-place; the three feeds are next-session work. Findings recorded on #160 and in the vault
+place and the three feeds shipped the same afternoon (PR #164). Findings recorded on #160 and in the vault
 note `BS&A SQL Server.md`: AP fund 703 is pass-through to other taxing units and must be
 kept out of City spending; permit time-to-issue is meaningless (applied date is stamped
 at issue), use issue-to-final and inspections; inspection results and permit status are
