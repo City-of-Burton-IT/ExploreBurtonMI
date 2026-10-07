@@ -1,0 +1,457 @@
+{
+  "title": "Building Permits",
+  "subtitle": "Homes built, repaired and demolished, 1999–2025, from City permit records",
+  "lastUpdated": "2026-10",
+  "stats": [
+    {
+      "label": "Permits issued last year",
+      "value": "778",
+      "hint": "2025, all types: homes, roofs, fences, sheds, commercial work and demolitions"
+    },
+    {
+      "label": "New homes permitted last year",
+      "value": "42",
+      "hint": "2025: single-family, site-built and modular homes"
+    },
+    {
+      "label": "Home-improvement permits last year",
+      "value": "618",
+      "hint": "2025: repairs, additions, roofing, siding, decks, pools, sheds and fences"
+    },
+    {
+      "label": "Demolition permits last year",
+      "value": "22",
+      "hint": "2025: buildings taken down"
+    },
+    {
+      "label": "Typical time to finish a project",
+      "value": "83 days",
+      "hint": "median from permit to final inspection for home improvements; new homes take about 11 months (permits issued since 2019 that have a recorded final inspection)"
+    },
+    {
+      "label": "Stated construction value last year",
+      "value": "$34.7M",
+      "hint": "2025: what applicants declared for new homes, home improvements, commercial, demolitions permits; an estimate by the applicant, not a measured cost"
+    },
+    {
+      "label": "Permits so far this year",
+      "value": "580",
+      "hint": "2026, through 2026-09-28; 54 new homes. A partial year, not comparable to full years."
+    }
+  ],
+  "charts": [
+    {
+      "type": "trend",
+      "title": "Permits issued per year since 1999",
+      "points": [
+        {
+          "x": "1999",
+          "y": 818
+        },
+        {
+          "x": "2000",
+          "y": 1260
+        },
+        {
+          "x": "2001",
+          "y": 1760
+        },
+        {
+          "x": "2002",
+          "y": 1488
+        },
+        {
+          "x": "2003",
+          "y": 1451
+        },
+        {
+          "x": "2004",
+          "y": 1538
+        },
+        {
+          "x": "2005",
+          "y": 1457
+        },
+        {
+          "x": "2006",
+          "y": 688
+        },
+        {
+          "x": "2007",
+          "y": 564
+        },
+        {
+          "x": "2008",
+          "y": 440
+        },
+        {
+          "x": "2009",
+          "y": 514
+        },
+        {
+          "x": "2010",
+          "y": 421
+        },
+        {
+          "x": "2011",
+          "y": 414
+        },
+        {
+          "x": "2012",
+          "y": 508
+        },
+        {
+          "x": "2013",
+          "y": 499
+        },
+        {
+          "x": "2014",
+          "y": 457
+        },
+        {
+          "x": "2015",
+          "y": 595
+        },
+        {
+          "x": "2016",
+          "y": 620
+        },
+        {
+          "x": "2017",
+          "y": 632
+        },
+        {
+          "x": "2018",
+          "y": 659
+        },
+        {
+          "x": "2019",
+          "y": 665
+        },
+        {
+          "x": "2020",
+          "y": 543
+        },
+        {
+          "x": "2021",
+          "y": 633
+        },
+        {
+          "x": "2022",
+          "y": 581
+        },
+        {
+          "x": "2023",
+          "y": 1041
+        },
+        {
+          "x": "2024",
+          "y": 958
+        },
+        {
+          "x": "2025",
+          "y": 778
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "Permits by type, per year since 2015",
+      "lines": [
+        {
+          "label": "Home improvements",
+          "points": [
+            {
+              "x": "2015",
+              "y": 404
+            },
+            {
+              "x": "2016",
+              "y": 422
+            },
+            {
+              "x": "2017",
+              "y": 409
+            },
+            {
+              "x": "2018",
+              "y": 480
+            },
+            {
+              "x": "2019",
+              "y": 523
+            },
+            {
+              "x": "2020",
+              "y": 378
+            },
+            {
+              "x": "2021",
+              "y": 436
+            },
+            {
+              "x": "2022",
+              "y": 458
+            },
+            {
+              "x": "2023",
+              "y": 934
+            },
+            {
+              "x": "2024",
+              "y": 813
+            },
+            {
+              "x": "2025",
+              "y": 618
+            }
+          ]
+        },
+        {
+          "label": "Commercial",
+          "points": [
+            {
+              "x": "2015",
+              "y": 80
+            },
+            {
+              "x": "2016",
+              "y": 62
+            },
+            {
+              "x": "2017",
+              "y": 69
+            },
+            {
+              "x": "2018",
+              "y": 62
+            },
+            {
+              "x": "2019",
+              "y": 64
+            },
+            {
+              "x": "2020",
+              "y": 69
+            },
+            {
+              "x": "2021",
+              "y": 68
+            },
+            {
+              "x": "2022",
+              "y": 63
+            },
+            {
+              "x": "2023",
+              "y": 51
+            },
+            {
+              "x": "2024",
+              "y": 72
+            },
+            {
+              "x": "2025",
+              "y": 90
+            }
+          ]
+        },
+        {
+          "label": "New homes",
+          "points": [
+            {
+              "x": "2015",
+              "y": 79
+            },
+            {
+              "x": "2016",
+              "y": 69
+            },
+            {
+              "x": "2017",
+              "y": 114
+            },
+            {
+              "x": "2018",
+              "y": 66
+            },
+            {
+              "x": "2019",
+              "y": 40
+            },
+            {
+              "x": "2020",
+              "y": 77
+            },
+            {
+              "x": "2021",
+              "y": 90
+            },
+            {
+              "x": "2022",
+              "y": 32
+            },
+            {
+              "x": "2023",
+              "y": 22
+            },
+            {
+              "x": "2024",
+              "y": 31
+            },
+            {
+              "x": "2025",
+              "y": 42
+            }
+          ]
+        },
+        {
+          "label": "Demolitions",
+          "points": [
+            {
+              "x": "2015",
+              "y": 21
+            },
+            {
+              "x": "2016",
+              "y": 55
+            },
+            {
+              "x": "2017",
+              "y": 26
+            },
+            {
+              "x": "2018",
+              "y": 41
+            },
+            {
+              "x": "2019",
+              "y": 29
+            },
+            {
+              "x": "2020",
+              "y": 12
+            },
+            {
+              "x": "2021",
+              "y": 30
+            },
+            {
+              "x": "2022",
+              "y": 18
+            },
+            {
+              "x": "2023",
+              "y": 26
+            },
+            {
+              "x": "2024",
+              "y": 25
+            },
+            {
+              "x": "2025",
+              "y": 22
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Permits by type, last full year",
+      "series": [
+        {
+          "label": "New homes",
+          "value": 42
+        },
+        {
+          "label": "Home improvements",
+          "value": 618
+        },
+        {
+          "label": "Commercial",
+          "value": 90
+        },
+        {
+          "label": "Demolitions",
+          "value": 22
+        },
+        {
+          "label": "Other",
+          "value": 6
+        }
+      ]
+    },
+    {
+      "type": "trend",
+      "title": "New-home permits per year since 2015",
+      "points": [
+        {
+          "x": "2015",
+          "y": 79
+        },
+        {
+          "x": "2016",
+          "y": 69
+        },
+        {
+          "x": "2017",
+          "y": 114
+        },
+        {
+          "x": "2018",
+          "y": 66
+        },
+        {
+          "x": "2019",
+          "y": 40
+        },
+        {
+          "x": "2020",
+          "y": 77
+        },
+        {
+          "x": "2021",
+          "y": 90
+        },
+        {
+          "x": "2022",
+          "y": 32
+        },
+        {
+          "x": "2023",
+          "y": 22
+        },
+        {
+          "x": "2024",
+          "y": 31
+        },
+        {
+          "x": "2025",
+          "y": 42
+        }
+      ]
+    }
+  ],
+  "source": "City of Burton Building Department permit records, as recorded by the City Assessor (BS&A). Aggregates extracted 2026-10-07.",
+  "links": [
+    {
+      "text": "Search City building-department records (BS&A Online)",
+      "href": "https://bsaonline.com/?uid=209"
+    },
+    {
+      "text": "Housing in Burton",
+      "href": "#housing"
+    },
+    {
+      "text": "Zoning",
+      "href": "#zoning"
+    }
+  ],
+  "notes": [
+    "These are permits issued by the City's Building Department and recorded by the City Assessor. A permit is permission to do work, not proof the work was finished; the completion time counts only permits with a recorded final inspection.",
+    "Site permits are counted too: roofing, siding, fences, sheds, decks and pools make up most of the home-improvement total, so a busy year is not always a year of large projects.",
+    "Declared value is what the applicant states on the application and is often left blank. It is shown only where nearly every permit carries one, and it is an estimate, not a measured cost.",
+    "The current year is partial and is left out of the yearly charts. Only counts and totals are published, never addresses, owners, contractors or permit numbers. Years before 1999 are not shown because the records are incomplete."
+  ]
+}

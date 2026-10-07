@@ -1,0 +1,817 @@
+{
+  "_source": {
+    "server": "BURBSA01\\BSA",
+    "database": "D001CITY OF BURTON 2027",
+    "table": "dbo.Permits",
+    "note": "aggregates only"
+  },
+  "extracted": "2026-10-07",
+  "database_max_issdate": {
+    "D001City Of Burton 2026": "2025-12-23",
+    "D001CITY OF BURTON 2027": "2026-09-28"
+  },
+  "recstatus_note": "recstatus is a progress code, not a deleted flag; every row is an issued permit and all values are counted.",
+  "groups": [
+    "new_homes",
+    "home_improvements",
+    "commercial",
+    "demolitions",
+    "other"
+  ],
+  "latest_complete_year": 2025,
+  "latest_year": {
+    "year": 2025,
+    "total": 778,
+    "new_homes": {
+      "count": 42,
+      "value": 6048682,
+      "with_value": 40
+    },
+    "home_improvements": {
+      "count": 618,
+      "value": 8583954,
+      "with_value": 606
+    },
+    "commercial": {
+      "count": 90,
+      "value": 18528733,
+      "with_value": 86
+    },
+    "demolitions": {
+      "count": 22,
+      "value": 1489250,
+      "with_value": 20
+    },
+    "other": {
+      "count": 6,
+      "value": 0,
+      "with_value": 0
+    }
+  },
+  "year_to_date": {
+    "as_of": "2026-10-07",
+    "last_permit_issued": "2026-09-28",
+    "year": 2026,
+    "total": 580,
+    "new_homes": {
+      "count": 54,
+      "value": 8833850,
+      "with_value": 54
+    },
+    "home_improvements": {
+      "count": 465,
+      "value": 6660704,
+      "with_value": 459
+    },
+    "commercial": {
+      "count": 44,
+      "value": 3557314,
+      "with_value": 44
+    },
+    "demolitions": {
+      "count": 7,
+      "value": 117885,
+      "with_value": 7
+    },
+    "other": {
+      "count": 10,
+      "value": 0,
+      "with_value": 0
+    }
+  },
+  "permits_by_year": [
+    {
+      "year": 2015,
+      "total": 595,
+      "new_homes": {
+        "count": 79,
+        "value": 1292173,
+        "with_value": 11
+      },
+      "home_improvements": {
+        "count": 404,
+        "value": 593154,
+        "with_value": 44
+      },
+      "commercial": {
+        "count": 80,
+        "value": 273800,
+        "with_value": 7
+      },
+      "demolitions": {
+        "count": 21,
+        "value": 9500,
+        "with_value": 5
+      },
+      "other": {
+        "count": 11,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2016,
+      "total": 620,
+      "new_homes": {
+        "count": 69,
+        "value": 106250,
+        "with_value": 1
+      },
+      "home_improvements": {
+        "count": 422,
+        "value": 23000,
+        "with_value": 3
+      },
+      "commercial": {
+        "count": 62,
+        "value": 30000,
+        "with_value": 1
+      },
+      "demolitions": {
+        "count": 55,
+        "value": 0,
+        "with_value": 0
+      },
+      "other": {
+        "count": 12,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2017,
+      "total": 632,
+      "new_homes": {
+        "count": 114,
+        "value": 238000,
+        "with_value": 3
+      },
+      "home_improvements": {
+        "count": 409,
+        "value": 140562,
+        "with_value": 19
+      },
+      "commercial": {
+        "count": 69,
+        "value": 4025522,
+        "with_value": 7
+      },
+      "demolitions": {
+        "count": 26,
+        "value": 54000,
+        "with_value": 2
+      },
+      "other": {
+        "count": 14,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2018,
+      "total": 659,
+      "new_homes": {
+        "count": 66,
+        "value": 1469560,
+        "with_value": 16
+      },
+      "home_improvements": {
+        "count": 480,
+        "value": 95200,
+        "with_value": 9
+      },
+      "commercial": {
+        "count": 62,
+        "value": 48387339,
+        "with_value": 2
+      },
+      "demolitions": {
+        "count": 41,
+        "value": 15900,
+        "with_value": 2
+      },
+      "other": {
+        "count": 10,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2019,
+      "total": 665,
+      "new_homes": {
+        "count": 40,
+        "value": 2765515,
+        "with_value": 24
+      },
+      "home_improvements": {
+        "count": 523,
+        "value": 1928872,
+        "with_value": 131
+      },
+      "commercial": {
+        "count": 64,
+        "value": 5476872,
+        "with_value": 32
+      },
+      "demolitions": {
+        "count": 29,
+        "value": 218050,
+        "with_value": 10
+      },
+      "other": {
+        "count": 9,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2020,
+      "total": 543,
+      "new_homes": {
+        "count": 77,
+        "value": 5343919,
+        "with_value": 52
+      },
+      "home_improvements": {
+        "count": 378,
+        "value": 4143615,
+        "with_value": 367
+      },
+      "commercial": {
+        "count": 69,
+        "value": 17846983,
+        "with_value": 67
+      },
+      "demolitions": {
+        "count": 12,
+        "value": 228615,
+        "with_value": 10
+      },
+      "other": {
+        "count": 7,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2021,
+      "total": 633,
+      "new_homes": {
+        "count": 90,
+        "value": 16133056,
+        "with_value": 87
+      },
+      "home_improvements": {
+        "count": 436,
+        "value": 4935999,
+        "with_value": 421
+      },
+      "commercial": {
+        "count": 68,
+        "value": 32978104,
+        "with_value": 68
+      },
+      "demolitions": {
+        "count": 30,
+        "value": 242275,
+        "with_value": 25
+      },
+      "other": {
+        "count": 9,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2022,
+      "total": 581,
+      "new_homes": {
+        "count": 32,
+        "value": 2906897,
+        "with_value": 32
+      },
+      "home_improvements": {
+        "count": 458,
+        "value": 5636906,
+        "with_value": 442
+      },
+      "commercial": {
+        "count": 63,
+        "value": 15600597,
+        "with_value": 61
+      },
+      "demolitions": {
+        "count": 18,
+        "value": 182800,
+        "with_value": 17
+      },
+      "other": {
+        "count": 10,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2023,
+      "total": 1041,
+      "new_homes": {
+        "count": 22,
+        "value": 3137451,
+        "with_value": 22
+      },
+      "home_improvements": {
+        "count": 934,
+        "value": 15075772,
+        "with_value": 908
+      },
+      "commercial": {
+        "count": 51,
+        "value": 8815852,
+        "with_value": 50
+      },
+      "demolitions": {
+        "count": 26,
+        "value": 219312,
+        "with_value": 19
+      },
+      "other": {
+        "count": 8,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2024,
+      "total": 958,
+      "new_homes": {
+        "count": 31,
+        "value": 5623400,
+        "with_value": 31
+      },
+      "home_improvements": {
+        "count": 813,
+        "value": 12562267,
+        "with_value": 789
+      },
+      "commercial": {
+        "count": 72,
+        "value": 51142385,
+        "with_value": 71
+      },
+      "demolitions": {
+        "count": 25,
+        "value": 233550,
+        "with_value": 21
+      },
+      "other": {
+        "count": 17,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2025,
+      "total": 778,
+      "new_homes": {
+        "count": 42,
+        "value": 6048682,
+        "with_value": 40
+      },
+      "home_improvements": {
+        "count": 618,
+        "value": 8583954,
+        "with_value": 606
+      },
+      "commercial": {
+        "count": 90,
+        "value": 18528733,
+        "with_value": 86
+      },
+      "demolitions": {
+        "count": 22,
+        "value": 1489250,
+        "with_value": 20
+      },
+      "other": {
+        "count": 6,
+        "value": 0,
+        "with_value": 0
+      }
+    },
+    {
+      "year": 2026,
+      "total": 580,
+      "new_homes": {
+        "count": 54,
+        "value": 8833850,
+        "with_value": 54
+      },
+      "home_improvements": {
+        "count": 465,
+        "value": 6660704,
+        "with_value": 459
+      },
+      "commercial": {
+        "count": 44,
+        "value": 3557314,
+        "with_value": 44
+      },
+      "demolitions": {
+        "count": 7,
+        "value": 117885,
+        "with_value": 7
+      },
+      "other": {
+        "count": 10,
+        "value": 0,
+        "with_value": 0
+      }
+    }
+  ],
+  "permits_by_year_all": [
+    {
+      "year": 1999,
+      "total": 818
+    },
+    {
+      "year": 2000,
+      "total": 1260
+    },
+    {
+      "year": 2001,
+      "total": 1760
+    },
+    {
+      "year": 2002,
+      "total": 1488
+    },
+    {
+      "year": 2003,
+      "total": 1451
+    },
+    {
+      "year": 2004,
+      "total": 1538
+    },
+    {
+      "year": 2005,
+      "total": 1457
+    },
+    {
+      "year": 2006,
+      "total": 688
+    },
+    {
+      "year": 2007,
+      "total": 564
+    },
+    {
+      "year": 2008,
+      "total": 440
+    },
+    {
+      "year": 2009,
+      "total": 514
+    },
+    {
+      "year": 2010,
+      "total": 421
+    },
+    {
+      "year": 2011,
+      "total": 414
+    },
+    {
+      "year": 2012,
+      "total": 508
+    },
+    {
+      "year": 2013,
+      "total": 499
+    },
+    {
+      "year": 2014,
+      "total": 457
+    },
+    {
+      "year": 2015,
+      "total": 595
+    },
+    {
+      "year": 2016,
+      "total": 620
+    },
+    {
+      "year": 2017,
+      "total": 632
+    },
+    {
+      "year": 2018,
+      "total": 659
+    },
+    {
+      "year": 2019,
+      "total": 665
+    },
+    {
+      "year": 2020,
+      "total": 543
+    },
+    {
+      "year": 2021,
+      "total": 633
+    },
+    {
+      "year": 2022,
+      "total": 581
+    },
+    {
+      "year": 2023,
+      "total": 1041
+    },
+    {
+      "year": 2024,
+      "total": 958
+    },
+    {
+      "year": 2025,
+      "total": 778
+    },
+    {
+      "year": 2026,
+      "total": 580
+    }
+  ],
+  "new_home_units_by_year": [
+    {
+      "year": 2015,
+      "units": 34,
+      "basis": "units"
+    },
+    {
+      "year": 2016,
+      "units": 68,
+      "basis": "units"
+    },
+    {
+      "year": 2017,
+      "units": 77,
+      "basis": "units"
+    },
+    {
+      "year": 2018,
+      "units": 65,
+      "basis": "units"
+    },
+    {
+      "year": 2019,
+      "units": 39,
+      "basis": "units"
+    },
+    {
+      "year": 2020,
+      "units": 53,
+      "basis": "units"
+    },
+    {
+      "year": 2021,
+      "units": 88,
+      "basis": "units"
+    },
+    {
+      "year": 2022,
+      "units": 32,
+      "basis": "units"
+    },
+    {
+      "year": 2023,
+      "units": 21,
+      "basis": "units"
+    },
+    {
+      "year": 2024,
+      "units": 31,
+      "basis": "units"
+    },
+    {
+      "year": 2025,
+      "units": 38,
+      "basis": "units"
+    },
+    {
+      "year": 2026,
+      "units": 54,
+      "basis": "units"
+    }
+  ],
+  "time_to_complete": {
+    "since_year": 2019,
+    "note": "Permits issued since since_year that have a final-inspection date after the issue date.",
+    "new_homes": {
+      "permits": 309,
+      "median_days": 342
+    },
+    "home_improvements": {
+      "permits": 2808,
+      "median_days": 83
+    }
+  },
+  "category_map": [
+    {
+      "category": "CELL TOWER",
+      "group": "commercial",
+      "permits": 39
+    },
+    {
+      "category": "COLLECTION BIN/CONTAINER",
+      "group": "other",
+      "permits": 2
+    },
+    {
+      "category": "COMMERC",
+      "group": "commercial",
+      "permits": 1
+    },
+    {
+      "category": "COMMERCIAL, ADDITION",
+      "group": "commercial",
+      "permits": 30
+    },
+    {
+      "category": "COMMERCIAL, ALTER/REPAIR",
+      "group": "commercial",
+      "permits": 341
+    },
+    {
+      "category": "COMMERCIAL, NEW BUILDING",
+      "group": "commercial",
+      "permits": 54
+    },
+    {
+      "category": "COMMERCIAL, SIGN",
+      "group": "commercial",
+      "permits": 324
+    },
+    {
+      "category": "COMMERCIAL, UTILITY BUILDING",
+      "group": "commercial",
+      "permits": 3
+    },
+    {
+      "category": "DECK",
+      "group": "home_improvements",
+      "permits": 381
+    },
+    {
+      "category": "DEMO HO",
+      "group": "demolitions",
+      "permits": 1
+    },
+    {
+      "category": "DEMOLISH",
+      "group": "demolitions",
+      "permits": 311
+    },
+    {
+      "category": "DETACHED ACCESSORY STRUCTURE",
+      "group": "home_improvements",
+      "permits": 13
+    },
+    {
+      "category": "FENCE",
+      "group": "home_improvements",
+      "permits": 973
+    },
+    {
+      "category": "FIREWORKS",
+      "group": "other",
+      "permits": 86
+    },
+    {
+      "category": "GARAGE",
+      "group": "home_improvements",
+      "permits": 1
+    },
+    {
+      "category": "GARAGE, ATTACHED",
+      "group": "home_improvements",
+      "permits": 19
+    },
+    {
+      "category": "GARAGE, DETACHED",
+      "group": "home_improvements",
+      "permits": 129
+    },
+    {
+      "category": "GRADING",
+      "group": "other",
+      "permits": 2
+    },
+    {
+      "category": "HAUNTED HOUSE",
+      "group": "other",
+      "permits": 4
+    },
+    {
+      "category": "NEW HOUSE",
+      "group": "new_homes",
+      "permits": 35
+    },
+    {
+      "category": "OUTDOOR SALES",
+      "group": "other",
+      "permits": 27
+    },
+    {
+      "category": "POLE BARN",
+      "group": "home_improvements",
+      "permits": 115
+    },
+    {
+      "category": "POOL",
+      "group": "home_improvements",
+      "permits": 72
+    },
+    {
+      "category": "RE-ROOFCOMMERCIAL, ALTER/REPAI",
+      "group": "commercial",
+      "permits": 1
+    },
+    {
+      "category": "REHAB",
+      "group": "other",
+      "permits": 1
+    },
+    {
+      "category": "RES, ADDITION",
+      "group": "home_improvements",
+      "permits": 131
+    },
+    {
+      "category": "RES, ALTER/REPAIR",
+      "group": "home_improvements",
+      "permits": 1427
+    },
+    {
+      "category": "RES, CAR PORT",
+      "group": "home_improvements",
+      "permits": 7
+    },
+    {
+      "category": "RES, FIRE REPAIR",
+      "group": "home_improvements",
+      "permits": 35
+    },
+    {
+      "category": "RES, MODULAR HOME",
+      "group": "new_homes",
+      "permits": 238
+    },
+    {
+      "category": "RES, NEW CONSTRUCTION",
+      "group": "new_homes",
+      "permits": 443
+    },
+    {
+      "category": "RES, RENEWAL",
+      "group": "home_improvements",
+      "permits": 79
+    },
+    {
+      "category": "ROOFIING",
+      "group": "home_improvements",
+      "permits": 1
+    },
+    {
+      "category": "ROOFING",
+      "group": "home_improvements",
+      "permits": 2349
+    },
+    {
+      "category": "ROOFING AND SIDING",
+      "group": "home_improvements",
+      "permits": 98
+    },
+    {
+      "category": "SHED",
+      "group": "home_improvements",
+      "permits": 307
+    },
+    {
+      "category": "SIDING",
+      "group": "home_improvements",
+      "permits": 203
+    },
+    {
+      "category": "SIGN",
+      "group": "commercial",
+      "permits": 1
+    },
+    {
+      "category": "SITE WORK",
+      "group": "other",
+      "permits": 1
+    }
+  ]
+}

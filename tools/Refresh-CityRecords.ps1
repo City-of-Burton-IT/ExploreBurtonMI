@@ -9,8 +9,10 @@
       1. Export-BsaCostOfLiving.ps1  -> tools/data/bsa-residential.json
       2. Export-BsaBudget.ps1        -> tools/data/bsa-budget.json
       3. Export-BsaTaxRoll.ps1       -> tools/data/bsa-taxroll.json
-      4. fetch_costofliving.py (needs CENSUS_API_KEY), fetch_finances.py
-         (--offline unless -Online), build_propertytax.py
+      4. Export-BsaPermits.ps1       -> tools/data/bsa-permits.json
+      5. fetch_costofliving.py (needs CENSUS_API_KEY), fetch_finances.py
+         (--offline unless -Online), build_propertytax.py, build_utilities.py,
+         build_capitalprojects.py, build_permits.py
     Aggregates only leave the databases. Review the git diff, run the test
     suites, and open a PR as usual; nothing here commits or deploys.
 
@@ -38,16 +40,19 @@ $ErrorActionPreference = 'Stop'
 $tools = $PSScriptRoot
 $repo = (Resolve-Path (Join-Path $tools '..')).Path
 
-Write-Output '[1/4] Cost of living (Assessing sales + Utility Billing) ...'
+Write-Output '[1/5] Cost of living (Assessing sales + Utility Billing) ...'
 & (Join-Path $tools 'Export-BsaCostOfLiving.ps1') -Database ('D001City Of Burton {0}' -f $AssessmentYear)
 
-Write-Output '[2/4] Budget and actuals (General Ledger) ...'
+Write-Output '[2/5] Budget and actuals (General Ledger) ...'
 & (Join-Path $tools 'Export-BsaBudget.ps1') -FiscalYearEnd $FiscalYearEnd
 
-Write-Output '[3/4] Tax roll and taxable value (Tax + Assessing) ...'
+Write-Output '[3/5] Tax roll and taxable value (Tax + Assessing) ...'
 & (Join-Path $tools 'Export-BsaTaxRoll.ps1') -TaxYear $AssessmentYear
 
-Write-Output '[4/4] Rebuilding panels ...'
+Write-Output '[4/5] Building permits (Assessing) ...'
+& (Join-Path $tools 'Export-BsaPermits.ps1')
+
+Write-Output '[5/5] Rebuilding panels ...'
 Push-Location $tools
 try {
     if (-not $env:CENSUS_API_KEY) { throw 'CENSUS_API_KEY is not set; fetch_costofliving.py needs it.' }
@@ -63,6 +68,8 @@ try {
     if ($LASTEXITCODE -ne 0) { throw "build_utilities.py exited $LASTEXITCODE" }
     & python build_capitalprojects.py
     if ($LASTEXITCODE -ne 0) { throw "build_capitalprojects.py exited $LASTEXITCODE" }
+    & python build_permits.py
+    if ($LASTEXITCODE -ne 0) { throw "build_permits.py exited $LASTEXITCODE" }
 } finally {
     Pop-Location
 }

@@ -58,7 +58,6 @@ describe('committed dashboard clarity content', () => {
       /top employers/i,
       /how quickly/i,
       /most calls are medical/i,
-      /building permits/i,
       /tap water is safe/i,
       /how each district is doing/i,
     ];
