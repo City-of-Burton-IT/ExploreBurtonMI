@@ -9,32 +9,32 @@
   },
   "busiest": [
     {
-      "name": "Grand Traverse",
+      "name": "I-69",
+      "aadt": 76430,
+      "trucks_pct": 13,
+      "year": 2025
+    },
+    {
+      "name": "I-69",
+      "aadt": 62715,
+      "trucks_pct": 13,
+      "year": 2025
+    },
+    {
+      "name": "I-69",
+      "aadt": 54217,
+      "trucks_pct": 13,
+      "year": 2025
+    },
+    {
+      "name": "I-475",
       "aadt": 33222,
       "trucks_pct": 5,
       "year": 2025
     },
     {
-      "name": "S Center Rd",
-      "aadt": 20913,
-      "trucks_pct": 2,
-      "year": 2025
-    },
-    {
-      "name": "S Center Rd",
-      "aadt": 20838,
-      "trucks_pct": 3,
-      "year": 2025
-    },
-    {
-      "name": "S Belsay Rd",
-      "aadt": 16153,
-      "trucks_pct": 2,
-      "year": 2025
-    },
-    {
-      "name": "E Bristol Rd",
-      "aadt": 14411,
+      "name": "I-475",
+      "aadt": 30032,
       "trucks_pct": 5,
       "year": 2025
     }
@@ -45,5 +45,6 @@
     "max": 2025
   },
   "extracted": "2026-10-07",
-  "_source": "MDOT statewide AADT 2025 (state and federal-aid roads); road names from Genesee County Metropolitan Planning Commission traffic-count points"
+  "mdot_year": 2025,
+  "_source": "MDOT statewide AADT 2025 (state and federal-aid roads); road names from OpenStreetMap (ODbL, (c) OpenStreetMap contributors) and Genesee County RoadSoft/PASER lines, with Genesee County Metropolitan Planning Commission traffic-count points as the fallback"
 }

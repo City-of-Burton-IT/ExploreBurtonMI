@@ -84,22 +84,25 @@ def load_traffic(path: str = TRAFFIC_SUMMARY) -> dict | None:
 def merge_traffic(panel: dict, t: dict) -> None:
     """Append the traffic stats, chart, note and source credit to the panel (in place)."""
     top = t["busiest"][0]
+    year = t.get("mdot_year") or (t.get("years") or {}).get("max") or 2025
     total = round(sum(t["miles_by_band"][b] for b in TRAFFIC_BANDS), 1)
     panel["stats"] += [
         {"label": "Busiest road counted", "value": top["name"],
          "hint": f"{top['aadt']:,} vehicles a day"},
         {"label": "Miles of road with traffic counts", "value": f"{total:,}",
-         "hint": "MDOT 2025 counts"},
+         "hint": f"MDOT {year} counts"},
     ]
     panel["charts"].append(
         {"type": "bars", "title": "Road miles by daily traffic", "unit": " mi",
          "series": [{"label": b, "value": t["miles_by_band"][b]} for b in TRAFFIC_BANDS]})
     panel["notes"].insert(-1, (
-        "Traffic counts are MDOT's 2025 annual average daily traffic for state and federal-aid "
+        f"Traffic counts are MDOT's {year} annual average daily traffic for state and federal-aid "
         "roads only, so most residential streets are not counted. The map overlay "
         "\"Traffic volume\" shows every counted segment."))
-    panel["source"] += (" Traffic volumes: MDOT statewide AADT 2025; road names from the Genesee "
-                        "County Metropolitan Planning Commission.")
+    panel["source"] += (f" Traffic volumes: MDOT statewide AADT {year}; road names from "
+                        "OpenStreetMap ((c) OpenStreetMap contributors, ODbL) and Genesee County "
+                        "RoadSoft/PASER lines, with Genesee County Metropolitan Planning "
+                        "Commission count points as the fallback.")
 
 
 def main() -> int:

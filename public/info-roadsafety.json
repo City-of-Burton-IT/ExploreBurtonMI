@@ -29,8 +29,8 @@
     },
     {
       "label": "Busiest road counted",
-      "value": "Grand Traverse",
-      "hint": "33,222 vehicles a day"
+      "value": "I-69",
+      "hint": "76,430 vehicles a day"
     },
     {
       "label": "Miles of road with traffic counts",
@@ -229,7 +229,7 @@
       ]
     }
   ],
-  "source": "Genesee County (GCMPC) crash records (Michigan State Police UD-10 / RoadSoft), City of Burton, 2014-2018. Traffic volumes: MDOT statewide AADT 2025; road names from the Genesee County Metropolitan Planning Commission.",
+  "source": "Genesee County (GCMPC) crash records (Michigan State Police UD-10 / RoadSoft), City of Burton, 2014-2018. Traffic volumes: MDOT statewide AADT 2025; road names from OpenStreetMap ((c) OpenStreetMap contributors, ODbL) and Genesee County RoadSoft/PASER lines, with Genesee County Metropolitan Planning Commission count points as the fallback.",
   "links": [
     {
       "text": "Michigan Traffic Crash Facts",
