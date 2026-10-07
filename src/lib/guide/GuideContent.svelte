@@ -11,6 +11,7 @@
   import WasteSchedule from './WasteSchedule.svelte';
   import OpsStatus from './OpsStatus.svelte';
   import CivicClerkMeetings from './CivicClerkMeetings.svelte';
+  import PrecinctFinder from './PrecinctFinder.svelte';
   import VideoEmbed from './VideoEmbed.svelte';
   import { guideRenderer, usesGenericOfflineBadge } from './guideSections';
 
@@ -25,6 +26,14 @@
   } = $props();
 
   const renderer = $derived(guideRenderer(section));
+
+  // The Elections section embeds the precinct finder right after its intro
+  // (the first <h2> block); everything else is the bundle HTML unchanged.
+  const mdHtml = $derived(bundle.content[section.id] ?? '');
+  const splitAt = $derived.by(() => {
+    if (section.id !== 'elections') return -1;
+    return mdHtml.indexOf('<h2', mdHtml.indexOf('<h2') + 3);
+  });
 </script>
 
 <article class="guide-body" use:guideContentFocus={section.id}>
@@ -37,7 +46,15 @@
   {#if renderer === 'markdown'}
     <!-- Build-time-rendered, fail-closed HTML from tracked guide Markdown. -->
     <!-- svelte-ignore a11y_no_static_element_interactions -->
-    <div class="md" use:reveal use:lightboxImages={openImage} use:guideAnchors={section.id}>{@html bundle.content[section.id]}</div>
+    <div class="md" use:reveal use:lightboxImages={openImage} use:guideAnchors={section.id}>
+      {#if splitAt > 0}
+        {@html mdHtml.slice(0, splitAt)}
+        <PrecinctFinder />
+        {@html mdHtml.slice(splitAt)}
+      {:else}
+        {@html mdHtml}
+      {/if}
+    </div>
   {:else if renderer === 'contacts' && bundle.contacts}
     <ContactsList contacts={bundle.contacts} />
   {:else if renderer === 'meetings' && bundle.meetings}
