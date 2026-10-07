@@ -1,6 +1,6 @@
 {
   "_source": "City of Burton BS&A Tax module (D004BURTON26) and Assessing module (D001City Of Burton 2026), read-only aggregate export. Levy = sum of billed tax lines by taxing unit; City millage = tax unit classification 7 excluding the DDA district levy; homestead median = class 401 parcels with a 100 percent principal residence exemption. Taxable value = March Board of Review taxable value on the roll; history from ParcelPreviousYearTotals.",
-  "extracted": "2026-10-06",
+  "extracted": "2026-10-07",
   "tax_year": 2026,
   "city_mills": 13.2394,
   "city_lines": [
@@ -156,14 +156,14 @@
     "median_city_tax": 654.84
   },
   "collection": {
-    "as_of": "2026-10-06",
+    "as_of": "2026-10-07",
     "summer_due": "2026-09-30",
     "winter_due": "2027-03-01",
     "summer": {
       "parcels_billed": 13917,
       "billed": 35404492,
-      "owed": 3802951,
-      "parcels_unpaid": 2074
+      "owed": 3791948,
+      "parcels_unpaid": 2071
     },
     "winter": {
       "billed": 12861142,
@@ -243,15 +243,15 @@
       },
       {
         "week_start": "2026-10-04",
-        "amount": 62009,
-        "receipts": 36
+        "amount": 73504,
+        "receipts": 40
       }
     ],
     "payment_sources_summer": [
       {
         "source": "CR",
-        "amount": 28938988,
-        "receipts": 11089
+        "amount": 28950484,
+        "receipts": 11093
       },
       {
         "source": "",
@@ -271,18 +271,6 @@
     "sev": 1293714100,
     "by_group": [
       {
-        "group": "Industrial",
-        "parcels": 206,
-        "taxable": 55590106,
-        "sev": 65030700
-      },
-      {
-        "group": "Personal property (business and utility)",
-        "parcels": 243,
-        "taxable": 75349400,
-        "sev": 75349400
-      },
-      {
         "group": "Commercial",
         "parcels": 721,
         "taxable": 159558091,
@@ -293,6 +281,18 @@
         "parcels": 12703,
         "taxable": 605042919,
         "sev": 951286900
+      },
+      {
+        "group": "Industrial",
+        "parcels": 206,
+        "taxable": 55590106,
+        "sev": 65030700
+      },
+      {
+        "group": "Personal property (business and utility)",
+        "parcels": 243,
+        "taxable": 75349400,
+        "sev": 75349400
       }
     ],
     "history": [
@@ -380,6 +380,138 @@
         "year": 2026,
         "taxable": 895540516,
         "sev": 1293714100
+      }
+    ]
+  },
+  "collection_history": {
+    "as_of": "2026-10-07",
+    "from": 2021,
+    "to": 2026,
+    "note": "Per roll year and season: billed and still owed from Parcels (tax_billed, base_tax_left); paid_by_due, paid_within_90 and paid_to_date are net ReceiptHeaders.amt (all transaction codes) posted by the due date, within 90 days of it, and to date. A season appears only after its due date; paid_within_90 is null until 90 days have passed.",
+    "years": [
+      {
+        "tax_year": 2021,
+        "database": "D004BURTON21",
+        "summer": {
+          "due": "2021-09-30",
+          "parcels_billed": 13786,
+          "billed": 27299642,
+          "owed": 1711398,
+          "paid_by_due": 24230848,
+          "paid_within_90": 24972063,
+          "paid_to_date": 25658960
+        },
+        "winter": {
+          "due": "2022-02-28",
+          "parcels_billed": 13820,
+          "billed": 10041630,
+          "owed": 1134668,
+          "paid_by_due": 8701210,
+          "paid_within_90": 8884819,
+          "paid_to_date": 8908598
+        }
+      },
+      {
+        "tax_year": 2022,
+        "database": "D004BURTON22",
+        "summer": {
+          "due": "2022-09-30",
+          "parcels_billed": 14067,
+          "billed": 28411106,
+          "owed": 1814779,
+          "paid_by_due": 25266302,
+          "paid_within_90": 26077678,
+          "paid_to_date": 26660251
+        },
+        "winter": {
+          "due": "2023-02-28",
+          "parcels_billed": 14010,
+          "billed": 10495333,
+          "owed": 1104447,
+          "paid_by_due": 9349300,
+          "paid_within_90": 9365450,
+          "paid_to_date": 9391745
+        }
+      },
+      {
+        "tax_year": 2023,
+        "database": "D004BURTON23",
+        "summer": {
+          "due": "2023-10-02",
+          "parcels_billed": 13982,
+          "billed": 30320886,
+          "owed": 1808118,
+          "paid_by_due": 27360350,
+          "paid_within_90": 28124178,
+          "paid_to_date": 28576469
+        },
+        "winter": {
+          "due": "2024-02-29",
+          "parcels_billed": 13921,
+          "billed": 11216789,
+          "owed": 1027367,
+          "paid_by_due": 10153842,
+          "paid_within_90": 10176024,
+          "paid_to_date": 10190484
+        }
+      },
+      {
+        "tax_year": 2024,
+        "database": "D004BURTON24",
+        "summer": {
+          "due": "2024-09-30",
+          "parcels_billed": 13949,
+          "billed": 31598201,
+          "owed": 1896209,
+          "paid_by_due": 28527361,
+          "paid_within_90": 29236040,
+          "paid_to_date": 29770600
+        },
+        "winter": {
+          "due": "2025-02-28",
+          "parcels_billed": 13874,
+          "billed": 12861014,
+          "owed": 1212284,
+          "paid_by_due": 11636105,
+          "paid_within_90": 11644299,
+          "paid_to_date": 11651220
+        }
+      },
+      {
+        "tax_year": 2025,
+        "database": "D004BURTON25",
+        "summer": {
+          "due": "2025-09-30",
+          "parcels_billed": 13933,
+          "billed": 33987711,
+          "owed": 2462927,
+          "paid_by_due": 30330032,
+          "paid_within_90": 31066223,
+          "paid_to_date": 31600586
+        },
+        "winter": {
+          "due": "2026-03-02",
+          "parcels_billed": 13831,
+          "billed": 12589761,
+          "owed": 1606914,
+          "paid_by_due": 10928751,
+          "paid_within_90": 10982617,
+          "paid_to_date": 10983138
+        }
+      },
+      {
+        "tax_year": 2026,
+        "database": "D004BURTON26",
+        "summer": {
+          "due": "2026-09-30",
+          "parcels_billed": 13917,
+          "billed": 35404492,
+          "owed": 3791948,
+          "paid_by_due": 31453310,
+          "paid_within_90": null,
+          "paid_to_date": 31619539
+        },
+        "winter": null
       }
     ]
   }
