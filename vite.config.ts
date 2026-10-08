@@ -39,6 +39,10 @@ export default defineConfig({
         // content hash busts each on deploy. Data + tiles are runtime-cached below.
         globPatterns: ['**/*.{js,css,html,svg,woff2}'],
         navigateFallback: '/index.html',
+        // The internal mirror also hosts the static review page under /review/ (not
+        // part of this build). Without this, an installed worker answers that
+        // navigation with the app shell and the review page never loads.
+        navigateFallbackDenylist: [/^\/review(\/|$)/],
         runtimeCaching: [
           {
             // Committed data (every same-origin .json/.geojson: core data, overlays,
