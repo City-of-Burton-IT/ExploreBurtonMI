@@ -42,13 +42,28 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-07 17:30 (git log, gh issue list, PR #168 merged, review page fetched 200).
+Last verified: 2026-10-08 09:40 (git log, gh issue list, PR #173 merged and synced to the
+mirror, review page verified in a browser with the worker installed).
 
-**Status:** Git range `2c93c43..cf45683` on `main`: PRs 128 through 168, all squash-merged
+**Status:** Git range `2c93c43..0ca0726` on `main`: PRs 128 through 173, all squash-merged
 with auto-merge, Pages deploys green. Required checks are web, python, pin-editor (CodeQL
-can stall docs-only PRs, merge by hand once those pass). Suites at `cf45683`: pytest
-pipeline plus tools 396 passed; vitest, svelte-check and the production build were last run
-green at PR #164. The mirror auto-syncs within 30 minutes of a merge.
+can stall docs-only PRs, merge by hand once those pass; a PR that falls behind main needs
+`gh pr update-branch` before auto-merge fires). Suites at `417365a`: pytest pipeline plus
+tools 396 passed, vitest 524 passed, svelte-check and tsc clean, production build clean.
+The mirror auto-syncs within 30 minutes of a merge.
+
+**2026-10-08 morning (before the send):** the user's first open of `/review/` showed the
+app shell failing ("Could not start the map", `config.json` 404). Root cause confirmed in
+the browser: the app's service worker (scope `/`, workbox `navigateFallback`) answered the
+navigation for any browser that had ever opened the preview; curl and first-time visitors
+were fine. PR #173 added `navigateFallbackDenylist` for `/review/`, merged and synced
+09:35, verified end to end under the new worker. Review page edits deployed: ribbon no
+longer clipped (clipped wrapper), salutation "Mayor Haskins and City Department Heads".
+IIS sent no `Cache-Control` for the page, so `planning/mayor-review/site/web.config` now
+sets no-cache for `index.html` (verified). Windows-username prefill was declined for this
+send (needs Windows auth on the mirror; would prompt on phones). Android 1.16 (versionCode
+30) is on the Play internal track (#169 run 37740673450); Dependabot alert 92 (nested sharp
+under `@capacitor/assets`, dev only, no fix) stays open by decision, #169 stays open.
 
 **2026-10-07 evening (PR #168, #161):** the traffic overlay now names each MDOT segment
 from the nearest named road line within 40 m with a matching bearing, PASER lines first
