@@ -2223,5 +2223,80 @@
         ]
       }
     ]
+  },
+  "businesssites": {
+    "title": "Sites for Business",
+    "subtitle": "Vacant commercial and industrial land, and the existing building stock, from the City Assessor's roll",
+    "context": {
+      "scope": "City of Burton",
+      "status": "current",
+      "asOf": "Current Assessing roll; refreshed with the roll and after major reclassifications",
+      "sourceLinks": [
+        {
+          "text": "BS&A Online parcel lookup",
+          "href": "https://bsaonline.com/?uid=209"
+        },
+        {
+          "text": "Burton zoning information",
+          "href": "https://www.burtonmi.gov/departments/department_of_public_works/zoning_division.php"
+        }
+      ]
+    },
+    "headline": "Burton has about 270 vacant commercial and industrial parcels, roughly 1,000 acres, alongside more than 700 existing commercial and industrial buildings.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "A business looking at Burton wants to know where it could build or move in, what the land is zoned for, and how much of it there is. The Assessor's roll answers the first three questions for every parcel. Pair the vacant-sites overlay with the zoning and traffic overlays to shortlist locations before calling the City or a broker."
+      ]
+    },
+    "responsibility": "The City Assessor classifies every parcel and keeps the roll; the Planning and Zoning Division sets what each district allows. Whether a parcel is for sale or lease is up to its owner, and the roll does not record it.",
+    "action": {
+      "kind": "link",
+      "text": "Look up a parcel on BS&A Online",
+      "href": "https://bsaonline.com/?uid=209"
+    },
+    "statOverrides": {
+      "Vacant commercial parcels": {
+        "priority": true
+      },
+      "Vacant industrial parcels": {
+        "priority": true
+      },
+      "Commercial buildings": {
+        "priority": true
+      },
+      "Industrial buildings": {
+        "priority": true
+      }
+    },
+    "chartOverrides": {
+      "Acres by property class": {
+        "takeaway": "Most commercial and industrial land in Burton is already built on; vacant industrial land is the larger of the two vacant pools by acreage."
+      },
+      "Vacant sites by zoning district": {
+        "takeaway": "Vacant sites are concentrated in a few zoning districts, which tells a business where its use is most likely to be allowed as of right."
+      }
+    },
+    "tableIds": {
+      "Largest vacant commercial and industrial sites (top 30 by acreage)": "largest-vacant-sites"
+    },
+    "sections": [
+      {
+        "heading": "Land and buildings",
+        "charts": [
+          "acres-by-property-class",
+          "vacant-sites-by-zoning-district"
+        ]
+      },
+      {
+        "heading": "Where to look",
+        "stats": [
+          "commercial-and-industrial-buildings-sold-last-24-months"
+        ],
+        "tables": [
+          "largest-vacant-sites"
+        ]
+      }
+    ]
   }
 }

@@ -1,4 +1,4 @@
-# ADR-0003: Publish City-owned property for sale and aggregated home-sale tiles
+# ADR-0003: Publish City-owned property for sale, aggregated home-sale tiles, and business sites
 
 **Date:** 2026-10-15
 **Status:** proposed
@@ -81,6 +81,31 @@ Publish price and volume of recent arms-length residential sales only as
   publishable.
 - Commercial and industrial sales are out of scope for this ADR because their
   low volume makes single transactions identifiable even in aggregate.
+
+### Part C: Sites for Business (approved 2026-10-15)
+
+Publish two parcel-level overlays and one dashboard from the Assessing roll so a
+business can find land or a building in Burton:
+
+- **Vacant commercial and industrial sites**: property classes 202 and 302.
+- **Commercial and industrial buildings**: property classes 201 and 301. The roll
+  does not know which buildings are for lease or sale; the layer is an inventory
+  and says so.
+
+**Published per parcel**: parcel number, situs address, property class, lot size
+in acres, frontage, zoning district, and coordinates. **Not published**: owner
+name or mailing address, assessed or taxable value, tax status, sale history, or
+any flag from the roll beyond the class code. This is the parcel-level join that
+ADR-0002 reserved for explicit approval; the data owner approved it on
+2026-10-15 on the basis that every field is already public on BS&A Online and no
+person is identified.
+
+**Commercial sale prices** are not aggregated by neighbourhood. A 2026-10-15
+check found 48 arms-length commercial and industrial sales in 24 months across
+the whole city, with a single sale at $5.6 million; any block-group median would
+effectively name one transaction. The business dashboard carries one citywide
+line only, the count of commercial and industrial buildings that changed hands
+in the trailing 24 months, with no prices.
 
 ### Shared controls
 

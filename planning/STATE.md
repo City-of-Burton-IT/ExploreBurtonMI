@@ -75,6 +75,20 @@ sales under $20k). A 400 m hex grid was rejected (42% coverage at five sales). S
 merge: one-line confirmation from the Assessor on the terms-code definition. Diagnostics and the
 local working extracts are in C:/utils/ (Diag-BsaSales*.ps1 and .out.txt, Diag-SalesCoverage.py).
 
+Part C, Sites for Business (approved by the user 2026-10-15, ADR-0003 Part C): BUILT on the same
+branch. `tools/Export-BsaCommercialParcels.ps1` writes gitignored `commercial-parcels.csv` (984
+parcels, classes 201/202/301/302: parcel, address, class, acres, frontage, zoning; no owner or value)
+and `commercial-sales-summary.json` (38 arms-length 201/301 sales in 24 months, count only).
+`tools/build_business_sites.py` writes `public/business-sites-vacant.geojson`,
+`public/business-sites-improved.geojson` and `public/info-businesssites.json` (dashboard
+`#businesssites`, People & Housing after Jobs). KNOWN GAP: BS&A has no coordinates and 259 of 271
+vacant lots have no street number, so only 12 vacant sites and 625 of 713 buildings are on the map;
+counts and tables are complete. The builder reads an optional gitignored
+`pipeline/data/parcel-centroids.csv` (parcel, lat, lng) first; get a parcel centroid or polygon export
+from GCRC (County_Parcels, needs the City's token) or the Assessor's GIS to fill the vacant layer.
+Commercial medians by neighbourhood were rejected after measuring (48 sales in 24 months, one at
+$5.6M); the dashboard carries the citywide count only.
+
 **2026-10-07 evening (PR #168, #161):** the traffic overlay now names each MDOT segment
 from the nearest named road line within 40 m with a matching bearing, PASER lines first
 (`public/paser-roads.geojson`) then OpenStreetMap named highways from Overpass, with the

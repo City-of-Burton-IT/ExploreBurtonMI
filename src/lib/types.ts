@@ -232,7 +232,8 @@ export type InfoView =
   | 'utilities'
   | 'permits'
   | 'cityproperty'
-  | 'homesales';
+  | 'homesales'
+  | 'businesssites';
 export type AppView = 'map' | InfoView | 'guide' | 'opendata' | 'status';
 
 export interface InfoStat {

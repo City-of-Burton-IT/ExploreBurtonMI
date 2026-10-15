@@ -1,0 +1,433 @@
+{
+  "title": "Sites for Business",
+  "subtitle": "Vacant commercial and industrial land, and the existing building stock, from the City Assessor's roll",
+  "lastUpdated": "2026-10-15",
+  "stats": [
+    {
+      "label": "Vacant commercial parcels",
+      "value": "155",
+      "hint": "353 acres"
+    },
+    {
+      "label": "Vacant industrial parcels",
+      "value": "116",
+      "hint": "640 acres"
+    },
+    {
+      "label": "Commercial buildings",
+      "value": "618",
+      "hint": "2,290 acres of improved commercial land"
+    },
+    {
+      "label": "Industrial buildings",
+      "value": "95",
+      "hint": "519 acres of improved industrial land"
+    },
+    {
+      "label": "Commercial and industrial buildings sold, last 24 months",
+      "value": "38",
+      "hint": "arms-length sales recorded by the Assessor; count only"
+    }
+  ],
+  "charts": [
+    {
+      "type": "bars",
+      "title": "Acres by property class",
+      "series": [
+        {
+          "label": "Vacant commercial land",
+          "value": 353,
+          "color": "#2e7d32"
+        },
+        {
+          "label": "Vacant industrial land",
+          "value": 640,
+          "color": "#6a1b9a"
+        },
+        {
+          "label": "Commercial building",
+          "value": 2290,
+          "color": "#1565c0"
+        },
+        {
+          "label": "Industrial building",
+          "value": 519,
+          "color": "#4e342e"
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Vacant sites by zoning district",
+      "series": [
+        {
+          "label": "C-2",
+          "value": 104
+        },
+        {
+          "label": "M-1",
+          "value": 56
+        },
+        {
+          "label": "M-2",
+          "value": 31
+        },
+        {
+          "label": "RO",
+          "value": 24
+        },
+        {
+          "label": "R-1C",
+          "value": 13
+        },
+        {
+          "label": "C-4",
+          "value": 10
+        },
+        {
+          "label": "C-1",
+          "value": 9
+        },
+        {
+          "label": "C-3",
+          "value": 7
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "title": "Largest vacant commercial and industrial sites (top 30 by acreage)",
+      "columns": [
+        "Address",
+        "Type",
+        "Acres",
+        "Frontage (ft)",
+        "Zoning"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "Davison Rd",
+            "Industrial",
+            "55.42",
+            "n/a",
+            "M-2"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "G S Dort Hwy",
+            "Industrial",
+            "42.13",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "E Hemphill Rd",
+            "Industrial",
+            "40.88",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "E Court St",
+            "Commercial",
+            "37",
+            "n/a",
+            "RM"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "E Court St",
+            "Industrial",
+            "32.47",
+            "n/a",
+            "C-2"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "1323 E Maple Ave",
+            "Commercial",
+            "26.8",
+            "98",
+            "R-1C"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "N Belsay Rd",
+            "Industrial",
+            "26.78",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "N Genesee Rd",
+            "Industrial",
+            "24.52",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "Red Arrow",
+            "Industrial",
+            "24.5",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "N Genesee Rd",
+            "Industrial",
+            "23.63",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "Scottwood Ave Near",
+            "Industrial",
+            "22.02",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "N Genesee Rd",
+            "Industrial",
+            "20.55",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "Shannon Rd",
+            "Industrial",
+            "20.46",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "Jimbo Dr Near",
+            "Industrial",
+            "18",
+            "n/a",
+            "M-2"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "Lippincott Blvd",
+            "Industrial",
+            "16.88",
+            "n/a",
+            "R-1A"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "E Court St",
+            "Commercial",
+            "14.13",
+            "n/a",
+            "C-2"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "E Bristol Rd",
+            "Commercial",
+            "12.49",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "S Center Rd",
+            "Commercial",
+            "12.3",
+            "n/a",
+            "HRM"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "E Bristol Rd",
+            "Industrial",
+            "12.03",
+            "n/a",
+            "M-2"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "E Atherton Rd",
+            "Commercial",
+            "11.58",
+            "n/a",
+            "C-2"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "E Court St",
+            "Commercial",
+            "11.19",
+            "n/a",
+            "RO"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "E Bristol Rd",
+            "Industrial",
+            "11.16",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "E Court St",
+            "Industrial",
+            "10.77",
+            "n/a",
+            "C-2"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "G Dort Hwy",
+            "Industrial",
+            "10.5",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "E Hemphill Rd",
+            "Industrial",
+            "10.4",
+            "n/a",
+            "M-1"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "Davison Rd",
+            "Commercial",
+            "10",
+            "n/a",
+            "R-1A"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "E Court St",
+            "Industrial",
+            "9.97",
+            "n/a",
+            "RO"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "Leith St",
+            "Industrial",
+            "9.78",
+            "n/a",
+            "R-1B"
+          ],
+          "color": "#6a1b9a"
+        },
+        {
+          "cells": [
+            "S Center Rd",
+            "Commercial",
+            "9.62",
+            "n/a",
+            "RO"
+          ],
+          "color": "#2e7d32"
+        },
+        {
+          "cells": [
+            "S Center Rd",
+            "Commercial",
+            "9.57",
+            "n/a",
+            "C-2"
+          ],
+          "color": "#2e7d32"
+        }
+      ]
+    }
+  ],
+  "source": "City of Burton Assessor property roll (BS&A), property classes 201, 202, 301 and 302. Transfer count from Assessor sales records as of 2026-10-15.",
+  "links": [
+    {
+      "text": "Look up a parcel on BS&A Online",
+      "href": "https://bsaonline.com/?uid=209"
+    },
+    {
+      "text": "Burton zoning information",
+      "href": "https://www.burtonmi.gov/departments/department_of_public_works/zoning_division.php"
+    },
+    {
+      "text": "Burton Assessor's Office",
+      "href": "https://www.burtonmi.gov/government/assessor2/index.php"
+    }
+  ],
+  "notes": [
+    "Turn on the \"Vacant commercial and industrial sites\" overlay to see land to build on, and \"Commercial and industrial buildings\" for the existing stock. Larger dots are larger lots.",
+    "The City's Assessing roll classifies every parcel; a vacant commercial or industrial parcel is one with no building on it. The roll does not record whether a parcel or building is for sale or lease, so contact the owner through BS&A Online or a broker.",
+    "Each listing shows the parcel number, address, lot size, frontage and zoning. Owner names, assessed values and tax status are not shown here; those are available per parcel on BS&A Online.",
+    "347 parcels could not be placed on the map (no geocodable address) and appear only in the counts."
+  ]
+}

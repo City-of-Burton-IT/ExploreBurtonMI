@@ -25,6 +25,7 @@ export const DASHBOARD_GROUPS: DashboardGroup[] = [
     items: [
       { id: 'demographics', label: 'Demographics', description: 'Population, age, and household trends from the U.S. Census.' },
       { id: 'jobs', label: 'Genesee County Jobs & Industries', description: 'Countywide industries, employment, wages, and unemployment.' },
+      { id: 'businesssites', label: 'Sites for Business', description: 'Vacant commercial and industrial land, and the existing building stock.' },
       { id: 'access', label: 'Affordability & Access', description: 'Modeled housing-plus-transportation burden, neighborhood incomes, and car access.' },
       { id: 'housing', label: 'Housing in Burton', description: 'Homes, occupancy, ownership, values, rents, and age.' },
       { id: 'homesales', label: 'Home Sale Prices', description: 'What homes actually sell for, by neighbourhood, from Assessor sales records.' },

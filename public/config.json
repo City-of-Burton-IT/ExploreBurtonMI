@@ -46,7 +46,9 @@
     { "source": "fire-stations.geojson", "label": "Fire call volume (by station)", "nameField": "station" },
     { "source": "traffic-aadt.geojson", "label": "Traffic volume (daily vehicles)", "nameField": "name" },
     { "source": "city-property.geojson", "label": "City property for sale", "nameField": "name" },
-    { "source": "sales-tiles.geojson", "label": "Home sale prices (by block group)", "nameField": "name" }
+    { "source": "sales-tiles.geojson", "label": "Home sale prices (by block group)", "nameField": "name" },
+    { "source": "business-sites-vacant.geojson", "label": "Vacant commercial and industrial sites", "nameField": "name" },
+    { "source": "business-sites-improved.geojson", "label": "Commercial and industrial buildings", "nameField": "name" }
   ],
   "imageOverlays": [],
   "categoryField": "category",
