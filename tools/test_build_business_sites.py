@@ -124,3 +124,15 @@ def test_centroids_override_and_validate(tmp_path):
     p.write_text("parcel,lat" + chr(10) + "a,1" + chr(10), encoding="utf-8")
     with pytest.raises(SystemExit, match="missing column"):
         bbs.read_centroids(str(p))
+
+
+def test_nearest_traffic_within_range_prefers_busiest(tmp_path):
+    segs = [{"name": "A Rd", "aadt": 5000, "year": 2025, "coords": [[-83.60, 43.000], [-83.60, 43.010]]},
+            {"name": "B Rd", "aadt": 9000, "year": 2025, "coords": [[-83.60, 43.000], [-83.59, 43.000]]}]
+    near = bbs.nearest_traffic(-83.6001, 43.0005, segs)       # ~10 m from both: busiest wins
+    assert near["name"] == "B Rd"
+    assert bbs.nearest_traffic(-83.65, 43.05, segs) is None    # kilometres away
+    rows = _rows(tmp_path, [_raw(parcel="t")])
+    rows[0].update(lat=43.0005, lng=-83.6001)
+    vacant, _, _, _ = bbs.build_layers(rows, SQUARE, segs)
+    assert ["Traffic on nearest counted road", "9,000 vehicles a day (B Rd, 2025)"] in vacant["features"][0]["properties"]["_popupRows"]

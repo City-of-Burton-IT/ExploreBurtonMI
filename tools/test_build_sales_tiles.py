@@ -137,7 +137,7 @@ def test_panel_shapes_and_count_labels():
     table = panel["tables"][0]
     assert all(len(r["cells"]) == len(table["columns"]) for r in table["rows"])
     assert table["rows"][0]["cells"][0] == "Group A"      # shown groups sort first
-    assert table["rows"][1]["cells"][1:3] == ["0", "n/a"]  # empty group: count 0, no price
+    assert table["rows"][1]["cells"][2:4] == ["0", "n/a"]  # empty group: count 0, no price
     assert any("3 qualifying sales could not be placed" in n for n in panel["notes"])
 
 
@@ -145,3 +145,41 @@ def test_count_label_buckets_small_counts():
     assert bst._count_label(0) == "0"
     assert bst._count_label(3) == "1 to 4"
     assert bst._count_label(5) == "5"
+
+
+def _ctx():
+    ring = [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]
+    return {"districts": [{"name": "Atherton Community Schools", "short": "Atherton", "rings": [ring]}],
+            "city_mills": 13.2394, "district_mills": {"Atherton": 41.86}}
+
+
+def test_tax_estimate_uses_half_price_and_mills():
+    t = bst.tax_estimate(150000, {"short": "Atherton"}, _ctx())
+    assert t == {"taxable": 75000, "city": 993, "full": 3140}
+    assert bst.tax_estimate(None, None, _ctx()) == {"taxable": None, "city": None, "full": None}
+    assert bst.tax_estimate(150000, {"short": "Unknown"}, _ctx())["full"] is None
+
+
+def test_group_stats_carry_district_and_tax():
+    cur = [_sale(0.5, 0.5, 100000, 30 + i) for i in range(5)]
+    by_group, _ = bst.assign(cur, _groups())
+    stats = bst.group_stats(by_group, _groups(), TODAY, _ctx())
+    a, b = stats
+    assert a["district"] == "Atherton Community Schools" and a["tax"]["city"] == 662
+    assert b["district"] is None and b["tax"]["city"] is None
+    fc = bst.build_geojson(stats, TODAY)
+    rows = fc["features"][0]["properties"]["_popupRows"]
+    assert ["School district", "Atherton Community Schools"] in rows
+    assert ["Est. City tax on the median home", "$662 a year"] in rows
+    panel = bst.build_panel(cur, stats, 0, TODAY, _ctx())
+    labels = {x["label"]: x["value"] for x in panel["stats"]}
+    assert labels["Est. City tax on the median home"] == "$662 a year"
+    table = panel["tables"][0]
+    assert table["columns"][1] == "School district" and table["rows"][0]["cells"][1] == "Atherton"
+    assert all(len(r["cells"]) == len(table["columns"]) for r in table["rows"])
+
+
+def test_short_district_strips_suffixes():
+    assert bst.short_district("Carman-Ainsworth Community School District") == "Carman-Ainsworth"
+    assert bst.short_district("Bendle Public Schools") == "Bendle"
+    assert bst.short_district(None) == "n/a"

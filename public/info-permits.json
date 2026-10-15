@@ -642,7 +642,7 @@
     "These are permits issued by the City's Building Department and recorded by the City Assessor. A permit is permission to do work, not proof the work was finished; the completion time counts only permits with a recorded final inspection.",
     "Site permits are counted too: roofing, siding, fences, sheds, decks and pools make up most of the home-improvement total, so a busy year is not always a year of large projects.",
     "Declared value is what the applicant states on the application and is often left blank. It is shown only where nearly every permit carries one, and it is an estimate, not a measured cost.",
-    "The current year is partial and is left out of the yearly charts. Only counts and totals are published, never addresses, owners, contractors or permit numbers. Years before 1999 are not shown because the records are incomplete.",
+    "The current year is partial and is left out of the yearly charts. Only counts and totals are published here, never owners, contractors or permit numbers; the map's \"New homes permitted\" overlay shows the address and year of new-home permits only. Years before 1999 are not shown because the records are incomplete.",
     "Inspection and completion figures come from the Building Department's own permit system. An inspection is counted when it is completed; a project counts as finished when its permit reaches a final inspection within twelve months of issue.",
     "Time from application to issue is not shown because the department records the application date when the permit is issued, so it measures nothing."
   ]

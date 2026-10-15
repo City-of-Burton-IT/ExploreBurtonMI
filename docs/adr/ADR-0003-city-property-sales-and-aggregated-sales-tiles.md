@@ -107,6 +107,21 @@ effectively name one transaction. The business dashboard carries one citywide
 line only, the count of commercial and industrial buildings that changed hands
 in the trailing 24 months, with no prices.
 
+### Part D: New homes permitted, and context joins (2026-10-15)
+
+- **New homes permitted overlay**: one pin per new-home building permit since
+  2015 (the three new-home categories the permits dashboard already uses), with
+  the situs address, issue year and unit count only. No owner, applicant,
+  contractor, permit number, value or description. This is the first time an
+  address from the Permits table is published; the permits dashboard itself
+  stays aggregate-only, and its note now says so.
+- **Context joins, no new data published**: each home-sales block group carries
+  the school district containing its sales centroid and an estimated annual tax
+  bill on its median home (taxable value = half the sale price, City mills and
+  the district's published homestead rate from the Property Taxes estimator);
+  each business site within about 150 m of an MDOT-counted road carries that
+  road's daily vehicle count from the existing traffic overlay.
+
 ### Shared controls
 
 - Both builds live in `tools/` with pytest coverage and use the shared `lib`

@@ -2216,6 +2216,7 @@
       {
         "heading": "By neighbourhood",
         "stats": [
+          "est-city-tax-on-the-median-home",
           "neighbourhoods-with-a-shown-price"
         ],
         "tables": [

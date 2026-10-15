@@ -382,7 +382,8 @@ def build_panel(data: dict, workflow: dict | None = None) -> dict:
         "Declared value is what the applicant states on the application and is often left blank. It is shown "
         "only where nearly every permit carries one, and it is an estimate, not a measured cost.",
         f"The current year is partial and is left out of the yearly charts. Only counts and totals are "
-        f"published, never addresses, owners, contractors or permit numbers. Years before 1999 are not shown "
+        f"published here, never owners, contractors or permit numbers; the map's \"New homes permitted\" overlay "
+        f"shows the address and year of new-home permits only. Years before 1999 are not shown "
         f"because the records are incomplete.",
     ]
 

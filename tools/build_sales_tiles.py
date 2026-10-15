@@ -35,11 +35,14 @@ from datetime import date, datetime, timedelta
 
 import build_address_points as bap
 from fetch_block_groups import contains, rings_of
+import json
 from lib.iox import write_geojson, write_json
 from lib.paths import pipeline_data_path, public_path
 
 SOURCE_CSV = pipeline_data_path("sales-source.csv")
 BLOCK_GROUPS = public_path("block-groups.geojson")
+SCHOOL_DISTRICTS = public_path("school-districts.geojson")
+PROPERTY_TAX = public_path("info-propertytax.json")
 OUT_GEOJSON = public_path("sales-tiles.geojson")
 OUT_INFO = public_path("info-homesales.json")
 
@@ -132,7 +135,6 @@ def geocode(rows: list[dict]) -> None:
 
 
 def load_block_groups(path: str = BLOCK_GROUPS) -> list[dict]:
-    import json
     with open(path, encoding="utf-8") as fh:
         fc = json.load(fh)
     return [{"geoid": f["properties"]["geoid"], "name": f["properties"]["name"],
@@ -177,8 +179,60 @@ def windows(today: date) -> tuple[date, date]:
     return cur, cur - timedelta(days=WINDOW_DAYS)
 
 
-def group_stats(by_group: dict[str, list[dict]], groups: list[dict], today: date) -> list[dict]:
+def load_tax_context(districts_path: str = SCHOOL_DISTRICTS, tax_path: str = PROPERTY_TAX) -> dict:
+    """School-district polygons plus the Property Taxes estimator rates, so each
+    block group can carry an estimated tax bill on its median home."""
+    with open(districts_path, encoding="utf-8") as fh:
+        sd = json.load(fh)
+    with open(tax_path, encoding="utf-8") as fh:
+        est = json.load(fh).get("estimator") or {}
+    district_mills = {d["name"]: float(d["homestead"]) for d in est.get("districts", [])}
+    districts = []
+    for f in sd.get("features", []):
+        name = f["properties"].get("name", "")
+        short = next((k for k in district_mills if name.upper().startswith(k.upper())), None)
+        districts.append({"name": name, "short": short, "rings": rings_of(f["geometry"])})
+    return {"districts": districts, "city_mills": float(est.get("cityMills") or 0),
+            "district_mills": district_mills}
+
+
+def district_for(sales: list[dict], ctx: dict) -> dict | None:
+    """The school district containing the block group's sales centroid (block
+    groups and districts do not nest, so this is 'mostly in'), or None."""
+    if not sales or not ctx.get("districts"):
+        return None
+    lat = statistics.mean(s["lat"] for s in sales)
+    lng = statistics.mean(s["lng"] for s in sales)
+    return next((d for d in ctx["districts"] if contains(d["rings"], lng, lat)), None)
+
+
+def tax_estimate(median: int | None, district: dict | None, ctx: dict) -> dict:
+    """Estimated annual tax on a home bought at the median price. Michigan
+    uncaps taxable value on sale to 50% of market value, so taxable = price / 2.
+    City tax uses the City's own mills; the full homestead bill uses the
+    district's published total homestead rate (schools, county, City, etc.)."""
+    if not median or not ctx.get("city_mills"):
+        return {"taxable": None, "city": None, "full": None}
+    taxable = median / 2
+    city = round(taxable * ctx["city_mills"] / 1000)
+    full = None
+    if district and district.get("short") and district["short"] in ctx["district_mills"]:
+        full = round(taxable * ctx["district_mills"][district["short"]] / 1000)
+    return {"taxable": round(taxable), "city": city, "full": full}
+
+
+def short_district(name: str | None) -> str:
+    if not name:
+        return "n/a"
+    for suffix in (" Community School District", " Community Schools", " Public Schools"):
+        name = name.replace(suffix, "")
+    return name
+
+
+def group_stats(by_group: dict[str, list[dict]], groups: list[dict], today: date,
+                ctx: dict | None = None) -> list[dict]:
     cur_start, prior_start = windows(today)
+    ctx = ctx or {}
     out = []
     for g in groups:
         sales = by_group.get(g["geoid"], [])
@@ -187,8 +241,11 @@ def group_stats(by_group: dict[str, list[dict]], groups: list[dict], today: date
         change = None
         if cur["median"] and prior["median"]:
             change = round((cur["median"] - prior["median"]) / prior["median"] * 100)
+        district = district_for(sales, ctx)
         out.append({"geoid": g["geoid"], "name": g["name"], "geometry": g["geometry"],
-                    "cur": cur, "prior": prior, "change": change})
+                    "cur": cur, "prior": prior, "change": change,
+                    "district": district["name"] if district else None,
+                    "tax": tax_estimate(cur["median"], district, ctx)})
     return out
 
 
@@ -236,8 +293,15 @@ def build_geojson(stats: list[dict], today: date) -> dict:
             rows.append(["Median sale price", _money(cur["median"])])
             rows.append(["Median price per sq ft", _money(cur["ppsf"]) if cur["ppsf"] else "n/a"])
             rows.append(["Change vs prior 24 months", _change_label(s["change"])])
+            tax = s.get("tax") or {}
+            if tax.get("city"):
+                rows.append(["Est. City tax on the median home", f"{_money(tax['city'])} a year"])
+            if tax.get("full"):
+                rows.append(["Est. full tax bill (homestead)", f"{_money(tax['full'])} a year"])
         else:
             rows.append(["Median sale price", f"Not shown: fewer than {MIN_SALES} sales"])
+        if s.get("district"):
+            rows.append(["School district", s["district"]])
         features.append({
             "type": "Feature",
             "geometry": s["geometry"],
@@ -268,7 +332,8 @@ def half_year_series(rows: list[dict]) -> list[dict]:
     return pts
 
 
-def build_panel(rows: list[dict], stats: list[dict], unassigned: int, today: date) -> dict:
+def build_panel(rows: list[dict], stats: list[dict], unassigned: int, today: date,
+                ctx: dict | None = None) -> dict:
     cur_start, prior_start = windows(today)
     cur_rows = [r for r in rows if r["date"] >= cur_start]
     prior_rows = [r for r in rows if prior_start <= r["date"] < cur_start]
@@ -292,6 +357,11 @@ def build_panel(rows: list[dict], stats: list[dict], unassigned: int, today: dat
         {"label": "Neighbourhoods with a shown price", "value": f"{len(shown)} of {len(stats)}",
          "hint": f"block groups with at least {MIN_SALES} sales"},
     ]
+    ctx = ctx or {}
+    city_tax = tax_estimate(city_cur["median"], None, ctx)
+    if city_tax["city"]:
+        stats_out.insert(3, {"label": "Est. City tax on the median home", "value": f"{_money(city_tax['city'])} a year",
+                             "hint": f"taxable value {_money(city_tax['taxable'])} at {ctx.get('city_mills', 0):.2f} City mills"})
 
     bands = [(0, 100_000, "Under $100k"), (100_000, 150_000, "$100k to $150k"),
              (150_000, 200_000, "$150k to $200k"), (200_000, 300_000, "$200k to $300k"),
@@ -308,13 +378,15 @@ def build_panel(rows: list[dict], stats: list[dict], unassigned: int, today: dat
     table_rows = []
     for s in sorted(stats, key=lambda s: (s["cur"]["median"] is None, -(s["cur"]["median"] or 0))):
         cur = s["cur"]
+        tax = s.get("tax") or {}
         table_rows.append({"cells": [
-            s["name"], _count_label(cur["n"]), _money(cur["median"]),
-            _money(cur["ppsf"]), _change_label(s["change"]),
+            s["name"], short_district(s.get("district")), _count_label(cur["n"]), _money(cur["median"]),
+            _money(cur["ppsf"]), _change_label(s["change"]), _money(tax.get("city")), _money(tax.get("full")),
         ]})
     tables = [{
         "title": "Sale prices by neighbourhood (Census block group), last 24 months",
-        "columns": ["Block group", "Sales", "Median price", "Median $/sq ft", "Change vs prior 24 months"],
+        "columns": ["Block group", "School district", "Sales", "Median price", "Median $/sq ft",
+                    "Change vs prior 24 months", "Est. City tax on median home", "Est. full tax bill"],
         "rows": table_rows,
     }]
 
@@ -323,6 +395,8 @@ def build_panel(rows: list[dict], stats: list[dict], unassigned: int, today: dat
         "Only arms-length sales count: transfers the City Assessor codes as open-market sales between unrelated parties, improved homes only, with a recorded price. Family transfers, foreclosures, short sales, land contracts and bare lots are excluded.",
         "Figures are aggregates. No individual sale, address or price is published. Sale prices are public record and can be looked up per parcel on BS&A Online.",
         f"{unassigned} qualifying sales could not be placed in a block group (address not geocoded) and are left out of every figure.",
+        "Tax estimates assume a home bought at the median price: Michigan sets taxable value to half the sale price in the year after a sale. The City figure uses the City's own millage; the full bill uses the school district's published total homestead rate and is an estimate before any exemption. See the Property Taxes dashboard for the estimator.",
+        "The school district shown is the one containing most of the block group; a few block groups straddle two districts.",
     ]
     return {
         "title": "Home Sale Prices",
@@ -348,10 +422,11 @@ def main() -> int:
     groups = load_block_groups()
     by_group, unassigned = assign(rows, groups)
     placed = sum(len(v) for v in by_group.values())
-    stats = group_stats(by_group, groups, today)
+    ctx = load_tax_context()
+    stats = group_stats(by_group, groups, today, ctx)
     placed_rows = [r for v in by_group.values() for r in v]
     write_geojson(OUT_GEOJSON, build_geojson(stats, today))
-    write_json(OUT_INFO, build_panel(placed_rows, stats, unassigned, today))
+    write_json(OUT_INFO, build_panel(placed_rows, stats, unassigned, today, ctx))
     shown = sum(1 for s in stats if s["cur"]["median"] is not None)
     print(f"Placed {placed} sales in {len(groups)} block groups ({unassigned} unplaced); "
           f"{shown} groups show a value -> {os.path.basename(OUT_GEOJSON)}, {os.path.basename(OUT_INFO)}")

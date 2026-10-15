@@ -65,6 +65,17 @@ send (needs Windows auth on the mirror; would prompt on phones). Android 1.16 (v
 30) is on the Play internal track (#169 run 37740673450); Dependabot alert 92 (nested sharp
 under `@capacitor/assets`, dev only, no fix) stays open by decision, #169 stays open.
 
+**2026-10-15 afternoon, after PR #180 merged (ADR-0003 Part D, branch `feat/context-joins`):**
+built from data on hand: (1) `tools/Export-BsaNewHomes.ps1` + `tools/build_new_homes.py` ->
+`public/new-homes.geojson`, 575 pins for 717 new-home permits since 2015 (address + year + units
+only; permits dashboard stays aggregate, its note updated); (2) Home Sale Prices now carries the
+school district (sales-centroid point-in-polygon) and an estimated tax bill on the median home
+(taxable = half price; City 13.2394 mills; district homestead rate from the Property Taxes
+estimator) per block group, in popup, table and a citywide stat ($1,022 City tax on the $154,450
+median); (3) Sites for Business popups carry the busiest MDOT-counted road within 150 m (529 of
+637 placed sites). Rejected: days-on-market (Sales.daysOnMarket is empty on all 652 recent sales).
+Parcel-geometry gap (#179) unchanged. PR #180 itself merged 13:26 (squash 0f9181e).
+
 **2026-10-15 (#177, #178, ADR-0003, branch `feat/city-property-177`, not pushed):** the MLS
 question got its answer: live listings are licensed (Realcomp IDX) and off limits under ADR-0001,
 so ADR-0003 (proposed, `docs/adr/`, force-add because `docs/` is ignored) covers the two City-owned

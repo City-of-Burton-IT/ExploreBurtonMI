@@ -28,6 +28,7 @@ from __future__ import annotations
 
 import csv
 import json
+import math
 import os
 import sys
 from collections import Counter
@@ -46,6 +47,8 @@ CENTROIDS_CSV = pipeline_data_path("parcel-centroids.csv")
 OUT_VACANT = public_path("business-sites-vacant.geojson")
 OUT_IMPROVED = public_path("business-sites-improved.geojson")
 OUT_INFO = public_path("info-businesssites.json")
+TRAFFIC = public_path("traffic-aadt.geojson")
+TRAFFIC_MAX_M = 150.0   # a site counts as "on" a counted road within this distance
 
 REQUIRED = ["parcel", "street", "propclass", "acres", "frontage", "zoning"]
 CLASSES = {
@@ -148,6 +151,48 @@ def geocode(rows: list[dict]) -> None:
     bap.geocode_batch([r for r in rows if r["street"] and r["lat"] is None], cache)
 
 
+def load_traffic(path: str = TRAFFIC) -> list[dict]:
+    """Counted road segments as {name, aadt, year, coords[[lng,lat],...]}; empty if absent."""
+    if not os.path.exists(path):
+        return []
+    with open(path, encoding="utf-8") as fh:
+        fc = json.load(fh)
+    out = []
+    for f in fc.get("features", []):
+        g = f.get("geometry") or {}
+        p = f.get("properties") or {}
+        if g.get("type") != "LineString" or not p.get("aadt"):
+            continue
+        out.append({"name": p.get("name") or "counted road", "aadt": int(p["aadt"]),
+                    "year": p.get("year"), "coords": g["coordinates"]})
+    return out
+
+
+def _seg_distance_m(lng: float, lat: float, a: list, b: list) -> float:
+    """Planar point-to-segment distance in metres (fine at city scale)."""
+    kx = 111_320.0 * math.cos(math.radians(lat))
+    ky = 110_540.0
+    px, py = lng * kx, lat * ky
+    ax, ay = a[0] * kx, a[1] * ky
+    bx, by = b[0] * kx, b[1] * ky
+    dx, dy = bx - ax, by - ay
+    if dx == 0 and dy == 0:
+        return math.hypot(px - ax, py - ay)
+    t = max(0.0, min(1.0, ((px - ax) * dx + (py - ay) * dy) / (dx * dx + dy * dy)))
+    return math.hypot(px - (ax + t * dx), py - (ay + t * dy))
+
+
+def nearest_traffic(lng: float, lat: float, segments: list[dict], max_m: float = TRAFFIC_MAX_M) -> dict | None:
+    """The busiest counted segment within max_m of the point, or None."""
+    best = None
+    for seg in segments:
+        c = seg["coords"]
+        d = min(_seg_distance_m(lng, lat, c[i], c[i + 1]) for i in range(len(c) - 1))
+        if d <= max_m and (best is None or seg["aadt"] > best["aadt"]):
+            best = seg
+    return best
+
+
 def popup_rows(r: dict) -> list[list[str]]:
     rows = [["Type", CLASSES[r["propclass"]]["label"]]]
     if r["acres"] > 0:
@@ -156,6 +201,10 @@ def popup_rows(r: dict) -> list[list[str]]:
         rows.append(["Frontage", f"{r['frontage']:,} ft"])
     if r["zoning"]:
         rows.append(["Zoning", r["zoning"]])
+    t = r.get("traffic")
+    if t:
+        rows.append(["Traffic on nearest counted road",
+                     f"{t['aadt']:,} vehicles a day ({t['name']}, {t['year']})"])
     rows.append(["Parcel", r["parcel"]])
     rows.append(["Details", "Look up the parcel on BS&A Online (link on the dashboard)"])
     return rows
@@ -184,7 +233,8 @@ def _feature(r: dict) -> dict:
     }
 
 
-def build_layers(rows: list[dict], rings: list[list]) -> tuple[dict, dict, int, int]:
+def build_layers(rows: list[dict], rings: list[list],
+                 traffic: list[dict] | None = None) -> tuple[dict, dict, int, int]:
     """(vacant_fc, improved_fc, n_nocoord, n_outside)."""
     vacant, improved = [], []
     nocoord = outside = 0
@@ -195,6 +245,8 @@ def build_layers(rows: list[dict], rings: list[list]) -> tuple[dict, dict, int, 
         if not bap.in_city(r["lng"], r["lat"], rings):
             outside += 1
             continue
+        if traffic:
+            r["traffic"] = nearest_traffic(r["lng"], r["lat"], traffic)
         (vacant if CLASSES[r["propclass"]]["vacant"] else improved).append(_feature(r))
     for feats in (vacant, improved):
         feats.sort(key=lambda f: (-f["properties"]["acres"], f["properties"]["name"]))
@@ -246,6 +298,7 @@ def build_panel(rows: list[dict], summary: dict, nocoord: int, outside: int, tod
         "Turn on the \"Vacant commercial and industrial sites\" overlay to see land to build on, and \"Commercial and industrial buildings\" for the existing stock. Larger dots are larger lots.",
         "The City's Assessing roll classifies every parcel; a vacant commercial or industrial parcel is one with no building on it. The roll does not record whether a parcel or building is for sale or lease, so contact the owner through BS&A Online or a broker.",
         "Each listing shows the parcel number, address, lot size, frontage and zoning. Owner names, assessed values and tax status are not shown here; those are available per parcel on BS&A Online.",
+        "Where a site sits within about 150 m of a road with an MDOT traffic count, its popup shows the daily vehicle count from the Traffic volume overlay.",
         f"{nocoord + outside} parcels could not be placed on the map (no geocodable address) and appear only in the counts.",
     ]
     return {
@@ -275,7 +328,11 @@ def main() -> int:
           "  no parcel-centroids.csv: vacant lots without a street number cannot be geocoded")
     geocode(rows)
     rings = bap._rings_from_boundary()
-    vacant, improved, nocoord, outside = build_layers(rows, rings)
+    traffic = load_traffic()
+    vacant, improved, nocoord, outside = build_layers(rows, rings, traffic)
+    with_traffic = sum(1 for fc in (vacant, improved) for f in fc["features"]
+                       if any(k == "Traffic on nearest counted road" for k, _ in f["properties"]["_popupRows"]))
+    print(f"  {with_traffic} sites within {TRAFFIC_MAX_M:.0f} m of a counted road ({len(traffic)} segments)")
     write_geojson(OUT_VACANT, vacant)
     write_geojson(OUT_IMPROVED, improved)
     write_json(OUT_INFO, build_panel(rows, summary, nocoord, outside, today))

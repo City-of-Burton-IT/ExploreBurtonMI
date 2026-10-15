@@ -34,6 +34,7 @@ npm run test:watch                       # Watch mode
 .venv\Scripts\python.exe tools/build_city_property.py   # City-owned parcels for sale (#177, ADR-0003)
 .venv\Scripts\python.exe tools/build_sales_tiles.py     # Home sale prices by block group (#178, ADR-0003); needs tools/Export-BsaSales.ps1 first
 .venv\Scripts\python.exe tools/build_business_sites.py  # Sites for Business overlays (ADR-0003 Part C); needs tools/Export-BsaCommercialParcels.ps1 first
+.venv\Scripts\python.exe tools/build_new_homes.py       # New homes permitted overlay (ADR-0003 Part D); needs tools/Export-BsaNewHomes.ps1 first
 .venv\Scripts\python.exe tools/extract_paser.py
 .venv\Scripts\python.exe tools/capital_roads_link.py
 ```

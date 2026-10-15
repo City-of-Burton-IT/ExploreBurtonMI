@@ -19,6 +19,11 @@
       "hint": "finished floor area from the Assessing record"
     },
     {
+      "label": "Est. City tax on the median home",
+      "value": "$1,022 a year",
+      "hint": "taxable value $77,225 at 13.24 City mills"
+    },
+    {
       "label": "Change vs the prior 24 months",
       "value": "+3%",
       "hint": "prior median $149,450"
@@ -101,217 +106,289 @@
       "title": "Sale prices by neighbourhood (Census block group), last 24 months",
       "columns": [
         "Block group",
+        "School district",
         "Sales",
         "Median price",
         "Median $/sq ft",
-        "Change vs prior 24 months"
+        "Change vs prior 24 months",
+        "Est. City tax on median home",
+        "Est. full tax bill"
       ],
       "rows": [
         {
           "cells": [
             "Block group 2, tract 0114.02",
+            "Grand Blanc",
             "34",
             "$313,000",
             "$178",
-            "+7%"
+            "+7%",
+            "$2,072",
+            "$7,165"
           ]
         },
         {
           "cells": [
             "Block group 3, tract 0114.02",
+            "Grand Blanc",
             "19",
             "$275,000",
             "$177",
-            "+8%"
+            "+8%",
+            "$1,820",
+            "$6,295"
           ]
         },
         {
           "cells": [
             "Block group 1, tract 0115.03",
+            "Kearsley",
             "29",
             "$236,000",
             "$146",
-            "-2%"
+            "-2%",
+            "$1,562",
+            "$5,219"
           ]
         },
         {
           "cells": [
             "Block group 1, tract 0115.02",
+            "Kearsley",
             "24",
             "$223,500",
             "$145",
-            "+12%"
+            "+12%",
+            "$1,480",
+            "$4,943"
           ]
         },
         {
           "cells": [
             "Block group 1, tract 0114.02",
+            "Atherton",
             "30",
             "$221,500",
             "$173",
-            "+11%"
+            "+11%",
+            "$1,466",
+            "$4,636"
           ]
         },
         {
           "cells": [
             "Block group 3, tract 0115.05",
+            "Bentley",
             "15",
             "$215,000",
             "$171",
-            "+3%"
+            "+3%",
+            "$1,423",
+            "$4,769"
           ]
         },
         {
           "cells": [
             "Block group 3, tract 0115.03",
+            "Davison",
             "42",
             "$205,750",
             "$150",
-            "+9%"
+            "+9%",
+            "$1,362",
+            "$4,565"
           ]
         },
         {
           "cells": [
             "Block group 2, tract 0115.05",
+            "Kearsley",
             "26",
             "$205,000",
             "$149",
-            "+14%"
+            "+14%",
+            "$1,357",
+            "$4,534"
           ]
         },
         {
           "cells": [
             "Block group 2, tract 0114.01",
+            "Atherton",
             "15",
             "$200,000",
             "$156",
-            "+11%"
+            "+11%",
+            "$1,324",
+            "$4,186"
           ]
         },
         {
           "cells": [
             "Block group 4, tract 0113.01",
+            "Carman-Ainsworth",
             "7",
             "$178,500",
             "$145",
-            "+37%"
+            "+37%",
+            "$1,182",
+            "$3,848"
           ]
         },
         {
           "cells": [
             "Block group 1, tract 0115.08",
+            "Atherton",
             "41",
             "$170,000",
             "$147",
-            "+5%"
+            "+5%",
+            "$1,125",
+            "$3,558"
           ]
         },
         {
           "cells": [
             "Block group 2, tract 0115.03",
+            "Bentley",
             "45",
             "$158,000",
             "$133",
-            "+11%"
+            "+11%",
+            "$1,046",
+            "$3,504"
           ]
         },
         {
           "cells": [
             "Block group 1, tract 0115.05",
+            "Kearsley",
             "13",
             "$156,000",
             "$123",
-            "+4%"
+            "+4%",
+            "$1,033",
+            "$3,450"
           ]
         },
         {
           "cells": [
             "Block group 3, tract 0115.02",
+            "Bentley",
             "36",
             "$153,500",
             "$141",
-            "-4%"
+            "-4%",
+            "$1,016",
+            "$3,405"
           ]
         },
         {
           "cells": [
             "Block group 3, tract 0113.01",
+            "Bendle",
             "33",
             "$125,000",
             "$120",
-            "+15%"
+            "+15%",
+            "$827",
+            "$3,342"
           ]
         },
         {
           "cells": [
             "Block group 2, tract 0115.02",
+            "Bentley",
             "8",
             "$114,000",
             "$124",
-            "-21%"
+            "-21%",
+            "$755",
+            "$2,529"
           ]
         },
         {
           "cells": [
             "Block group 1, tract 0114.01",
+            "Atherton",
             "35",
             "$110,000",
             "$108",
-            "+8%"
+            "+8%",
+            "$728",
+            "$2,302"
           ]
         },
         {
           "cells": [
             "Block group 3, tract 0113.02",
+            "Bendle",
             "20",
             "$106,250",
             "$110",
-            "-11%"
+            "-11%",
+            "$703",
+            "$2,841"
           ]
         },
         {
           "cells": [
             "Block group 2, tract 0115.08",
+            "Atherton",
             "17",
             "$100,500",
             "$117",
-            "-9%"
+            "-9%",
+            "$665",
+            "$2,103"
           ]
         },
         {
           "cells": [
             "Block group 1, tract 0113.01",
+            "Carman-Ainsworth",
             "13",
             "$85,000",
             "$118",
-            "+35%"
+            "+35%",
+            "$563",
+            "$1,833"
           ]
         },
         {
           "cells": [
             "Block group 2, tract 0113.02",
+            "Bendle",
             "55",
             "$80,000",
             "$101",
-            "+11%"
+            "+11%",
+            "$530",
+            "$2,139"
           ]
         },
         {
           "cells": [
             "Block group 1, tract 0113.02",
+            "Bendle",
             "18",
             "$75,700",
             "$82",
-            "+11%"
+            "+11%",
+            "$501",
+            "$2,024"
           ]
         },
         {
           "cells": [
             "Block group 2, tract 0113.01",
+            "Bendle",
             "37",
             "$68,000",
             "$90",
-            "-5%"
+            "-5%",
+            "$450",
+            "$1,818"
           ]
         }
       ]
@@ -332,6 +409,8 @@
     "Turn on the \"Home sale prices (by block group)\" map overlay. Darker blue is a higher median; grey means fewer than 5 sales, so no price is shown.",
     "Only arms-length sales count: transfers the City Assessor codes as open-market sales between unrelated parties, improved homes only, with a recorded price. Family transfers, foreclosures, short sales, land contracts and bare lots are excluded.",
     "Figures are aggregates. No individual sale, address or price is published. Sale prices are public record and can be looked up per parcel on BS&A Online.",
-    "34 qualifying sales could not be placed in a block group (address not geocoded) and are left out of every figure."
+    "34 qualifying sales could not be placed in a block group (address not geocoded) and are left out of every figure.",
+    "Tax estimates assume a home bought at the median price: Michigan sets taxable value to half the sale price in the year after a sale. The City figure uses the City's own millage; the full bill uses the school district's published total homestead rate and is an estimate before any exemption. See the Property Taxes dashboard for the estimator.",
+    "The school district shown is the one containing most of the block group; a few block groups straddle two districts."
   ]
 }
