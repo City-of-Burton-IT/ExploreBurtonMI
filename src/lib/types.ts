@@ -93,6 +93,24 @@ export interface DataLayerConfig {
   nameField?: string;
 }
 
+/** A toggleable live tile overlay (e.g. NOAA weather radar) shown via the layer control.
+ *  OFF by default; tiles are requested from `source` only while the user has it on,
+ *  and re-requested every `refreshSeconds` so a live feed stays current. */
+export interface TileOverlayConfig {
+  /** tile template (XYZ) or, with `wms`, the WMS endpoint */
+  source: string;
+  /** label shown in the layer-toggle control (name the source here; there is no attribution control) */
+  label: string;
+  /** WMS request parameters; omit for an XYZ template */
+  wms?: { layers: string; format?: string; transparent?: boolean; version?: string };
+  /** layer opacity 0-1 (default 0.7) */
+  opacity?: number;
+  /** re-fetch interval while the overlay is on; 0 or omitted means never */
+  refreshSeconds?: number;
+  /** stop requesting new tiles beyond this zoom; Leaflet upsamples instead */
+  maxNativeZoom?: number;
+}
+
 /** A toggleable georeferenced image overlay (e.g. the zoning map) shown via the layer control. */
 export interface ImageOverlayConfig {
   /** path (relative to the site root) to the image */
@@ -118,6 +136,8 @@ export interface AppConfig {
   dataLayers?: DataLayerConfig[];
   /** toggleable georeferenced image overlays (off by default) */
   imageOverlays?: ImageOverlayConfig[];
+  /** toggleable live tile overlays such as weather radar (off by default) */
+  tileOverlays?: TileOverlayConfig[];
   /** property each feature is grouped/colored by */
   categoryField: string;
   /** known category values -> style; used for marker color and (later) facets */

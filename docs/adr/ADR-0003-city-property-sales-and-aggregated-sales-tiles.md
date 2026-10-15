@@ -107,8 +107,32 @@ effectively name one transaction. The business dashboard carries one citywide
 line only, the count of commercial and industrial buildings that changed hands
 in the trailing 24 months, with no prices.
 
+### Part D: New homes permitted, and context joins (2026-10-15)
+
+- **New homes permitted overlay**: one pin per new-home building permit since
+  2015 (the three new-home categories the permits dashboard already uses), with
+  the situs address, issue year and unit count only. No owner, applicant,
+  contractor, permit number, value or description. This is the first time an
+  address from the Permits table is published; the permits dashboard itself
+  stays aggregate-only, and its note now says so.
+- **Context joins, no new data published**: each home-sales block group carries
+  the school district containing its sales centroid and an estimated annual tax
+  bill on its median home (taxable value = half the sale price, City mills and
+  the district's published homestead rate from the Property Taxes estimator);
+  each business site within about 150 m of an MDOT-counted road carries that
+  road's daily vehicle count from the existing traffic overlay.
+
 ### Shared controls
 
+- The parcel-centroid table (`pipeline/data/parcel-centroids.csv`: parcel number,
+  latitude, longitude, nothing else) is committed. It is the parcel-level twin of
+  the ADR-0002 address lookup, carries no owner, value or tax field, and lets the
+  CI apply workflow place City lots that have no street number. The parcel
+  shapefile it is derived from, and the outline file, stay gitignored.
+- Part A is self-service: Purchasing edits a SharePoint list, a Power Automate
+  flow dispatches the whole list to GitHub, and `apply-city-property.yml` validates
+  it with the builder's own reader before opening a review pull request. A commit
+  to `main` deploys live, so the pull request is the publish gate.
 - Both builds live in `tools/` with pytest coverage and use the shared `lib`
   helpers, `assert_shape` fail-loud checks and atomic writes.
 - Both outputs carry a `generated` date and a `source` string the dashboards

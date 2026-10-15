@@ -1,0 +1,237 @@
+{
+  "source": "U.S. Census Bureau, ACS 5-year 2020-2024, tables B25003, B25002, B25064, B25077",
+  "vintage": "2020-2024",
+  "fetched": "2026-10-15",
+  "rows": [
+    {
+      "geoid": "260490113011",
+      "owner_share": 9,
+      "vacancy_rate": 8,
+      "median_rent": 767,
+      "median_rent_moe": 119,
+      "median_value": null,
+      "median_value_moe": null,
+      "housing_units": 643
+    },
+    {
+      "geoid": "260490113012",
+      "owner_share": 69,
+      "vacancy_rate": 12,
+      "median_rent": 1186,
+      "median_rent_moe": 118,
+      "median_value": 57300,
+      "median_value_moe": 28523,
+      "housing_units": 524
+    },
+    {
+      "geoid": "260490113013",
+      "owner_share": 82,
+      "vacancy_rate": 7,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 82800,
+      "median_value_moe": 22626,
+      "housing_units": 584
+    },
+    {
+      "geoid": "260490113014",
+      "owner_share": 70,
+      "vacancy_rate": 6,
+      "median_rent": 978,
+      "median_rent_moe": 498,
+      "median_value": null,
+      "median_value_moe": null,
+      "housing_units": 782
+    },
+    {
+      "geoid": "260490113021",
+      "owner_share": 76,
+      "vacancy_rate": 10,
+      "median_rent": 738,
+      "median_rent_moe": 312,
+      "median_value": 64500,
+      "median_value_moe": 27965,
+      "housing_units": 278
+    },
+    {
+      "geoid": "260490113022",
+      "owner_share": 85,
+      "vacancy_rate": 6,
+      "median_rent": 1219,
+      "median_rent_moe": 354,
+      "median_value": 94400,
+      "median_value_moe": 6758,
+      "housing_units": 563
+    },
+    {
+      "geoid": "260490113023",
+      "owner_share": 48,
+      "vacancy_rate": 0,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 112000,
+      "median_value_moe": 20348,
+      "housing_units": 539
+    },
+    {
+      "geoid": "260490114011",
+      "owner_share": 63,
+      "vacancy_rate": 3,
+      "median_rent": 1361,
+      "median_rent_moe": 113,
+      "median_value": 52900,
+      "median_value_moe": 28520,
+      "housing_units": 956
+    },
+    {
+      "geoid": "260490114012",
+      "owner_share": 52,
+      "vacancy_rate": 3,
+      "median_rent": 1161,
+      "median_rent_moe": 44,
+      "median_value": 201600,
+      "median_value_moe": 61741,
+      "housing_units": 401
+    },
+    {
+      "geoid": "260490114021",
+      "owner_share": 100,
+      "vacancy_rate": 0,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 176200,
+      "median_value_moe": 37219,
+      "housing_units": 463
+    },
+    {
+      "geoid": "260490114022",
+      "owner_share": 100,
+      "vacancy_rate": 3,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 305000,
+      "median_value_moe": 26555,
+      "housing_units": 842
+    },
+    {
+      "geoid": "260490114023",
+      "owner_share": 93,
+      "vacancy_rate": 0,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 225300,
+      "median_value_moe": 8828,
+      "housing_units": 552
+    },
+    {
+      "geoid": "260490115021",
+      "owner_share": 94,
+      "vacancy_rate": 11,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 187500,
+      "median_value_moe": 32598,
+      "housing_units": 491
+    },
+    {
+      "geoid": "260490115022",
+      "owner_share": 82,
+      "vacancy_rate": 0,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 120900,
+      "median_value_moe": 12366,
+      "housing_units": 251
+    },
+    {
+      "geoid": "260490115023",
+      "owner_share": 94,
+      "vacancy_rate": 3,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 123100,
+      "median_value_moe": 18171,
+      "housing_units": 700
+    },
+    {
+      "geoid": "260490115031",
+      "owner_share": 81,
+      "vacancy_rate": 9,
+      "median_rent": 1231,
+      "median_rent_moe": 514,
+      "median_value": 200700,
+      "median_value_moe": 25048,
+      "housing_units": 596
+    },
+    {
+      "geoid": "260490115032",
+      "owner_share": 77,
+      "vacancy_rate": 11,
+      "median_rent": 1006,
+      "median_rent_moe": 183,
+      "median_value": 137600,
+      "median_value_moe": 16381,
+      "housing_units": 614
+    },
+    {
+      "geoid": "260490115033",
+      "owner_share": 90,
+      "vacancy_rate": 0,
+      "median_rent": 1099,
+      "median_rent_moe": 88,
+      "median_value": 163800,
+      "median_value_moe": 26244,
+      "housing_units": 738
+    },
+    {
+      "geoid": "260490115051",
+      "owner_share": 95,
+      "vacancy_rate": 5,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 113800,
+      "median_value_moe": 8701,
+      "housing_units": 346
+    },
+    {
+      "geoid": "260490115052",
+      "owner_share": 93,
+      "vacancy_rate": 4,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 123700,
+      "median_value_moe": 55861,
+      "housing_units": 491
+    },
+    {
+      "geoid": "260490115053",
+      "owner_share": 87,
+      "vacancy_rate": 0,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 122900,
+      "median_value_moe": 56784,
+      "housing_units": 350
+    },
+    {
+      "geoid": "260490115081",
+      "owner_share": 98,
+      "vacancy_rate": 4,
+      "median_rent": null,
+      "median_rent_moe": null,
+      "median_value": 167900,
+      "median_value_moe": 35577,
+      "housing_units": 647
+    },
+    {
+      "geoid": "260490115082",
+      "owner_share": 33,
+      "vacancy_rate": 14,
+      "median_rent": 628,
+      "median_rent_moe": 34,
+      "median_value": 90600,
+      "median_value_moe": 13411,
+      "housing_units": 793
+    }
+  ]
+}

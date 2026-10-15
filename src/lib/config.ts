@@ -84,6 +84,27 @@ export function validateConfig(raw: unknown): AppConfig {
     errors.push('search.keys must be an array of field names');
   }
 
+  if (c.tileOverlays !== undefined) {
+    if (!Array.isArray(c.tileOverlays)) {
+      errors.push('tileOverlays must be an array');
+    } else {
+      c.tileOverlays.forEach((t, i) => {
+        if (!isPlainObject(t) || typeof t.source !== 'string' || !/^https:\/\//.test(t.source)) {
+          errors.push(`tileOverlays[${i}].source must be an https URL`);
+        }
+        if (!isPlainObject(t) || typeof t.label !== 'string' || !t.label) {
+          errors.push(`tileOverlays[${i}].label is required`);
+        }
+        if (isPlainObject(t) && t.wms !== undefined && (!isPlainObject(t.wms) || typeof t.wms.layers !== 'string' || !t.wms.layers)) {
+          errors.push(`tileOverlays[${i}].wms.layers is required when wms is set`);
+        }
+        if (isPlainObject(t) && t.refreshSeconds !== undefined && (typeof t.refreshSeconds !== 'number' || t.refreshSeconds < 0)) {
+          errors.push(`tileOverlays[${i}].refreshSeconds must be a non-negative number`);
+        }
+      });
+    }
+  }
+
   if (errors.length) {
     throw new Error(`Invalid config.json:\n - ${errors.join('\n - ')}`);
   }

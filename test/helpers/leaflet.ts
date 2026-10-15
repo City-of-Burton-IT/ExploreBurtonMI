@@ -233,7 +233,9 @@ export interface LeafletTestDouble {
   scaleControls: { options: Record<string, unknown>; map?: TestMap }[];
   map(host: TestElement, options: Record<string, unknown>): TestMap;
   latLngBounds(first: unknown, second: unknown): TestBounds;
-  tileLayer(source: string, options: Record<string, unknown>): TestLayer;
+  tileLayer: ((source: string, options: Record<string, unknown>) => TestLayer) & {
+    wms(source: string, options: Record<string, unknown>): TestLayer;
+  };
   geoJSON(source: unknown, options: Record<string, unknown>): TestGeoJsonLayer;
   imageOverlay(source: string, bounds: unknown, options: Record<string, unknown>): TestLayer;
   layerGroup(): TestLayer;
@@ -349,11 +351,28 @@ export function createLeafletTestDouble(): LeafletTestDouble {
         },
       };
     },
-    tileLayer(source, options) {
-      const layer = createEventedLayer('tile', source, options);
-      testDouble.tileLayers.push(layer);
-      return layer;
-    },
+    tileLayer: Object.assign(
+      (source: string, options: Record<string, unknown>) => {
+        const layer = createEventedLayer('tile', source, options) as TestLayer & { redraws: number };
+        layer.redraws = 0;
+        (layer as unknown as { redraw(): void }).redraw = () => {
+          layer.redraws += 1;
+        };
+        testDouble.tileLayers.push(layer);
+        return layer;
+      },
+      {
+        wms(source: string, options: Record<string, unknown>) {
+          const layer = createEventedLayer('wms', source, options) as TestLayer & { params: unknown[] };
+          layer.params = [];
+          (layer as unknown as { setParams(p: unknown): void }).setParams = (p: unknown) => {
+            layer.params.push(p);
+          };
+          testDouble.tileLayers.push(layer);
+          return layer;
+        },
+      },
+    ),
     geoJSON(source, options) {
       const bounds: TestBounds = {
         pad(factor) {

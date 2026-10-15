@@ -2164,6 +2164,10 @@
         {
           "text": "Burton Assessor's Office",
           "href": "https://www.burtonmi.gov/government/assessor2/index.php"
+        },
+        {
+          "text": "U.S. Census ACS data",
+          "href": "https://data.census.gov/"
         }
       ]
     },
@@ -2203,7 +2207,8 @@
       }
     },
     "tableIds": {
-      "Sale prices by neighbourhood (Census block group), last 24 months": "sale-prices-by-neighbourhood"
+      "Sale prices by neighbourhood (Census block group), last 24 months": "sale-prices-by-neighbourhood",
+      "Who lives here: Census profile by block group (ACS 2020-2024)": "census-profile-by-block-group"
     },
     "sections": [
       {
@@ -2216,10 +2221,12 @@
       {
         "heading": "By neighbourhood",
         "stats": [
+          "est-city-tax-on-the-median-home",
           "neighbourhoods-with-a-shown-price"
         ],
         "tables": [
-          "sale-prices-by-neighbourhood"
+          "sale-prices-by-neighbourhood",
+          "census-profile-by-block-group"
         ]
       }
     ]

@@ -121,6 +121,20 @@ describe('validateConfig', () => {
     expect(() => validateConfig(bad)).toThrow(/list/);
   });
 
+  it('validates tileOverlays when present', () => {
+    expect(() => validateConfig({ ...validConfig, tileOverlays: [] })).not.toThrow();
+    expect(() =>
+      validateConfig({
+        ...validConfig,
+        tileOverlays: [{ source: 'https://nowcoast.noaa.gov/geoserver/weather_radar/wms', label: 'Radar', wms: { layers: 'x' } }],
+      }),
+    ).not.toThrow();
+    expect(() => validateConfig({ ...validConfig, tileOverlays: [{ source: 'http://insecure', label: 'Radar' }] })).toThrow(/https/);
+    expect(() => validateConfig({ ...validConfig, tileOverlays: [{ source: 'https://x', label: '' }] })).toThrow(/label/);
+    expect(() => validateConfig({ ...validConfig, tileOverlays: [{ source: 'https://x', label: 'R', wms: {} }] })).toThrow(/wms.layers/);
+    expect(() => validateConfig({ ...validConfig, tileOverlays: [{ source: 'https://x', label: 'R', refreshSeconds: -1 }] })).toThrow(/refreshSeconds/);
+  });
+
   it('throws when search.keys is not an array', () => {
     const bad = { ...validConfig, search: {} };
     expect(() => validateConfig(bad)).toThrow(/search\.keys/);

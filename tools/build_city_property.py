@@ -49,6 +49,10 @@ from lib.iox import write_geojson, write_json
 from lib.paths import pipeline_data_path, public_path
 
 SOURCE_CSV = pipeline_data_path("city-property-sales.csv")
+# Committed parcel-centroid table (parcel, lat, lng) from extract_parcel_centroids.py:
+# City lots are often vacant with no street number, so the parcel number is the
+# reliable way to place them. The address geocoder handles anything left.
+CENTROIDS_CSV = pipeline_data_path("parcel-centroids.csv")
 OUT_GEOJSON = public_path("city-property.geojson")
 OUT_INFO = public_path("info-cityproperty.json")
 
@@ -155,13 +159,34 @@ def prune_old_sales(rows: list[dict], today: date, keep_days: int = SOLD_KEEP_DA
     return [r for r in rows if r["status"] != "sold" or r["sold_date"] >= cutoff]
 
 
-def geocode(rows: list[dict]) -> None:
-    """Fill lat/lng through the shared Census batch path and cache. Mutates rows."""
+def read_centroids(path: str = CENTROIDS_CSV) -> dict[str, tuple[float, float]]:
+    """{parcel: (lat, lng)} from the City parcel map, or {} when the file is absent."""
+    if not os.path.exists(path):
+        return {}
+    with open(path, newline="", encoding="utf-8-sig") as fh:
+        return {r["parcel"]: (float(r["lat"]), float(r["lng"])) for r in csv.DictReader(fh)}
+
+
+def _parcel_key(p: str) -> str:
+    """Normalise a parcel number for matching: digits only ("59-12-776-262" == "5912776262")."""
+    return "".join(ch for ch in p if ch.isdigit())
+
+
+def geocode(rows: list[dict], centroids: dict[str, tuple[float, float]] | None = None) -> int:
+    """Place each parcel: centroid by parcel number first, then the shared Census
+    batch path and cache for the rest. Mutates rows; returns the centroid count."""
+    by_key = {_parcel_key(k): v for k, v in (centroids or {}).items()}
+    hit = 0
     for i, r in enumerate(rows):
         r.update({"id": str(i), "street": r["address"], "city": bap.DEFAULT_CITY,
                   "state": bap.DEFAULT_STATE, "zip": ""})
+        c = by_key.get(_parcel_key(r["parcel"]))
+        if c:
+            r["lat"], r["lng"] = c
+            hit += 1
     cache = bap._load_cache()
-    bap.geocode_batch(rows, cache)
+    bap.geocode_batch([r for r in rows if r["lat"] is None], cache)
+    return hit
 
 
 def popup_rows(r: dict) -> list[list[str]]:
@@ -294,7 +319,9 @@ def main() -> int:
     print(f"Read {len(rows)} current rows from {os.path.basename(SOURCE_CSV)}")
     if not rows:
         print("  WARNING: no listings; writing an empty overlay and a placeholder panel")
-    geocode(rows)
+    hit = geocode(rows, read_centroids())
+    if rows:
+        print(f"  {hit} placed from parcel centroids, the rest geocoded by address")
     rings = bap._rings_from_boundary()
     fc, nocoord, outside = build_geojson(rows, rings)
     write_geojson(OUT_GEOJSON, fc)

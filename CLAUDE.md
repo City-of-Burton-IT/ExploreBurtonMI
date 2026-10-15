@@ -12,6 +12,7 @@ Public static site (Vite + Svelte + Leaflet) with 27 civic dashboards, Resident 
 - **Mobile:** Capacitor (native Android wrapper); Firebase for push (project `exploreburton`); keyless WIF releases to Play.
 - **Data pipeline:** Python at `pipeline/` (own venv); generates `public/*.json` data files committed to repo; web fetches lazy on component init.
 - **Intake flows:** Power Automate on `make.gov.powerautomate.us` (GCC tenant, gov.api.flow endpoints); SharePoint lists on `/sites/ITDepartment`.
+- **City Property self-service:** Purchasing edits the "Explore Burton City Property for Sale" SharePoint list; a flow dispatches `apply-city-property`; `.github/workflows/apply-city-property.yml` validates, rebuilds and opens a review PR. Setup in `planning/city-property-self-service.md`.
 
 ## Key Commands
 
@@ -34,6 +35,9 @@ npm run test:watch                       # Watch mode
 .venv\Scripts\python.exe tools/build_city_property.py   # City-owned parcels for sale (#177, ADR-0003)
 .venv\Scripts\python.exe tools/build_sales_tiles.py     # Home sale prices by block group (#178, ADR-0003); needs tools/Export-BsaSales.ps1 first
 .venv\Scripts\python.exe tools/build_business_sites.py  # Sites for Business overlays (ADR-0003 Part C); needs tools/Export-BsaCommercialParcels.ps1 first
+.venv\Scripts\python.exe tools/build_new_homes.py       # New homes permitted overlay (ADR-0003 Part D); needs tools/Export-BsaNewHomes.ps1 first
+.venv\Scripts\python.exe tools/fetch_blockgroup_housing.py --year 2024  # ACS block-group context for Home Sale Prices (CENSUS_API_KEY)
+.venv\Scripts\python.exe tools/extract_parcel_centroids.py  # parcel centroids/outlines from the City parcel shapefile (copy from \burtonmi1a\Pictometry to pipeline/data/parcels/, gitignored)
 .venv\Scripts\python.exe tools/extract_paser.py
 .venv\Scripts\python.exe tools/capital_roads_link.py
 ```
@@ -48,10 +52,11 @@ npm run test:watch                       # Watch mode
 
 **Soft-launch gate:** `/` checks `config.softLaunchGate.active` + `?unlock=` query param. Native app exempt via `config.nativeAppExempt`. Change gate state in `public/config.json`.
 
-**CSP headers:** Content-Security-Policy deployed to Cloudflare as Report-Only; user must rename to enforcement + add WAF bot-skip rule for native app (fetch JSON, cannot solve challenges).
+**CSP headers:** Content-Security-Policy deployed to Cloudflare as Report-Only; user must rename to enforcement + add WAF bot-skip rule for native app (fetch JSON, cannot solve challenges). The edge header must list every host the meta tag lists; the weather radar overlay added `https://nowcoast.noaa.gov` to img-src on 2026-10-15 (meta tag done; Cloudflare header is a human step, see docs/csp-cloudflare.md).
 
 ## Data Gotchas
 
+- Parcel geometry: the City parcel shapefile (`\burtonmi1a\Pictometry\City of Burton_Parcels<year>.shp`, State Plane MI South ft) carries owner names and values; keep it in gitignored `pipeline/data/parcels/` and publish only what `tools/extract_parcel_centroids.py` derives (centroids, outlines).
 - Address points from BS&A Assessing situs (not owner; do not sum city-wide). Built via `Extract-BurtonAddressPoints.ps1` (external) + `tools/build_address_points.py` (repo).
 - Capital projects transcribed from budget book; roads tie-in via `capital_roads_link.py`.
 - Zoning overlay 2017 (refresh from source DWG/shapefile pending #44).

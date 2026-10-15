@@ -137,11 +137,87 @@ def test_panel_shapes_and_count_labels():
     table = panel["tables"][0]
     assert all(len(r["cells"]) == len(table["columns"]) for r in table["rows"])
     assert table["rows"][0]["cells"][0] == "Group A"      # shown groups sort first
-    assert table["rows"][1]["cells"][1:3] == ["0", "n/a"]  # empty group: count 0, no price
+    assert table["rows"][1]["cells"][2:4] == ["0", "n/a"]  # empty group: count 0, no price
     assert any("3 qualifying sales could not be placed" in n for n in panel["notes"])
+
+
+def test_geocode_prefers_parcel_centroid(tmp_path, monkeypatch):
+    p = tmp_path / "s.csv"
+    _write(p, [_raw(parcel="p1"), _raw(parcel="p2", street="2 X")])
+    rows = bst.read_rows(str(p))
+    monkeypatch.setattr(bst.bap, "geocode_batch", lambda rows, cache: None)  # no network
+    hit = bst.geocode(rows, {"p1": (43.0, -83.6)})
+    assert hit == 1 and (rows[0]["lat"], rows[0]["lng"]) == (43.0, -83.6)
+    assert bst.read_centroids("C:/nonexistent.csv") == {}
 
 
 def test_count_label_buckets_small_counts():
     assert bst._count_label(0) == "0"
     assert bst._count_label(3) == "1 to 4"
     assert bst._count_label(5) == "5"
+
+
+def _ctx():
+    ring = [[0, 0], [1, 0], [1, 1], [0, 1], [0, 0]]
+    return {"districts": [{"name": "Atherton Community Schools", "short": "Atherton", "rings": [ring]}],
+            "city_mills": 13.2394, "district_mills": {"Atherton": 41.86}}
+
+
+def test_tax_estimate_uses_half_price_and_mills():
+    t = bst.tax_estimate(150000, {"short": "Atherton"}, _ctx())
+    assert t == {"taxable": 75000, "city": 993, "full": 3140}
+    assert bst.tax_estimate(None, None, _ctx()) == {"taxable": None, "city": None, "full": None}
+    assert bst.tax_estimate(150000, {"short": "Unknown"}, _ctx())["full"] is None
+
+
+def test_group_stats_carry_district_and_tax():
+    cur = [_sale(0.5, 0.5, 100000, 30 + i) for i in range(5)]
+    by_group, _ = bst.assign(cur, _groups())
+    stats = bst.group_stats(by_group, _groups(), TODAY, _ctx())
+    a, b = stats
+    assert a["district"] == "Atherton Community Schools" and a["tax"]["city"] == 662
+    assert b["district"] is None and b["tax"]["city"] is None
+    fc = bst.build_geojson(stats, TODAY)
+    rows = fc["features"][0]["properties"]["_popupRows"]
+    assert ["School district", "Atherton Community Schools"] in rows
+    assert ["Est. City tax on the median home", "$662 a year"] in rows
+    panel = bst.build_panel(cur, stats, 0, TODAY, _ctx())
+    labels = {x["label"]: x["value"] for x in panel["stats"]}
+    assert labels["Est. City tax on the median home"] == "$662 a year"
+    table = panel["tables"][0]
+    assert table["columns"][1] == "School district" and table["rows"][0]["cells"][1] == "Atherton"
+    assert all(len(r["cells"]) == len(table["columns"]) for r in table["rows"])
+
+
+def test_short_district_strips_suffixes():
+    assert bst.short_district("Carman-Ainsworth Community School District") == "Carman-Ainsworth"
+    assert bst.short_district("Bendle Public Schools") == "Bendle"
+    assert bst.short_district(None) == "n/a"
+
+
+def test_acs_context_in_popup_and_second_table():
+    cur = [_sale(0.5, 0.5, 100000, 30 + i) for i in range(5)]
+    by_group, _ = bst.assign(cur, _groups())
+    ctx = _ctx()
+    ctx["acs"] = {"vintage": "2019-2023", "rows": {
+        "A": {"geoid": "A", "owner_share": 72, "vacancy_rate": 8, "median_rent": 900, "median_rent_moe": 600,
+              "median_value": 120000, "median_value_moe": 10000}}}
+    stats = bst.group_stats(by_group, _groups(), TODAY, ctx)
+    rows = bst.build_geojson(stats, TODAY)["features"][0]["properties"]["_popupRows"]
+    assert ["Owner-occupied homes", "72% (Census ACS)"] in rows
+    assert ["Median rent", "$900 a month (wide margin)"] in rows
+    panel = bst.build_panel(cur, stats, 0, TODAY, ctx)
+    assert len(panel["tables"]) == 2
+    acs_table = panel["tables"][1]
+    assert acs_table["title"].startswith("Who lives here")
+    assert acs_table["rows"] == [{"cells": ["Group A", "72%", "8%", "$900 *", "$120,000"]}]
+    assert any("margin of error" in n for n in panel["notes"])
+
+
+def test_acs_absent_leaves_panel_unchanged():
+    cur = [_sale(0.5, 0.5, 100000, 30 + i) for i in range(5)]
+    by_group, _ = bst.assign(cur, _groups())
+    stats = bst.group_stats(by_group, _groups(), TODAY, _ctx())
+    panel = bst.build_panel(cur, stats, 0, TODAY, _ctx())
+    assert len(panel["tables"]) == 1
+    assert bst.load_acs("C:/nonexistent/acs.json") == {}

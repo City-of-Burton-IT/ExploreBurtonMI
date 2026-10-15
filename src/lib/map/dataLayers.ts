@@ -4,7 +4,7 @@
 // first toggle-on (not at mount), so the ~dozen overlay files (~670 KB) cost
 // nothing until a user actually opens one.
 import L from 'leaflet';
-import type { AppConfig, DataLayerConfig, ImageOverlayConfig } from '../types';
+import type { AppConfig, DataLayerConfig, ImageOverlayConfig, TileOverlayConfig } from '../types';
 import { dataFetch } from '../remote';
 import { escapeHtml } from './html';
 import { boundaryClipPath } from './clip';
@@ -29,7 +29,9 @@ export function addConfigOverlays(
   mapEl: HTMLElement,
   config: AppConfig,
 ): ConfigOverlays | undefined {
-  if (!config.dataLayers?.length && !config.imageOverlays?.length) return undefined;
+  if (!config.dataLayers?.length && !config.imageOverlays?.length && !config.tileOverlays?.length) {
+    return undefined;
+  }
 
   // Drawn in a dedicated pane below the markers (so they never block a marker
   // click) and below the dim mask (so out-of-city portions read as dimmed like
@@ -56,6 +58,11 @@ export function addConfigOverlays(
 
   for (const ov of config.imageOverlays ?? []) {
     const managed = buildImageOverlay(map, mapEl, config, ov);
+    layerControl.addOverlay(managed.layer, ov.label);
+    disposers.push(managed.destroy);
+  }
+  for (const ov of config.tileOverlays ?? []) {
+    const managed = buildTileOverlay(ov);
     layerControl.addOverlay(managed.layer, ov.label);
     disposers.push(managed.destroy);
   }
@@ -203,6 +210,61 @@ function buildImageOverlay(
       if (destroyed) return;
       destroyed = true;
       for (const dispose of disposers.reverse()) dispose();
+    },
+  };
+}
+
+// A live tile overlay (e.g. NOAA weather radar): a WMS or XYZ tile layer drawn in
+// the dataLayers pane below the markers. Nothing is requested from the source
+// until the user toggles it on (privacy: no third-party request by default). While
+// it is on, a timer re-requests the tiles every refreshSeconds so a live feed
+// stays current; the timer stops on toggle-off and on destroy.
+function buildTileOverlay(ov: TileOverlayConfig): ManagedLayer<L.TileLayer> {
+  const common = {
+    pane: 'dataLayers',
+    opacity: ov.opacity ?? 0.7,
+    maxNativeZoom: ov.maxNativeZoom,
+    // Never let a slow feed block the basemap: tiles render as they arrive.
+    updateWhenIdle: true,
+    crossOrigin: false as const,
+  };
+  const layer: L.TileLayer = ov.wms
+    ? L.tileLayer.wms(ov.source, {
+        ...common,
+        layers: ov.wms.layers,
+        format: ov.wms.format ?? 'image/png',
+        transparent: ov.wms.transparent ?? true,
+        version: ov.wms.version ?? '1.3.0',
+      })
+    : L.tileLayer(ov.source, common);
+  let timer: ReturnType<typeof setInterval> | undefined;
+  const stop = () => {
+    if (timer !== undefined) clearInterval(timer);
+    timer = undefined;
+  };
+  const refresh = () => {
+    // A changed query parameter defeats both the browser cache and any CDN cache
+    // so the next tile fetch returns the newest radar frame.
+    if (ov.wms) (layer as L.TileLayer.WMS).setParams({ _t: String(Date.now()) } as never);
+    else layer.redraw();
+  };
+  const onAdd = () => {
+    stop();
+    if (ov.refreshSeconds && ov.refreshSeconds > 0) {
+      timer = setInterval(refresh, ov.refreshSeconds * 1000);
+    }
+  };
+  layer.on('add', onAdd);
+  layer.on('remove', stop);
+  let destroyed = false;
+  return {
+    layer,
+    destroy() {
+      if (destroyed) return;
+      destroyed = true;
+      stop();
+      layer.off('add', onAdd);
+      layer.off('remove', stop);
     },
   };
 }

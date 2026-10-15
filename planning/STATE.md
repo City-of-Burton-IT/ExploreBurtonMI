@@ -65,6 +65,46 @@ send (needs Windows auth on the mirror; would prompt on phones). Android 1.16 (v
 30) is on the Play internal track (#169 run 37740673450); Dependabot alert 92 (nested sharp
 under `@capacitor/assets`, dev only, no fix) stays open by decision, #169 stays open.
 
+**2026-10-15 afternoon, after PR #180 merged (ADR-0003 Part D, branch `feat/context-joins`):**
+built from data on hand: (1) `tools/Export-BsaNewHomes.ps1` + `tools/build_new_homes.py` ->
+`public/new-homes.geojson`, 575 pins for 717 new-home permits since 2015 (address + year + units
+only; permits dashboard stays aggregate, its note updated); (2) Home Sale Prices now carries the
+school district (sales-centroid point-in-polygon) and an estimated tax bill on the median home
+(taxable = half price; City 13.2394 mills; district homestead rate from the Property Taxes
+estimator) per block group, in popup, table and a citywide stat ($1,022 City tax on the $154,450
+median); (3) Sites for Business popups carry the busiest MDOT-counted road within 150 m (529 of
+637 placed sites). Rejected: days-on-market (Sales.daysOnMarket is empty on all 652 recent sales).
+Parcel-geometry gap (#179) unchanged. PR #180 itself merged 13:26 (squash 0f9181e).
+Then (same branch, PR #181): `tools/fetch_blockgroup_housing.py` pulls ACS 2020-2024 B25003/B25002/
+B25064/B25077 for the 23 block groups to committed `tools/data/acs-blockgroups.json`; Home Sale Prices
+gains owner-occupied share, vacancy, median rent and ACS median value per block group (popup rows and a
+second table, * marks margins above half the estimate). Mean commute (B08013) is NA at block-group level
+and was dropped.
+PARCEL GEOMETRY SOLVED (#179): the user pointed at `\burtonmi1a\Pictometry`, which holds yearly City
+parcel shapefiles (2015-2025, `pnum` field matches BS&A, State Plane MI South intl ft, NAD83 HARN; the
+DBF carries owner names and SEV so it is NEVER committed). `tools/extract_parcel_centroids.py` (pyshp,
+hand-coded LCC inverse, verified: median 47 m from Census-geocoded addresses over 300 parcels) writes
+gitignored `parcel-centroids.csv` (13,244) and `parcel-polygons.json`. Business sites: 271 of 271 vacant
+sites as lot outlines, 713 of 713 buildings; sales 1,627 of 1,628 placed; new homes 615 pins, 15 unplaced.
+Refresh yearly when a new `City of Burton_Parcels<year>` set appears on the share.
+PURCHASING SELF-SERVICE (code half, same branch): `tools/sync_city_property.py` (+8 tests) maps the
+SharePoint rows to the CSV and re-reads it with the builder's validator; `.github/workflows/
+apply-city-property.yml` (repository_dispatch `apply-city-property`, review branch + optional
+LISTING_PR_TOKEN PR, mirrors apply-listing.yml); `parcel-centroids.csv` is now COMMITTED (parcel, lat,
+lng only; ADR-0003 shared controls) so CI can place City lots without street numbers;
+`build_city_property.py` places by parcel first. M365 half (list + flow) is a human step: the
+recipe is `planning/city-property-self-service.md`. End-to-end test possible only after PR #181
+merges (repository_dispatch runs the workflow on the default branch).
+SharePoint list CREATED 2026-10-15 14:42 via REST from the user's session (user-approved; ID
+6f3e3235-4a63-4fd8-bc65-1246eaf3fbd2); the Power Automate flow is NOT created (classifier blocked the
+designer click; recipe in planning/city-property-self-service.md; token is the user's to paste).
+WEATHER RADAR (same branch): `tileOverlays` config + `buildTileOverlay` in dataLayers.ts (WMS or XYZ,
+dataLayers pane, off by default, refresh timer only while on; L.tileLayer.wms stub added to the test
+double); config.json entry = NOAA nowCOAST `base_reflectivity_mosaic` (AccessConstraints NONE, GetMap
+verified), 5-minute refresh; index.html CSP img-src += nowcoast.noaa.gov (Cloudflare edge header needs
+the same edit, human step); privacy paragraph. NOTE: a failed patch truncated public/privacy.html
+mid-session; restored from git and re-applied, 18 h2 sections confirmed.
+
 **2026-10-15 (#177, #178, ADR-0003, branch `feat/city-property-177`, not pushed):** the MLS
 question got its answer: live listings are licensed (Realcomp IDX) and off limits under ADR-0001,
 so ADR-0003 (proposed, `docs/adr/`, force-add because `docs/` is ignored) covers the two City-owned
