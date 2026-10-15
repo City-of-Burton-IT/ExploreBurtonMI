@@ -65,6 +65,12 @@ send (needs Windows auth on the mirror; would prompt on phones). Android 1.16 (v
 30) is on the Play internal track (#169 run 37740673450); Dependabot alert 92 (nested sharp
 under `@capacitor/assets`, dev only, no fix) stays open by decision, #169 stays open.
 
+**2026-10-15 15:57, SHIPPED:** PR #181 squash-merged as d61ad33 (user-requested), Pages deploy
+green, live site serves the new panels. Android **1.17 = versionCode 31** uploaded to the Play
+internal track (run 38797581182, status completed, release notes confirmed in the log). Issue #179
+closed. Still human: Purchasing list rows, the Power Automate flow + token, Assessor nod on terms
+03/19, Cloudflare CSP header += nowcoast.noaa.gov, Controller/Building wording on #160.
+
 **2026-10-15 afternoon, after PR #180 merged (ADR-0003 Part D, branch `feat/context-joins`):**
 built from data on hand: (1) `tools/Export-BsaNewHomes.ps1` + `tools/build_new_homes.py` ->
 `public/new-homes.geojson`, 575 pins for 717 new-home permits since 2015 (address + year + units
