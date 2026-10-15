@@ -13,6 +13,10 @@ in the GCC tenant by hand (`make.gov.powerautomate.us`, site `/sites/ITDepartmen
 
 Site: IT Department (`burtonmi.sharepoint.com/sites/ITDepartment`).
 List name: **Explore Burton City Property for Sale**.
+Created 2026-10-15 14:42 by the REST script `planning/create-city-property-list.js`
+(user-approved). List ID `6f3e3235-4a63-4fd8-bc65-1246eaf3fbd2`, URL
+`https://burtonmi.sharepoint.com/sites/ITDepartment/Lists/Explore Burton City Property for Sale`.
+All twelve columns added and shown in the default view; Title renamed to Parcel.
 Grant Purchasing staff Edit; everyone else Read.
 
 | Column (internal name) | Type | Required | Notes |
