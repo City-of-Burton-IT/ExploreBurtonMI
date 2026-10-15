@@ -43,6 +43,7 @@ SOURCE_CSV = pipeline_data_path("sales-source.csv")
 BLOCK_GROUPS = public_path("block-groups.geojson")
 SCHOOL_DISTRICTS = public_path("school-districts.geojson")
 PROPERTY_TAX = public_path("info-propertytax.json")
+ACS_BLOCKGROUPS = os.path.join(os.path.dirname(os.path.dirname(os.path.abspath(__file__))), "tools", "data", "acs-blockgroups.json")
 OUT_GEOJSON = public_path("sales-tiles.geojson")
 OUT_INFO = public_path("info-homesales.json")
 
@@ -221,6 +222,27 @@ def tax_estimate(median: int | None, district: dict | None, ctx: dict) -> dict:
     return {"taxable": round(taxable), "city": city, "full": full}
 
 
+def load_acs(path: str = ACS_BLOCKGROUPS) -> dict:
+    """{"vintage": str, "rows": {geoid: record}} from fetch_blockgroup_housing.py,
+    or an empty dict when the file is absent (the panel then omits that context)."""
+    if not os.path.exists(path):
+        return {}
+    with open(path, encoding="utf-8") as fh:
+        d = json.load(fh)
+    return {"vintage": d.get("vintage", ""), "source": d.get("source", ""),
+            "rows": {r["geoid"]: r for r in d.get("rows", [])}}
+
+
+def _pct(v: int | None) -> str:
+    return f"{v}%" if v is not None else "n/a"
+
+
+def _weak(value: int | None, moe: int | None) -> bool:
+    """A block-group estimate whose margin of error exceeds half the value is
+    too noisy to quote without a flag."""
+    return bool(value and moe and moe > value / 2)
+
+
 def short_district(name: str | None) -> str:
     if not name:
         return "n/a"
@@ -245,7 +267,8 @@ def group_stats(by_group: dict[str, list[dict]], groups: list[dict], today: date
         out.append({"geoid": g["geoid"], "name": g["name"], "geometry": g["geometry"],
                     "cur": cur, "prior": prior, "change": change,
                     "district": district["name"] if district else None,
-                    "tax": tax_estimate(cur["median"], district, ctx)})
+                    "tax": tax_estimate(cur["median"], district, ctx),
+                    "acs": (ctx.get("acs") or {}).get("rows", {}).get(g["geoid"])})
     return out
 
 
@@ -302,6 +325,12 @@ def build_geojson(stats: list[dict], today: date) -> dict:
             rows.append(["Median sale price", f"Not shown: fewer than {MIN_SALES} sales"])
         if s.get("district"):
             rows.append(["School district", s["district"]])
+        a = s.get("acs") or {}
+        if a:
+            if a.get("owner_share") is not None:
+                rows.append(["Owner-occupied homes", f"{a['owner_share']}% (Census ACS)"])
+            if a.get("median_rent"):
+                rows.append(["Median rent", _money(a["median_rent"]) + " a month" + (" (wide margin)" if _weak(a["median_rent"], a.get("median_rent_moe")) else "")])
         features.append({
             "type": "Feature",
             "geometry": s["geometry"],
@@ -383,12 +412,29 @@ def build_panel(rows: list[dict], stats: list[dict], unassigned: int, today: dat
             s["name"], short_district(s.get("district")), _count_label(cur["n"]), _money(cur["median"]),
             _money(cur["ppsf"]), _change_label(s["change"]), _money(tax.get("city")), _money(tax.get("full")),
         ]})
+    acs = (ctx or {}).get("acs") or {}
+    acs_rows = []
+    if acs.get("rows"):
+        for s in sorted(stats, key=lambda s: s["name"]):
+            a = s.get("acs") or {}
+            if not a:
+                continue
+            rent = _money(a.get("median_rent")) + (" *" if _weak(a.get("median_rent"), a.get("median_rent_moe")) else "")
+            value = _money(a.get("median_value")) + (" *" if _weak(a.get("median_value"), a.get("median_value_moe")) else "")
+            acs_rows.append({"cells": [s["name"], _pct(a.get("owner_share")), _pct(a.get("vacancy_rate")),
+                                       rent, value]})
     tables = [{
         "title": "Sale prices by neighbourhood (Census block group), last 24 months",
         "columns": ["Block group", "School district", "Sales", "Median price", "Median $/sq ft",
                     "Change vs prior 24 months", "Est. City tax on median home", "Est. full tax bill"],
         "rows": table_rows,
     }]
+    if acs_rows:
+        tables.append({
+            "title": f"Who lives here: Census profile by block group (ACS {acs.get('vintage', '')})",
+            "columns": ["Block group", "Owner-occupied", "Vacant units", "Median rent", "Median value (ACS)"],
+            "rows": acs_rows,
+        })
 
     notes = [
         f"Turn on the \"Home sale prices (by block group)\" map overlay. Darker blue is a higher median; grey means fewer than {MIN_SALES} sales, so no price is shown.",
@@ -398,6 +444,8 @@ def build_panel(rows: list[dict], stats: list[dict], unassigned: int, today: dat
         "Tax estimates assume a home bought at the median price: Michigan sets taxable value to half the sale price in the year after a sale. The City figure uses the City's own millage; the full bill uses the school district's published total homestead rate and is an estimate before any exemption. See the Property Taxes dashboard for the estimator.",
         "The school district shown is the one containing most of the block group; a few block groups straddle two districts.",
     ]
+    if acs_rows:
+        notes.append(f"The Census profile is the American Community Survey {acs.get('vintage', '')} five-year estimate, a survey with wide margins at block-group level; a value marked * has a margin of error above half the estimate. The ACS median value is what owners say their home is worth, not a sale price.")
     return {
         "title": "Home Sale Prices",
         "subtitle": "What homes in Burton actually sell for, by neighbourhood, from the City Assessor's sales records",
@@ -423,6 +471,7 @@ def main() -> int:
     by_group, unassigned = assign(rows, groups)
     placed = sum(len(v) for v in by_group.values())
     ctx = load_tax_context()
+    ctx["acs"] = load_acs()
     stats = group_stats(by_group, groups, today, ctx)
     placed_rows = [r for v in by_group.values() for r in v]
     write_geojson(OUT_GEOJSON, build_geojson(stats, today))

@@ -392,6 +392,225 @@
           ]
         }
       ]
+    },
+    {
+      "title": "Who lives here: Census profile by block group (ACS 2020-2024)",
+      "columns": [
+        "Block group",
+        "Owner-occupied",
+        "Vacant units",
+        "Median rent",
+        "Median value (ACS)"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "Block group 1, tract 0113.01",
+            "9%",
+            "8%",
+            "$767",
+            "n/a"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0113.02",
+            "76%",
+            "10%",
+            "$738",
+            "$64,500"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0114.01",
+            "63%",
+            "3%",
+            "$1,361",
+            "$52,900 *"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0114.02",
+            "100%",
+            "0%",
+            "n/a",
+            "$176,200"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0115.02",
+            "94%",
+            "11%",
+            "n/a",
+            "$187,500"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0115.03",
+            "81%",
+            "9%",
+            "$1,231",
+            "$200,700"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0115.05",
+            "95%",
+            "5%",
+            "n/a",
+            "$113,800"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0115.08",
+            "98%",
+            "4%",
+            "n/a",
+            "$167,900"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0113.01",
+            "69%",
+            "12%",
+            "$1,186",
+            "$57,300"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0113.02",
+            "85%",
+            "6%",
+            "$1,219",
+            "$94,400"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0114.01",
+            "52%",
+            "3%",
+            "$1,161",
+            "$201,600"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0114.02",
+            "100%",
+            "3%",
+            "n/a",
+            "$305,000"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0115.02",
+            "82%",
+            "0%",
+            "n/a",
+            "$120,900"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0115.03",
+            "77%",
+            "11%",
+            "$1,006",
+            "$137,600"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0115.05",
+            "93%",
+            "4%",
+            "n/a",
+            "$123,700"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0115.08",
+            "33%",
+            "14%",
+            "$628",
+            "$90,600"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0113.01",
+            "82%",
+            "7%",
+            "n/a",
+            "$82,800"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0113.02",
+            "48%",
+            "0%",
+            "n/a",
+            "$112,000"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0114.02",
+            "93%",
+            "0%",
+            "n/a",
+            "$225,300"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0115.02",
+            "94%",
+            "3%",
+            "n/a",
+            "$123,100"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0115.03",
+            "90%",
+            "0%",
+            "$1,099",
+            "$163,800"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0115.05",
+            "87%",
+            "0%",
+            "n/a",
+            "$122,900"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 4, tract 0113.01",
+            "70%",
+            "6%",
+            "$978 *",
+            "n/a"
+          ]
+        }
+      ]
     }
   ],
   "source": "City of Burton Assessor sales records (BS&A), arms-length residential sales, aggregated by Census block group. Block-group boundaries from the U.S. Census Bureau (TIGERweb).",
@@ -411,6 +630,7 @@
     "Figures are aggregates. No individual sale, address or price is published. Sale prices are public record and can be looked up per parcel on BS&A Online.",
     "34 qualifying sales could not be placed in a block group (address not geocoded) and are left out of every figure.",
     "Tax estimates assume a home bought at the median price: Michigan sets taxable value to half the sale price in the year after a sale. The City figure uses the City's own millage; the full bill uses the school district's published total homestead rate and is an estimate before any exemption. See the Property Taxes dashboard for the estimator.",
-    "The school district shown is the one containing most of the block group; a few block groups straddle two districts."
+    "The school district shown is the one containing most of the block group; a few block groups straddle two districts.",
+    "The Census profile is the American Community Survey 2020-2024 five-year estimate, a survey with wide margins at block-group level; a value marked * has a margin of error above half the estimate. The ACS median value is what owners say their home is worth, not a sale price."
   ]
 }

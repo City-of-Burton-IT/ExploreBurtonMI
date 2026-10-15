@@ -183,3 +183,31 @@ def test_short_district_strips_suffixes():
     assert bst.short_district("Carman-Ainsworth Community School District") == "Carman-Ainsworth"
     assert bst.short_district("Bendle Public Schools") == "Bendle"
     assert bst.short_district(None) == "n/a"
+
+
+def test_acs_context_in_popup_and_second_table():
+    cur = [_sale(0.5, 0.5, 100000, 30 + i) for i in range(5)]
+    by_group, _ = bst.assign(cur, _groups())
+    ctx = _ctx()
+    ctx["acs"] = {"vintage": "2019-2023", "rows": {
+        "A": {"geoid": "A", "owner_share": 72, "vacancy_rate": 8, "median_rent": 900, "median_rent_moe": 600,
+              "median_value": 120000, "median_value_moe": 10000}}}
+    stats = bst.group_stats(by_group, _groups(), TODAY, ctx)
+    rows = bst.build_geojson(stats, TODAY)["features"][0]["properties"]["_popupRows"]
+    assert ["Owner-occupied homes", "72% (Census ACS)"] in rows
+    assert ["Median rent", "$900 a month (wide margin)"] in rows
+    panel = bst.build_panel(cur, stats, 0, TODAY, ctx)
+    assert len(panel["tables"]) == 2
+    acs_table = panel["tables"][1]
+    assert acs_table["title"].startswith("Who lives here")
+    assert acs_table["rows"] == [{"cells": ["Group A", "72%", "8%", "$900 *", "$120,000"]}]
+    assert any("margin of error" in n for n in panel["notes"])
+
+
+def test_acs_absent_leaves_panel_unchanged():
+    cur = [_sale(0.5, 0.5, 100000, 30 + i) for i in range(5)]
+    by_group, _ = bst.assign(cur, _groups())
+    stats = bst.group_stats(by_group, _groups(), TODAY, _ctx())
+    panel = bst.build_panel(cur, stats, 0, TODAY, _ctx())
+    assert len(panel["tables"]) == 1
+    assert bst.load_acs("C:/nonexistent/acs.json") == {}

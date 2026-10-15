@@ -75,6 +75,11 @@ estimator) per block group, in popup, table and a citywide stat ($1,022 City tax
 median); (3) Sites for Business popups carry the busiest MDOT-counted road within 150 m (529 of
 637 placed sites). Rejected: days-on-market (Sales.daysOnMarket is empty on all 652 recent sales).
 Parcel-geometry gap (#179) unchanged. PR #180 itself merged 13:26 (squash 0f9181e).
+Then (same branch, PR #181): `tools/fetch_blockgroup_housing.py` pulls ACS 2020-2024 B25003/B25002/
+B25064/B25077 for the 23 block groups to committed `tools/data/acs-blockgroups.json`; Home Sale Prices
+gains owner-occupied share, vacancy, median rent and ACS median value per block group (popup rows and a
+second table, * marks margins above half the estimate). Mean commute (B08013) is NA at block-group level
+and was dropped.
 
 **2026-10-15 (#177, #178, ADR-0003, branch `feat/city-property-177`, not pushed):** the MLS
 question got its answer: live listings are licensed (Realcomp IDX) and off limits under ADR-0001,
