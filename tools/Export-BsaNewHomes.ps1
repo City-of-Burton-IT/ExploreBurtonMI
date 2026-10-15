@@ -8,7 +8,7 @@
     (C:\utils\BsaSql; db_datareader). Writes the gitignored
     pipeline/data/new-homes.csv read by tools/build_new_homes.py:
 
-      street, city, zip, year, units
+      parcel, street, city, zip, year, units
 
     Only the three new-home categories used by Export-BsaPermits.ps1 are selected.
     No permit number, owner, contractor, value or description is exported. The two
@@ -50,7 +50,8 @@ Write-Host ("Using {0} (MAX issdate {1})" -f $Database, $maxima[$Database])
 
 $currentYear = (Get-Date).Year
 $sql = @"
-SELECT LTRIM(RTRIM(ISNULL(p.addresscombined, '')))   AS street,
+SELECT p.pnum                                        AS parcel,
+       LTRIM(RTRIM(ISNULL(p.addresscombined, '')))   AS street,
        LTRIM(RTRIM(ISNULL(m.propcity, '')))           AS city,
        LTRIM(RTRIM(ISNULL(m.propzip, '')))            AS zip,
        YEAR(p.issdate)                                AS year,

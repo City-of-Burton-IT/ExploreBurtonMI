@@ -141,6 +141,16 @@ def test_panel_shapes_and_count_labels():
     assert any("3 qualifying sales could not be placed" in n for n in panel["notes"])
 
 
+def test_geocode_prefers_parcel_centroid(tmp_path, monkeypatch):
+    p = tmp_path / "s.csv"
+    _write(p, [_raw(parcel="p1"), _raw(parcel="p2", street="2 X")])
+    rows = bst.read_rows(str(p))
+    monkeypatch.setattr(bst.bap, "geocode_batch", lambda rows, cache: None)  # no network
+    hit = bst.geocode(rows, {"p1": (43.0, -83.6)})
+    assert hit == 1 and (rows[0]["lat"], rows[0]["lng"]) == (43.0, -83.6)
+    assert bst.read_centroids("C:/nonexistent.csv") == {}
+
+
 def test_count_label_buckets_small_counts():
     assert bst._count_label(0) == "0"
     assert bst._count_label(3) == "1 to 4"

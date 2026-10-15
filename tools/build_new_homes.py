@@ -25,6 +25,7 @@ from lib.iox import write_geojson
 from lib.paths import pipeline_data_path, public_path
 
 SOURCE_CSV = pipeline_data_path("new-homes.csv")
+CENTROIDS_CSV = pipeline_data_path("parcel-centroids.csv")  # optional, from extract_parcel_centroids.py
 OUT = public_path("new-homes.geojson")
 REQUIRED = ["street", "year", "units"]
 # Year bands, newest darkest. Band edges are relative to the build year so the
@@ -51,24 +52,39 @@ def read_rows(path: str = SOURCE_CSV) -> list[dict]:
     rows = []
     for i, r in enumerate(raw, start=2):
         street = _norm(r["street"])
-        if not street:
+        parcel = _norm(r.get("parcel"))
+        if not street and not parcel:
             continue
         try:
             year = int(float(r["year"]))
             units = int(float(r["units"] or 0))
         except ValueError as exc:
             raise SystemExit(f"new-homes: row {i} has a bad number: {exc}") from exc
-        rows.append({"street": street, "city": _norm(r.get("city")) or bap.DEFAULT_CITY,
+        rows.append({"parcel": parcel, "street": street, "city": _norm(r.get("city")) or bap.DEFAULT_CITY,
                      "zip": _norm(r.get("zip")), "year": year, "units": max(units, 1),
                      "lat": None, "lng": None})
     return rows
 
 
-def geocode(rows: list[dict]) -> None:
+def read_centroids(path: str = CENTROIDS_CSV) -> dict[str, tuple[float, float]]:
+    if not os.path.exists(path):
+        return {}
+    with open(path, newline="", encoding="utf-8-sig") as fh:
+        return {r["parcel"]: (float(r["lat"]), float(r["lng"])) for r in csv.DictReader(fh)}
+
+
+def geocode(rows: list[dict], centroids: dict[str, tuple[float, float]] | None = None) -> int:
+    """Parcel centroid first (exact lot), Census geocoder for the rest. Returns the centroid count."""
+    hit = 0
     for i, r in enumerate(rows):
         r.update({"id": str(i), "state": bap.DEFAULT_STATE})
+        c = (centroids or {}).get(r.get("parcel", ""))
+        if c:
+            r["lat"], r["lng"] = c
+            hit += 1
     cache = bap._load_cache()
-    bap.geocode_batch(rows, cache)
+    bap.geocode_batch([r for r in rows if r["lat"] is None and r["street"]], cache)
+    return hit
 
 
 def band_color(year: int, build_year: int) -> str:
@@ -94,7 +110,7 @@ def build(rows: list[dict], rings: list[list], build_year: int) -> tuple[dict, i
         if not bap.in_city(r["lng"], r["lat"], rings):
             outside += 1
             continue
-        key = (r["street"].upper(), r["year"])
+        key = (r.get("parcel") or r["street"].upper(), r["year"])
         if key in merged:
             merged[key]["units"] += r["units"]
             merged[key]["permits"] += 1
@@ -110,7 +126,7 @@ def build(rows: list[dict], rings: list[list], build_year: int) -> tuple[dict, i
             "type": "Feature",
             "geometry": {"type": "Point", "coordinates": [round(r["lng"], 6), round(r["lat"], 6)]},
             "properties": {
-                "name": bap.titlecase_street(r["street"]),
+                "name": bap.titlecase_street(r["street"]) or "New home",
                 "year": r["year"],
                 "units": r["units"],
                 "_color": band_color(r["year"], build_year),
@@ -124,7 +140,8 @@ def build(rows: list[dict], rings: list[list], build_year: int) -> tuple[dict, i
 def main() -> int:
     rows = read_rows()
     print(f"Read {len(rows)} new-home permits from {os.path.basename(SOURCE_CSV)}")
-    geocode(rows)
+    hit = geocode(rows, read_centroids())
+    print(f"  {hit} permits placed from parcel centroids, the rest geocoded by address")
     fc, nocoord, outside = build(rows, bap._rings_from_boundary(), date.today().year)
     write_geojson(OUT, fc)
     years = Counter(f["properties"]["year"] for f in fc["features"])

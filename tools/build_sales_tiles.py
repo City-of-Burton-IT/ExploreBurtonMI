@@ -40,6 +40,7 @@ from lib.iox import write_geojson, write_json
 from lib.paths import pipeline_data_path, public_path
 
 SOURCE_CSV = pipeline_data_path("sales-source.csv")
+CENTROIDS_CSV = pipeline_data_path("parcel-centroids.csv")  # optional, from extract_parcel_centroids.py
 BLOCK_GROUPS = public_path("block-groups.geojson")
 SCHOOL_DISTRICTS = public_path("school-districts.geojson")
 PROPERTY_TAX = public_path("info-propertytax.json")
@@ -88,6 +89,7 @@ def read_rows(path: str = SOURCE_CSV) -> list[dict]:
         if vacant or price <= 0:
             continue
         rows.append({
+            "parcel": _norm(r.get("parcel")),
             "street": _norm(r["street"]),
             "city": _norm(r.get("city")) or bap.DEFAULT_CITY,
             "zip": _norm(r.get("zip")),
@@ -128,11 +130,27 @@ def collapse_multi_parcel(rows: list[dict]) -> list[dict]:
     return out
 
 
-def geocode(rows: list[dict]) -> None:
+def read_centroids(path: str = CENTROIDS_CSV) -> dict[str, tuple[float, float]]:
+    """{parcel: (lat, lng)} from the City parcel map, or {} when the file is absent."""
+    if not os.path.exists(path):
+        return {}
+    with open(path, newline="", encoding="utf-8-sig") as fh:
+        return {r["parcel"]: (float(r["lat"]), float(r["lng"])) for r in csv.DictReader(fh)}
+
+
+def geocode(rows: list[dict], centroids: dict[str, tuple[float, float]] | None = None) -> int:
+    """Place each sale: parcel centroid first (exact lot), the Census geocoder for
+    the rest. Returns how many came from centroids."""
+    hit = 0
     for i, r in enumerate(rows):
         r.update({"id": str(i), "state": bap.DEFAULT_STATE})
+        c = (centroids or {}).get(r.get("parcel", ""))
+        if c:
+            r["lat"], r["lng"] = c
+            hit += 1
     cache = bap._load_cache()
-    bap.geocode_batch(rows, cache)
+    bap.geocode_batch([r for r in rows if r["lat"] is None], cache)
+    return hit
 
 
 def load_block_groups(path: str = BLOCK_GROUPS) -> list[dict]:
@@ -466,7 +484,8 @@ def main() -> int:
     today = date.today()
     rows = collapse_multi_parcel(read_rows())
     print(f"Read {len(rows)} qualifying sales from {os.path.basename(SOURCE_CSV)}")
-    geocode(rows)
+    hit = geocode(rows, read_centroids())
+    print(f"  {hit} sales placed from parcel centroids, the rest geocoded by address")
     groups = load_block_groups()
     by_group, unassigned = assign(rows, groups)
     placed = sum(len(v) for v in by_group.values())

@@ -62,6 +62,11 @@ pipeline/data/sales-source.csv
 pipeline/data/commercial-parcels.csv
 pipeline/data/commercial-sales-summary.json
 pipeline/data/parcel-centroids.csv
+
+# Parcel shapefile from \burtonmi1a\Pictometry (carries owner names and values: NEVER commit)
+# and the files tools/extract_parcel_centroids.py derives from it.
+pipeline/data/parcels/
+pipeline/data/parcel-polygons.json
 pipeline/data/new-homes.csv
 
 # graphify knowledge graph (regenerated locally by post-commit hook)

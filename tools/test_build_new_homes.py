@@ -11,7 +11,7 @@ sys.path.insert(0, os.path.dirname(__file__))
 import build_new_homes as bnh  # noqa: E402
 
 SQUARE = [[[-84.0, 42.5], [-83.0, 42.5], [-83.0, 43.5], [-84.0, 43.5], [-84.0, 42.5]]]
-COLS = ["street", "city", "zip", "year", "units"]
+COLS = ["parcel", "street", "city", "zip", "year", "units"]
 
 
 def _rows(tmp_path, raws):
@@ -63,3 +63,11 @@ def test_build_merges_same_address_year_and_clips(tmp_path):
     merged = fc["features"][0]["properties"]
     assert merged["units"] == 2 and ["Homes permitted here", "2 (2 permits)"] in merged["_popupRows"]
     assert set(merged) <= {"name", "year", "units", "_color", "_radius", "_popupRows"}
+
+
+def test_geocode_prefers_parcel_centroid(tmp_path):
+    rows = _rows(tmp_path, [{"parcel": "p1", "street": "1 A ST", "year": "2024", "units": "1"},
+                            {"parcel": "p2", "street": "", "year": "2024", "units": "1"}])
+    hit = bnh.geocode(rows, {"p1": (43.0, -83.6), "p2": (43.1, -83.7)})
+    assert hit == 2 and rows[1]["lat"] == 43.1
+    assert bnh.read_centroids("C:/nonexistent.csv") == {}

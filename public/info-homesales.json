@@ -5,12 +5,12 @@
   "stats": [
     {
       "label": "Arms-length home sales, last 24 months",
-      "value": "612",
+      "value": "621",
       "hint": "October 2024 to October 2026"
     },
     {
       "label": "Citywide median sale price",
-      "value": "$154,450",
+      "value": "$154,900",
       "hint": "half the homes sold for less, half for more"
     },
     {
@@ -20,13 +20,13 @@
     },
     {
       "label": "Est. City tax on the median home",
-      "value": "$1,022 a year",
-      "hint": "taxable value $77,225 at 13.24 City mills"
+      "value": "$1,025 a year",
+      "hint": "taxable value $77,450 at 13.24 City mills"
     },
     {
       "label": "Change vs the prior 24 months",
-      "value": "+3%",
-      "hint": "prior median $149,450"
+      "value": "+4%",
+      "hint": "prior median $148,500"
     },
     {
       "label": "Neighbourhoods with a shown price",
@@ -42,7 +42,7 @@
       "points": [
         {
           "x": "2022 H2",
-          "y": 129700
+          "y": 132250
         },
         {
           "x": "2023 H1",
@@ -54,11 +54,11 @@
         },
         {
           "x": "2024 H1",
-          "y": 153750
+          "y": 150000
         },
         {
           "x": "2024 H2",
-          "y": 158700
+          "y": 156250
         },
         {
           "x": "2025 H1",
@@ -66,7 +66,7 @@
         },
         {
           "x": "2025 H2",
-          "y": 165000
+          "y": 165250
         },
         {
           "x": "2026 H1",
@@ -80,23 +80,23 @@
       "series": [
         {
           "label": "Under $100k",
-          "value": 164
+          "value": 165
         },
         {
           "label": "$100k to $150k",
-          "value": 127
+          "value": 129
         },
         {
           "label": "$150k to $200k",
-          "value": 114
+          "value": 116
         },
         {
           "label": "$200k to $300k",
-          "value": 164
+          "value": 167
         },
         {
           "label": "$300k and up",
-          "value": 43
+          "value": 44
         }
       ]
     }
@@ -122,7 +122,7 @@
             "34",
             "$313,000",
             "$178",
-            "+7%",
+            "+6%",
             "$2,072",
             "$7,165"
           ]
@@ -134,7 +134,7 @@
             "19",
             "$275,000",
             "$177",
-            "+8%",
+            "+10%",
             "$1,820",
             "$6,295"
           ]
@@ -146,7 +146,7 @@
             "29",
             "$236,000",
             "$146",
-            "-2%",
+            "-1%",
             "$1,562",
             "$5,219"
           ]
@@ -155,12 +155,12 @@
           "cells": [
             "Block group 1, tract 0115.02",
             "Kearsley",
-            "24",
-            "$223,500",
-            "$145",
-            "+12%",
-            "$1,480",
-            "$4,943"
+            "23",
+            "$225,000",
+            "$146",
+            "+13%",
+            "$1,489",
+            "$4,976"
           ]
         },
         {
@@ -225,26 +225,26 @@
         },
         {
           "cells": [
-            "Block group 4, tract 0113.01",
-            "Carman-Ainsworth",
-            "7",
-            "$178,500",
-            "$145",
-            "+37%",
-            "$1,182",
-            "$3,848"
+            "Block group 1, tract 0115.08",
+            "Atherton",
+            "42",
+            "$175,000",
+            "$147",
+            "+5%",
+            "$1,158",
+            "$3,663"
           ]
         },
         {
           "cells": [
-            "Block group 1, tract 0115.08",
-            "Atherton",
-            "41",
-            "$170,000",
-            "$147",
-            "+5%",
-            "$1,125",
-            "$3,558"
+            "Block group 4, tract 0113.01",
+            "Carman-Ainsworth",
+            "11",
+            "$165,500",
+            "$120",
+            "+44%",
+            "$1,096",
+            "$3,568"
           ]
         },
         {
@@ -275,12 +275,12 @@
           "cells": [
             "Block group 3, tract 0115.02",
             "Bentley",
-            "36",
-            "$153,500",
-            "$141",
-            "-4%",
-            "$1,016",
-            "$3,405"
+            "40",
+            "$155,250",
+            "$143",
+            "-3%",
+            "$1,028",
+            "$3,443"
           ]
         },
         {
@@ -311,9 +311,9 @@
           "cells": [
             "Block group 1, tract 0114.01",
             "Atherton",
-            "35",
+            "36",
             "$110,000",
-            "$108",
+            "$104",
             "+8%",
             "$728",
             "$2,302"
@@ -350,7 +350,7 @@
             "13",
             "$85,000",
             "$118",
-            "+35%",
+            "+37%",
             "$563",
             "$1,833"
           ]
@@ -386,7 +386,7 @@
             "37",
             "$68,000",
             "$90",
-            "-5%",
+            "-3%",
             "$450",
             "$1,818"
           ]
@@ -628,7 +628,7 @@
     "Turn on the \"Home sale prices (by block group)\" map overlay. Darker blue is a higher median; grey means fewer than 5 sales, so no price is shown.",
     "Only arms-length sales count: transfers the City Assessor codes as open-market sales between unrelated parties, improved homes only, with a recorded price. Family transfers, foreclosures, short sales, land contracts and bare lots are excluded.",
     "Figures are aggregates. No individual sale, address or price is published. Sale prices are public record and can be looked up per parcel on BS&A Online.",
-    "34 qualifying sales could not be placed in a block group (address not geocoded) and are left out of every figure.",
+    "1 qualifying sales could not be placed in a block group (address not geocoded) and are left out of every figure.",
     "Tax estimates assume a home bought at the median price: Michigan sets taxable value to half the sale price in the year after a sale. The City figure uses the City's own millage; the full bill uses the school district's published total homestead rate and is an estimate before any exemption. See the Property Taxes dashboard for the estimator.",
     "The school district shown is the one containing most of the block group; a few block groups straddle two districts.",
     "The Census profile is the American Community Survey 2020-2024 five-year estimate, a survey with wide margins at block-group level; a value marked * has a margin of error above half the estimate. The ACS median value is what owners say their home is worth, not a sale price."

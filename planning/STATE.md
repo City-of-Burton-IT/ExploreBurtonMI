@@ -80,6 +80,13 @@ B25064/B25077 for the 23 block groups to committed `tools/data/acs-blockgroups.j
 gains owner-occupied share, vacancy, median rent and ACS median value per block group (popup rows and a
 second table, * marks margins above half the estimate). Mean commute (B08013) is NA at block-group level
 and was dropped.
+PARCEL GEOMETRY SOLVED (#179): the user pointed at `\burtonmi1a\Pictometry`, which holds yearly City
+parcel shapefiles (2015-2025, `pnum` field matches BS&A, State Plane MI South intl ft, NAD83 HARN; the
+DBF carries owner names and SEV so it is NEVER committed). `tools/extract_parcel_centroids.py` (pyshp,
+hand-coded LCC inverse, verified: median 47 m from Census-geocoded addresses over 300 parcels) writes
+gitignored `parcel-centroids.csv` (13,244) and `parcel-polygons.json`. Business sites: 271 of 271 vacant
+sites as lot outlines, 713 of 713 buildings; sales 1,627 of 1,628 placed; new homes 615 pins, 15 unplaced.
+Refresh yearly when a new `City of Burton_Parcels<year>` set appears on the share.
 
 **2026-10-15 (#177, #178, ADR-0003, branch `feat/city-property-177`, not pushed):** the MLS
 question got its answer: live listings are licensed (Realcomp IDX) and off limits under ADR-0001,
