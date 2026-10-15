@@ -165,6 +165,52 @@ describe('createBaseMap', () => {
     handle.destroy();
   });
 
+  it('adds a live tile overlay that refreshes only while it is on', () => {
+    vi.useFakeTimers();
+    try {
+      const host = createTestElement();
+      const handle = createBaseMap(
+        host as unknown as HTMLElement,
+        config({
+          tileOverlays: [
+            {
+              source: 'https://nowcoast.noaa.gov/geoserver/weather_radar/wms',
+              label: 'Weather radar (NOAA, live)',
+              wms: { layers: 'base_reflectivity_mosaic' },
+              refreshSeconds: 300,
+            },
+          ],
+        }),
+      );
+      const control = leaflet.layerControls.at(-1)!;
+      const radar = leaflet.tileLayers.find((l) => l.kind === 'wms') as (typeof leaflet.tileLayers)[number] & {
+        params: unknown[];
+      };
+      expect(control.overlays.map(({ label }) => label)).toContain('Weather radar (NOAA, live)');
+      expect(radar.options).toMatchObject({
+        pane: 'dataLayers',
+        opacity: 0.7,
+        layers: 'base_reflectivity_mosaic',
+        format: 'image/png',
+        transparent: true,
+        version: '1.3.0',
+      });
+      // Off by default: no refresh timer until the user turns it on.
+      vi.advanceTimersByTime(600_000);
+      expect(radar.params).toHaveLength(0);
+      radar.handlers.get('add')?.forEach((h) => h({}));
+      vi.advanceTimersByTime(300_000);
+      expect(radar.params).toHaveLength(1);
+      expect(radar.params[0]).toHaveProperty('_t');
+      radar.handlers.get('remove')?.forEach((h) => h({}));
+      vi.advanceTimersByTime(600_000);
+      expect(radar.params).toHaveLength(1);
+      handle.destroy();
+    } finally {
+      vi.useRealTimers();
+    }
+  });
+
   it('suppresses configured overlays and tears down external UI exactly once', () => {
     const host = createTestElement();
     const handle = createBaseMap(

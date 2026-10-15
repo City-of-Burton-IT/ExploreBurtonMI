@@ -95,6 +95,15 @@ lng only; ADR-0003 shared controls) so CI can place City lots without street num
 `build_city_property.py` places by parcel first. M365 half (list + flow) is a human step: the
 recipe is `planning/city-property-self-service.md`. End-to-end test possible only after PR #181
 merges (repository_dispatch runs the workflow on the default branch).
+SharePoint list CREATED 2026-10-15 14:42 via REST from the user's session (user-approved; ID
+6f3e3235-4a63-4fd8-bc65-1246eaf3fbd2); the Power Automate flow is NOT created (classifier blocked the
+designer click; recipe in planning/city-property-self-service.md; token is the user's to paste).
+WEATHER RADAR (same branch): `tileOverlays` config + `buildTileOverlay` in dataLayers.ts (WMS or XYZ,
+dataLayers pane, off by default, refresh timer only while on; L.tileLayer.wms stub added to the test
+double); config.json entry = NOAA nowCOAST `base_reflectivity_mosaic` (AccessConstraints NONE, GetMap
+verified), 5-minute refresh; index.html CSP img-src += nowcoast.noaa.gov (Cloudflare edge header needs
+the same edit, human step); privacy paragraph. NOTE: a failed patch truncated public/privacy.html
+mid-session; restored from git and re-applied, 18 h2 sections confirmed.
 
 **2026-10-15 (#177, #178, ADR-0003, branch `feat/city-property-177`, not pushed):** the MLS
 question got its answer: live listings are licensed (Realcomp IDX) and off limits under ADR-0001,

@@ -52,7 +52,7 @@ npm run test:watch                       # Watch mode
 
 **Soft-launch gate:** `/` checks `config.softLaunchGate.active` + `?unlock=` query param. Native app exempt via `config.nativeAppExempt`. Change gate state in `public/config.json`.
 
-**CSP headers:** Content-Security-Policy deployed to Cloudflare as Report-Only; user must rename to enforcement + add WAF bot-skip rule for native app (fetch JSON, cannot solve challenges).
+**CSP headers:** Content-Security-Policy deployed to Cloudflare as Report-Only; user must rename to enforcement + add WAF bot-skip rule for native app (fetch JSON, cannot solve challenges). The edge header must list every host the meta tag lists; the weather radar overlay added `https://nowcoast.noaa.gov` to img-src on 2026-10-15 (meta tag done; Cloudflare header is a human step, see docs/csp-cloudflare.md).
 
 ## Data Gotchas
 

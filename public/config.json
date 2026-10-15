@@ -52,6 +52,9 @@
     { "source": "new-homes.geojson", "label": "New homes permitted (since 2015)", "nameField": "name" }
   ],
   "imageOverlays": [],
+  "tileOverlays": [
+    { "source": "https://nowcoast.noaa.gov/geoserver/weather_radar/wms", "label": "Weather radar (NOAA, live)", "wms": { "layers": "base_reflectivity_mosaic" }, "opacity": 0.7, "refreshSeconds": 300 }
+  ],
   "categoryField": "category",
   "categories": {
     "Government": { "color": "#1f3a5f" },
