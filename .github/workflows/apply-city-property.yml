@@ -1,0 +1,95 @@
+name: Apply City Property for Sale list
+
+# Self-service for the Purchasing Department (ADR-0003 Part A). A Power Automate
+# flow on the "Explore Burton City Property for Sale" SharePoint list sends EVERY
+# row as a repository_dispatch; this workflow validates the rows with the builder's
+# own checks, rewrites pipeline/data/city-property-sales.csv, regenerates the
+# public overlay and dashboard, and pushes the result to a review branch. A scoped
+# LISTING_PR_TOKEN opens the pull request; without it the run summary links to the
+# compare page. Merging the PR triggers the normal Pages deploy.
+#
+# Nothing private is involved: every row is a City-owned parcel already offered
+# for sale on burtonmi.gov. Geocoding uses the committed parcel-centroid table
+# first and the public Census batch geocoder for anything left.
+on:
+  repository_dispatch:
+    types: [apply-city-property]
+
+concurrency:
+  group: apply-city-property
+  cancel-in-progress: false
+
+permissions: {}
+
+jobs:
+  apply:
+    name: apply
+    runs-on: ubuntu-latest
+    permissions:
+      contents: write  # push the generated change to a non-production review branch
+    steps:
+      - uses: actions/checkout@3d3c42e5aac5ba805825da76410c181273ba90b1 # v5
+        with:
+          persist-credentials: false
+
+      - uses: actions/setup-python@5fda3b95a4ea91299a34e894583c3862153e4b97 # v7.0.0
+        with:
+          python-version: '3.12'
+
+      - name: Install tool deps
+        run: pip install -r tools/requirements.txt
+
+      - name: Write the dispatch payload to a file
+        env:
+          PAYLOAD: ${{ toJSON(github.event.client_payload) }}
+        run: printf '%s' "$PAYLOAD" > payload.json
+
+      - name: Run the tests covering this path
+        run: pytest tools/test_sync_city_property.py tools/test_build_city_property.py -q
+
+      - name: Validate the list and rewrite the source CSV
+        run: python tools/sync_city_property.py --payload-file payload.json
+
+      - name: Regenerate the overlay and dashboard
+        working-directory: tools
+        run: python build_city_property.py
+
+      - name: Commit to a review branch if anything changed
+        id: commit
+        env:
+          GH_TOKEN: ${{ secrets.GITHUB_TOKEN }}
+        run: |
+          rm -f payload.json
+          git config user.name "github-actions[bot]"
+          git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
+          gh auth setup-git
+          BRANCH="automation/city-property-${GITHUB_RUN_ID}-${GITHUB_RUN_ATTEMPT}"
+          git switch -c "$BRANCH"
+          git add pipeline/data/city-property-sales.csv public/city-property.geojson public/info-cityproperty.json
+          if git diff --cached --quiet; then
+            echo "No public data change to propose."
+            echo "changed=false" >> "$GITHUB_OUTPUT"
+            exit 0
+          fi
+          git commit -m "data: City Property for Sale list from Purchasing (self-service apply)"
+          git push --set-upstream origin "$BRANCH"
+          echo "branch=$BRANCH" >> "$GITHUB_OUTPUT"
+          echo "changed=true" >> "$GITHUB_OUTPUT"
+
+      - name: Open the review pull request when scoped automation is configured
+        if: steps.commit.outputs.changed == 'true'
+        env:
+          GH_TOKEN: ${{ secrets.LISTING_PR_TOKEN }}
+          BRANCH: ${{ steps.commit.outputs.branch }}
+        run: |
+          if [ -z "${GH_TOKEN:-}" ]; then
+            COMPARE_URL="${GITHUB_SERVER_URL}/${GITHUB_REPOSITORY}/compare/main...${BRANCH}?expand=1"
+            echo "LISTING_PR_TOKEN is not configured; the review branch was pushed but no pull request was opened." >> "$GITHUB_STEP_SUMMARY"
+            echo "[Open the review pull request](${COMPARE_URL})" >> "$GITHUB_STEP_SUMMARY"
+            exit 0
+          fi
+          gh pr create \
+            --base main \
+            --head "$BRANCH" \
+            --title "data: City Property for Sale list update from Purchasing" \
+            --body "Automated proposal from the Purchasing Department's SharePoint list. Review the public-data diff, then merge to publish."

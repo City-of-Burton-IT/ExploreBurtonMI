@@ -148,3 +148,11 @@ def test_panel_empty_list_is_honest():
     assert panel["stats"][0]["value"] == "0"
     assert panel["tables"][0]["rows"] == []
     assert "confirming the current list" in panel["notes"][0]
+
+
+def test_geocode_uses_centroid_by_parcel_in_any_format(tmp_path, monkeypatch):
+    rows = _rows(tmp_path, [_raw(parcel="59-12-776-262"), _raw(parcel="59-99", address="VACANT LOT RD")])
+    monkeypatch.setattr(bcp.bap, "geocode_batch", lambda rows, cache: None)  # no network
+    hit = bcp.geocode(rows, {"5912776262": (43.0, -83.6)})
+    assert hit == 1 and (rows[0]["lat"], rows[0]["lng"]) == (43.0, -83.6) and rows[1]["lat"] is None
+    assert bcp.read_centroids("C:/nonexistent.csv") == {}

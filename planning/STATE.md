@@ -87,6 +87,14 @@ hand-coded LCC inverse, verified: median 47 m from Census-geocoded addresses ove
 gitignored `parcel-centroids.csv` (13,244) and `parcel-polygons.json`. Business sites: 271 of 271 vacant
 sites as lot outlines, 713 of 713 buildings; sales 1,627 of 1,628 placed; new homes 615 pins, 15 unplaced.
 Refresh yearly when a new `City of Burton_Parcels<year>` set appears on the share.
+PURCHASING SELF-SERVICE (code half, same branch): `tools/sync_city_property.py` (+8 tests) maps the
+SharePoint rows to the CSV and re-reads it with the builder's validator; `.github/workflows/
+apply-city-property.yml` (repository_dispatch `apply-city-property`, review branch + optional
+LISTING_PR_TOKEN PR, mirrors apply-listing.yml); `parcel-centroids.csv` is now COMMITTED (parcel, lat,
+lng only; ADR-0003 shared controls) so CI can place City lots without street numbers;
+`build_city_property.py` places by parcel first. M365 half (list + flow) is a human step: the
+recipe is `planning/city-property-self-service.md`. End-to-end test possible only after PR #181
+merges (repository_dispatch runs the workflow on the default branch).
 
 **2026-10-15 (#177, #178, ADR-0003, branch `feat/city-property-177`, not pushed):** the MLS
 question got its answer: live listings are licensed (Realcomp IDX) and off limits under ADR-0001,

@@ -12,6 +12,7 @@ Public static site (Vite + Svelte + Leaflet) with 27 civic dashboards, Resident 
 - **Mobile:** Capacitor (native Android wrapper); Firebase for push (project `exploreburton`); keyless WIF releases to Play.
 - **Data pipeline:** Python at `pipeline/` (own venv); generates `public/*.json` data files committed to repo; web fetches lazy on component init.
 - **Intake flows:** Power Automate on `make.gov.powerautomate.us` (GCC tenant, gov.api.flow endpoints); SharePoint lists on `/sites/ITDepartment`.
+- **City Property self-service:** Purchasing edits the "Explore Burton City Property for Sale" SharePoint list; a flow dispatches `apply-city-property`; `.github/workflows/apply-city-property.yml` validates, rebuilds and opens a review PR. Setup in `planning/city-property-self-service.md`.
 
 ## Key Commands
 
