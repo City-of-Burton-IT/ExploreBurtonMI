@@ -42,15 +42,19 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton application and Mayor review
 
-Last verified: 2026-10-08 09:40 (git log, gh issue list, PR #173 merged and synced to the
-mirror, review page verified in a browser with the worker installed).
+Last verified: 2026-10-15 16:05 (git log, gh issue list, PR #181 merged d61ad33, Pages deploy
+green, live info-homesales.json 200, Android release run 38797581182 log read).
 
-**Status:** Git range `2c93c43..0ca0726` on `main`: PRs 128 through 173, all squash-merged
-with auto-merge, Pages deploys green. Required checks are web, python, pin-editor (CodeQL
-can stall docs-only PRs, merge by hand once those pass; a PR that falls behind main needs
-`gh pr update-branch` before auto-merge fires). Suites at `417365a`: pytest pipeline plus
-tools 396 passed, vitest 524 passed, svelte-check and tsc clean, production build clean.
-The mirror auto-syncs within 30 minutes of a merge.
+**Status:** Git range `2c93c43..d61ad33` on `main`: PRs 128 through 181, all squash-merged,
+Pages deploys green. Required checks are web, python, pin-editor (CodeQL can stall docs-only
+PRs, merge by hand once those pass; a PR that falls behind main needs `gh pr update-branch`
+before auto-merge fires). Suites at `d61ad33`: pytest tools plus pipeline 443 passed, vitest
+526 passed, svelte-check and tsc clean, production build clean. 27 dashboards. Android 1.17 is
+versionCode 31 on the Play internal track. The mirror auto-syncs within 30 minutes of a merge.
+
+**Public summary:** Explore Burton now shows home sale prices by neighbourhood, City-owned
+property for sale, sites for business, new homes permitted and live weather radar, built from
+City records and public data; the Android app carries the same in version 1.17.
 
 **2026-10-08 morning (before the send):** the user's first open of `/review/` showed the
 app shell failing ("Could not start the map", `config.json` 404). Root cause confirmed in
