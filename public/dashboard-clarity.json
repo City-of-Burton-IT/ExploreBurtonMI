@@ -2087,5 +2087,216 @@
         ]
       }
     ]
+  },
+  "cityproperty": {
+    "title": "City Property for Sale",
+    "subtitle": "Parcels the City of Burton is offering to buyers, with how to make an offer or bid",
+    "context": {
+      "scope": "City of Burton",
+      "status": "current",
+      "asOf": "Purchasing Department property-sale lists, refreshed when the list changes",
+      "sourceLinks": [
+        {
+          "text": "City Property Sales: No Bid",
+          "href": "https://www.burtonmi.gov/departments/purchasing/city_property_sales_-_offer.php"
+        },
+        {
+          "text": "City Property Sales: Bid Required",
+          "href": "https://burtonmi.gov/departments/purchasing/city_property_sales_-_bid_required.php"
+        }
+      ]
+    },
+    "headline": "The City sells tax-reverted and surplus parcels at Council-set prices or by sealed bid; every sale is approved at a public Council meeting.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "City-owned lots are the one kind of property for sale the City can show on its own map. Putting them next to zoning, school districts and traffic helps a neighbour add a side lot, a builder find an infill site, or a business find land, and returns the parcels to the tax roll."
+      ]
+    },
+    "responsibility": "The Purchasing Department maintains the list and takes offers and bids. City Council sets prices by annual resolution and approves every sale. Buyers are responsible for their own due diligence on each parcel.",
+    "action": {
+      "kind": "link",
+      "text": "See the current list and how to make an offer",
+      "href": "https://www.burtonmi.gov/departments/purchasing/city_property_sales_-_offer.php"
+    },
+    "statOverrides": {
+      "Parcels available now": {
+        "priority": true
+      },
+      "Fixed-price (no bid) parcels": {
+        "priority": true
+      },
+      "Sealed-bid parcels": {
+        "priority": true
+      },
+      "Lowest asking price": {
+        "priority": true
+      }
+    },
+    "chartOverrides": {},
+    "tableIds": {
+      "City-owned property for sale": "city-owned-property-for-sale"
+    },
+    "sections": [
+      {
+        "heading": "What is for sale",
+        "stats": [
+          "sold-in-the-last-12-months"
+        ],
+        "tables": [
+          "city-owned-property-for-sale"
+        ]
+      }
+    ]
+  },
+  "homesales": {
+    "title": "Home Sale Prices",
+    "subtitle": "What homes in Burton actually sell for, by neighbourhood, from the City Assessor's sales records",
+    "context": {
+      "scope": "City of Burton, by Census block group",
+      "status": "current",
+      "asOf": "Arms-length residential sales recorded by the Assessor, trailing 24 months; refreshed from the Assessing database",
+      "sourceLinks": [
+        {
+          "text": "BS&A Online parcel lookup",
+          "href": "https://bsaonline.com/?uid=209"
+        },
+        {
+          "text": "Burton Assessor's Office",
+          "href": "https://www.burtonmi.gov/government/assessor2/index.php"
+        }
+      ]
+    },
+    "headline": "Half of Burton homes sold for under about $155,000 in the last two years, with neighbourhood medians ranging from roughly $70,000 to over $300,000.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Sale prices are the plainest measure of what a neighbourhood is worth to buyers, and they are what lenders, appraisers and the Assessor all work from. Showing them by block group gives a prospective buyer or builder a fair picture without pointing at any single home. Every figure is a median over at least five open-market sales, and family transfers, foreclosures and land contracts are left out."
+      ]
+    },
+    "responsibility": "The City Assessor records every property transfer and codes which ones are open-market sales; those codes decide what counts here. Prices are set by buyers and sellers, not the City. The City uses the same sales to set assessed values under State rules.",
+    "action": {
+      "kind": "link",
+      "text": "Look up a parcel's sale history on BS&A Online",
+      "href": "https://bsaonline.com/?uid=209"
+    },
+    "statOverrides": {
+      "Arms-length home sales, last 24 months": {
+        "priority": true
+      },
+      "Citywide median sale price": {
+        "priority": true
+      },
+      "Citywide median price per sq ft": {
+        "priority": true
+      },
+      "Change vs the prior 24 months": {
+        "priority": true
+      }
+    },
+    "chartOverrides": {
+      "Citywide median sale price by half-year": {
+        "takeaway": "The citywide median climbed through 2023 and 2024 and has held near $150,000 to $165,000 since; the latest half-year is partial because sales are recorded with a lag."
+      },
+      "Home sales by price, last 24 months": {
+        "takeaway": "Sales are spread across the price range, with the largest groups under $100,000 and between $200,000 and $300,000."
+      }
+    },
+    "tableIds": {
+      "Sale prices by neighbourhood (Census block group), last 24 months": "sale-prices-by-neighbourhood"
+    },
+    "sections": [
+      {
+        "heading": "Citywide trend",
+        "charts": [
+          "citywide-median-sale-price-by-half-year",
+          "home-sales-by-price-last-24-months"
+        ]
+      },
+      {
+        "heading": "By neighbourhood",
+        "stats": [
+          "neighbourhoods-with-a-shown-price"
+        ],
+        "tables": [
+          "sale-prices-by-neighbourhood"
+        ]
+      }
+    ]
+  },
+  "businesssites": {
+    "title": "Sites for Business",
+    "subtitle": "Vacant commercial and industrial land, and the existing building stock, from the City Assessor's roll",
+    "context": {
+      "scope": "City of Burton",
+      "status": "current",
+      "asOf": "Current Assessing roll; refreshed with the roll and after major reclassifications",
+      "sourceLinks": [
+        {
+          "text": "BS&A Online parcel lookup",
+          "href": "https://bsaonline.com/?uid=209"
+        },
+        {
+          "text": "Burton zoning information",
+          "href": "https://www.burtonmi.gov/departments/department_of_public_works/zoning_division.php"
+        }
+      ]
+    },
+    "headline": "Burton has about 270 vacant commercial and industrial parcels, roughly 1,000 acres, alongside more than 700 existing commercial and industrial buildings.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "A business looking at Burton wants to know where it could build or move in, what the land is zoned for, and how much of it there is. The Assessor's roll answers the first three questions for every parcel. Pair the vacant-sites overlay with the zoning and traffic overlays to shortlist locations before calling the City or a broker."
+      ]
+    },
+    "responsibility": "The City Assessor classifies every parcel and keeps the roll; the Planning and Zoning Division sets what each district allows. Whether a parcel is for sale or lease is up to its owner, and the roll does not record it.",
+    "action": {
+      "kind": "link",
+      "text": "Look up a parcel on BS&A Online",
+      "href": "https://bsaonline.com/?uid=209"
+    },
+    "statOverrides": {
+      "Vacant commercial parcels": {
+        "priority": true
+      },
+      "Vacant industrial parcels": {
+        "priority": true
+      },
+      "Commercial buildings": {
+        "priority": true
+      },
+      "Industrial buildings": {
+        "priority": true
+      }
+    },
+    "chartOverrides": {
+      "Acres by property class": {
+        "takeaway": "Most commercial and industrial land in Burton is already built on; vacant industrial land is the larger of the two vacant pools by acreage."
+      },
+      "Vacant sites by zoning district": {
+        "takeaway": "Vacant sites are concentrated in a few zoning districts, which tells a business where its use is most likely to be allowed as of right."
+      }
+    },
+    "tableIds": {
+      "Largest vacant commercial and industrial sites (top 30 by acreage)": "largest-vacant-sites"
+    },
+    "sections": [
+      {
+        "heading": "Land and buildings",
+        "charts": [
+          "acres-by-property-class",
+          "vacant-sites-by-zoning-district"
+        ]
+      },
+      {
+        "heading": "Where to look",
+        "stats": [
+          "commercial-and-industrial-buildings-sold-last-24-months"
+        ],
+        "tables": [
+          "largest-vacant-sites"
+        ]
+      }
+    ]
   }
 }

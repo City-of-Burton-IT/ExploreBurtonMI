@@ -65,6 +65,45 @@ send (needs Windows auth on the mirror; would prompt on phones). Android 1.16 (v
 30) is on the Play internal track (#169 run 37740673450); Dependabot alert 92 (nested sharp
 under `@capacitor/assets`, dev only, no fix) stays open by decision, #169 stays open.
 
+**2026-10-15 (#177, #178, ADR-0003, branch `feat/city-property-177`, not pushed):** the MLS
+question got its answer: live listings are licensed (Realcomp IDX) and off limits under ADR-0001,
+so ADR-0003 (proposed, `docs/adr/`, force-add because `docs/` is ignored) covers the two City-owned
+alternatives. Part A, City Property for Sale (#177), is BUILT on the branch: `tools/build_city_property.py`
+reads the committed `pipeline/data/city-property-sales.csv` (Purchasing-maintained; schema in the
+module docstring), geocodes through the address-points Census path, and writes
+`public/city-property.geojson` (overlay, status-coloured pins) plus `public/info-cityproperty.json`
+(dashboard, People & Housing group, clarity record, privacy paragraph). pytest 352, vitest 524,
+svelte-check and build all green; geocode verified end to end on the City Hall address. The seed CSV
+is HEADER ONLY: burtonmi.gov (Revize) blocked WebFetch, curl and the Chrome extension, so the live
+No-Bid and Bid-Required lists could not be read. Before merging: get the current parcels, prices
+and packet links from Purchasing (ext. 1801), fill the CSV, rerun the builder, commit, open the PR.
+Part B, Home Sale Prices (#178), is ALSO BUILT on the branch after a viability check against the
+live `Sales` table: `tools/Export-BsaSales.ps1` (arms-length = Assessor `terms` 03/19, NOT
+`useInECF`) writes the gitignored `pipeline/data/sales-source.csv`; `tools/fetch_block_groups.py`
+commits `public/block-groups.geojson` (23 TIGERweb block groups holding >=10 Burton addresses);
+`tools/build_sales_tiles.py` collapses multi-parcel sales on liber/page, geocodes via the address
+cache, aggregates per block group over trailing 24 months with a five-sale floor, and writes
+`public/sales-tiles.geojson` (choropleth) plus `public/info-homesales.json`. 2026-10-15 figures:
+612 sales, citywide median $154,450, $133 per sq ft, +3% vs prior 24 months, 23 of 23 groups shown.
+No price floor beyond "above zero" (ADR updated after measuring: 6 zero-price rows, 7 improved
+sales under $20k). A 400 m hex grid was rejected (42% coverage at five sales). Still to do before
+merge: one-line confirmation from the Assessor on the terms-code definition. Diagnostics and the
+local working extracts are in C:/utils/ (Diag-BsaSales*.ps1 and .out.txt, Diag-SalesCoverage.py).
+
+Part C, Sites for Business (approved by the user 2026-10-15, ADR-0003 Part C): BUILT on the same
+branch. `tools/Export-BsaCommercialParcels.ps1` writes gitignored `commercial-parcels.csv` (984
+parcels, classes 201/202/301/302: parcel, address, class, acres, frontage, zoning; no owner or value)
+and `commercial-sales-summary.json` (38 arms-length 201/301 sales in 24 months, count only).
+`tools/build_business_sites.py` writes `public/business-sites-vacant.geojson`,
+`public/business-sites-improved.geojson` and `public/info-businesssites.json` (dashboard
+`#businesssites`, People & Housing after Jobs). KNOWN GAP: BS&A has no coordinates and 259 of 271
+vacant lots have no street number, so only 12 vacant sites and 625 of 713 buildings are on the map;
+counts and tables are complete. The builder reads an optional gitignored
+`pipeline/data/parcel-centroids.csv` (parcel, lat, lng) first; get a parcel centroid or polygon export
+from GCRC (County_Parcels, needs the City's token) or the Assessor's GIS to fill the vacant layer.
+Commercial medians by neighbourhood were rejected after measuring (48 sales in 24 months, one at
+$5.6M); the dashboard carries the citywide count only.
+
 **2026-10-07 evening (PR #168, #161):** the traffic overlay now names each MDOT segment
 from the nearest named road line within 40 m with a matching bearing, PASER lines first
 (`public/paser-roads.geojson`) then OpenStreetMap named highways from Overpass, with the
