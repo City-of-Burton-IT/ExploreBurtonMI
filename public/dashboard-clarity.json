@@ -2087,5 +2087,66 @@
         ]
       }
     ]
+  },
+  "cityproperty": {
+    "title": "City Property for Sale",
+    "subtitle": "Parcels the City of Burton is offering to buyers, with how to make an offer or bid",
+    "context": {
+      "scope": "City of Burton",
+      "status": "current",
+      "asOf": "Purchasing Department property-sale lists, refreshed when the list changes",
+      "sourceLinks": [
+        {
+          "text": "City Property Sales: No Bid",
+          "href": "https://www.burtonmi.gov/departments/purchasing/city_property_sales_-_offer.php"
+        },
+        {
+          "text": "City Property Sales: Bid Required",
+          "href": "https://burtonmi.gov/departments/purchasing/city_property_sales_-_bid_required.php"
+        }
+      ]
+    },
+    "headline": "The City sells tax-reverted and surplus parcels at Council-set prices or by sealed bid; every sale is approved at a public Council meeting.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "City-owned lots are the one kind of property for sale the City can show on its own map. Putting them next to zoning, school districts and traffic helps a neighbour add a side lot, a builder find an infill site, or a business find land, and returns the parcels to the tax roll."
+      ]
+    },
+    "responsibility": "The Purchasing Department maintains the list and takes offers and bids. City Council sets prices by annual resolution and approves every sale. Buyers are responsible for their own due diligence on each parcel.",
+    "action": {
+      "kind": "link",
+      "text": "See the current list and how to make an offer",
+      "href": "https://www.burtonmi.gov/departments/purchasing/city_property_sales_-_offer.php"
+    },
+    "statOverrides": {
+      "Parcels available now": {
+        "priority": true
+      },
+      "Fixed-price (no bid) parcels": {
+        "priority": true
+      },
+      "Sealed-bid parcels": {
+        "priority": true
+      },
+      "Lowest asking price": {
+        "priority": true
+      }
+    },
+    "chartOverrides": {},
+    "tableIds": {
+      "City-owned property for sale": "city-owned-property-for-sale"
+    },
+    "sections": [
+      {
+        "heading": "What is for sale",
+        "stats": [
+          "sold-in-the-last-12-months"
+        ],
+        "tables": [
+          "city-owned-property-for-sale"
+        ]
+      }
+    ]
   }
 }

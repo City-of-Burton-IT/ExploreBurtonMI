@@ -1,0 +1,68 @@
+{
+  "title": "City Property for Sale",
+  "subtitle": "Parcels the City of Burton is offering to buyers, with how to make an offer or bid",
+  "lastUpdated": "2026-10-15",
+  "stats": [
+    {
+      "label": "Parcels available now",
+      "value": "0",
+      "hint": "City-owned, offered by the Purchasing Department"
+    },
+    {
+      "label": "Fixed-price (no bid) parcels",
+      "value": "0",
+      "hint": "buy at the Council-set asking price"
+    },
+    {
+      "label": "Sealed-bid parcels",
+      "value": "0",
+      "hint": "highest qualifying bid wins"
+    },
+    {
+      "label": "Lowest asking price",
+      "value": "None listed",
+      "hint": "among fixed-price parcels"
+    },
+    {
+      "label": "Sold in the last 12 months",
+      "value": "0",
+      "hint": "Council-approved sales"
+    }
+  ],
+  "charts": [],
+  "tables": [
+    {
+      "title": "City-owned property for sale",
+      "columns": [
+        "Address",
+        "How to buy",
+        "Price",
+        "Lot size",
+        "Zoning",
+        "Status"
+      ],
+      "rows": []
+    }
+  ],
+  "source": "City of Burton Purchasing Department property-sale lists (No Bid and Bid Required), maintained by Purchasing.",
+  "links": [
+    {
+      "text": "City Property Sales: No Bid (offer at asking price)",
+      "href": "https://www.burtonmi.gov/departments/purchasing/city_property_sales_-_offer.php"
+    },
+    {
+      "text": "City Property Sales: Bid Required",
+      "href": "https://burtonmi.gov/departments/purchasing/city_property_sales_-_bid_required.php"
+    },
+    {
+      "text": "Purchasing Department",
+      "href": "https://burtonmi.gov/departments/purchasing/"
+    }
+  ],
+  "notes": [
+    "The Purchasing Department is confirming the current list. Until then, the two City Property Sales pages linked below are the authoritative inventory.",
+    "Turn on the \"City property for sale\" map overlay to see each parcel. Green pins are available, orange are sale pending, grey sold within the last year.",
+    "Every sale needs City Council approval at a regular meeting, even at the asking price. Prices are set each year by Council resolution under Section 32.19 of the Codified Ordinances.",
+    "A listing with no street number is usually a vacant lot. Contact Purchasing at (810) 743-1500 ext. 1801 with questions."
+  ]
+}

@@ -230,7 +230,8 @@ export type InfoView =
   | 'costofliving'
   | 'financehistory'
   | 'utilities'
-  | 'permits';
+  | 'permits'
+  | 'cityproperty';
 export type AppView = 'map' | InfoView | 'guide' | 'opendata' | 'status';
 
 export interface InfoStat {

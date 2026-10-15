@@ -1,6 +1,6 @@
 # Explore Burton MI -- Public Interactive City Map
 
-Public static site (Vite + Svelte + Leaflet) with 24 civic dashboards, Resident Guide, PWA + offline support, and native Android app (Google Play internal testing). Deployed at `https://explore.burtonmi.gov` (GitHub Pages).
+Public static site (Vite + Svelte + Leaflet) with 25 civic dashboards, Resident Guide, PWA + offline support, and native Android app (Google Play internal testing). Deployed at `https://explore.burtonmi.gov` (GitHub Pages).
 
 ## Status
 
@@ -31,6 +31,7 @@ npm run test:watch                       # Watch mode
 # From pipeline/ folder, use the committed venv:
 .venv\Scripts\python.exe -m pytest test tools -q  # Run pytest (279 pass)
 .venv\Scripts\python.exe tools/build_address_points.py
+.venv\Scripts\python.exe tools/build_city_property.py   # City-owned parcels for sale (#177, ADR-0003)
 .venv\Scripts\python.exe tools/extract_paser.py
 .venv\Scripts\python.exe tools/capital_roads_link.py
 ```

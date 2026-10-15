@@ -50,6 +50,21 @@ can stall docs-only PRs, merge by hand once those pass). Suites at `cf45683`: py
 pipeline plus tools 396 passed; vitest, svelte-check and the production build were last run
 green at PR #164. The mirror auto-syncs within 30 minutes of a merge.
 
+**2026-10-15 (#177, #178, ADR-0003, branch `feat/city-property-177`, not pushed):** the MLS
+question got its answer: live listings are licensed (Realcomp IDX) and off limits under ADR-0001,
+so ADR-0003 (proposed, `docs/adr/`, force-add because `docs/` is ignored) covers the two City-owned
+alternatives. Part A, City Property for Sale (#177), is BUILT on the branch: `tools/build_city_property.py`
+reads the committed `pipeline/data/city-property-sales.csv` (Purchasing-maintained; schema in the
+module docstring), geocodes through the address-points Census path, and writes
+`public/city-property.geojson` (overlay, status-coloured pins) plus `public/info-cityproperty.json`
+(dashboard, People & Housing group, clarity record, privacy paragraph). pytest 352, vitest 524,
+svelte-check and build all green; geocode verified end to end on the City Hall address. The seed CSV
+is HEADER ONLY: burtonmi.gov (Revize) blocked WebFetch, curl and the Chrome extension, so the live
+No-Bid and Bid-Required lists could not be read. Before merging: get the current parcels, prices
+and packet links from Purchasing (ext. 1801), fill the CSV, rerun the builder, commit, open the PR.
+Part B, aggregated home-sale tiles with five-sale suppression (#178), is specified in the ADR and
+the issue; it needs an `Export-BsaSales.ps1` and the Assessor's arms-length codes first.
+
 **2026-10-07 evening (PR #168, #161):** the traffic overlay now names each MDOT segment
 from the nearest named road line within 40 m with a matching bearing, PASER lines first
 (`public/paser-roads.geojson`) then OpenStreetMap named highways from Overpass, with the
