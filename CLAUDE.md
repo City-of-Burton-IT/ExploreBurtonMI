@@ -4,7 +4,7 @@ Public static site (Vite + Svelte + Leaflet) with 27 civic dashboards, Resident 
 
 ## Status
 
-**Soft-launch live** (gate: `?unlock=` bypass, noindex; builds with `VITE_INTERNAL_PREVIEW=1` disable the gate for staff-preview deployments -- deploy tooling and docs live in the local, untracked `planning/` folder). Web: vitest test count in `planning/STATE.md`, 0 Svelte warnings, build clean. **Android v1.17 (versionCode 26)** published to Play internal testing track; includes push notifications, widget refresh, deep links, offline badge, native quick-actions row. Refactor #84 (tools/lib migration) MERGED and COMPLETE; Dependabot 0 open alerts. iOS wrapper compiles in CI (not published).
+**Soft-launch live** (gate: `?unlock=` bypass, noindex; builds with `VITE_INTERNAL_PREVIEW=1` disable the gate for staff-preview deployments -- deploy tooling and docs live in the local, untracked `planning/` folder). Web: vitest test count in `planning/STATE.md`, 0 Svelte warnings, build clean. **Android** on the Play internal testing track (current version and versionCode in `planning/STATE.md`); includes push notifications, widget refresh, deep links, offline badge, native quick-actions row. Refactor #84 (tools/lib migration) MERGED and COMPLETE; Dependabot 0 open alerts. iOS wrapper compiles in CI (not published).
 
 ## Architecture
 
