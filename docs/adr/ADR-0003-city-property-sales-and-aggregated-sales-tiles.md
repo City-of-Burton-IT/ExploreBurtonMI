@@ -56,20 +56,26 @@ Publish price and volume of recent arms-length residential sales only as
 - **Source** is an Assessing sales export (parcel, class, sale date, price,
   situs address), dropped at `pipeline/data/sales-source.csv`, which is
   gitignored exactly like the address-points source.
-- **Cells** are a hexagonal grid of about 400 m across the city boundary, or
-  Census block groups where the hex grid would be too sparse. The build tool
-  picks the cell size; the output names it.
+- **Cells** are the 23 Census block groups that cover Burton (TIGERweb current
+  vintage, clipped to the city). A 2026-10-15 coverage test on the live Sales
+  table showed a 400 m hex grid puts only 42% of sales in a cell with five or
+  more, while every block group holds at least seven in a 24-month window and
+  the median block group holds 26. Hexes are not used.
 - **Suppression**: a cell shows values only when it holds **at least five**
   qualifying sales in the window. Cells below the threshold render as "too few
   sales to show" with a count bucket ("1 to 4"), never a price.
 - **Published per cell**: sale count, median price, median price per square
-  foot when square footage is in the export, and the change versus the prior
-  window. No parcel numbers, addresses, dates or individual prices leave the
+  foot, and the change versus the prior 24-month window. No parcel numbers, addresses, dates or individual prices leave the
   build machine.
 - **Window**: trailing 24 months, labelled with the export date.
-- **Qualifying sales**: residential class, arms-length as flagged by the
-  Assessor's sales-study codes, price above a floor the Assessor sets to
-  exclude nominal transfers.
+- **Qualifying sales**: property class 4xx, `terms` code `03-ARM'S LENGTH` or
+  `19-MULTI PARCEL ARM'S LENGTH` (the Assessor's own terms coding; the
+  `useInECF` flag is a different, much narrower study flag and is not used),
+  `confidential` not set, improved parcels only (`isVacantLandSale` = 0), and
+  price at or above a $20,000 floor to exclude nominal transfers. About 600
+  sales qualify per 24 months. Finished floor area (`resb_floorarea`) is
+  present on nearly every qualifying sale, so price per square foot is
+  publishable.
 - Commercial and industrial sales are out of scope for this ADR because their
   low volume makes single transactions identifiable even in aggregate.
 
