@@ -2148,5 +2148,80 @@
         ]
       }
     ]
+  },
+  "homesales": {
+    "title": "Home Sale Prices",
+    "subtitle": "What homes in Burton actually sell for, by neighbourhood, from the City Assessor's sales records",
+    "context": {
+      "scope": "City of Burton, by Census block group",
+      "status": "current",
+      "asOf": "Arms-length residential sales recorded by the Assessor, trailing 24 months; refreshed from the Assessing database",
+      "sourceLinks": [
+        {
+          "text": "BS&A Online parcel lookup",
+          "href": "https://bsaonline.com/?uid=209"
+        },
+        {
+          "text": "Burton Assessor's Office",
+          "href": "https://www.burtonmi.gov/government/assessor2/index.php"
+        }
+      ]
+    },
+    "headline": "Half of Burton homes sold for under about $155,000 in the last two years, with neighbourhood medians ranging from roughly $70,000 to over $300,000.",
+    "summary": {
+      "heading": "Why this matters",
+      "body": [
+        "Sale prices are the plainest measure of what a neighbourhood is worth to buyers, and they are what lenders, appraisers and the Assessor all work from. Showing them by block group gives a prospective buyer or builder a fair picture without pointing at any single home. Every figure is a median over at least five open-market sales, and family transfers, foreclosures and land contracts are left out."
+      ]
+    },
+    "responsibility": "The City Assessor records every property transfer and codes which ones are open-market sales; those codes decide what counts here. Prices are set by buyers and sellers, not the City. The City uses the same sales to set assessed values under State rules.",
+    "action": {
+      "kind": "link",
+      "text": "Look up a parcel's sale history on BS&A Online",
+      "href": "https://bsaonline.com/?uid=209"
+    },
+    "statOverrides": {
+      "Arms-length home sales, last 24 months": {
+        "priority": true
+      },
+      "Citywide median sale price": {
+        "priority": true
+      },
+      "Citywide median price per sq ft": {
+        "priority": true
+      },
+      "Change vs the prior 24 months": {
+        "priority": true
+      }
+    },
+    "chartOverrides": {
+      "Citywide median sale price by half-year": {
+        "takeaway": "The citywide median climbed through 2023 and 2024 and has held near $150,000 to $165,000 since; the latest half-year is partial because sales are recorded with a lag."
+      },
+      "Home sales by price, last 24 months": {
+        "takeaway": "Sales are spread across the price range, with the largest groups under $100,000 and between $200,000 and $300,000."
+      }
+    },
+    "tableIds": {
+      "Sale prices by neighbourhood (Census block group), last 24 months": "sale-prices-by-neighbourhood"
+    },
+    "sections": [
+      {
+        "heading": "Citywide trend",
+        "charts": [
+          "citywide-median-sale-price-by-half-year",
+          "home-sales-by-price-last-24-months"
+        ]
+      },
+      {
+        "heading": "By neighbourhood",
+        "stats": [
+          "neighbourhoods-with-a-shown-price"
+        ],
+        "tables": [
+          "sale-prices-by-neighbourhood"
+        ]
+      }
+    ]
   }
 }

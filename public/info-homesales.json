@@ -1,0 +1,337 @@
+{
+  "title": "Home Sale Prices",
+  "subtitle": "What homes in Burton actually sell for, by neighbourhood, from the City Assessor's sales records",
+  "lastUpdated": "2026-10-15",
+  "stats": [
+    {
+      "label": "Arms-length home sales, last 24 months",
+      "value": "612",
+      "hint": "October 2024 to October 2026"
+    },
+    {
+      "label": "Citywide median sale price",
+      "value": "$154,450",
+      "hint": "half the homes sold for less, half for more"
+    },
+    {
+      "label": "Citywide median price per sq ft",
+      "value": "$133",
+      "hint": "finished floor area from the Assessing record"
+    },
+    {
+      "label": "Change vs the prior 24 months",
+      "value": "+3%",
+      "hint": "prior median $149,450"
+    },
+    {
+      "label": "Neighbourhoods with a shown price",
+      "value": "23 of 23",
+      "hint": "block groups with at least 5 sales"
+    }
+  ],
+  "charts": [
+    {
+      "type": "trend",
+      "title": "Citywide median sale price by half-year",
+      "unit": "$",
+      "points": [
+        {
+          "x": "2022 H2",
+          "y": 129700
+        },
+        {
+          "x": "2023 H1",
+          "y": 140000
+        },
+        {
+          "x": "2023 H2",
+          "y": 155000
+        },
+        {
+          "x": "2024 H1",
+          "y": 153750
+        },
+        {
+          "x": "2024 H2",
+          "y": 158700
+        },
+        {
+          "x": "2025 H1",
+          "y": 150000
+        },
+        {
+          "x": "2025 H2",
+          "y": 165000
+        },
+        {
+          "x": "2026 H1",
+          "y": 131000
+        }
+      ]
+    },
+    {
+      "type": "bars",
+      "title": "Home sales by price, last 24 months",
+      "series": [
+        {
+          "label": "Under $100k",
+          "value": 164
+        },
+        {
+          "label": "$100k to $150k",
+          "value": 127
+        },
+        {
+          "label": "$150k to $200k",
+          "value": 114
+        },
+        {
+          "label": "$200k to $300k",
+          "value": 164
+        },
+        {
+          "label": "$300k and up",
+          "value": 43
+        }
+      ]
+    }
+  ],
+  "tables": [
+    {
+      "title": "Sale prices by neighbourhood (Census block group), last 24 months",
+      "columns": [
+        "Block group",
+        "Sales",
+        "Median price",
+        "Median $/sq ft",
+        "Change vs prior 24 months"
+      ],
+      "rows": [
+        {
+          "cells": [
+            "Block group 2, tract 0114.02",
+            "34",
+            "$313,000",
+            "$178",
+            "+7%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0114.02",
+            "19",
+            "$275,000",
+            "$177",
+            "+8%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0115.03",
+            "29",
+            "$236,000",
+            "$146",
+            "-2%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0115.02",
+            "24",
+            "$223,500",
+            "$145",
+            "+12%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0114.02",
+            "30",
+            "$221,500",
+            "$173",
+            "+11%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0115.05",
+            "15",
+            "$215,000",
+            "$171",
+            "+3%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0115.03",
+            "42",
+            "$205,750",
+            "$150",
+            "+9%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0115.05",
+            "26",
+            "$205,000",
+            "$149",
+            "+14%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0114.01",
+            "15",
+            "$200,000",
+            "$156",
+            "+11%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 4, tract 0113.01",
+            "7",
+            "$178,500",
+            "$145",
+            "+37%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0115.08",
+            "41",
+            "$170,000",
+            "$147",
+            "+5%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0115.03",
+            "45",
+            "$158,000",
+            "$133",
+            "+11%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0115.05",
+            "13",
+            "$156,000",
+            "$123",
+            "+4%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0115.02",
+            "36",
+            "$153,500",
+            "$141",
+            "-4%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0113.01",
+            "33",
+            "$125,000",
+            "$120",
+            "+15%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0115.02",
+            "8",
+            "$114,000",
+            "$124",
+            "-21%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0114.01",
+            "35",
+            "$110,000",
+            "$108",
+            "+8%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 3, tract 0113.02",
+            "20",
+            "$106,250",
+            "$110",
+            "-11%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0115.08",
+            "17",
+            "$100,500",
+            "$117",
+            "-9%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0113.01",
+            "13",
+            "$85,000",
+            "$118",
+            "+35%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0113.02",
+            "55",
+            "$80,000",
+            "$101",
+            "+11%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 1, tract 0113.02",
+            "18",
+            "$75,700",
+            "$82",
+            "+11%"
+          ]
+        },
+        {
+          "cells": [
+            "Block group 2, tract 0113.01",
+            "37",
+            "$68,000",
+            "$90",
+            "-5%"
+          ]
+        }
+      ]
+    }
+  ],
+  "source": "City of Burton Assessor sales records (BS&A), arms-length residential sales, aggregated by Census block group. Block-group boundaries from the U.S. Census Bureau (TIGERweb).",
+  "links": [
+    {
+      "text": "Look up a parcel on BS&A Online",
+      "href": "https://bsaonline.com/?uid=209"
+    },
+    {
+      "text": "Burton Assessor's Office",
+      "href": "https://www.burtonmi.gov/government/assessor2/index.php"
+    }
+  ],
+  "notes": [
+    "Turn on the \"Home sale prices (by block group)\" map overlay. Darker blue is a higher median; grey means fewer than 5 sales, so no price is shown.",
+    "Only arms-length sales count: transfers the City Assessor codes as open-market sales between unrelated parties, improved homes only, with a recorded price. Family transfers, foreclosures, short sales, land contracts and bare lots are excluded.",
+    "Figures are aggregates. No individual sale, address or price is published. Sale prices are public record and can be looked up per parcel on BS&A Online.",
+    "34 qualifying sales could not be placed in a block group (address not geocoded) and are left out of every figure."
+  ]
+}

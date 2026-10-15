@@ -72,8 +72,11 @@ Publish price and volume of recent arms-length residential sales only as
   `19-MULTI PARCEL ARM'S LENGTH` (the Assessor's own terms coding; the
   `useInECF` flag is a different, much narrower study flag and is not used),
   `confidential` not set, improved parcels only (`isVacantLandSale` = 0), and
-  price at or above a $20,000 floor to exclude nominal transfers. About 600
-  sales qualify per 24 months. Finished floor area (`resb_floorarea`) is
+  a recorded price above zero. The Assessor's coding decides what is a sale;
+  the City adds no price floor of its own (a 2026-10-15 check found only six
+  zero-price rows and seven improved sales under $20,000 in 24 months, too few
+  to move any block-group median). A multi-parcel sale counts once, keyed on
+  its recorded liber and page. About 600 sales qualify per 24 months. Finished floor area (`resb_floorarea`) is
   present on nearly every qualifying sale, so price per square foot is
   publishable.
 - Commercial and industrial sales are out of scope for this ADR because their

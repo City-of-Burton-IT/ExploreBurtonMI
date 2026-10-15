@@ -62,8 +62,18 @@ svelte-check and build all green; geocode verified end to end on the City Hall a
 is HEADER ONLY: burtonmi.gov (Revize) blocked WebFetch, curl and the Chrome extension, so the live
 No-Bid and Bid-Required lists could not be read. Before merging: get the current parcels, prices
 and packet links from Purchasing (ext. 1801), fill the CSV, rerun the builder, commit, open the PR.
-Part B, aggregated home-sale tiles with five-sale suppression (#178), is specified in the ADR and
-the issue; it needs an `Export-BsaSales.ps1` and the Assessor's arms-length codes first.
+Part B, Home Sale Prices (#178), is ALSO BUILT on the branch after a viability check against the
+live `Sales` table: `tools/Export-BsaSales.ps1` (arms-length = Assessor `terms` 03/19, NOT
+`useInECF`) writes the gitignored `pipeline/data/sales-source.csv`; `tools/fetch_block_groups.py`
+commits `public/block-groups.geojson` (23 TIGERweb block groups holding >=10 Burton addresses);
+`tools/build_sales_tiles.py` collapses multi-parcel sales on liber/page, geocodes via the address
+cache, aggregates per block group over trailing 24 months with a five-sale floor, and writes
+`public/sales-tiles.geojson` (choropleth) plus `public/info-homesales.json`. 2026-10-15 figures:
+612 sales, citywide median $154,450, $133 per sq ft, +3% vs prior 24 months, 23 of 23 groups shown.
+No price floor beyond "above zero" (ADR updated after measuring: 6 zero-price rows, 7 improved
+sales under $20k). A 400 m hex grid was rejected (42% coverage at five sales). Still to do before
+merge: one-line confirmation from the Assessor on the terms-code definition. Diagnostics and the
+local working extracts are in C:/utils/ (Diag-BsaSales*.ps1 and .out.txt, Diag-SalesCoverage.py).
 
 **2026-10-07 evening (PR #168, #161):** the traffic overlay now names each MDOT segment
 from the nearest named road line within 40 m with a matching bearing, PASER lines first
