@@ -42,13 +42,33 @@ is skipped because the README has no generated status markers.
 
 ## Current Handoff - Explore Burton public launch and Facebook campaign
 
-Last verified: 2026-11-04 10:50 (git log, gh issue list, live site screenshots of every
-feature the campaign names).
+Last verified: 2026-11-04 12:25 (svelte-check, vitest 528, pytest 444, build; live walk of all
+28 dashboards plus the Resident Guide; curl of live headers and assetlinks; Dependabot alert list).
 
 **Status:** Final approval for the public site and Android app was granted (reported by the
-user 2026-11-04). No code changed this session. Launch work is tracked in issue #191: soft-launch
-gate off (`COMING_SOON_ENABLED` in `src/lib/comingSoon.ts`, a source constant, not config.json),
-Play internal to production, CSP header #184, production mailboxes, mirror teardown #88.
+user 2026-11-04). Launch work is tracked in issue #191.
+
+**Done 2026-11-04 (go-live review):**
+
+- #192 merged: `deploy.yml` sets `include-hidden-files: true` (upload-pages-artifact v4+ dropped
+  `.well-known/`, so `assetlinks.json` 404'd and App Links could not verify; now 200), and
+  vulnerable npm deps bumped (re2js, vite, vitest, handlebars, fast-uri; `@capacitor/assets`
+  nested sharp overridden to ^0.35.5). Alerts 92-107 closed; #169 closed.
+- #184 closed: the Cloudflare CSP header was ALREADY enforcing (not Report-Only) and blocked the
+  NOAA radar; the user added `nowcoast.noaa.gov` to img-src, verified in Chrome. PWA-cached pages
+  keep the old header until the service worker updates.
+- #194 (auto-merge): Sites for Business no longer shows "0 parcels could not be placed"; Home Sale
+  Prices singular "1 qualifying sale ... is left out".
+- Workflow-action Dependabot PRs merged or on auto-merge; #193 (serialize-javascript) on auto-merge.
+- **#195 DRAFT, merge on launch day only:** gate off by default (`COMING_SOON_ENABLED` now reads
+  `VITE_COMING_SOON === '1'`), which also removes the noindex tag. Re-gate a build with
+  `VITE_COMING_SOON=1`.
+
+**Remaining for launch (#191):** leadership confirms the date and posting roles; merge #195 and
+check the site opens without `?unlock=`; promote Android 1.17 (versionCode 31) to production in
+Play Console (the release workflow only targets internal); rotate the messaging-flow GitHub PAT and
+set the real Mayor approval email (#72) plus production mailboxes; tear down the staff mirror (#88);
+DPW Thanksgiving trash schedule; Assessor confirmation of sale terms 03/19 (#178).
 
 **Campaign deliverables (local, untracked under `planning/social-campaign/`):**
 `SOCIAL-CAMPAIGN.md` plus its Word export (full plan, post copy, alt text, comment guide,
