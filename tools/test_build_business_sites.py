@@ -114,6 +114,14 @@ def test_panel_counts_charts_and_top_table(tmp_path):
     assert "2026-10-15" in panel["source"]
 
 
+def test_unplaced_note_omitted_at_zero_and_singular_at_one(tmp_path):
+    rows = _rows(tmp_path, [_raw(parcel="1", propclass="202", acres="2")])
+    meta = {"transfers24": 0, "asOf": "2026-10-15"}
+    assert not any("could not be placed" in n for n in bbs.build_panel(rows, meta, 0, 0, TODAY)["notes"])
+    one = bbs.build_panel(rows, meta, 1, 0, TODAY)["notes"]
+    assert any(n.startswith("1 parcel could not be placed") for n in one)
+
+
 def test_centroids_override_and_validate(tmp_path):
     rows = _rows(tmp_path, [_raw(parcel="a"), _raw(parcel="b", street="2 X")])
     p = tmp_path / "cent.csv"
