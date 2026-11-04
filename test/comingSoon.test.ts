@@ -31,8 +31,14 @@ function makeLocalStorage(opts: { throwing?: boolean } = {}) {
   };
 }
 
-async function loadComingSoon(isNative: boolean): Promise<typeof import('../src/lib/comingSoon')> {
+async function loadComingSoon(
+  isNative: boolean,
+  gateEnv: string | null = '1',
+): Promise<typeof import('../src/lib/comingSoon')> {
   vi.resetModules();
+  // The gate is off by default since public launch; most scenarios exercise the
+  // re-gated build (VITE_COMING_SOON=1). Pass null for the default build (unset).
+  vi.stubEnv('VITE_COMING_SOON', gateEnv ?? undefined);
   vi.doMock('@capacitor/core', () => ({
     Capacitor: { isNativePlatform: () => isNative },
   }));
@@ -51,6 +57,22 @@ describe('comingSoon', () => {
     (globalThis as { localStorage?: unknown }).localStorage = originalLocalStorage;
     (globalThis as { window?: unknown }).window = originalWindow;
     vi.doUnmock('@capacitor/core');
+    vi.unstubAllEnvs();
+  });
+
+  describe('default (public launch) build', () => {
+    it('is disabled and never gates the web app', async () => {
+      (globalThis as unknown as { localStorage: unknown }).localStorage = makeLocalStorage();
+      (globalThis as unknown as { window: unknown }).window = { location: { search: '' } };
+      const { COMING_SOON_ENABLED, shouldGate } = await loadComingSoon(false, null);
+      expect(COMING_SOON_ENABLED).toBe(false);
+      expect(shouldGate()).toBe(false);
+    });
+
+    it('is enabled only by VITE_COMING_SOON=1', async () => {
+      expect((await loadComingSoon(false, '0')).COMING_SOON_ENABLED).toBe(false);
+      expect((await loadComingSoon(false, '1')).COMING_SOON_ENABLED).toBe(true);
+    });
   });
 
   describe('isUnlocked', () => {

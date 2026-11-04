@@ -13,10 +13,10 @@ import { Capacitor } from '@capacitor/core';
 // and anyone determined can read the phrase out of the shipped JavaScript. It
 // deters the public and the soft launch; it does not secure the content.
 //
-// AT LAUNCH: set COMING_SOON_ENABLED = false and redeploy to open the site fully.
-// Internal-preview builds (VITE_INTERNAL_PREVIEW=1 at build time) disable the
-// gate so staff mirrors show the site directly; the public build is unaffected.
-export const COMING_SOON_ENABLED = import.meta.env.VITE_INTERNAL_PREVIEW === '1' ? false : true;
+// PUBLIC LAUNCH (#191): the gate is OFF by default, so the site is open and the
+// noindex tag in main.ts is not added. To re-gate a build (maintenance, a future
+// soft launch), build with VITE_COMING_SOON=1; the bypass phrase still works.
+export const COMING_SOON_ENABLED = import.meta.env.VITE_COMING_SOON === '1';
 
 // The phrase you type on the holding page (or pass as ?unlock=...) to reveal the
 // site. CHANGE THIS to whatever you like. Matching is case-insensitive + trimmed.
