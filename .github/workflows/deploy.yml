@@ -52,6 +52,9 @@ jobs:
         uses: actions/upload-pages-artifact@fc324d3547104276b827a68afc52ff2a11cc49c9 # v5
         with:
           path: dist
+          # v4+ drops dotfiles by default; dist/.well-known/assetlinks.json must ship
+          # or Android App Links (autoVerify) cannot verify.
+          include-hidden-files: true
 
   deploy:
     name: deploy
