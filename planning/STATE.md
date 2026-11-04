@@ -57,12 +57,16 @@ user 2026-11-04). Launch work is tracked in issue #191.
 - #184 closed: the Cloudflare CSP header was ALREADY enforcing (not Report-Only) and blocked the
   NOAA radar; the user added `nowcoast.noaa.gov` to img-src, verified in Chrome. PWA-cached pages
   keep the old header until the service worker updates.
-- #194 (auto-merge): Sites for Business no longer shows "0 parcels could not be placed"; Home Sale
-  Prices singular "1 qualifying sale ... is left out".
-- Workflow-action Dependabot PRs merged or on auto-merge; #193 (serialize-javascript) on auto-merge.
+- #194 merged (`30fdd3f`): Sites for Business no longer shows "0 parcels could not be placed";
+  Home Sale Prices singular "1 qualifying sale ... is left out".
+- Workflow-action Dependabot PRs #175, #176, #185, #186, #188 merged. #193 (serialize-javascript,
+  alert 108) is on auto-merge but BEHIND: main requires up-to-date branches and Dependabot will not
+  rebase on its own, so run `gh pr update-branch 193` after each other merge. Alert 109 (deepmerge,
+  low, dev-only) has no PR.
 - **#195 DRAFT, merge on launch day only:** gate off by default (`COMING_SOON_ENABLED` now reads
   `VITE_COMING_SOON === '1'`), which also removes the noindex tag. Re-gate a build with
-  `VITE_COMING_SOON=1`.
+  `VITE_COMING_SOON=1`. After it merges, update the CLAUDE.md "Soft-launch gate" gotcha and the
+  vault note's Coming-soon section (both still describe the source constant).
 
 **Remaining for launch (#191):** leadership confirms the date and posting roles; merge #195 and
 check the site opens without `?unlock=`; promote Android 1.17 (versionCode 31) to production in
@@ -87,8 +91,8 @@ Figures quoted ($469 per resident, $13.8M across 27 projects, $154,900 median sa
 values) were read from the live dashboards on 2026-11-04 and must be re-checked the week each
 posts. Only the 30-second launch screen recording is still to make.
 
-**Public summary:** Explore Burton has final approval for public launch, and a nine-week Facebook
-launch campaign with post text, graphics and a leadership overview is ready.
+**Public summary:** Explore Burton has final approval for public launch; pre-launch fixes are
+merged, the change that opens the site is ready, and a nine-week Facebook campaign is prepared.
 
 ## Previous Handoff - Explore Burton application and Mayor review
 
