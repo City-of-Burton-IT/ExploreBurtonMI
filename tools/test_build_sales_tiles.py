@@ -138,7 +138,12 @@ def test_panel_shapes_and_count_labels():
     assert all(len(r["cells"]) == len(table["columns"]) for r in table["rows"])
     assert table["rows"][0]["cells"][0] == "Group A"      # shown groups sort first
     assert table["rows"][1]["cells"][2:4] == ["0", "n/a"]  # empty group: count 0, no price
-    assert any("3 qualifying sales could not be placed" in n for n in panel["notes"])
+    assert any("3 qualifying sales could not be placed" in n and "are left out" in n for n in panel["notes"])
+    assert all(n for n in panel["notes"])
+    one = bst.build_panel(cur, stats, 1, TODAY)["notes"]
+    assert any(n.startswith("1 qualifying sale could not") and "is left out" in n for n in one)
+    none = bst.build_panel(cur, stats, 0, TODAY)["notes"]
+    assert not any("could not be placed" in n for n in none)
 
 
 def test_geocode_prefers_parcel_centroid(tmp_path, monkeypatch):

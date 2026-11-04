@@ -458,10 +458,15 @@ def build_panel(rows: list[dict], stats: list[dict], unassigned: int, today: dat
         f"Turn on the \"Home sale prices (by block group)\" map overlay. Darker blue is a higher median; grey means fewer than {MIN_SALES} sales, so no price is shown.",
         "Only arms-length sales count: transfers the City Assessor codes as open-market sales between unrelated parties, improved homes only, with a recorded price. Family transfers, foreclosures, short sales, land contracts and bare lots are excluded.",
         "Figures are aggregates. No individual sale, address or price is published. Sale prices are public record and can be looked up per parcel on BS&A Online.",
-        f"{unassigned} qualifying sales could not be placed in a block group (address not geocoded) and are left out of every figure.",
+        (
+            f"{unassigned} qualifying {'sale' if unassigned == 1 else 'sales'} could not be placed in a block group "
+            "(address not geocoded) and "
+            f"{'is' if unassigned == 1 else 'are'} left out of every figure."
+        ) if unassigned else None,
         "Tax estimates assume a home bought at the median price: Michigan sets taxable value to half the sale price in the year after a sale. The City figure uses the City's own millage; the full bill uses the school district's published total homestead rate and is an estimate before any exemption. See the Property Taxes dashboard for the estimator.",
         "The school district shown is the one containing most of the block group; a few block groups straddle two districts.",
     ]
+    notes = [n for n in notes if n]
     if acs_rows:
         notes.append(f"The Census profile is the American Community Survey {acs.get('vintage', '')} five-year estimate, a survey with wide margins at block-group level; a value marked * has a margin of error above half the estimate. The ACS median value is what owners say their home is worth, not a sale price.")
     return {

@@ -319,8 +319,13 @@ def build_panel(rows: list[dict], summary: dict, nocoord: int, outside: int, tod
         "The City's Assessing roll classifies every parcel; a vacant commercial or industrial parcel is one with no building on it. The roll does not record whether a parcel or building is for sale or lease, so contact the owner through BS&A Online or a broker.",
         "Each listing shows the parcel number, address, lot size, frontage and zoning. Owner names, assessed values and tax status are not shown here; those are available per parcel on BS&A Online.",
         "Where a site sits within about 150 m of a road with an MDOT traffic count, its popup shows the daily vehicle count from the Traffic volume overlay.",
-        f"{nocoord + outside} parcels could not be placed on the map (no geocodable address) and appear only in the counts.",
     ]
+    unplaced = nocoord + outside
+    if unplaced:
+        notes.append(
+            f"{unplaced} {'parcel' if unplaced == 1 else 'parcels'} could not be placed on the map "
+            "(no geocodable address) and appear only in the counts."
+        )
     return {
         "title": "Sites for Business",
         "subtitle": "Vacant commercial and industrial land, and the existing building stock, from the City Assessor's roll",
