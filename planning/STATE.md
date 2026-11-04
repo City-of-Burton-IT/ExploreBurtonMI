@@ -40,7 +40,37 @@ under the repository's existing planning-directory exclusion. Only the already
 tracked state file is included in this handoff commit. README status generation
 is skipped because the README has no generated status markers.
 
-## Current Handoff - Explore Burton application and Mayor review
+## Current Handoff - Explore Burton public launch and Facebook campaign
+
+Last verified: 2026-11-04 10:50 (git log, gh issue list, live site screenshots of every
+feature the campaign names).
+
+**Status:** Final approval for the public site and Android app was granted (reported by the
+user 2026-11-04). No code changed this session. Launch work is tracked in issue #191: soft-launch
+gate off (`COMING_SOON_ENABLED` in `src/lib/comingSoon.ts`, a source constant, not config.json),
+Play internal to production, CSP header #184, production mailboxes, mirror teardown #88.
+
+**Campaign deliverables (local, untracked under `planning/social-campaign/`):**
+`SOCIAL-CAMPAIGN.md` plus its Word export (full plan, post copy, alt text, comment guide,
+tracking sheet); `Explore Burton - Social Campaign Leadership Overview.docx` and `.pdf` (16
+pages, for leadership); `images/` with 18 PNGs (teaser, five-slide launch carousel, week 2 to 9
+main and follow-up posts); `images/source/` with the HTML templates, screenshots, capture and
+render scripts and a README. Channel is Facebook only; schedule is teaser Thu 2026-11-12, launch
+Tue 2026-11-17, then Tuesdays to 2027-01-19 (week of Dec 22 skipped), all pending leadership's
+date confirmation.
+
+**Decisions (do not re-litigate):** Drinking Water, Community Health and City Property for Sale
+are kept out of the campaign (water panel conflicts with the open review in #155; City Property
+listed 0 parcels on 2026-11-04). Posts say "more than 25 dashboards" (the registry in
+`src/lib/dashboards.ts` lists 28; older notes said 27). Trash lookup is by street, not address.
+Figures quoted ($469 per resident, $13.8M across 27 projects, $154,900 median sale, ACS home
+values) were read from the live dashboards on 2026-11-04 and must be re-checked the week each
+posts. Only the 30-second launch screen recording is still to make.
+
+**Public summary:** Explore Burton has final approval for public launch, and a nine-week Facebook
+launch campaign with post text, graphics and a leadership overview is ready.
+
+## Previous Handoff - Explore Burton application and Mayor review
 
 Last verified: 2026-10-15 16:05 (git log, gh issue list, PR #181 merged d61ad33, Pages deploy
 green, live info-homesales.json 200, Android release run 38797581182 log read).
