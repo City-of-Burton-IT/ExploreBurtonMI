@@ -1,10 +1,10 @@
 # Explore Burton MI -- Public Interactive City Map
 
-Public static site (Vite + Svelte + Leaflet) with 27 civic dashboards, Resident Guide, PWA + offline support, and native Android app (Google Play internal testing). Deployed at `https://explore.burtonmi.gov` (GitHub Pages).
+Public static site (Vite + Svelte + Leaflet) with civic dashboards (registry: `src/lib/dashboards.ts`), Resident Guide, PWA + offline support, and native Android app (Google Play internal testing). Deployed at `https://explore.burtonmi.gov` (GitHub Pages).
 
 ## Status
 
-**Soft-launch live** (gate: `?unlock=` bypass, noindex; builds with `VITE_INTERNAL_PREVIEW=1` disable the gate for staff-preview deployments -- deploy tooling and docs live in the local, untracked `planning/` folder). Web: vitest test count in `planning/STATE.md`, 0 Svelte warnings, build clean. **Android v1.17 (versionCode 26)** published to Play internal testing track; includes push notifications, widget refresh, deep links, offline badge, native quick-actions row. Refactor #84 (tools/lib migration) MERGED and COMPLETE; Dependabot 0 open alerts. iOS wrapper compiles in CI (not published).
+**Soft-launch live, public launch approved** (final approval reported 2026-11-04; launch steps and the Facebook campaign tracked in #191). Gate: `?unlock=` bypass, noindex; builds with `VITE_INTERNAL_PREVIEW=1` disable the gate for staff-preview deployments -- deploy tooling and docs live in the local, untracked `planning/` folder. Web: vitest test count in `planning/STATE.md`, 0 Svelte warnings, build clean. **Android** on the Play internal testing track (current version and versionCode in `planning/STATE.md`); includes push notifications, widget refresh, deep links, offline badge, native quick-actions row. Refactor #84 (tools/lib migration) MERGED and COMPLETE; Dependabot status tracked in #169. iOS wrapper compiles in CI (not published).
 
 ## Architecture
 
@@ -50,7 +50,7 @@ npm run test:watch                       # Watch mode
 
 **API keys in user env vars:** FCC_BROADBAND_API_KEY, CENSUS_API_KEY, DATA_GOV_API_KEY live in Windows user environment variables (setx), never committed to git. New sessions inherit them. Missing keys cause silent data gaps (datasets fetch empty), not errors.
 
-**Soft-launch gate:** `/` checks `config.softLaunchGate.active` + `?unlock=` query param. Native app exempt via `config.nativeAppExempt`. Change gate state in `public/config.json`.
+**Soft-launch gate:** a source constant, `COMING_SOON_ENABLED` in `src/lib/comingSoon.ts` (not `public/config.json`); bypass with the `?unlock=` phrase, stored per device in localStorage. The native app is never gated (`Capacitor.isNativePlatform()`). Turning it off for public launch is tracked in issue #191.
 
 **CSP headers:** Content-Security-Policy deployed to Cloudflare as Report-Only; user must rename to enforcement + add WAF bot-skip rule for native app (fetch JSON, cannot solve challenges). The edge header must list every host the meta tag lists; the weather radar overlay added `https://nowcoast.noaa.gov` to img-src on 2026-10-15 (meta tag done; Cloudflare header is a human step, see docs/csp-cloudflare.md).
 
