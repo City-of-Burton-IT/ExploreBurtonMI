@@ -40,17 +40,71 @@ under the repository's existing planning-directory exclusion. Only the already
 tracked state file is included in this handoff commit. README status generation
 is skipped because the README has no generated status markers.
 
-## Current Handoff - Explore Burton application and Mayor review
+## Current Handoff - Explore Burton public launch and Facebook campaign
 
-Last verified: 2026-10-08 09:40 (git log, gh issue list, PR #173 merged and synced to the
-mirror, review page verified in a browser with the worker installed).
+Last verified: 2026-11-04 12:25 (svelte-check, vitest 528, pytest 444, build; live walk of all
+28 dashboards plus the Resident Guide; curl of live headers and assetlinks; Dependabot alert list).
 
-**Status:** Git range `2c93c43..0ca0726` on `main`: PRs 128 through 173, all squash-merged
-with auto-merge, Pages deploys green. Required checks are web, python, pin-editor (CodeQL
-can stall docs-only PRs, merge by hand once those pass; a PR that falls behind main needs
-`gh pr update-branch` before auto-merge fires). Suites at `417365a`: pytest pipeline plus
-tools 396 passed, vitest 524 passed, svelte-check and tsc clean, production build clean.
-The mirror auto-syncs within 30 minutes of a merge.
+**Status:** Final approval for the public site and Android app was granted (reported by the
+user 2026-11-04). Launch work is tracked in issue #191.
+
+**Done 2026-11-04 (go-live review):**
+
+- #192 merged: `deploy.yml` sets `include-hidden-files: true` (upload-pages-artifact v4+ dropped
+  `.well-known/`, so `assetlinks.json` 404'd and App Links could not verify; now 200), and
+  vulnerable npm deps bumped (re2js, vite, vitest, handlebars, fast-uri; `@capacitor/assets`
+  nested sharp overridden to ^0.35.5). Alerts 92-107 closed; #169 closed.
+- #184 closed: the Cloudflare CSP header was ALREADY enforcing (not Report-Only) and blocked the
+  NOAA radar; the user added `nowcoast.noaa.gov` to img-src, verified in Chrome. PWA-cached pages
+  keep the old header until the service worker updates.
+- #194 (auto-merge): Sites for Business no longer shows "0 parcels could not be placed"; Home Sale
+  Prices singular "1 qualifying sale ... is left out".
+- Workflow-action Dependabot PRs merged or on auto-merge; #193 (serialize-javascript) on auto-merge.
+- **#195 DRAFT, merge on launch day only:** gate off by default (`COMING_SOON_ENABLED` now reads
+  `VITE_COMING_SOON === '1'`), which also removes the noindex tag. Re-gate a build with
+  `VITE_COMING_SOON=1`.
+
+**Remaining for launch (#191):** leadership confirms the date and posting roles; merge #195 and
+check the site opens without `?unlock=`; promote Android 1.17 (versionCode 31) to production in
+Play Console (the release workflow only targets internal); rotate the messaging-flow GitHub PAT and
+set the real Mayor approval email (#72) plus production mailboxes; tear down the staff mirror (#88);
+DPW Thanksgiving trash schedule; Assessor confirmation of sale terms 03/19 (#178).
+
+**Campaign deliverables (local, untracked under `planning/social-campaign/`):**
+`SOCIAL-CAMPAIGN.md` plus its Word export (full plan, post copy, alt text, comment guide,
+tracking sheet); `Explore Burton - Social Campaign Leadership Overview.docx` and `.pdf` (16
+pages, for leadership); `images/` with 18 PNGs (teaser, five-slide launch carousel, week 2 to 9
+main and follow-up posts); `images/source/` with the HTML templates, screenshots, capture and
+render scripts and a README. Channel is Facebook only; schedule is teaser Thu 2026-11-12, launch
+Tue 2026-11-17, then Tuesdays to 2027-01-19 (week of Dec 22 skipped), all pending leadership's
+date confirmation.
+
+**Decisions (do not re-litigate):** Drinking Water, Community Health and City Property for Sale
+are kept out of the campaign (water panel conflicts with the open review in #155; City Property
+listed 0 parcels on 2026-11-04). Posts say "more than 25 dashboards" (the registry in
+`src/lib/dashboards.ts` lists 28; older notes said 27). Trash lookup is by street, not address.
+Figures quoted ($469 per resident, $13.8M across 27 projects, $154,900 median sale, ACS home
+values) were read from the live dashboards on 2026-11-04 and must be re-checked the week each
+posts. Only the 30-second launch screen recording is still to make.
+
+**Public summary:** Explore Burton has final approval for public launch, and a nine-week Facebook
+launch campaign with post text, graphics and a leadership overview is ready.
+
+## Previous Handoff - Explore Burton application and Mayor review
+
+Last verified: 2026-10-15 16:05 (git log, gh issue list, PR #181 merged d61ad33, Pages deploy
+green, live info-homesales.json 200, Android release run 38797581182 log read).
+
+**Status:** Git range `2c93c43..d61ad33` on `main`: PRs 128 through 181, all squash-merged,
+Pages deploys green. Required checks are web, python, pin-editor (CodeQL can stall docs-only
+PRs, merge by hand once those pass; a PR that falls behind main needs `gh pr update-branch`
+before auto-merge fires). Suites at `d61ad33`: pytest tools plus pipeline 443 passed, vitest
+526 passed, svelte-check and tsc clean, production build clean. 27 dashboards. Android 1.17 is
+versionCode 31 on the Play internal track. The mirror auto-syncs within 30 minutes of a merge.
+
+**Public summary:** Explore Burton now shows home sale prices by neighbourhood, City-owned
+property for sale, sites for business, new homes permitted and live weather radar, built from
+City records and public data; the Android app carries the same in version 1.17.
 
 **2026-10-08 morning (before the send):** the user's first open of `/review/` showed the
 app shell failing ("Could not start the map", `config.json` 404). Root cause confirmed in
@@ -64,6 +118,12 @@ sets no-cache for `index.html` (verified). Windows-username prefill was declined
 send (needs Windows auth on the mirror; would prompt on phones). Android 1.16 (versionCode
 30) is on the Play internal track (#169 run 37740673450); Dependabot alert 92 (nested sharp
 under `@capacitor/assets`, dev only, no fix) stays open by decision, #169 stays open.
+
+**2026-10-15 15:57, SHIPPED:** PR #181 squash-merged as d61ad33 (user-requested), Pages deploy
+green, live site serves the new panels. Android **1.17 = versionCode 31** uploaded to the Play
+internal track (run 38797581182, status completed, release notes confirmed in the log). Issue #179
+closed. Still human: Purchasing list rows, the Power Automate flow + token, Assessor nod on terms
+03/19, Cloudflare CSP header += nowcoast.noaa.gov, Controller/Building wording on #160.
 
 **2026-10-15 afternoon, after PR #180 merged (ADR-0003 Part D, branch `feat/context-joins`):**
 built from data on hand: (1) `tools/Export-BsaNewHomes.ps1` + `tools/build_new_homes.py` ->
