@@ -76,3 +76,4 @@ graphify-out/
 
 # Codex CLI sandbox config
 .codex/
+.claude/skills/
