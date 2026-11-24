@@ -37,7 +37,7 @@ if (Capacitor.isNativePlatform()) {
 // COMING-SOON SOFT LAUNCH (web only)
 // While COMING_SOON_ENABLED is on, keep search engines off the public web build.
 // Native app: no SEO surface, skip. Googlebot renders JS and honors this tag.
-// (To open the site fully at launch: flip COMING_SOON_ENABLED in lib/comingSoon.ts.)
+// (Off by default since public launch; a VITE_COMING_SOON=1 build re-enables it.)
 if (COMING_SOON_ENABLED && !Capacitor.isNativePlatform()) {
   const robots = document.createElement('meta')
   robots.name = 'robots'
