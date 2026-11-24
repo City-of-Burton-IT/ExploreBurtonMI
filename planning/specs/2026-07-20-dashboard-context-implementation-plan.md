@@ -23,6 +23,7 @@
 ### Task 1: Context contract and status wording
 
 **Files:**
+
 - Modify: `src/lib/types.ts`
 - Modify: `src/lib/dashboard/dashboardClarity.ts`
 - Create: `src/lib/dashboard/dashboardContext.ts`
@@ -30,6 +31,7 @@
 - Test: `test/dashboardSections.test.ts`
 
 **Interfaces:**
+
 - Consumes: `DashboardStatus` and the existing `InfoLink` shape.
 - Produces: `DashboardContext.sourceLinks?: InfoLink[]` and `dashboardStatusLabel(status: DashboardStatus): string`.
 
@@ -104,10 +106,12 @@ Expected: all focused tests PASS.
 ### Task 2: Shared `About this data` renderer
 
 **Files:**
+
 - Modify: `src/lib/InfoHeader.svelte`
 - Test: `test/dashboardSections.test.ts`
 
 **Interfaces:**
+
 - Consumes: `DashboardContext`, `dashboardStatusLabel`, and `safeHref`.
 - Produces: the single shared resident-facing context block for all dashboards.
 
@@ -169,10 +173,12 @@ Expected: all renderer tests PASS.
 ### Task 3: Curated sources for every dashboard
 
 **Files:**
+
 - Modify: `public/dashboard-clarity.json`
 - Test: `test/infoPanel.test.ts`
 
 **Interfaces:**
+
 - Consumes: the validated `context.sourceLinks` contract.
 - Produces: one to three primary official links per registered dashboard.
 
@@ -235,10 +241,12 @@ Expected: all Vitest files and tests PASS.
 ### Task 4: Verification and comparison handoff
 
 **Files:**
+
 - Modify: `planning/comparison/dashboard-clarity-review.md`
 - Update: representative images under `planning/comparison/screenshots/`
 
 **Interfaces:**
+
 - Consumes: the production comparison build on port 4174 and unchanged baseline on port 4173.
 - Produces: review evidence for the user; no publication or merge.
 
